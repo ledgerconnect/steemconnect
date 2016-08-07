@@ -49,7 +49,7 @@ app.use(session({ secret: 'YOUR_SECRET_HERE', resave: false,  saveUninitialized:
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
-// Redirect to https
+/*
 app.use(function(req, res, next){
   var host = req.get('host');
   if (host == 'localhost:3000' || (host == 'steemconnect.com' && req.secure)) {
@@ -58,6 +58,7 @@ app.use(function(req, res, next){
     res.redirect('https://steemconnect.com');
   }
 });
+*/
 
 // Enable CORS
 app.use(cors());
