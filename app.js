@@ -49,17 +49,14 @@ app.use(session({ secret: 'YOUR_SECRET_HERE', resave: false,  saveUninitialized:
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
-// Redirect to https://busy6.com
-/*
 app.use(function(req, res, next){
   var host = req.get('host');
-  if (host == 'localhost:3000' || (host == 'busy6.com' && req.secure)) {
+  if (host == 'localhost:3000' || (host == 'steemconnect.com' && req.secure)) {
     next();
   } else {
-    res.redirect('https://busy6.com');
+    res.redirect('https://steemconnect.com');
   }
 });
-*/
 
 // Enable CORS
 app.use(cors());
