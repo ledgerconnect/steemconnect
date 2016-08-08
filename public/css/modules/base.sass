@@ -116,7 +116,7 @@ input[type="checkbox"]
   height: 100%
 
 .main-panel
-  overflow: hidden
+  overflow-y: auto
   height: 100%
   position: relative
   z-index: 2
@@ -200,15 +200,28 @@ input[type="checkbox"]
 
 .view
   flex-grow: 1
-  height: 100%
   display: flex
   flex-direction: column
   text-align: center
   align-items: center
   justify-content: center
-  margin-bottom: 80px
+  margin: 20px 0 80px
+  min-height: 460px
+
+
+.view-app
+  flex-grow: 1
+  display: flex
+  flex-direction: column
+  text-align: center
+  align-items: center
+  margin: 40px 0
+  .block
+    width: 100%
+    max-width: 600px
 
 .block
+  overflow: hidden
   border: 1px solid rgba(0, 0, 0, 0.1)
   border-radius: 5px
   background-color: white

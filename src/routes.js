@@ -3,12 +3,16 @@ var React = require('react'),
   Route = ReactRouter.Route,
   IndexRoute = ReactRouter.IndexRoute,
   Wrapper = require('./containers/wrapper'),
+  Login = require('./components/login'),
   Dashboard = require('./components/dashboard'),
   Connect = require('./components/connect');
 
 module.exports = (
   <Route path="/" component={Wrapper}>
     <IndexRoute component={Dashboard} />
-    <Route path="/connect" component={Connect} />
+    <Route path="/login" component={Login} />
+    <Route path="/apps" component={Dashboard} />
+    <Route path="/developers" component={Dashboard} />
+    <Route path="/about" component={Dashboard} />
   </Route>
 );

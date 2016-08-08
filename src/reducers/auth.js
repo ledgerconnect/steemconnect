@@ -7,6 +7,7 @@ module.exports = function(state,action){
 			return Object.assign({}, state, {
 				isFetching: true,
 				isAuthenticated: false,
+				errorMessage: '',
 				user: []
 			});
 		case C.LOGIN_SUCCESS:
@@ -20,7 +21,7 @@ module.exports = function(state,action){
 			return Object.assign({}, state, {
 				isFetching: false,
 				isAuthenticated: false,
-				errorMessage: action.message
+				errorMessage: action.errorMessage
 			});
 		case C.LOGOUT_SUCCESS:
 			return Object.assign({}, state, {

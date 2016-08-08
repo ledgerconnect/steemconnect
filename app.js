@@ -81,11 +81,9 @@ app.locals.env = process.env;
 
 var front = require('./routes/front');
 var api = require('./routes/api');
-var auth = require('./routes/auth');
 var user = require('./routes/user');
 app.use('/', front);
 app.use('/api', api);
-app.use('/', auth);
 app.use('/', user);
 
 // catch 404 and forward to error handler

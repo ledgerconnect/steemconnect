@@ -7,6 +7,8 @@ module.exports = function(){
 		},
 		auth: {
 			isAuthenticated: false,
+			isFetching: false,
+			errorMessage: '',
 			user: {name: 'fabien'}
 		},
 		header: {

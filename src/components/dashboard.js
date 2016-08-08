@@ -1,25 +1,26 @@
-var React = require("react"),
-	Header = require("./../containers/header");
+var React = require('react'),
+	ReactRedux = require('react-redux'),
+	Header = require('./../containers/header'),
+	Link = require('react-router').Link;
 
-module.exports = React.createClass({
+Dashboard = React.createClass({
 	render: function(){
 		return (
 			<div className="main-panel">
-				<div className="view">
-					<img className="logo" src="/img/logo.svg" width="280" />
+				<Header />
+				<div className="view-app">
+					<Link to="/"><img className="logo" src="/img/logo.svg" width="160" /></Link>
 					<div className="block">
-						<fieldset className="form-group">
-							<input autoFocus type="text" placeholder="@username" className="form-control form-control-lg" ref="title" />
-						</fieldset>
-						<fieldset className="form-group">
-							<input type="password" className="form-control form-control-lg" ref="body" />
-						</fieldset>
-						<button className="btn btn-primary" placeholder="Password or WIF" ref="body">Log In</button>
+						<h1>Welcome @{this.props.auth.user.name}</h1>
 					</div>
-					<p><a href="https://steemit.com/recover_account_step_1" target="_blank">Forgot password?</a></p>
-					<p>New to Steem? <a href="https://steemit.com/create_account" target="_blank">Sign up now</a></p>
 				</div>
 			</div>
 		);
 	}
 });
+
+var mapStateToProps = function(state){
+	return {auth: state.auth};
+};
+
+module.exports = ReactRedux.connect(mapStateToProps)(Dashboard);
