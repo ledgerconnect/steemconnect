@@ -11,7 +11,7 @@ var Dashboard = React.createClass({
 				<div className="view">
 					<img className="logo mbl" src="/img/logo.svg" width="220" />
 					<div className="block">
-						<div className="mbl"><img src={'/img/' + app + '.svg'} width="70" /></div>
+						<div className="mbl"><img src={'/img/app/' + app + '.svg'} width="70" /></div>
 						<p>The app <b>@{app}</b> is requesting permission to do the following:</p>
 						<ul className="mbm">
 							<li><i className="icon icon-sm material-icons">check_box</i> Verify your identity</li>
