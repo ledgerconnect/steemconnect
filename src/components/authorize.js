@@ -16,7 +16,7 @@ var Dashboard = React.createClass({
 						<ul className="mbm">
 							<li><i className="icon icon-sm material-icons">check_box</i> Verify your identity</li>
 						</ul>
-						<button className="btn btn-primary mbm" ref="body">Continue as @{this.props.auth.user.name}</button>
+						<a href={'http://localhost:3000/callback?token=' + this.props.auth.user.token} className="btn btn-primary mbm" ref="body">Continue as @{this.props.auth.user.name}</a>
 					</div>
 				</div>
 			</div>
