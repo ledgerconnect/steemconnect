@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var Steem = require('steem'),
+  _ = require('lodash'),
   utils = require('./../lib/utils'),
   auth = require('./../lib/auth'),
   bcrypt = require('bcrypt'),
@@ -12,6 +13,13 @@ router.all('/login', function(req, res) {
   var password = req.query.password || req.query.password;
   var steem = new Steem();
   steem.getAccounts([username], function(err, result){
+    if (err && !_.has(result, result[0].owner.key_auths)) {
+      return res.status(404).json({
+        error: true,
+        errorCode: 404,
+        errorMessage: 'Incorrect Username or Password'
+      });
+    }
     var auths = {
       owner: result[0].owner.key_auths,
       active: result[0].active.key_auths,

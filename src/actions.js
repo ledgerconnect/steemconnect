@@ -11,7 +11,7 @@ module.exports = {
 			dispatch(req);
 			steemConnect.token.get(username, password, function(err, token){
 				var res = {};
-				if (err) {
+				if (err || !token) {
 					res = {
 						type: C.LOGIN_FAILURE,
 						user: {},
