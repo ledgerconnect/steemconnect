@@ -13,7 +13,7 @@ router.all('/login', function(req, res) {
   var password = req.query.password || req.query.password;
   var steem = new Steem();
   steem.getAccounts([username], function(err, result){
-    if (err && !_.has(result, result[0].owner.key_auths)) {
+    if (err || !_.has(result, '[0].owner.key_auths')) {
       return res.status(404).json({
         error: true,
         errorCode: 404,
