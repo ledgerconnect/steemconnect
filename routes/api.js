@@ -14,9 +14,8 @@ router.all('/login', function(req, res) {
   var steem = new Steem();
   steem.getAccounts([username], function(err, result){
     if (err || !_.has(result, '[0].owner.key_auths')) {
-      return res.status(404).json({
+      return res.json({
         error: true,
-        errorCode: 404,
         errorMessage: 'Incorrect Username'
       });
     }
@@ -33,9 +32,8 @@ router.all('/login', function(req, res) {
         token: token
       });
     } else {
-      return res.status(404).json({
+      return res.json({
         error: true,
-        errorCode: 404,
         errorMessage: 'Incorrect Password'
       });
     }
@@ -45,17 +43,15 @@ router.all('/login', function(req, res) {
 router.all('/token', function(req, res) {
   var token = req.body.token || req.query.token;
   if (!token) {
-    return res.status(401).json({
+    return res.json({
       error: true,
-      errorCode: 401,
       errorMessage: 'Incorrect Token'
     });
   }
   jwt.verify(token, process.env.JWT_SECRET, function(err, user) {
     if (err) {
-      return res.status(404).json({
+      return res.json({
         error: true,
-        errorCode: 404,
         errorMessage: 'Incorrect Token'
       });
     }
