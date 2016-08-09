@@ -49,13 +49,6 @@ app.use(session({ secret: 'YOUR_SECRET_HERE', resave: false,  saveUninitialized:
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
-app.use(function(req, res, next){
-  if (app.get('env') === 'production' && !(req.get('host') == 'steemconnect.com' && req.secure)) {
-    res.redirect('https://steemconnect.com');
-  }
-  next();
-});
-
 // Enable CORS
 app.use(cors());
 
