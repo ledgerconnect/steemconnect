@@ -14,6 +14,6 @@ module.exports = (
     <Route path="/apps" component={Dashboard} />
     <Route path="/developers" component={Dashboard} />
     <Route path="/about" component={Dashboard} />
-    <Route path="/authorize/:app" component={Authorize} />
+    <Route path="/authorize/@:app" component={Authorize} />
   </Route>
 );
