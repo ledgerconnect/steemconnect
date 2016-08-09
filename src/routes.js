@@ -5,7 +5,7 @@ var React = require('react'),
   Wrapper = require('./containers/wrapper'),
   Login = require('./components/login'),
   Dashboard = require('./components/dashboard'),
-  Connect = require('./components/connect');
+  Authorize = require('./components/authorize');
 
 module.exports = (
   <Route path="/" component={Wrapper}>
@@ -14,5 +14,6 @@ module.exports = (
     <Route path="/apps" component={Dashboard} />
     <Route path="/developers" component={Dashboard} />
     <Route path="/about" component={Dashboard} />
+    <Route path="/authorize/:app" component={Authorize} />
   </Route>
 );

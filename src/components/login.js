@@ -11,7 +11,7 @@ var Login = React.createClass({
 		return (
 			<div className="main-panel">
 				<form onSubmit={this.handleSubmit} className="view">
-					<img className="logo" src="/img/logo.svg" width="220" />
+					<img className="logo mbl" src="/img/logo.svg" width="220" />
 					<div className="block">
 						<fieldset className="form-group">
 							<input autoFocus type="text" placeholder="You username ex.: ned" className="form-control form-control-lg" ref="username" />
