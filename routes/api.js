@@ -17,7 +17,7 @@ router.all('/login', function(req, res) {
       return res.status(404).json({
         error: true,
         errorCode: 404,
-        errorMessage: 'Incorrect Username or Password'
+        errorMessage: 'Incorrect Username'
       });
     }
     var auths = {
@@ -36,7 +36,7 @@ router.all('/login', function(req, res) {
       return res.status(404).json({
         error: true,
         errorCode: 404,
-        errorMessage: 'Incorrect Username or Password'
+        errorMessage: 'Incorrect Password'
       });
     }
   });
