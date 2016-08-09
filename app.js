@@ -50,7 +50,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
 app.use(function(req, res, next){
-  if (app.get('env') === 'production' && !(host == 'steemconnect.com' && req.secure)) {
+  if (app.get('env') === 'production' && !(req.get('host') == 'steemconnect.com' && req.secure)) {
     res.redirect('https://steemconnect.com');
   }
   next();
