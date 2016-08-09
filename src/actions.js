@@ -1,6 +1,6 @@
 var _ = require('lodash'),
 	axios = require('axios'),
-	SteemConnect = require('steemconnect'),
+	steemConnect = require('steemconnect'),
 	C = require('./constants');
 
 module.exports = {
@@ -9,10 +9,9 @@ module.exports = {
 			var req = {type: C.LOGIN_REQUEST};
 			Object.assign(req);
 			dispatch(req);
-			axios.get('//api.steemjs.com/getAccounts?names[]=' + username)
+			axios.get('//api.steemjs.com/getAccounts?names[]=' + username + '&ws=' + C.WS)
 				.then(response => {
 					if (_.has(response, 'data[0].owner')) {
-						var steemConnect = new SteemConnect();
 						var isValid = steemConnect.isValid(username, password, {
 							owner: response.data[0].owner.key_auths,
 							active: response.data[0].active.key_auths,

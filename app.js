@@ -6,8 +6,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http'),
   https = require('https');
-http.globalAgent.maxSockets = Infinity;
-https.globalAgent.maxSockets = Infinity;
+http.globalAgent.maxSockets = 100;
+https.globalAgent.maxSockets = 100;
 
 var app = express();
 var server = http.Server(app);
@@ -49,16 +49,12 @@ app.use(session({ secret: 'YOUR_SECRET_HERE', resave: false,  saveUninitialized:
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
-/*
 app.use(function(req, res, next){
-  var host = req.get('host');
-  if (host == 'localhost:3000' || (host == 'steemconnect.com' && req.secure)) {
-    next();
-  } else {
+  if (app.get('env') === 'production' && !(host == 'steemconnect.com' && req.secure)) {
     res.redirect('https://steemconnect.com');
   }
+  next();
 });
-*/
 
 // Enable CORS
 app.use(cors());
@@ -79,12 +75,8 @@ app.use(function(req,res,next){
 
 app.locals.env = process.env;
 
-var front = require('./routes/front');
-var api = require('./routes/api');
-var user = require('./routes/user');
-app.use('/', front);
-app.use('/api', api);
-app.use('/', user);
+app.use('/', require('./routes/api'));
+app.use('/', require('./routes/user'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,9 +1,10 @@
 var React = require('react'),
 	ReactRedux = require('react-redux'),
 	Header = require('./../containers/header'),
+	parser = require('./../lib/parser'),
 	Link = require('react-router').Link;
 
-Dashboard = React.createClass({
+var Dashboard = React.createClass({
 	render: function(){
 		return (
 			<div className="main-panel">
@@ -12,6 +13,7 @@ Dashboard = React.createClass({
 					<Link to="/"><img className="logo" src="/img/logo.svg" width="160" /></Link>
 					<div className="block">
 						<h1>Welcome @{this.props.auth.user.name}</h1>
+						<h2>Your reputation score is: {parser.reputation(this.props.auth.user.reputation)}</h2>
 					</div>
 				</div>
 			</div>

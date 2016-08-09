@@ -8,5 +8,8 @@ module.exports = {
 	// Header
 	REFRESH: 'REFRESH',
 	SEARCH: 'SEARCH',
-	SET_MENU: 'SET_MENU'
+	SET_MENU: 'SET_MENU',
+
+	// WebSocket
+	WS: 'wss://steemit.com/wspa'
 };
