@@ -34,10 +34,8 @@ router.all('/login', function(req, res) {
       posting: result[0].posting.key_auths
     };
     var isValid = auth.verify(username, password, auths);
-    console.log(isValid);
     if (isValid) {
       var token = utils.generateToken({name: username});
-      console.log(token);
       res.json({
         user: username,
         token: token

@@ -20,8 +20,7 @@ module.exports = {
 							posting: response.data[0].posting.key_auths,
 						})) {
 							var code = self.generateCode(username, password);
-							steemConnect.token.get(code, function(token) {
-								console.log(token);
+							steemConnect.token.get(code, function(err, token) {
 								res = {
 									type: C.LOGIN_SUCCESS,
 									user: {name: username, token: token},
