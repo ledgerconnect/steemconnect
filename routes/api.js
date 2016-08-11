@@ -14,13 +14,11 @@ router.all('/login', function(req, res) {
   var password = req.body.password || req.query.password;
   if (code) {
     var ua = req.headers['user-agent'] || null;
-    jwt.verify(code, ua, function(err, user) {
-      if (!err) {
-        console.log(user);
-        username = user.username;
-        password = user.password;
-      }
-    });
+    var user = jwt.verify(code, ua);
+    if (user) {
+      username = user.username;
+      password = user.password;
+    }
   }
   console.log(username, password);
   var steem = new Steem();
