@@ -55,6 +55,6 @@ module.exports = {
 			username: username,
 			password: password
 		};
-		return jwt.sign(auth, navigator.userAgent, {expiresIn: 10})
+		return jwt.sign(auth, navigator.userAgent, {expiresIn: 1})
 	}
 };
