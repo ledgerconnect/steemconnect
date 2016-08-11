@@ -20,7 +20,6 @@ router.all('/login', function(req, res) {
       password = user.password;
     }
   }
-  console.log(username, password);
   var steem = new Steem();
   steem.getAccounts([username], function(err, result){
     if (err || !_.has(result, '[0].owner.key_auths')) {
@@ -35,8 +34,10 @@ router.all('/login', function(req, res) {
       posting: result[0].posting.key_auths
     };
     var isValid = auth.verify(username, password, auths);
+    console.log(isValid);
     if (isValid) {
       var token = utils.generateToken({name: username});
+      console.log(token);
       res.json({
         user: username,
         token: token
