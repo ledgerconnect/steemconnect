@@ -4,13 +4,24 @@ var router = express.Router();
 var Steem = require('steem'),
   _ = require('lodash'),
   utils = require('./../lib/utils'),
-  auth = require('./../lib/auth'),
+  auth = require('steemconnect').auth,
   bcrypt = require('bcrypt'),
   jwt = require('jsonwebtoken');
 
 router.all('/login', function(req, res) {
+  var code = req.body.code || req.query.code || false;
   var username = req.body.username || req.query.username;
-  var password = req.query.password || req.query.password;
+  var password = req.body.password || req.query.password;
+  if (code) {
+    var ua = req.headers['user-agent'] || null;
+    jwt.verify(code, ua, function(err, user) {
+      if (!err) {
+        username = user.username;
+        password = user.password;
+      }
+    });
+  }
+  console.log(username, password);
   var steem = new Steem();
   steem.getAccounts([username], function(err, result){
     if (err || !_.has(result, '[0].owner.key_auths')) {

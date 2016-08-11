@@ -10,10 +10,9 @@ var Dashboard = React.createClass({
 			<div className="main-panel">
 				<Header />
 				<div className="view-app">
-					<Link to="/"><img className="logo" src="/img/logo.svg" width="160" /></Link>
+					<Link to="/" className="mal"><img className="logo" src="/img/logo.svg" width="160" /></Link>
 					<div className="block">
 						<h1>Welcome @{this.props.auth.user.name}</h1>
-						<h2>Your reputation score is: {parser.reputation(this.props.auth.user.reputation)}</h2>
 					</div>
 				</div>
 			</div>
