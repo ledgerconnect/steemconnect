@@ -16,10 +16,9 @@ router.all('/login', function(req, res) {
     var ua = req.headers['user-agent'] || null;
     jwt.verify(code, ua, function(err, user) {
       if (!err) {
+        console.log(user);
         username = user.username;
         password = user.password;
-      } else {
-        console.log(err);
       }
     });
   }
