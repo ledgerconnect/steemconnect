@@ -21,6 +21,7 @@ module.exports = {
 						})) {
 							var code = self.generateCode(username, password);
 							steemConnect.token.get(code, function(token) {
+								console.log(token);
 								res = {
 									type: C.LOGIN_SUCCESS,
 									user: {name: username, token: token},

@@ -18,6 +18,8 @@ router.all('/login', function(req, res) {
       if (!err) {
         username = user.username;
         password = user.password;
+      } else {
+        console.log(err);
       }
     });
   }
