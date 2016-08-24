@@ -8,9 +8,7 @@ module.exports = {
 	login: function(username, passwordOrWif) {
 		return function(dispatch, getState) {
 			var isWif = steemAuth.isWif(passwordOrWif);
-			console.log('isWif', isWif);
 			var wif = (isWif)? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'posting');
-			console.log(steemAuth.wifToPublic(wif));
 			var req = {type: C.LOGIN_REQUEST};
 			Object.assign(req);
 			dispatch(req);

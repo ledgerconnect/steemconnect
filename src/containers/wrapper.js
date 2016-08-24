@@ -7,7 +7,7 @@ var React = require('react'),
 var Wrapper = React.createClass({
   componentWillMount: function(){
     var sca = cookie.get();
-    if (sca) { console.log(sca); this.props.login(sca.username, sca.wif); }
+    if (sca) { this.props.login(sca.username, sca.wif); }
   },
   render: function(){
     return (
