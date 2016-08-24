@@ -4,6 +4,7 @@ var React = require('react'),
   IndexRoute = ReactRouter.IndexRoute,
   Wrapper = require('./containers/wrapper'),
   Login = require('./components/login'),
+  Logout = require('./components/logout'),
   Dashboard = require('./components/dashboard'),
   Authorize = require('./components/authorize');
 
@@ -11,6 +12,7 @@ module.exports = (
   <Route path="/" component={Wrapper}>
     <IndexRoute component={Dashboard} />
     <Route path="/login" component={Login} />
+    <Route path="/logout" component={Logout} />
     <Route path="/apps" component={Dashboard} />
     <Route path="/developers" component={Dashboard} />
     <Route path="/about" component={Dashboard} />

@@ -5,7 +5,7 @@ var React = require('react'),
 var Login = React.createClass({
 	handleSubmit: function(event){
 		event.preventDefault();
-		this.props.login(this.refs.username.value, this.refs.password.value);
+		this.props.login(this.refs.username.value, this.refs.passwordOrWif.value);
 	},
 	render: function(){
 		return (
@@ -17,7 +17,7 @@ var Login = React.createClass({
 							<input autoFocus type="text" placeholder="You username ex.: ned" className="form-control form-control-lg" ref="username" />
 						</fieldset>
 						<fieldset className="form-group">
-							<input type="password" placeholder="Password" className="form-control form-control-lg" ref="password" />
+							<input type="passwordOrWif" placeholder="Password or WIF" className="form-control form-control-lg" ref="passwordOrWif" />
 						</fieldset>
 						{this.props.auth.errorMessage &&
 						<ul className="errorMessages">
@@ -41,7 +41,7 @@ var mapStateToProps = function(state){
 
 var mapDispatchToProps = function(dispatch){
 	return {
-		login: function(username, password){ dispatch(actions.login(username, password)); }
+		login: function(username, passwordOrWif){ dispatch(actions.login(username, passwordOrWif)); }
 	}
 };
 
