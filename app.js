@@ -44,15 +44,6 @@ app.use(require('node-sass-middleware')({
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
-app.use(function(req, res, next){
-  var host = req.get('host');
-  if (host == 'localhost:3000' || (host == 'steemconnect.com' && req.secure)) {
-    next();
-  } else {
-    res.redirect('https://steemconnect.com');
-  }
-});
-
 // Enable CORS
 app.use(cors());
 
@@ -61,14 +52,6 @@ app.use(function(req, res, next){
   res.locals.user = req.user || null;
   next();
 });
-
-/*
-var db = require('./db');
-app.use(function(req,res,next){
-  req.db = db;
-  next();
-});
-*/
 
 app.locals.env = process.env;
 
