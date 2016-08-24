@@ -44,13 +44,12 @@ app.use(require('node-sass-middleware')({
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
-// Redirect to https://app.bonustrack.co
 app.use(function(req, res, next){
   var host = req.get('host');
-  if (host == 'localhost:3000' || req.secure) {
+  if (host == 'localhost:3000' || (host == 'steemconnect.com' && req.secure)) {
     next();
   } else {
-    res.redirect('https://steemconnect.com/');
+    res.redirect('https://steemconnect.com');
   }
 });
 
