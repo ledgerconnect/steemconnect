@@ -15,7 +15,8 @@ router.get('/api/verify', function(req, res, next) {
 	} else {
 		res.json({
 			isAuthenticated: false,
-			auth: auth
+			auth: auth,
+			x: req.cookies
 		})
 	}
 });
