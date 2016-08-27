@@ -1,13 +1,15 @@
 var express = require('express'),
 	router = express.Router(),
+	_ = require('lodash'),
 	steem = require('steem'),
 	cookie = require('./../lib/cookie');
 
 router.get('/api/verify', function(req, res, next) {
-	if (cookie.get()) {
+	var auth = cookie.get();
+	if (_.has(auth, 'username')) {
 		res.json({
 			isAuthenticated: true,
-			username: 'siol',
+			username: auth.username,
 			permissions: ['verify', 'vote']
 		});
 	} else {
