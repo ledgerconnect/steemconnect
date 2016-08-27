@@ -14,7 +14,8 @@ router.get('/api/verify', function(req, res, next) {
 		});
 	} else {
 		res.json({
-			isAuthenticated: false
+			isAuthenticated: false,
+			auth: auth
 		})
 	}
 });
