@@ -9,8 +9,13 @@ router.get('/api/verify', function(req, res, next) {
 	});
 });
 
-
 router.get('/api/vote', function(req, res, next) {
+	res.json({
+		error: ''
+	});
+});
+
+router.get('/api/comment', function(req, res, next) {
 	res.json({
 		error: ''
 	});
