@@ -5,11 +5,12 @@ var express = require('express'),
 	cookie = require('./../lib/cookie');
 
 router.get('/api/verify', function(req, res, next) {
-	var auth = JSON.parse(req.cookies['_sc_a']);
+	var auth = req.cookies['_sc_a'];
 	if (_.has(auth, 'username')) {
+		var json = JSON.parse(auth);
 		res.json({
 			isAuthenticated: true,
-			username: auth.username,
+			username: json.username,
 			permissions: ['verify', 'vote']
 		});
 	} else {
