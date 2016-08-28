@@ -44,6 +44,6 @@ module.exports = {
 	},
 	logout: function() {
 		cookie.clear();
-		//return {type: C.LOGIN_REQUEST};
+		return {type: C.LOGOUT_SUCCESS};
 	}
 };
