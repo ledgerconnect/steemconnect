@@ -3,7 +3,7 @@ var React = require('react'),
 	actions = require("../actions");
 
 var Logout = React.createClass({
-	handleSubmit: function(event){
+	componentWillMount: function(event){
 		event.preventDefault();
 		this.props.logout();
 	},
