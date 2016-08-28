@@ -40,31 +40,18 @@ app.use(require('node-sass-middleware')({
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
-// Enable CORS
-app.use(cors());
-
-// Get user inside view
-app.use(function(req, res, next){
-  res.locals.user = req.user || null;
-  next();
-});
-
-app.locals.env = process.env;
+app.use(cors({credentials: true}));
 
 app.use('/', require('./routes/api'));
 app.use('/', require('./routes/user'));
 
-// catch 404 and forward to error handler
+
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
-// error handlers
-
-// development error handler
-// will print stacktrace
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
@@ -75,8 +62,6 @@ if (app.get('env') === 'development') {
   });
 }
 
-// production error handler
-// no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error', {
