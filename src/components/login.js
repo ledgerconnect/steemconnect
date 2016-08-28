@@ -17,7 +17,7 @@ var Login = React.createClass({
 							<input autoFocus type="text" placeholder="You username ex.: ned" className="form-control form-control-lg" ref="username" />
 						</fieldset>
 						<fieldset className="form-group">
-							<input type="passwordOrWif" placeholder="Password or WIF" className="form-control form-control-lg" ref="passwordOrWif" />
+							<input type="password" placeholder="Password or WIF" className="form-control form-control-lg" ref="passwordOrWif" />
 						</fieldset>
 						{this.props.auth.errorMessage &&
 						<ul className="errorMessages">
