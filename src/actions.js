@@ -43,7 +43,12 @@ module.exports = {
 		}.bind(this);
 	},
 	logout: function() {
-		cookie.clear();
-		return {type: C.LOGOUT_SUCCESS};
+		console.log(1);
+		return function(dispatch, getState) {
+			cookie.clear();
+			var req = {type: C.LOGOUT_SUCCESS};
+			Object.assign(req);
+			dispatch(req);
+		}.bind(this);
 	}
 };
