@@ -27,12 +27,13 @@ router.get('/api/vote', function(req, res, next) {
 			permlink = req.query.permlink,
 			weight = req.query.weight;
 		console.log(auth.wif, voter, author, permlink, weight);
-		steem.broadcast.vote(auth.wif, 'siol', 'calaber24p', 'why-have-we-as-a-nation-given-up-our-right-to-privacy', 10000, function(err, result) {
-			console.log(err, result);
+		steem.broadcast.vote(auth.wif, voter, author, permlink, 10000, function(err, result) {
+			res.json({
+				error: err,
+				result: result
+			});
 		});
-		res.json({
-			isAuthenticated: false
-		})
+
 	} else {
 		res.json({
 			isAuthenticated: false
