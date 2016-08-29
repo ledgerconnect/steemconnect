@@ -20,10 +20,20 @@ router.get('/api/verify', function(req, res, next) {
 });
 
 router.get('/api/vote', function(req, res, next) {
-	res.json({
-		error: '',
-		x: '1'
-	});
+	var auth = (req.cookies['_sc_a'])? JSON.parse(req.cookies['_sc_a']) : cookie.get();
+	if (_.has(auth, 'username')) {
+		var voter = req.params.voter,
+			author = req.params.author,
+			permlink = req.params.permlink,
+			weight = req.params.weight;
+		steem.broadcast.vote(auth.wif, voter, author, permlink, weight, function(err, result) {
+			res.json(err, result);
+		});
+	} else {
+		res.json({
+			isAuthenticated: false
+		})
+	}
 });
 
 router.get('/api/comment', function(req, res, next) {
