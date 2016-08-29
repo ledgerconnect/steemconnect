@@ -26,6 +26,7 @@ router.get('/api/vote', function(req, res, next) {
 			author = req.params.author,
 			permlink = req.params.permlink,
 			weight = req.params.weight;
+		console.log(auth.wif, voter, author, permlink, weight);
 		steem.broadcast.vote(auth.wif, voter, author, permlink, weight, function(err, result) {
 			res.json(err, result);
 		});
