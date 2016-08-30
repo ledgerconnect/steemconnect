@@ -78530,7 +78530,7 @@ module.exports = {
 			}).then(function (data) {
 				res = {
 					type: C.SET_AVATAR,
-					user: { selectAvatar: false, avatar: data.data && data.data.url }
+					user: { selectAvatar: false }
 				};
 				Object.assign(res);
 				dispatch(res);
@@ -78635,7 +78635,7 @@ var Dashboard = React.createClass({
 		this.props.changeAvatar();
 	},
 	render: function () {
-		var avatarSrc = this.props.auth.user.avatar || '//img.busy6.com/@' + this.props.auth.user.name;
+		var avatarSrc = '//img.busy6.com/@' + this.props.auth.user.name + '?cb=' + Math.floor(Math.random() * 10000000000);
 		var avatarPlaceholder = React.createElement(
 			'div',
 			null,
