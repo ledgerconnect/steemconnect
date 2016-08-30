@@ -50,10 +50,12 @@ module.exports = {
 		return function(dispatch, getState) {
 			var data = new FormData()
 			data.append('file', file)
-			axios.post('//img.busy6.com/@' + username, data).then((data) => {
+			axios.post('https://img.busy6.com/@' + username, data,{
+				origin: true
+			}).then(function(data){
 				res = {
 					type: C.SET_AVATAR,
-					user: {avatarNotFound:false}
+					user: {selectAvatar:false,avatar: data.data && data.data.url}
 				};
 				Object.assign(res);
 				dispatch(res);
@@ -62,10 +64,10 @@ module.exports = {
 			})
 		}
 	},
-	avatarLoadError: function(){
+	changeAvatar: function(){
 		return {
 			type: C.SET_AVATAR,
-			user: { avatarNotFound: true }
+			user: { selectAvatar: true }
 		};
 	}
 };
