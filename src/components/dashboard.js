@@ -25,7 +25,7 @@ var Dashboard = React.createClass({
 				<div className="view-app">
 					<Link to="/" className="mal"><img className="logo" src="/img/logo.svg" width="160" /></Link>
 					<div className="block">
-						<h1>Welcome @{this.props.auth.user.name}</h1>
+						<h1>@{this.props.auth.user.name}</h1>
 						{avatarPlaceholder}
 					</div>
 				</div>
