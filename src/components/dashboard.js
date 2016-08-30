@@ -9,12 +9,16 @@ var Dashboard = React.createClass({
 	onDrop: function(files){
 		this.props.setAvatar(this.props.auth.user.name, files[0]);
 	},
-	avatarLoadError: function(event){
-		this.props.avatarLoadError();
+	changeAvatar: function(event){
+		this.props.changeAvatar();
 	},
 	render: function(){
-		var avatarPlaceholder = <img src={'//img.busy6.com/@'+this.props.auth.user.name} onError={this.avatarLoadError}/>;
-		if(this.props.auth.user.avatarNotFound)
+		var avatarSrc = this.props.auth.user.avatar || ('//img.busy6.com/@' + this.props.auth.user.name);
+		var avatarPlaceholder = (<div>
+			<img className="avatar-img" src={avatarSrc} onError={this.changeAvatar}/><br />
+			<button className="change-avatar-btn" onClick={this.changeAvatar}>Change avatar</button>
+		</div>);
+		if(this.props.auth.user.selectAvatar)
 			avatarPlaceholder = (
 						<Dropzone className="avatar-dropzone" onDrop={this.onDrop} accept='image/*'>
 							<div>Try dropping some files here, or click to select files to upload.</div>
@@ -41,7 +45,7 @@ var mapStateToProps = function(state){
 var mapDispatchToProps = function(dispatch){
 	return {
 		setAvatar: function(username, img){ dispatch(actions.setAvatar(username, img)); },
-		avatarLoadError: function(){ dispatch(actions.avatarLoadError()) }
+		changeAvatar: function(){ dispatch(actions.changeAvatar()) }
 	}
 };
 
