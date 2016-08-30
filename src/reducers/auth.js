@@ -28,6 +28,10 @@ module.exports = function(state,action){
 				isFetching: true,
 				isAuthenticated: false
 			});
+		case C.SET_AVATAR:
+			return Object.assign({}, state, {
+				user: Object.assign(state.user, action.user)
+			});
 		default: return state || initialState().auth;
 	}
 };

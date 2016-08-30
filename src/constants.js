@@ -5,6 +5,9 @@ module.exports = {
 	LOGIN_FAILURE: 'LOGIN_FAILURE',
 	LOGOUT_SUCCESS: 'LOGOUT_SUCCESS',
 
+	//User
+	SET_AVATAR: 'SET_AVATAR',
+
 	// Header
 	REFRESH: 'REFRESH',
 	SEARCH: 'SEARCH',

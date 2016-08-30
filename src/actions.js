@@ -45,5 +45,27 @@ module.exports = {
 	logout: function() {
 		cookie.clear();
 		return {type: C.LOGOUT_SUCCESS};
+	},
+	setAvatar:function(username, file){
+		return function(dispatch, getState) {
+			var data = new FormData()
+			data.append('file', file)
+			axios.post('//img.busy6.com/@' + username, data).then((data) => {
+				res = {
+					type: C.SET_AVATAR,
+					user: {avatarNotFound:false}
+				};
+				Object.assign(res);
+				dispatch(res);
+			}).catch(function(err){
+				console.error('Error While Setting Avatar', err);
+			})
+		}
+	},
+	avatarLoadError: function(){
+		return {
+			type: C.SET_AVATAR,
+			user: { avatarNotFound: true }
+		};
 	}
 };
