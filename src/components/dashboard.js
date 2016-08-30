@@ -13,7 +13,7 @@ var Dashboard = React.createClass({
 		this.props.changeAvatar();
 	},
 	render: function(){
-		var avatarSrc = this.props.auth.user.avatar || ('//img.busy6.com/@' + this.props.auth.user.name);
+		var avatarSrc = '//img.busy6.com/@' + this.props.auth.user.name + '?cb=' + Math.floor(Math.random() * 10000000000);
 		var avatarPlaceholder = (<div>
 			<img className="avatar-img" src={avatarSrc} onError={this.changeAvatar}/><br />
 			<button className="change-avatar-btn" onClick={this.changeAvatar}>Change avatar</button>

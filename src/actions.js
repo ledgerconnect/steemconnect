@@ -48,20 +48,20 @@ module.exports = {
 	},
 	setAvatar:function(username, file){
 		return function(dispatch, getState) {
-			var data = new FormData()
-			data.append('file', file)
+			var data = new FormData();
+			data.append('file', file);
 			axios.post('https://img.busy6.com/@' + username, data,{
 				origin: true
 			}).then(function(data){
 				res = {
 					type: C.SET_AVATAR,
-					user: {selectAvatar:false,avatar: data.data && data.data.url}
+					user: {selectAvatar:false}
 				};
 				Object.assign(res);
 				dispatch(res);
 			}).catch(function(err){
 				console.error('Error While Setting Avatar', err);
-			})
+			});
 		}
 	},
 	changeAvatar: function(){
