@@ -23,7 +23,7 @@ var Login = React.createClass({
 						<ul className="errorMessages">
 							<li>{this.props.auth.errorMessage}</li>
 						</ul>}
-						<button disabled={this.props.auth.isFetching} className="btn btn-primary" onClick={this.handleSubmit}>Log In</button>
+						<button className="btn btn-primary" onClick={this.handleSubmit}>Log In</button>
 					</div>
 					<p><a href="https://steemit.com/recover_account_step_1" target="_blank">Forgot password?</a></p>
 					<p>New to Steem? <a href="https://steemit.com/create_account" target="_blank">Sign up now</a></p>
