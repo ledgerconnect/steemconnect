@@ -78492,9 +78492,13 @@ var React = require('react'),
 var Login = React.createClass({
 	displayName: "Login",
 
-	handleSubmit: function (event) {
+	login: function (event) {
 		event.preventDefault();
 		this.props.login(this.refs.username.value, this.refs.passwordOrWif.value);
+	},
+	demo: function (event) {
+		event.preventDefault();
+		this.props.login('guest123', '5JRaypasxMx1L97ZUX7YuC5Psb5EAbF821kkAGtBj7xCJFQcbLg');
 	},
 	render: function () {
 		return React.createElement(
@@ -78527,18 +78531,22 @@ var Login = React.createClass({
 						)
 					),
 					React.createElement(
-						"button",
-						{ disabled: this.props.auth.isFetching, className: "btn btn-primary", onClick: this.handleSubmit },
-						"Log In"
-					)
-				),
-				React.createElement(
-					"p",
-					null,
+						"fieldset",
+						{ className: "form-group" },
+						React.createElement(
+							"button",
+							{ className: "btn btn-primary", onClick: this.login },
+							"Log In"
+						)
+					),
 					React.createElement(
-						"a",
-						{ href: "https://steemit.com/recover_account_step_1", target: "_blank" },
-						"Forgot password?"
+						"fieldset",
+						{ className: "form-group" },
+						React.createElement(
+							"button",
+							{ className: "btn btn-secondary", onClick: this.demo },
+							"Demo"
+						)
 					)
 				),
 				React.createElement(
@@ -78549,6 +78557,15 @@ var Login = React.createClass({
 						"a",
 						{ href: "https://steemit.com/create_account", target: "_blank" },
 						"Sign up now"
+					)
+				),
+				React.createElement(
+					"p",
+					null,
+					React.createElement(
+						"a",
+						{ href: "https://steemit.com/recover_account_step_1", target: "_blank" },
+						"Forgot password?"
 					)
 				)
 			)
@@ -78574,24 +78591,24 @@ module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Login);
 
 },{"../actions":451,"react":394,"react-redux":209}],455:[function(require,module,exports){
 var React = require('react'),
-    ReactRedux = require("react-redux"),
+    ReactRedux = require('react-redux'),
+    withRouter = require('react-router').withRouter,
     actions = require("../actions");
 
 var Logout = React.createClass({
-	displayName: "Logout",
+	displayName: 'Logout',
 
 	componentWillMount: function () {
 		this.props.logout();
+		this.props.router.replace('/');
 	},
 	render: function () {
-		return React.createElement("div", { className: "main-panel" });
+		return null;
 	}
 });
 
 var mapStateToProps = function (state) {
-	return {
-		auth: state.auth
-	};
+	return {};
 };
 
 var mapDispatchToProps = function (dispatch) {
@@ -78602,9 +78619,9 @@ var mapDispatchToProps = function (dispatch) {
 	};
 };
 
-module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Logout);
+module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(withRouter(Logout));
 
-},{"../actions":451,"react":394,"react-redux":209}],456:[function(require,module,exports){
+},{"../actions":451,"react":394,"react-redux":209,"react-router":243}],456:[function(require,module,exports){
 module.exports = {
 	// Auth
 	LOGIN_REQUEST: 'LOGIN_REQUEST',

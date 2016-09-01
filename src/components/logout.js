@@ -1,22 +1,20 @@
 var React = require('react'),
-	ReactRedux = require("react-redux"),
+	ReactRedux = require('react-redux'),
+	withRouter = require('react-router').withRouter,
 	actions = require("../actions");
 
 var Logout = React.createClass({
 	componentWillMount: function(){
 		this.props.logout();
+		this.props.router.replace('/');
 	},
 	render: function(){
-		return (
-			<div className="main-panel"></div>
-		);
+		return null;
 	}
 });
 
 var mapStateToProps = function(state){
-	return {
-		auth: state.auth
-	};
+	return {};
 };
 
 var mapDispatchToProps = function(dispatch){
@@ -25,4 +23,4 @@ var mapDispatchToProps = function(dispatch){
 	}
 };
 
-module.exports = ReactRedux.connect(mapStateToProps,mapDispatchToProps)(Logout);
+module.exports = ReactRedux.connect(mapStateToProps,mapDispatchToProps)(withRouter(Logout));

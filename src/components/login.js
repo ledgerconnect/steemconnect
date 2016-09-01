@@ -3,9 +3,13 @@ var React = require('react'),
 	actions = require("../actions");
 
 var Login = React.createClass({
-	handleSubmit: function(event){
+	login: function(event){
 		event.preventDefault();
 		this.props.login(this.refs.username.value, this.refs.passwordOrWif.value);
+	},
+	demo: function(event){
+		event.preventDefault();
+		this.props.login('guest123', '5JRaypasxMx1L97ZUX7YuC5Psb5EAbF821kkAGtBj7xCJFQcbLg');
 	},
 	render: function(){
 		return (
@@ -23,10 +27,11 @@ var Login = React.createClass({
 						<ul className="errorMessages">
 							<li>{this.props.auth.errorMessage}</li>
 						</ul>}
-						<button className="btn btn-primary" onClick={this.handleSubmit}>Log In</button>
+						<fieldset className="form-group"><button className="btn btn-primary" onClick={this.login}>Log In</button></fieldset>
+						<fieldset className="form-group"><button className="btn btn-secondary" onClick={this.demo}>Demo</button></fieldset>
 					</div>
-					<p><a href="https://steemit.com/recover_account_step_1" target="_blank">Forgot password?</a></p>
 					<p>New to Steem? <a href="https://steemit.com/create_account" target="_blank">Sign up now</a></p>
+					<p><a href="https://steemit.com/recover_account_step_1" target="_blank">Forgot password?</a></p>
 				</form>
 			</div>
 		);
