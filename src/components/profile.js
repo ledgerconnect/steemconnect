@@ -16,16 +16,16 @@ var Dashboard = React.createClass({
 		event.preventDefault();
 		var profileData = {};
 		for (var _item in this.refs) {
-			if(_item === 'gender_female'  || _item === 'gender_male')
+			if (_item === 'gender_female' || _item === 'gender_male')
 				continue;
 			var item = this.refs[_item];
-			if (typeof item.value === 'string') {
+			if (typeof item.value === 'string' && item.value.length) {
 				profileData[_item] = item.value
 			}
 		}
 		profileData.gender = this.refs.gender_female.checked ? 'female' : 'male';
 		let password = prompt('Enter your password to update.');
-		this.props.updateProfile(password,profileData);
+		this.props.updateProfile(password, profileData);
 	},
 	render: function () {
 		const user = this.props.auth.user;
@@ -46,42 +46,42 @@ var Dashboard = React.createClass({
 			<div className="main-panel">
 				<Header />
 				<div className="view-app">
-					<form>
-						<div className="block">
+					<div className="block">
+						<form>
 							{avatarPlaceholder}
 							<fieldset className="form-group">
-								<input autoFocus type="text" defaultValue={profile.name} placeholder="name: ned stark" className="form-control form-control-lg" ref="name" />
+								<input autoFocus type="text" defaultValue={profile.name} placeholder="ned stark" className="form-control form-control-lg" ref="name" />
 							</fieldset>
 							<fieldset className="form-group">
 								<label className="custom-control custom-radio">
-									<input name="radio" type="radio" value="male" className="custom-control-input" ref="gender_male" defaultChecked={profile.gender==='male'}/>
+									<input name="radio" type="radio" value="male" className="custom-control-input" ref="gender_male" defaultChecked={profile.gender === 'male'}/>
 									<span className="custom-control-indicator"></span>
 									<span className="custom-control-description">male</span>
 								</label>
 								<label className="custom-control custom-radio">
-									<input name="radio" type="radio" value="female" className="custom-control-input" ref="gender_female" defaultChecked={profile.gender==='female'}/>
+									<input name="radio" type="radio" value="female" className="custom-control-input" ref="gender_female" defaultChecked={profile.gender === 'female'}/>
 									<span className="custom-control-indicator"></span>
 									<span className="custom-control-description">female</span>
 								</label>
 							</fieldset>
 							<fieldset className="form-group">
-								<textarea className="form-control form-control-lg" defaultValue={profile.about} placeholder="about:King in the north" rows="3" ref="about"></textarea>
+								<textarea className="form-control form-control-lg" defaultValue={profile.about} placeholder="King in the north" rows="3" ref="about"></textarea>
 							</fieldset>
 							<fieldset className="form-group">
-								<input autoFocus type="text" placeholder="last_name:Ned" defaultValue={profile.first_name} className="form-control form-control-lg" ref="first_name" />
+								<input autoFocus type="text" placeholder="Ned" defaultValue={profile.first_name} className="form-control form-control-lg" ref="first_name" />
 							</fieldset>
 							<fieldset className="form-group">
-								<input autoFocus type="text" placeholder="last_name:Stark" defaultValue={profile.last_name} className="form-control form-control-lg" ref="last_name" />
+								<input autoFocus type="text" placeholder="Stark" defaultValue={profile.last_name} className="form-control form-control-lg" ref="last_name" />
 							</fieldset>
 							<fieldset className="form-group">
-								<input autoFocus type="text" placeholder="location: Winterfell" defaultValue={profile.location} className="form-control form-control-lg" ref="location" />
+								<input autoFocus type="text" placeholder="Winterfell" defaultValue={profile.location} className="form-control form-control-lg" ref="location" />
 							</fieldset>
 							<fieldset className="form-group">
 								<input autoFocus type="text"  defaultValue={profile.website} placeholder="website: https://steemconnect.com" className="form-control form-control-lg" ref="website" />
 							</fieldset>
 							<fieldset className="form-group"><button className="btn btn-primary" onClick={this.save}>Save</button></fieldset>
-						</div>
-					</form>
+						</form>
+					</div>
 				</div>
 			</div>
 		);
@@ -96,7 +96,7 @@ var mapDispatchToProps = function (dispatch) {
 	return {
 		setAvatar: function (username, img) { dispatch(actions.setAvatar(username, img)); },
 		changeAvatar: function () { dispatch(actions.changeAvatar()) },
-		updateProfile: function (passwordOrWif,profileData) { dispatch(actions.updateProfile(passwordOrWif,profileData)) }
+		updateProfile: function (passwordOrWif, profileData) { dispatch(actions.updateProfile(passwordOrWif, profileData)) }
 	}
 };
 
