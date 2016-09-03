@@ -1,6 +1,7 @@
 var _ = require('lodash'),
 	axios = require('axios'),
 	steemAuth = require('steemauth'),
+	steem = require('steem'),
 	cookie = require('./../lib/cookie'),
 	C = require('./constants');
 
@@ -14,7 +15,7 @@ module.exports = {
 			dispatch(req);
 			axios.get('//api.steemjs.com/getAccounts?names[]=' + username).then(function(response) {
 					if (!_.has(response, 'data[0].owner')) {
-						res = {
+						var res = {
 							type: C.LOGIN_FAILURE,
 							user: {},
 							errorMessage: 'Incorrect Username'
@@ -22,16 +23,19 @@ module.exports = {
 						Object.assign(res);
 						dispatch(res);
 					} else if (steemAuth.wifIsValid(wif, response.data[0].posting.key_auths[0][0])) {
-						res = {
+						let json_metadata = response.data[0].json_metadata;
+						let profile = json_metadata.length ? JSON.parse(json_metadata) : {}; 
+						console.log(profile);
+						var res = {
 							type: C.LOGIN_SUCCESS,
-							user: {name: username},
+							user: { name: username, memoKey: response.data[0].memo_key, profile },
 							errorMessage: ''
 						};
 						cookie.save(username, wif);
 						Object.assign(res);
 						dispatch(res);
 					} else {
-						res = {
+						var res = {
 							type: C.LOGIN_FAILURE,
 							user: {},
 							errorMessage: 'Incorrect Password'
@@ -53,7 +57,7 @@ module.exports = {
 			axios.post('https://img.busy6.com/@' + username, data,{
 				origin: true
 			}).then(function(data){
-				res = {
+				var res = {
 					type: C.SET_AVATAR,
 					user: {selectAvatar:false}
 				};
@@ -69,5 +73,24 @@ module.exports = {
 			type: C.SET_AVATAR,
 			user: { selectAvatar: true }
 		};
+	},
+	updateProfile: function(passwordOrWif,profileData){
+		return function (dispatch, getState) {
+			let {auth: {user}} = getState();
+			let username = user.name;
+			var ownerKey = steemAuth.toWif(username, passwordOrWif, 'owner');
+			var jsonMetadata = profileData;
+
+			steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, user.memoKey, jsonMetadata, function (err, result) {
+				console.log('result', result);
+				console.log('error', JSON.stringify(err));
+				var res = {
+					type: C.UPDATE_PROFILE,
+					user: { profile: profileData }
+				};
+				Object.assign(res);
+				dispatch(res);
+			});
+		}
 	}
 };
