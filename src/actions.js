@@ -23,9 +23,8 @@ module.exports = {
 						Object.assign(res);
 						dispatch(res);
 					} else if (steemAuth.wifIsValid(wif, response.data[0].posting.key_auths[0][0])) {
-						let json_metadata = response.data[0].json_metadata;
-						let profile = json_metadata.length ? JSON.parse(json_metadata) : {}; 
-						console.log(profile);
+						var json_metadata = response.data[0].json_metadata;
+						var profile = json_metadata.length ? JSON.parse(json_metadata) : {}; 
 						var res = {
 							type: C.LOGIN_SUCCESS,
 							user: { name: username, memoKey: response.data[0].memo_key, profile },
@@ -76,8 +75,9 @@ module.exports = {
 	},
 	updateProfile: function(passwordOrWif,profileData){
 		return function (dispatch, getState) {
-			let {auth: {user}} = getState();
-			let username = user.name;
+			var state = getState();
+			var user = state.auth.user;
+			var username = user.name
 			var ownerKey = steemAuth.toWif(username, passwordOrWif, 'owner');
 			var jsonMetadata = profileData;
 
