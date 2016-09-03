@@ -46,11 +46,11 @@ var Dashboard = React.createClass({
 			<div className="main-panel">
 				<Header />
 				<div className="view-app">
-					<form>
-						<div className="block">
+					<div className="block">
+						<form>
 							{avatarPlaceholder}
 							<fieldset className="form-group">
-								<input autoFocus type="text" defaultValue={profile.name} placeholder="name: ned stark" className="form-control form-control-lg" ref="name" />
+								<input autoFocus type="text" defaultValue={profile.name} placeholder="ned stark" className="form-control form-control-lg" ref="name" />
 							</fieldset>
 							<fieldset className="form-group">
 								<label className="custom-control custom-radio">
@@ -65,23 +65,23 @@ var Dashboard = React.createClass({
 								</label>
 							</fieldset>
 							<fieldset className="form-group">
-								<textarea className="form-control form-control-lg" defaultValue={profile.about} placeholder="about:King in the north" rows="3" ref="about"></textarea>
+								<textarea className="form-control form-control-lg" defaultValue={profile.about} placeholder="King in the north" rows="3" ref="about"></textarea>
 							</fieldset>
 							<fieldset className="form-group">
-								<input autoFocus type="text" placeholder="last_name:Ned" defaultValue={profile.first_name} className="form-control form-control-lg" ref="first_name" />
+								<input autoFocus type="text" placeholder="Ned" defaultValue={profile.first_name} className="form-control form-control-lg" ref="first_name" />
 							</fieldset>
 							<fieldset className="form-group">
-								<input autoFocus type="text" placeholder="last_name:Stark" defaultValue={profile.last_name} className="form-control form-control-lg" ref="last_name" />
+								<input autoFocus type="text" placeholder="Stark" defaultValue={profile.last_name} className="form-control form-control-lg" ref="last_name" />
 							</fieldset>
 							<fieldset className="form-group">
-								<input autoFocus type="text" placeholder="location: Winterfell" defaultValue={profile.location} className="form-control form-control-lg" ref="location" />
+								<input autoFocus type="text" placeholder="Winterfell" defaultValue={profile.location} className="form-control form-control-lg" ref="location" />
 							</fieldset>
 							<fieldset className="form-group">
 								<input autoFocus type="text"  defaultValue={profile.website} placeholder="website: https://steemconnect.com" className="form-control form-control-lg" ref="website" />
 							</fieldset>
 							<fieldset className="form-group"><button className="btn btn-primary" onClick={this.save}>Save</button></fieldset>
-						</div>
-					</form>
+						</form>
+					</div>
 				</div>
 			</div>
 		);
