@@ -23,7 +23,6 @@ module.exports = {
 						Object.assign(res);
 						dispatch(res);
 					} else if (steemAuth.wifIsValid(wif, response.data[0].posting.key_auths[0][0])) {
-						console.log(response.data[0]);
 						let json_metadata = response.data[0].json_metadata;
 						let profile = json_metadata.length ? JSON.parse(json_metadata) : {}; 
 						console.log(profile);
@@ -81,7 +80,7 @@ module.exports = {
 			let username = user.name;
 			var ownerKey = steemAuth.toWif(username, passwordOrWif, 'owner');
 			var jsonMetadata = profileData;
-			console.log(ownerKey, user.memoKey);
+
 			steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, user.memoKey, jsonMetadata, function (err, result) {
 				console.log('result', result);
 				console.log('error', JSON.stringify(err));

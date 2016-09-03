@@ -79695,7 +79695,6 @@ module.exports = {
 					Object.assign(res);
 					dispatch(res);
 				} else if (steemAuth.wifIsValid(wif, response.data[0].posting.key_auths[0][0])) {
-					console.log(response.data[0]);
 					let json_metadata = response.data[0].json_metadata;
 					let profile = json_metadata.length ? JSON.parse(json_metadata) : {};
 					console.log(profile);
@@ -79753,7 +79752,7 @@ module.exports = {
 			let username = user.name;
 			var ownerKey = steemAuth.toWif(username, passwordOrWif, 'owner');
 			var jsonMetadata = profileData;
-			console.log(ownerKey, user.memoKey);
+
 			steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, user.memoKey, jsonMetadata, function (err, result) {
 				console.log('result', result);
 				console.log('error', JSON.stringify(err));
@@ -80080,14 +80079,16 @@ var Dashboard = React.createClass({
 		event.preventDefault();
 		var profileData = {};
 		for (var _item in this.refs) {
+			if (_item === 'gender_female' || _item === 'gender_male') continue;
 			var item = this.refs[_item];
 			if (typeof item.value === 'string') {
 				profileData[_item] = item.value;
 			}
 		}
+		console.log(this.refs.gender_female.checked, this.refs.gender_male.checked);
+		profileData.gender = this.refs.gender_female.checked ? 'female' : 'male';
 		let password = prompt('Enter your password to update.');
 		this.props.updateProfile(password, profileData);
-		console.log('saves', profileData);
 	},
 	render: function () {
 		const user = this.props.auth.user;
@@ -80140,7 +80141,7 @@ var Dashboard = React.createClass({
 							React.createElement(
 								'label',
 								{ className: 'custom-control custom-radio' },
-								React.createElement('input', { name: 'radio', type: 'radio', className: 'custom-control-input', ref: 'gender' }),
+								React.createElement('input', { name: 'radio', type: 'radio', value: 'male', className: 'custom-control-input', ref: 'gender_male', defaultChecked: profile.gender === 'male' }),
 								React.createElement('span', { className: 'custom-control-indicator' }),
 								React.createElement(
 									'span',
@@ -80151,7 +80152,7 @@ var Dashboard = React.createClass({
 							React.createElement(
 								'label',
 								{ className: 'custom-control custom-radio' },
-								React.createElement('input', { name: 'radio', type: 'radio', className: 'custom-control-input', ref: 'gender' }),
+								React.createElement('input', { name: 'radio', type: 'radio', value: 'female', className: 'custom-control-input', ref: 'gender_female', defaultChecked: profile.gender === 'female' }),
 								React.createElement('span', { className: 'custom-control-indicator' }),
 								React.createElement(
 									'span',

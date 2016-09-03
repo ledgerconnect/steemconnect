@@ -16,11 +16,14 @@ var Dashboard = React.createClass({
 		event.preventDefault();
 		var profileData = {};
 		for (var _item in this.refs) {
+			if(_item === 'gender_female'  || _item === 'gender_male')
+				continue;
 			var item = this.refs[_item];
 			if (typeof item.value === 'string') {
 				profileData[_item] = item.value
 			}
 		}
+		profileData.gender = this.refs.gender_female.checked ? 'female' : 'male';
 		let password = prompt('Enter your password to update.');
 		this.props.updateProfile(password,profileData);
 	},
@@ -51,12 +54,12 @@ var Dashboard = React.createClass({
 							</fieldset>
 							<fieldset className="form-group">
 								<label className="custom-control custom-radio">
-									<input name="radio" type="radio" className="custom-control-input" ref="gender"/>
+									<input name="radio" type="radio" value="male" className="custom-control-input" ref="gender_male" defaultChecked={profile.gender==='male'}/>
 									<span className="custom-control-indicator"></span>
 									<span className="custom-control-description">male</span>
 								</label>
 								<label className="custom-control custom-radio">
-									<input name="radio" type="radio" className="custom-control-input" ref="gender"/>
+									<input name="radio" type="radio" value="female" className="custom-control-input" ref="gender_female" defaultChecked={profile.gender==='female'}/>
 									<span className="custom-control-indicator"></span>
 									<span className="custom-control-description">female</span>
 								</label>
