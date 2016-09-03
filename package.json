@@ -5,7 +5,8 @@
   "scripts": {
     "start": "nodemon ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify --debug -t [reactify --es6] src/index.js -o public/js/app.js"
+    "build": "browserify --debug -t [reactify --es6] src/index.js -o public/js/app.js",
+    "postinstall": "browserify --debug -t [reactify --es6] src/index.js -o public/js/app.js"
   },
   "dependencies": {
     "async": "^2.0.0",
