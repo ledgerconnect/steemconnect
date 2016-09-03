@@ -32,6 +32,10 @@ module.exports = function(state,action){
 			return Object.assign({}, state, {
 				user: Object.assign(state.user, action.user)
 			});
+		case C.UPDATE_PROFILE:
+			return Object.assign({}, state, {
+				user: Object.assign(state.user, action.user)
+			});
 		default: return state || initialState().auth;
 	}
 };

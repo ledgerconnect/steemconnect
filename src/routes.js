@@ -6,6 +6,7 @@ var React = require('react'),
   Login = require('./components/login'),
   Logout = require('./components/logout'),
   Dashboard = require('./components/dashboard'),
+  Profile = require('./components/profile'),
   Authorize = require('./components/authorize');
 
 module.exports = (
@@ -14,6 +15,7 @@ module.exports = (
     <Route path="/login" component={Login} />
     <Route path="/logout" component={Logout} />
     <Route path="/apps" component={Dashboard} />
+    <Route path="/profile" component={Profile} />
     <Route path="/developers" component={Dashboard} />
     <Route path="/about" component={Dashboard} />
     <Route path="/authorize/@:app" component={Authorize} />
