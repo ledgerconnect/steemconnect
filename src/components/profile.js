@@ -24,7 +24,7 @@ var Dashboard = React.createClass({
 			}
 		}
 		profileData.gender = this.refs.gender_female.checked ? 'female' : 'male';
-		let password = prompt('Enter your password to update.');
+		var password = prompt('Enter your password to update.');
 		this.props.updateProfile(password, profileData);
 	},
 	render: function () {
