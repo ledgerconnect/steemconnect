@@ -79,7 +79,7 @@ module.exports = {
 			var user = state.auth.user;
 			var username = user.name
 			var ownerKey = steemAuth.toWif(username, passwordOrWif, 'owner');
-			var jsonMetadata = profileData;
+			var jsonMetadata = { profile: profileData };
 
 			steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, user.memoKey, jsonMetadata, function (err, result) {
 				console.log('result', result);
