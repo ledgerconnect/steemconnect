@@ -24,10 +24,10 @@ module.exports = {
 						dispatch(res);
 					} else if (steemAuth.wifIsValid(wif, response.data[0].posting.key_auths[0][0])) {
 						var json_metadata = response.data[0].json_metadata;
-						var profile = json_metadata.length ? JSON.parse(json_metadata) : {}; 
+						json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {}; 
 						var res = {
 							type: C.LOGIN_SUCCESS,
-							user: { name: username, memoKey: response.data[0].memo_key, profile },
+							user: { name: username, memoKey: response.data[0].memo_key, profile: json_metadata.profile },
 							errorMessage: ''
 						};
 						cookie.save(username, wif);
@@ -94,6 +94,8 @@ module.exports = {
 			var ownerKey = steemAuth.toWif(username, passwordOrWif, 'owner');
 			if(typeof user.profile === 'object')
 				profileData = Object.assign(user.profile, profileData);
+			//TODO Remove in next commit wont affect non affected users
+			delete profileData.profile;
 			var jsonMetadata = { profile: profileData };
 
 			steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, user.memoKey, jsonMetadata, function (err, result) {
