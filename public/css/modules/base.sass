@@ -10,6 +10,7 @@ body
 a
   color: $primary-color
   &:hover
+    cursor: pointer
     color: #005dd9
     text-decoration: none
     outline: 0
@@ -126,26 +127,33 @@ input[type="checkbox"]
   display: flex
   flex-direction: column
 
-.avatar-dropzone
-  margin: 0 auto
-  width: 200px
-  height: 200px
-  border: 2px dashed rgb(102, 102, 102)
-  border-radius: 5px
-  padding: 5px
-
 .change-avatar-btn
   margin: 10px
 
-.avatar-img
-  height: 140px
-
 .avatar
+  position: relative
   overflow: hidden
   border-radius: 50%
-  background-color: #27d0a9
+  background-color: rgba(0, 0, 0, 0.1)
   text-align: center
   display: inline-block
+  height: 128px
+  width: 128px
+  &:hover .placeholder
+    display: block
+  .placeholder
+    display: none
+    position: absolute
+    bottom: 0
+    top: 0
+    left: 0
+    right: 0
+    line-height: 128px
+    color: white !important
+    i
+      color: white
+
+
 .avatar-sm
   width: 40px
   height: 40px

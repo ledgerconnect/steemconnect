@@ -9,7 +9,6 @@ var Dashboard = React.createClass({
 			<div className="main-panel">
 				<Header />
 				<div className="view-app">
-					<Link to="/" className="mal"><img className="logo" src="/img/logo.svg" width="160" /></Link>
 					<div className="block">
 						<div className="avatar"><img src={`https://img.busy6.com/@${this.props.auth.user.name}`} /></div>
 						<h1>@{this.props.auth.user.name}</h1>
