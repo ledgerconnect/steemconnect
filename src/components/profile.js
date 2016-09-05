@@ -44,7 +44,7 @@ var Dashboard = React.createClass({
 				}
 				break;
 			case 'website':
-				if (!validator.isURL(value)) {
+				if (!validator.isURL(value, { require_protocol: true, protocols: ['http', 'https'] })) {
 					this.state.error[refs] = refs + ' in not valid';
 					this.setState({ error: this.state.error });
 				} else {

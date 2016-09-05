@@ -3,6 +3,7 @@ var _ = require('lodash'),
 	steemAuth = require('steemauth'),
 	steem = require('steem'),
 	cookie = require('./../lib/cookie'),
+	validator = require('validator'),
 	C = require('./constants');
 
 module.exports = {
@@ -25,9 +26,10 @@ module.exports = {
 					} else if (steemAuth.wifIsValid(wif, response.data[0].posting.key_auths[0][0])) {
 						var json_metadata = response.data[0].json_metadata;
 						json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {}; 
+						var profile = _.mapValues(json_metadata.profile, validator.unescape);
 						var res = {
 							type: C.LOGIN_SUCCESS,
-							user: { name: username, memoKey: response.data[0].memo_key, profile: json_metadata.profile },
+							user: { name: username, memoKey: response.data[0].memo_key, profile: profile },
 							errorMessage: ''
 						};
 						cookie.save(username, wif);
