@@ -92,7 +92,8 @@ module.exports = {
 			var state = getState();
 			var user = state.auth.user;
 			var username = user.name
-			var ownerKey = steemAuth.toWif(username, passwordOrWif, 'owner');
+			var isWif = steemAuth.isWif(passwordOrWif);
+			var ownerKey = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'owner');
 			if(typeof user.profile === 'object')
 				profileData = Object.assign(user.profile, profileData);
 			//TODO Remove in next commit wont affect non affected users
