@@ -3,6 +3,7 @@ var _ = require('lodash'),
 	steemAuth = require('steemauth'),
 	steem = require('steem'),
 	cookie = require('./../lib/cookie'),
+	validator = require('validator'),
 	C = require('./constants');
 
 module.exports = {
@@ -24,10 +25,10 @@ module.exports = {
 						dispatch(res);
 					} else if (steemAuth.wifIsValid(wif, response.data[0].posting.key_auths[0][0])) {
 						var json_metadata = response.data[0].json_metadata;
-						var profile = json_metadata.length ? JSON.parse(json_metadata) : {}; 
+						json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {}; 
 						var res = {
 							type: C.LOGIN_SUCCESS,
-							user: { name: username, memoKey: response.data[0].memo_key, profile },
+							user: { name: username, memoKey: response.data[0].memo_key, profile: json_metadata.profile },
 							errorMessage: ''
 						};
 						cookie.save(username, wif);
@@ -56,12 +57,25 @@ module.exports = {
 			axios.post('https://img.busy6.com/@' + username, data,{
 				origin: true
 			}).then(function(data){
-				var res = {
-					type: C.SET_AVATAR,
-					user: {selectAvatar:false}
-				};
-				Object.assign(res);
-				dispatch(res);
+					var res = {
+						type: C.SET_AVATAR,
+						user: {selectAvatar:false}
+					};
+					Object.assign(res);
+				var password = prompt('Enter your password to update.');
+				if(password){
+					var state = getState();
+					var user = state.auth.user;
+					var profileData = user.profile;
+					profileData.profile_image = 'https://img.busy6.com/@' + username;
+					var ownerKey = steemAuth.toWif(username, password, 'owner');
+					steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, user.memoKey, { profile: profileData }, function (err, result) {
+						err && console.error('Error while save img data to json_metadata', JSON.stringify(err));
+						dispatch(res);
+					});
+				} else {
+					dispatch(res);
+				}
 			}).catch(function(err){
 				console.error('Error While Setting Avatar', err);
 			});
@@ -79,7 +93,11 @@ module.exports = {
 			var user = state.auth.user;
 			var username = user.name
 			var ownerKey = steemAuth.toWif(username, passwordOrWif, 'owner');
-			var jsonMetadata = profileData;
+			if(typeof user.profile === 'object')
+				profileData = Object.assign(user.profile, profileData);
+			//TODO Remove in next commit wont affect non affected users
+			delete profileData.profile;
+			var jsonMetadata = { profile: profileData };
 
 			steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, user.memoKey, jsonMetadata, function (err, result) {
 				console.log('result', result);

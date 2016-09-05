@@ -13,6 +13,9 @@ var app = express();
 
 var cors = require('cors');
 
+if (process.env.NODE_ENV !== 'production')
+  require('./webpack')(app);
+
 // view engine setup
 var hbs = require('hbs');
 hbs.registerPartials(__dirname + '/views/partials');
