@@ -1,10 +1,11 @@
-var React = require('react'),
+const React = require('react'),
 	ReactRedux = require('react-redux'),
+	validator = require('validator'),
+	Link = require('react-router').Link,
 	Header = require('./../containers/header'),
 	Dropzone = require('react-dropzone'),
 	actions = require("../actions"),
-	validator = require('validator'),
-	Link = require('react-router').Link;
+	PasswordDialog = require('./PasswordDialog');
 
 var Dashboard = React.createClass({
 	getInitialState: function () {
@@ -56,10 +57,8 @@ var Dashboard = React.createClass({
 	closePasswordDialog: function () {
 		this.setState({ showPasswordDialog: false });
 	},
-	savePassword: function () {
-		var password = this.refs.password.value;
-		this.props.updateProfile(password, this.state.profileData);
-		this.setState({ showPasswordDialog: false });
+	savePassword: function (passwordOfWif) {
+		this.props.updateProfile(passwordOfWif, this.state.profileData);
 	},
 	render: function () {
 		const user = this.props.auth.user;
@@ -77,14 +76,7 @@ var Dashboard = React.createClass({
 
 		let passwordDialog;
 		if (this.state.showPasswordDialog)
-			passwordDialog = <div className='password-dialog'>
-				<i className="icon icon-md material-icons password-close" onClick={this.closePasswordDialog}>close</i>
-				<fieldset className={"form-group"}>
-					<label className="message">Enter your password to update.</label>
-					<input autoFocus type="password" defaultValue='password' placeholder="password" className="form-control form-control-lg input-field" ref="password" />
-				</fieldset>
-				<fieldset className="form-group"><button className="btn btn-primary" onClick={this.savePassword}>Save</button></fieldset>
-			</div>
+			passwordDialog = <PasswordDialog onClose={this.closePasswordDialog} onSave={this.savePassword} />
 		return (
 			<div className="main-panel">
 				<Header />
