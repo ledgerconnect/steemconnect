@@ -1,6 +1,6 @@
-import React from 'react';
-import ReactRedux from 'react-redux';
-import {Link} from 'react-router';
+var React = require('react'),
+	ReactRedux = require('react-redux'),
+	{Link} = require('react-router');
 
 var Header = React.createClass({
 	render: function(){
