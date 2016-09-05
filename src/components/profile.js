@@ -8,7 +8,7 @@ var React = require('react'),
 
 var Dashboard = React.createClass({
 	getInitialState: function () {
-		return { error: {} };
+		return { error: {}, showPasswordDialog: false };
 	},
 	onDrop: function (files) {
 		this.props.setAvatar(this.props.auth.user.name, files[0]);
@@ -28,8 +28,7 @@ var Dashboard = React.createClass({
 			}
 		}
 		profileData.gender = this.refs.gender_female.checked ? 'female' : 'male';
-		var password = prompt('Enter your password to update.');
-		this.props.updateProfile(password, profileData);
+		this.setState({ showPasswordDialog: true, profileData: profileData });
 	},
 	validate: function (refs) {
 		var value = this.refs[refs] && this.refs[refs].value;
@@ -54,6 +53,14 @@ var Dashboard = React.createClass({
 				break;
 		}
 	},
+	closePasswordDialog: function () {
+		this.setState({ showPasswordDialog: false });
+	},
+	savePassword: function () {
+		var password = this.refs.password.value;
+		this.props.updateProfile(password, this.state.profileData);
+		this.setState({ showPasswordDialog: false });
+	},
 	render: function () {
 		const user = this.props.auth.user;
 		var profile = typeof user.profile === 'object' ? user.profile : {};
@@ -68,12 +75,22 @@ var Dashboard = React.createClass({
 					<div>Try dropping some files here, or click to select files to upload.</div>
 				</Dropzone>);
 
+		let passwordDialog;
+		if (this.state.showPasswordDialog)
+			passwordDialog = <div className='password-dialog'>
+				<i className="icon icon-md material-icons password-close" onClick={this.closePasswordDialog}>close</i>
+				<fieldset className={"form-group"}>
+					<label className="message">Enter your password to update.</label>
+					<input autoFocus type="password" defaultValue='password' placeholder="password" className="form-control form-control-lg input-field" ref="password" />
+				</fieldset>
+				<fieldset className="form-group"><button className="btn btn-primary" onClick={this.savePassword}>Save</button></fieldset>
+			</div>
 		return (
 			<div className="main-panel">
 				<Header />
 				<div className="view-app">
 					<div className="block">
-						<form style={{maxWidth: '340px', margin: '0 auto'}}>
+						<form style={{ maxWidth: '340px', margin: '0 auto' }}>
 							{avatarPlaceholder}
 							<fieldset className={"form-group"}>
 								<input autoFocus type="text" defaultValue={profile.name} placeholder="Name" className="form-control form-control-lg" ref="name" />
@@ -114,6 +131,7 @@ var Dashboard = React.createClass({
 						</form>
 					</div>
 				</div>
+				{passwordDialog}
 			</div>
 		);
 	}
