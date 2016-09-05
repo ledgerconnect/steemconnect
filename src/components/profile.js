@@ -24,7 +24,7 @@ var Dashboard = React.createClass({
 				continue;
 			var item = this.refs[_item];
 			if (typeof item.value === 'string' && item.value.length && !this.state.error[_item]) {
-				profileData[_item] = validator.escape(validator.trim(item.value));
+				profileData[_item] = validator.trim(item.value);
 			}
 		}
 		profileData.gender = this.refs.gender_female.checked ? 'female' : 'male';
