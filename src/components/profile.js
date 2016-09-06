@@ -11,8 +11,8 @@ var Dashboard = React.createClass({
 	getInitialState: function () {
 		return { error: {}, showPasswordDialog: false };
 	},
-	onDrop: function (files) {
-		this.props.setAvatar(this.props.auth.user.name, files[0]);
+	onDrop: function (files, type) {
+		this.props.setAvatar(this.props.auth.user.name, files[0], type);
 	},
 	save: function (event) {
 		event.preventDefault();
@@ -71,9 +71,13 @@ var Dashboard = React.createClass({
 				<div className="view-app">
 					<div className="block">
 						<form style={{ maxWidth: '340px', margin: '0 auto' }}>
-							<Dropzone className="avatar" onDrop={this.onDrop} accept='image/*'>
-								<a className="placeholder" onClick={this.changeAvatar}><i className="icon icon-md material-icons">file_upload</i> Edit</a>
-								<img src={avatarSrc} onError={this.changeAvatar}/>
+							<Dropzone className="avatar-cover" onDrop={(files) => this.onDrop(files, 'cover_image') } accept='image/*'>
+								<a className="placeholder"><i className="icon icon-md material-icons">file_upload</i> Edit</a>
+								<img src={avatarCoverSrc}/>
+							</Dropzone>
+							<Dropzone className="avatar" onDrop={(files) => this.onDrop(files, 'profile_image') } accept='image/*'>
+								<a className="placeholder"><i className="icon icon-md material-icons">file_upload</i> Edit</a>
+								<img src={avatarSrc}/>
 							</Dropzone>
 							<fieldset className={"form-group"}>
 								<input autoFocus type="text" defaultValue={profile.name} placeholder="Name" className="form-control form-control-lg" ref="name" />
@@ -126,7 +130,7 @@ var mapStateToProps = function (state) {
 
 var mapDispatchToProps = function (dispatch) {
 	return {
-		setAvatar: function (username, img) { dispatch(actions.setAvatar(username, img)); },
+		setAvatar: (username, img, type) => dispatch(actions.setAvatar(username, img, type)),
 		updateProfile: function (passwordOrWif, profileData) { dispatch(actions.updateProfile(passwordOrWif, profileData)) }
 	}
 };

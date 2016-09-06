@@ -50,18 +50,21 @@ module.exports = {
 		cookie.clear();
 		return {type: C.LOGOUT_SUCCESS};
 	},
-	setAvatar:function(username, file){
+	setAvatar: function (username, file, type) {
 		return function(dispatch, getState) {
 			var data = new FormData();
 			data.append('file', file);
-			axios.post('https://img.busy6.com/@' + username, data,{
+			let uploadUrl = 'https://img.busy6.com/@' + username;
+			if (type === 'cover_image')
+				uploadUrl += '/cover';
+			axios.post(uploadUrl, data, {
 				origin: true
-			}).then(function(data){
-				let {data: {url}} = data; 
+			}).then(function (data) {
+				let {data: {url}} = data;
 				let state = getState();
 				let user = state.auth.user;
 				let profileData = user.profile;
-				profileData.profile_image = url ? url : ('https://img.busy6.com/@' + username);
+				profileData[type] = url ? url : uploadUrl;
 				let res = { type: C.UPDATE_PROFILE, user: { profile: profileData } };
 				Object.assign(res);
 				let password = prompt('Enter your password to update.');
@@ -74,7 +77,7 @@ module.exports = {
 				} else {
 					dispatch(res);
 				}
-			}).catch(function(err){
+			}).catch(function (err) {
 				console.error('Error While Setting Avatar', err);
 			});
 		}
