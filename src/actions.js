@@ -8,43 +8,43 @@ var _ = require('lodash'),
 
 module.exports = {
 	login: function(username, passwordOrWif) {
-		return function(dispatch, getState) {
-			var isWif = steemAuth.isWif(passwordOrWif);
-			var wif = (isWif)? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'posting');
-			var req = {type: C.LOGIN_REQUEST};
+		return (dispatch, getState) => {
+			let isWif = steemAuth.isWif(passwordOrWif);
+			let wif = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'posting');
+			let req = { type: C.LOGIN_REQUEST };
 			Object.assign(req);
 			dispatch(req);
-			axios.get('//api.steemjs.com/getAccounts?names[]=' + username).then(function(response) {
-					if (!_.has(response, 'data[0].owner')) {
-						var res = {
-							type: C.LOGIN_FAILURE,
-							user: {},
-							errorMessage: 'Incorrect Username'
-						};
-						Object.assign(res);
-						dispatch(res);
-					} else if (steemAuth.wifIsValid(wif, response.data[0].posting.key_auths[0][0])) {
-						var json_metadata = response.data[0].json_metadata;
-						json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {}; 
-						var res = {
-							type: C.LOGIN_SUCCESS,
-							user: { name: username, memoKey: response.data[0].memo_key, profile: json_metadata.profile },
-							errorMessage: ''
-						};
-						cookie.save(username, wif);
-						Object.assign(res);
-						dispatch(res);
-					} else {
-						var res = {
-							type: C.LOGIN_FAILURE,
-							user: {},
-							errorMessage: 'Incorrect Password'
-						};
-						Object.assign(res);
-						dispatch(res);
-					}
-				});
-		}.bind(this);
+			axios.get('//api.steemjs.com/getAccounts?names[]=' + username).then(function (response) {
+				if (!_.has(response, 'data[0].owner')) {
+					let res = {
+						type: C.LOGIN_FAILURE,
+						user: {},
+						errorMessage: 'Incorrect Username'
+					};
+					Object.assign(res);
+					dispatch(res);
+				} else if (steemAuth.wifIsValid(wif, response.data[0].posting.key_auths[0][0])) {
+					let {json_metadata, memo_key, reputation, balance} = response.data[0];
+					json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
+					let res = {
+						type: C.LOGIN_SUCCESS,
+						user: { name: username, profile: json_metadata.profile, memo_key, reputation, balance },
+						errorMessage: ''
+					};
+					cookie.save(username, wif);
+					Object.assign(res);
+					dispatch(res);
+				} else {
+					let res = {
+						type: C.LOGIN_FAILURE,
+						user: {},
+						errorMessage: 'Incorrect Password'
+					};
+					Object.assign(res);
+					dispatch(res);
+				}
+			});
+		};
 	},
 	logout: function() {
 		cookie.clear();
@@ -70,7 +70,7 @@ module.exports = {
 				Object.assign(res);
 				let isWif = steemAuth.isWif(passwordOrWif);
 				let ownerKey = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'owner');
-				steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, user.memoKey, { profile: profileData }, function (err, result) {
+				steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, user.memo_key, { profile: profileData }, function (err, result) {
 					err && console.error('Error while save img data to json_metadata', JSON.stringify(err));
 					dispatch(res);
 				});
@@ -92,7 +92,7 @@ module.exports = {
 			delete profileData.profile;
 			var jsonMetadata = { profile: profileData };
 
-			steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, user.memoKey, jsonMetadata, function (err, result) {
+			steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, user.memo_key, jsonMetadata, function (err, result) {
 				console.log('result', result);
 				console.log('error', JSON.stringify(err));
 				var res = {
