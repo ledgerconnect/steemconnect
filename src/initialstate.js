@@ -9,7 +9,7 @@ module.exports = function(){
 			isAuthenticated: false,
 			isFetching: false,
 			errorMessage: '',
-			user: { name: 'fabien', selectAvatar: false }
+			user: { name: 'fabien' }
 		},
 		header: {
 			menu: 'primary',

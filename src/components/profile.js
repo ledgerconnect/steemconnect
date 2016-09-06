@@ -14,9 +14,6 @@ var Dashboard = React.createClass({
 	onDrop: function (files) {
 		this.props.setAvatar(this.props.auth.user.name, files[0]);
 	},
-	changeAvatar: function (event) {
-		this.props.changeAvatar();
-	},
 	save: function (event) {
 		event.preventDefault();
 		var profileData = {};
@@ -129,7 +126,6 @@ var mapStateToProps = function (state) {
 var mapDispatchToProps = function (dispatch) {
 	return {
 		setAvatar: function (username, img) { dispatch(actions.setAvatar(username, img)); },
-		changeAvatar: function () { dispatch(actions.changeAvatar()) },
 		updateProfile: function (passwordOrWif, profileData) { dispatch(actions.updateProfile(passwordOrWif, profileData)) }
 	}
 };
