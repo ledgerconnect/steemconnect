@@ -50,25 +50,26 @@ module.exports = {
 		cookie.clear();
 		return {type: C.LOGOUT_SUCCESS};
 	},
-	setAvatar:function(username, file){
+	setAvatar: function (username, file, type) {
 		return function(dispatch, getState) {
 			var data = new FormData();
 			data.append('file', file);
-			axios.post('https://img.busy6.com/@' + username, data,{
+			let uploadUrl = 'https://img.busy6.com/@' + username;
+			if (type === 'cover_image')
+				uploadUrl += '/cover';
+			axios.post(uploadUrl, data, {
 				origin: true
-			}).then(function(data){
-					var res = {
-						type: C.SET_AVATAR,
-						user: {selectAvatar:false}
-					};
-					Object.assign(res);
-				var password = prompt('Enter your password to update.');
-				if(password){
-					var state = getState();
-					var user = state.auth.user;
-					var profileData = user.profile;
-					profileData.profile_image = 'https://img.busy6.com/@' + username;
-					var ownerKey = steemAuth.toWif(username, password, 'owner');
+			}).then(function (data) {
+				let {data: {url}} = data;
+				let state = getState();
+				let user = state.auth.user;
+				let profileData = user.profile;
+				profileData[type] = url ? url : uploadUrl;
+				let res = { type: C.UPDATE_PROFILE, user: { profile: profileData } };
+				Object.assign(res);
+				let password = prompt('Enter your password to update.');
+				if (password) {
+					let ownerKey = steemAuth.toWif(username, password, 'owner');
 					steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, user.memoKey, { profile: profileData }, function (err, result) {
 						err && console.error('Error while save img data to json_metadata', JSON.stringify(err));
 						dispatch(res);
@@ -76,16 +77,10 @@ module.exports = {
 				} else {
 					dispatch(res);
 				}
-			}).catch(function(err){
+			}).catch(function (err) {
 				console.error('Error While Setting Avatar', err);
 			});
 		}
-	},
-	changeAvatar: function(){
-		return {
-			type: C.SET_AVATAR,
-			user: { selectAvatar: true }
-		};
 	},
 	updateProfile: function(passwordOrWif,profileData){
 		return function (dispatch, getState) {
