@@ -7,7 +7,7 @@ var _ = require('lodash'),
 	C = require('./constants');
 
 module.exports = {
-	login: function(username, passwordOrWif) {
+	login: function (username, passwordOrWif) {
 		return (dispatch, getState) => {
 			let isWif = steemAuth.isWif(passwordOrWif);
 			let wif = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'posting');
@@ -46,12 +46,12 @@ module.exports = {
 			});
 		};
 	},
-	logout: function() {
+	logout: function () {
 		cookie.clear();
-		return {type: C.LOGOUT_SUCCESS};
+		return { type: C.LOGOUT_SUCCESS };
 	},
 	setAvatar: function (passwordOrWif, file, type) {
-		return function(dispatch, getState) {
+		return function (dispatch, getState) {
 			let state = getState();
 			let user = state.auth.user;
 			let username = user.name
@@ -79,14 +79,14 @@ module.exports = {
 			});
 		}
 	},
-	updateProfile: function(passwordOrWif,profileData){
+	updateProfile: function (passwordOrWif, profileData) {
 		return function (dispatch, getState) {
 			var state = getState();
 			var user = state.auth.user;
 			var username = user.name
 			var isWif = steemAuth.isWif(passwordOrWif);
 			var ownerKey = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'owner');
-			if(typeof user.profile === 'object')
+			if (typeof user.profile === 'object')
 				profileData = Object.assign(user.profile, profileData);
 			//TODO Remove in next commit wont affect non affected users
 			delete profileData.profile;
@@ -102,6 +102,17 @@ module.exports = {
 				Object.assign(res);
 				dispatch(res);
 			});
+		}
+	},
+	getRecentActivities: function (username) {
+		return (dispatch, getState) => {
+			steem.api.getAccountHistory(username, -1, 10, (err, result) => {
+				err && console.error('Error while getAccountHistory', JSON.stringify(err));
+				dispatch({
+					type: C.UPDATE_PROFILE,
+					user: { recentActivities: result }
+				});
+			})
 		}
 	}
 };

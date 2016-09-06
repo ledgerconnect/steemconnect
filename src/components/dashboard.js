@@ -1,29 +1,53 @@
-var React = require('react'),
+const React = require('react'),
 	ReactRedux = require('react-redux'),
 	Header = require('./../containers/header'),
-	Steem = require("steem"),
+	actions = require("../actions"),
+	steem = require("steem"),
 	{Link} = require('react-router');
 
-var Dashboard = React.createClass({
-	render: function(){
+const Activity = ({id, transaction}) => {
+	let {op: operation} = transaction;
+	// console.log(transaction, operation);
+	let [name, details] = operation;
+	// console.log(details);
+	return <div key={id}>{name}</div>
+}
+
+class Dashboard extends React.Component {
+	componentDidMount() {
+		this.props.getRecentActivities(this.props.auth.user.name);
+	}
+	render() {
+		let {reputation, name, recentActivities} = this.props.auth.user;
+		console.log('recentActivities', recentActivities);
 		return (
 			<div className="main-panel">
 				<Header />
 				<div className="view-app">
 					<div className="block">
 						<div className="avatar">
-						{_.has(this.props.auth.user, 'reputation') && <div>{Steem.formatter.reputation(this.props.auth.user.reputation)}</div>}
-						<img src={`https://img.busy6.com/@${this.props.auth.user.name}`} /></div>
-						<h1>@{this.props.auth.user.name}</h1>
+							{reputation && <div>{steem.formatter.reputation(reputation) }</div>}
+							<img src={`https://img.busy6.com/@${name}`} />
+						</div>
+						<h1> @{name}</h1>
+						<div>
+							{recentActivities && recentActivities.map(([id, transaction]) => <Activity key={id} id={id} transaction={transaction}/>)}
+						</div>
 					</div>
 				</div>
 			</div>
 		);
 	}
-});
+}
 
-var mapStateToProps = function(state){
-	return {auth: state.auth};
+var mapStateToProps = function (state) {
+	return { auth: state.auth };
 };
 
-module.exports = ReactRedux.connect(mapStateToProps)(Dashboard);
+var mapDispatchToProps = function (dispatch) {
+	return {
+		getRecentActivities: (username) => dispatch(actions.getRecentActivities(username))
+	}
+};
+
+module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Dashboard);

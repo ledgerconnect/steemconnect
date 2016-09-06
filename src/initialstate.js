@@ -1,4 +1,4 @@
-module.exports = function(){
+module.exports = function () {
 	return {
 		app: {
 			isFetching: false,
@@ -9,7 +9,7 @@ module.exports = function(){
 			isAuthenticated: false,
 			isFetching: false,
 			errorMessage: '',
-			user: { name: 'fabien' }
+			user: { name: 'fabien', recentActivities: {} }
 		},
 		header: {
 			menu: 'primary',
