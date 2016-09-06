@@ -12,7 +12,10 @@ var Dashboard = React.createClass({
 		return { error: {}, showPasswordDialog: false };
 	},
 	onDrop: function (files, type) {
-		this.props.setAvatar(this.props.auth.user.name, files[0], type);
+		this.setState({
+			showPasswordDialog: true,
+			passwordCallback: (passwordOrWif) => this.props.setAvatar(passwordOrWif, files[0], type)
+		});
 	},
 	save: function (event) {
 		event.preventDefault();
@@ -26,7 +29,10 @@ var Dashboard = React.createClass({
 			}
 		}
 		profileData.gender = this.refs.gender_female.checked ? 'female' : 'male';
-		this.setState({ showPasswordDialog: true, profileData: profileData });
+		this.setState({
+			showPasswordDialog: true,
+			passwordCallback: (passwordOrWif) => this.props.updateProfile(passwordOrWif, profileData)
+		});
 	},
 	validate: function (refs) {
 		var value = this.refs[refs] && this.refs[refs].value;
@@ -52,10 +58,10 @@ var Dashboard = React.createClass({
 		}
 	},
 	closePasswordDialog: function () {
-		this.setState({ showPasswordDialog: false });
+		this.setState({ showPasswordDialog: false, passwordCallback: undefined });
 	},
-	savePassword: function (passwordOfWif) {
-		this.props.updateProfile(passwordOfWif, this.state.profileData);
+	savePassword: function (passwordOrWif) {
+		this.state.passwordCallback(passwordOrWif);
 	},
 	render: function () {
 		const user = this.props.auth.user;
@@ -130,8 +136,8 @@ var mapStateToProps = function (state) {
 
 var mapDispatchToProps = function (dispatch) {
 	return {
-		setAvatar: (username, img, type) => dispatch(actions.setAvatar(username, img, type)),
-		updateProfile: function (passwordOrWif, profileData) { dispatch(actions.updateProfile(passwordOrWif, profileData)) }
+		setAvatar: (passwordOrWif, img, type) => dispatch(actions.setAvatar(passwordOrWif, img, type)),
+		updateProfile: (passwordOrWif, profileData) => dispatch(actions.updateProfile(passwordOrWif, profileData))
 	}
 };
 
