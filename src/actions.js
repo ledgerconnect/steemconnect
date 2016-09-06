@@ -50,8 +50,12 @@ module.exports = {
 		cookie.clear();
 		return {type: C.LOGOUT_SUCCESS};
 	},
-	setAvatar: function (username, file, type) {
+	setAvatar: function (passwordOrWif, file, type) {
 		return function(dispatch, getState) {
+			let state = getState();
+			let user = state.auth.user;
+			let username = user.name
+			let profileData = user.profile;
 			var data = new FormData();
 			data.append('file', file);
 			let uploadUrl = 'https://img.busy6.com/@' + username;
@@ -61,22 +65,15 @@ module.exports = {
 				origin: true
 			}).then(function (data) {
 				let {data: {url}} = data;
-				let state = getState();
-				let user = state.auth.user;
-				let profileData = user.profile;
 				profileData[type] = url ? url : uploadUrl;
 				let res = { type: C.UPDATE_PROFILE, user: { profile: profileData } };
 				Object.assign(res);
-				let password = prompt('Enter your password to update.');
-				if (password) {
-					let ownerKey = steemAuth.toWif(username, password, 'owner');
-					steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, user.memoKey, { profile: profileData }, function (err, result) {
-						err && console.error('Error while save img data to json_metadata', JSON.stringify(err));
-						dispatch(res);
-					});
-				} else {
+				let isWif = steemAuth.isWif(passwordOrWif);
+				let ownerKey = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'owner');
+				steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, user.memoKey, { profile: profileData }, function (err, result) {
+					err && console.error('Error while save img data to json_metadata', JSON.stringify(err));
 					dispatch(res);
-				}
+				});
 			}).catch(function (err) {
 				console.error('Error While Setting Avatar', err);
 			});
