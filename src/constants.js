@@ -6,7 +6,6 @@ module.exports = {
 	LOGOUT_SUCCESS: 'LOGOUT_SUCCESS',
 
 	//User
-	SET_AVATAR: 'SET_AVATAR',
 	UPDATE_PROFILE: 'UPDATE_PROFILE',
 
 	// Header
