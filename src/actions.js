@@ -57,15 +57,16 @@ module.exports = {
 			axios.post('https://img.busy6.com/@' + username, data,{
 				origin: true
 			}).then(function(data){
-				var state = getState();
-				var user = state.auth.user;
-				var profileData = user.profile;
-				profileData.profile_image = 'https://img.busy6.com/@' + username;
-				var res = { type: C.UPDATE_PROFILE, user: { profile: profileData } };
+				let {data: {url}} = data; 
+				let state = getState();
+				let user = state.auth.user;
+				let profileData = user.profile;
+				profileData.profile_image = url ? url : ('https://img.busy6.com/@' + username);
+				let res = { type: C.UPDATE_PROFILE, user: { profile: profileData } };
 				Object.assign(res);
-				var password = prompt('Enter your password to update.');
+				let password = prompt('Enter your password to update.');
 				if (password) {
-					var ownerKey = steemAuth.toWif(username, password, 'owner');
+					let ownerKey = steemAuth.toWif(username, password, 'owner');
 					steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, user.memoKey, { profile: profileData }, function (err, result) {
 						err && console.error('Error while save img data to json_metadata', JSON.stringify(err));
 						dispatch(res);

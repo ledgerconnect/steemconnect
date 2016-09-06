@@ -60,7 +60,8 @@ var Dashboard = React.createClass({
 	render: function () {
 		const user = this.props.auth.user;
 		var profile = typeof user.profile === 'object' ? user.profile : {};
-		var avatarSrc = '//img.busy6.com/@' + user.name + '?cb=' + Math.floor(Math.random() * 10000000000);
+		var avatarSrc = profile.profile_image ? profile.profile_image : ('//img.busy6.com/@' + user.name + '?cb=' + Math.floor(Math.random() * 10000000000));
+		var avatarCoverSrc = profile.cover_image ? profile.cover_image : ('//img.busy6.com/@' + user.name + '/cover?cb=' + Math.floor(Math.random() * 10000000000));
 		let passwordDialog;
 		if (this.state.showPasswordDialog)
 			passwordDialog = <PasswordDialog onClose={this.closePasswordDialog} onSave={this.savePassword} />
