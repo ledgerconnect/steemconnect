@@ -6,23 +6,14 @@ const React = require('react'),
 	{formatter} = require('steem'),
 	{Link} = require('react-router');
 
-const Activity = ({id, transaction}) => {
-	let {op, timestamp} = transaction;
-	let [name, details] = op;
-	name = name.replace('account_update', 'Account Update')
-			.replace('vote', 'Vote');
-	return <p key={id}>{name} {moment(timestamp).fromNow()}</p>
-};
-
 class Dashboard extends React.Component {
 	componentDidMount() {
-		this.props.getAccountHistory(this.props.auth.user.name, -1, 10);
+		this.props.getAccountHistory(this.props.auth.user.name, -1, 5);
 	}
 	render() {
 		let {reputation, name, accountHistory} = this.props.auth.user;
 		return (
 			<div className="main-panel">
-				<Header />
 				<div className="view-app">
 					<div className="block">
 						<div className="cover">
@@ -31,7 +22,8 @@ class Dashboard extends React.Component {
 							</div>
 							{reputation && <div>{formatter.reputation(reputation)}</div>}
 						</div>
-						<div>
+						<Header />
+						<div className="pvl mhl">
 							{accountHistory && <h2>Last Activity</h2>}
 							{accountHistory && _.sortBy(accountHistory, 'timestamp').reverse().map(([id, transaction]) =>
 								<Activity key={id} id={id} transaction={transaction}/>)}
@@ -42,6 +34,19 @@ class Dashboard extends React.Component {
 		);
 	}
 }
+
+const Activity = ({id, transaction}) => {
+	let {op, timestamp} = transaction;
+	let [name, details] = op;
+	let label = name.replace('account_update', 'Account Update').replace('vote', 'Vote');
+	if (name == 'vote') {
+		return <p key={id}>{label} for <a href="#" target="_blank">@{details.author}/{details.permlink}</a> {moment(timestamp).fromNow()}</p>;
+	} else if (_.includes(['account_update', 'vote'], name)) {
+		return <p key={id}>{label} {moment(timestamp).fromNow()}</p>;
+	} else {
+		return null;
+	}
+};
 
 var mapStateToProps = function (state) {
 	return { auth: state.auth };

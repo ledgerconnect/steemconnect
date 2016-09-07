@@ -5,7 +5,7 @@ const React = require('react'),
 	Header = require('./../containers/header'),
 	Dropzone = require('react-dropzone'),
 	actions = require("../actions"),
-	PasswordDialog = require('./PasswordDialog');
+	PasswordDialog = require('./password-dialog');
 
 var Dashboard = React.createClass({
 	getInitialState: function () {
@@ -73,7 +73,6 @@ var Dashboard = React.createClass({
 			passwordDialog = <PasswordDialog onClose={this.closePasswordDialog} onSave={this.savePassword} />;
 		return (
 			<div className="main-panel">
-				<Header />
 				<div className="view-app">
 					<div className="block">
 						<div className="cover">
@@ -81,9 +80,10 @@ var Dashboard = React.createClass({
 								<a className="placeholder"><i className="icon icon-md material-icons">file_upload</i> Edit</a>
 								<img src={avatar}/>
 							</Dropzone>
-							<Dropzone className='x' onDrop={(files) => this.onDrop(files, 'cover_image') } accept='image/*'><i className="icon icon-md material-icons">file_upload</i> Edit</Dropzone>
+							<Dropzone className='x' onDrop={(files) => this.onDrop(files, 'cover_image') } accept='image/*'><i className="icon icon-md material-icons">file_upload</i> Edit Cover</Dropzone>
 						</div>
-						<form className="form">
+						<Header />
+						<form className="pvl mhl">
 							<fieldset className={"form-group"}>
 								<input autoFocus type="text" defaultValue={profile.name} placeholder="Name" className="form-control form-control-lg" ref="name" />
 							</fieldset>

@@ -5,13 +5,13 @@
 *
   outline: 0
 
-body
+html, body
+  height: 100%
   text-align: center
   font-family: $font-primary
   font-size: 16px
   color: $text-color
   background-color: #f1f2f4
-  height: 100%
 
 a
   color: $primary-color
@@ -51,8 +51,6 @@ ul, li
   margin: 0 auto
   position: relative
   top: 0
-  height: 100%
-  overflow: hidden
 
 #app
   height: 100%
@@ -87,6 +85,7 @@ ul, li
 .cover
   color: white
   height: 200px
+  padding: 20px 0
   background-color: #434f66
 
 .avatar-sm
@@ -161,7 +160,9 @@ ul, li
   flex-direction: column
   text-align: center
   align-items: center
+  justify-content: center
   margin: 40px 0
+  height: 100%
   .block
     width: 100%
     max-width: 600px
