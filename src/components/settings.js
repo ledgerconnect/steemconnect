@@ -3,18 +3,13 @@ const React = require('react'),
 	validator = require('validator'),
 	Link = require('react-router').Link,
 	Header = require('./../containers/header'),
-	Dropzone = require('react-dropzone'),
 	actions = require("../actions"),
+	EditImageHeader = require('./edit-image-header'),
 	PasswordDialog = require('./password-dialog');
 
 var Dashboard = React.createClass({
 	getInitialState: function () {
 		return { error: {}, showPasswordDialog: false };
-	},
-	componentWillReceiveProps: function (nextProps) {
-		this.setState({
-			showPasswordDialog: !(nextProps.auth.user.isUpdatingProfileError === false && nextProps.auth.user.isUpdatingProfile === false)
-		})
 	},
 	onDrop: function (files, type) {
 		this.setState({
@@ -64,6 +59,7 @@ var Dashboard = React.createClass({
 	},
 	closePasswordDialog: function () {
 		this.setState({ showPasswordDialog: false, passwordCallback: undefined });
+		this.props.clearUpdatingProfileResult();
 	},
 	savePassword: function (passwordOrWif) {
 		this.state.passwordCallback(passwordOrWif);
@@ -80,13 +76,7 @@ var Dashboard = React.createClass({
 			<div className="main-panel">
 				<div className="view-app">
 					<div className="block">
-						<div className="cover">
-							<Dropzone className="avatar" onDrop={(files) => this.onDrop(files, 'profile_image') } accept='image/*'>
-								<a className="placeholder"><i className="icon icon-md material-icons">file_upload</i> Edit</a>
-								<img src={avatar}/>
-							</Dropzone>
-							<Dropzone className='x' onDrop={(files) => this.onDrop(files, 'cover_image') } accept='image/*'><i className="icon icon-md material-icons">file_upload</i> Edit Cover</Dropzone>
-						</div>
+						<EditImageHeader avatar={avatar} cover={cover} onDrop={this.onDrop} />
 						<Header />
 						<form className="pvl mhl">
 							<fieldset className={"form-group"}>
@@ -141,7 +131,8 @@ var mapStateToProps = function (state) {
 var mapDispatchToProps = function (dispatch) {
 	return {
 		setAvatar: (passwordOrWif, img, type) => dispatch(actions.setAvatar(passwordOrWif, img, type)),
-		updateProfile: (passwordOrWif, profileData) => dispatch(actions.updateProfile(passwordOrWif, profileData))
+		updateProfile: (passwordOrWif, profileData) => dispatch(actions.updateProfile(passwordOrWif, profileData)),
+		clearUpdatingProfileResult: () => dispatch(actions.clearUpdatingProfileResult())
 	}
 };
 
