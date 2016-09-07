@@ -105,11 +105,18 @@ function getAccountHistory(username, from, limit) {
 	}
 }
 
+function clearUpdatingProfileResult() {
+	return {
+		type: C.UPDATE_PROFILE,
+		user: { isUpdatingProfile: undefined, isUpdatingProfileError: undefined }
+	}
+}
 module.exports = {
 	login,
 	logout,
 	setAvatar,
 	updateProfile,
 	accountUpdate,
+	clearUpdatingProfileResult,
 	getAccountHistory
 };

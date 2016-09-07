@@ -11,11 +11,6 @@ var Dashboard = React.createClass({
 	getInitialState: function () {
 		return { error: {}, showPasswordDialog: false };
 	},
-	componentWillReceiveProps: function (nextProps) {
-		this.setState({
-			showPasswordDialog: !(nextProps.auth.user.isUpdatingProfileError === false && nextProps.auth.user.isUpdatingProfile === false)
-		})
-	},
 	onDrop: function (files, type) {
 		this.setState({
 			showPasswordDialog: true,
@@ -64,6 +59,7 @@ var Dashboard = React.createClass({
 	},
 	closePasswordDialog: function () {
 		this.setState({ showPasswordDialog: false, passwordCallback: undefined });
+		this.props.clearUpdatingProfileResult();
 	},
 	savePassword: function (passwordOrWif) {
 		this.state.passwordCallback(passwordOrWif);
@@ -135,7 +131,8 @@ var mapStateToProps = function (state) {
 var mapDispatchToProps = function (dispatch) {
 	return {
 		setAvatar: (passwordOrWif, img, type) => dispatch(actions.setAvatar(passwordOrWif, img, type)),
-		updateProfile: (passwordOrWif, profileData) => dispatch(actions.updateProfile(passwordOrWif, profileData))
+		updateProfile: (passwordOrWif, profileData) => dispatch(actions.updateProfile(passwordOrWif, profileData)),
+		clearUpdatingProfileResult: () => dispatch(actions.clearUpdatingProfileResult())
 	}
 };
 
