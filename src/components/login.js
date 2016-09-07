@@ -1,5 +1,7 @@
-var React = require('react'),
+const React = require('react'),
 	ReactRedux = require("react-redux"),
+	EditImageHeader = require('./edit-image-header'),
+	cookie = require('../../lib/cookie'),
 	actions = require("../actions");
 
 var Login = React.createClass({
@@ -12,12 +14,18 @@ var Login = React.createClass({
 		this.props.login('guest123', '5JRaypasxMx1L97ZUX7YuC5Psb5EAbF821kkAGtBj7xCJFQcbLg');
 	},
 	render: function(){
+		let userCookie = cookie.get('last_user');
+		let username = userCookie.username || 'steemconnect';
+		var avatar = '//img.busy6.com/@' + username + '?cb=' + Math.floor(Math.random() * 10000000000);
+		var cover = '//img.busy6.com/@' + username + '/cover?cb=' + Math.floor(Math.random() * 10000000000);
 		return (
 			<div className="main-panel">
 				<div className="view-app">
 					<img className="logo mbl" src="/img/logo.svg" width="220" />
+					<EditImageHeader avatar={avatar} cover={cover}  />
 					<div className="block pal">
 						<form onSubmit={this.handleSubmit}>
+							{userCookie && <div>Welcoome back {username}</div>}
 							<fieldset className="form-group">
 								<input autoFocus type="text" placeholder="You username ex.: ned" className="form-control form-control-lg" ref="username" />
 							</fieldset>
