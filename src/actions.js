@@ -1,5 +1,4 @@
-var _ = require('lodash'),
-	axios = require('axios'),
+const axios = require('axios'),
 	steemAuth = require('steemauth'),
 	steem = require('steem'),
 	cookie = require('./../lib/cookie'),
@@ -10,20 +9,17 @@ function login(username, passwordOrWif) {
 	return (dispatch, getState) => {
 		let isWif = steemAuth.isWif(passwordOrWif);
 		let wif = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'posting');
-		let req = { type: C.LOGIN_REQUEST };
-		Object.assign(req);
-		dispatch(req);
-		axios.get('//api.steemjs.com/getAccounts?names[]=' + username).then(function (response) {
-			if (!_.has(response, 'data[0].owner')) {
-				let res = {
+		dispatch({ type: C.LOGIN_REQUEST });
+		steem.api.getAccounts([username], (err, result) => {
+			err && console.error('Error while processing getAccounts', JSON.stringify(err));
+			if (result.length === 0) {
+				dispatch({
 					type: C.LOGIN_FAILURE,
 					user: {},
 					errorMessage: 'Incorrect Username'
-				};
-				Object.assign(res);
-				dispatch(res);
-			} else if (steemAuth.wifIsValid(wif, response.data[0].posting.key_auths[0][0])) {
-				let {json_metadata, memo_key, reputation, balance} = response.data[0];
+				});
+			} else if (result[0] && steemAuth.wifIsValid(wif, result[0].posting.key_auths[0][0])) {
+				let {json_metadata, memo_key, reputation, balance} = result[0];
 				json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
 				let res = {
 					type: C.LOGIN_SUCCESS,
@@ -34,13 +30,11 @@ function login(username, passwordOrWif) {
 				Object.assign(res);
 				dispatch(res);
 			} else {
-				let res = {
+				dispatch({
 					type: C.LOGIN_FAILURE,
 					user: {},
 					errorMessage: 'Incorrect Password'
-				};
-				Object.assign(res);
-				dispatch(res);
+				});
 			}
 		});
 	};
@@ -65,7 +59,7 @@ function setAvatar(passwordOrWif, file, type) {
 			.then(function (data) {
 				let {data: {url}} = data;
 				profileData[type] = url ? url : uploadUrl;
-				
+
 				dispatch(accountUpdate(user.name, passwordOrWif, user.memo_key, { profile: profileData }));
 			}).catch(function (err) {
 				console.error('Error While Setting Avatar', err);
