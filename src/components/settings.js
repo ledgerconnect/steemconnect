@@ -11,6 +11,11 @@ var Dashboard = React.createClass({
 	getInitialState: function () {
 		return { error: {}, showPasswordDialog: false };
 	},
+	componentWillReceiveProps: function (nextProps) {
+		this.setState({
+			showPasswordDialog: !(nextProps.auth.user.isUpdatingProfileError === false && nextProps.auth.user.isUpdatingProfile === false)
+		})
+	},
 	onDrop: function (files, type) {
 		this.setState({
 			showPasswordDialog: true,
@@ -70,7 +75,7 @@ var Dashboard = React.createClass({
 		var cover = '//img.busy6.com/@' + user.name + '/cover?cb=' + Math.floor(Math.random() * 10000000000);
 		let passwordDialog;
 		if (this.state.showPasswordDialog)
-			passwordDialog = <PasswordDialog onClose={this.closePasswordDialog} onSave={this.savePassword} />;
+			passwordDialog = <PasswordDialog isUpdatingProfile={user.isUpdatingProfile} isUpdatingProfileError={user.isUpdatingProfileError} onClose={this.closePasswordDialog} onSave={this.savePassword} />;
 		return (
 			<div className="main-panel">
 				<div className="view-app">
