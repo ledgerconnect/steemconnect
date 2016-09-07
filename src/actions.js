@@ -43,7 +43,7 @@ function login(username, passwordOrWif) {
 function logout() {
 	let userCookie = cookie.get();
 	cookie.clear();
-	cookie.save({ username: userCookie.username }, 'lastuser');
+	cookie.save({ username: userCookie.username }, 'last_user');
 	return { type: C.LOGOUT_SUCCESS };
 }
 
