@@ -3,8 +3,8 @@ const React = require('react'),
 	validator = require('validator'),
 	Link = require('react-router').Link,
 	Header = require('./../containers/header'),
-	Dropzone = require('react-dropzone'),
 	actions = require("../actions"),
+	EditImageHeader = require('./edit-image-header'),
 	PasswordDialog = require('./password-dialog');
 
 var Dashboard = React.createClass({
@@ -80,13 +80,7 @@ var Dashboard = React.createClass({
 			<div className="main-panel">
 				<div className="view-app">
 					<div className="block">
-						<div className="cover">
-							<Dropzone className="avatar" onDrop={(files) => this.onDrop(files, 'profile_image') } accept='image/*'>
-								<a className="placeholder"><i className="icon icon-md material-icons">file_upload</i> Edit</a>
-								<img src={avatar}/>
-							</Dropzone>
-							<Dropzone className='x' onDrop={(files) => this.onDrop(files, 'cover_image') } accept='image/*'><i className="icon icon-md material-icons">file_upload</i> Edit Cover</Dropzone>
-						</div>
+						<EditImageHeader avatar={avatar} cover={cover} onDrop={this.onDrop} />
 						<Header />
 						<form className="pvl mhl">
 							<fieldset className={"form-group"}>
