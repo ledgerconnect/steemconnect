@@ -76,15 +76,14 @@ var Dashboard = React.createClass({
 				<Header />
 				<div className="view-app">
 					<div className="block">
-						<form className="form">
-							<Dropzone className="cover" onDrop={(files) => this.onDrop(files, 'cover_image') } accept='image/*'>
-								<a className="placeholder"><i className="icon icon-md material-icons">file_upload</i> Edit</a>
-								<img src={cover}/>
-							</Dropzone>
+						<div className="cover">
 							<Dropzone className="avatar" onDrop={(files) => this.onDrop(files, 'profile_image') } accept='image/*'>
 								<a className="placeholder"><i className="icon icon-md material-icons">file_upload</i> Edit</a>
 								<img src={avatar}/>
 							</Dropzone>
+							<Dropzone className='x' onDrop={(files) => this.onDrop(files, 'cover_image') } accept='image/*'><i className="icon icon-md material-icons">file_upload</i> Edit</Dropzone>
+						</div>
+						<form className="form">
 							<fieldset className={"form-group"}>
 								<input autoFocus type="text" defaultValue={profile.name} placeholder="Name" className="form-control form-control-lg" ref="name" />
 							</fieldset>

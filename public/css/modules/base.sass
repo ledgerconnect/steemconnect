@@ -2,10 +2,16 @@
  * Primary style
  *--------------------------------
 
+*
+  outline: 0
+
 body
+  text-align: center
   font-family: $font-primary
   font-size: 16px
   color: $text-color
+  background-color: #f1f2f4
+  height: 100%
 
 a
   color: $primary-color
@@ -13,28 +19,11 @@ a
     cursor: pointer
     color: #005dd9
     text-decoration: none
-    outline: 0
-  text-decoration: none
-  outline: 0
   &:active, &:visited, &:focus
     text-decoration: none
-    outline: 0
-
-img
-  max-width: 100%
-
 
 fieldset
   text-align: left
-
-.align-center
-  display: flex
-  align-items: center
-  justify-content: center
-  text-align: center
-
-\:focus
-  outline: 0
 
 \::-webkit-scrollbar
   height: 4px
@@ -48,63 +37,15 @@ fieldset
   padding-left: 0
   padding-right: 0
 
-.form-control
-  box-shadow: inset 0 1px 2px rgba(203, 203, 210, 0.4)
-  padding-left: 8px
-  padding-right: 8px
-  color: #3F3F44
-  background-color: #fff
-  background-image: none
-  border: 1px solid #CBCBD2
-  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s
-
-.form-control-lg
-  line-height: 20px
-  font-size: 16px
-
-.input-group-lg >
-.form-control, .input-group-addon
-  line-height: 20px
-  font-size: 16px
-
-.input-under
-  font-size: 20px
-  background: transparent
-  border: none
 
 /* --------------------------------
  *3. Main components
  *--------------------------------
 
-html, body
-  height: 100%
-  text-align: left
-
 ul, li
   list-style: none
   margin: 0
   padding: 0
-
-body.overflow-hidden
-  /* when primary navigation is visible, the content in the background won't scroll
-  overflow: hidden
-
-textarea
-  resize: none
-  &::-webkit-input-placeholder
-    color: #b7b7b7 !important
-  &:-moz-placeholder
-    /* Firefox 18-
-    color: #b7b7b7 !important
-  &::-moz-placeholder
-    /* Firefox 19+
-    color: #b7b7b7 !important
-  &:-ms-input-placeholder
-    color: #b7b7b7 !important
-
-input[type="checkbox"]
-  margin-right: 15px
-
 
 .app-wrapper
   margin: 0 auto
@@ -116,16 +57,6 @@ input[type="checkbox"]
 #app
   height: 100%
 
-.main-panel
-  overflow-y: auto
-  height: 100%
-  position: relative
-  z-index: 2
-  float: right
-  width: 100%
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3)
-  display: flex
-  flex-direction: column
 
 .change-avatar-btn
   margin: 10px
@@ -154,9 +85,9 @@ input[type="checkbox"]
       color: white
 
 .cover
-  height: 140px
-  overflow: hidden
-  background-color: #1a5099
+  color: white
+  height: 200px
+  background-color: #434f66
 
 .avatar-sm
   width: 40px
@@ -204,17 +135,7 @@ input[type="checkbox"]
 
 .main-panel
   width: 100%
-  background-color: #f1f2f4
-
-
-.bg-green
-  color: white
-  background-color: #434f66
-  h1, h2, h3, i
-    color: white
-
-.pull-right
-  float: right !important
+  height: 100%
 
 .hide
   display: none !important
@@ -247,34 +168,9 @@ input[type="checkbox"]
 
 .block
   border: 1px solid rgba(0, 0, 0, 0.1)
-  border-radius: 5px
   box-shadow: 0 0 8px 0 rgba(0,0,0,0.05)
   max-width: 340px
   width: 100%
   text-align: center
   background-color: white
-
-
-.form-group:last-child
-  margin: 0
-
-.password-dialog
-  position: absolute
-  left: calc(50% - 200px)
-  top: 200px
-  width: 400px
-  height: 300px
-  background: #fff
-  border: 1px solid
-  padding: 10px
-  display: flex
-  flex-direction: column
-  justify-content: center
-  .message
-    text-align: center
-    margin-top: 30px
-  .password-close
-    position: absolute
-    top: 0
-    right: 0
-    cursor: pointer
+  margin-bottom: 40px

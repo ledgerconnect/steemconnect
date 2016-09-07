@@ -20,7 +20,6 @@ class Dashboard extends React.Component {
 	}
 	render() {
 		let {reputation, name, accountHistory} = this.props.auth.user;
-		console.log('recentActivities', accountHistory);
 		return (
 			<div className="main-panel">
 				<Header />
@@ -28,14 +27,13 @@ class Dashboard extends React.Component {
 					<div className="block">
 						<div className="cover">
 							<div className="avatar">
-								{reputation && <div>{formatter.reputation(reputation) }</div>}
 								<img src={`https://img.busy6.com/@${name}`} />
 							</div>
+							{reputation && <div>{formatter.reputation(reputation)}</div>}
 						</div>
-						<h1>@{name}</h1>
 						<div>
 							{accountHistory && <h2>Last Activity</h2>}
-							{accountHistory && accountHistory.reverse().map(([id, transaction]) =>
+							{accountHistory && _.sortBy(accountHistory, 'timestamp').reverse().map(([id, transaction]) =>
 								<Activity key={id} id={id} transaction={transaction}/>)}
 						</div>
 					</div>
