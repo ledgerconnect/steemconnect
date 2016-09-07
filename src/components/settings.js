@@ -5,11 +5,16 @@ const React = require('react'),
 	Header = require('./../containers/header'),
 	Dropzone = require('react-dropzone'),
 	actions = require("../actions"),
-	PasswordDialog = require('./PasswordDialog');
+	PasswordDialog = require('./password-dialog');
 
 var Dashboard = React.createClass({
 	getInitialState: function () {
 		return { error: {}, showPasswordDialog: false };
+	},
+	componentWillReceiveProps: function (nextProps) {
+		this.setState({
+			showPasswordDialog: !(nextProps.auth.user.isUpdatingProfileError === false && nextProps.auth.user.isUpdatingProfile === false)
+		})
 	},
 	onDrop: function (files, type) {
 		this.setState({
@@ -66,25 +71,24 @@ var Dashboard = React.createClass({
 	render: function () {
 		const user = this.props.auth.user;
 		var profile = typeof user.profile === 'object' ? user.profile : {};
-		var avatarSrc = profile.profile_image ? profile.profile_image : ('//img.busy6.com/@' + user.name + '?cb=' + Math.floor(Math.random() * 10000000000));
-		var avatarCoverSrc = profile.cover_image ? profile.cover_image : ('//img.busy6.com/@' + user.name + '/cover?cb=' + Math.floor(Math.random() * 10000000000));
+		var avatar = '//img.busy6.com/@' + user.name + '?cb=' + Math.floor(Math.random() * 10000000000);
+		var cover = '//img.busy6.com/@' + user.name + '/cover?cb=' + Math.floor(Math.random() * 10000000000);
 		let passwordDialog;
 		if (this.state.showPasswordDialog)
-			passwordDialog = <PasswordDialog onClose={this.closePasswordDialog} onSave={this.savePassword} />
+			passwordDialog = <PasswordDialog isUpdatingProfile={user.isUpdatingProfile} isUpdatingProfileError={user.isUpdatingProfileError} onClose={this.closePasswordDialog} onSave={this.savePassword} />;
 		return (
 			<div className="main-panel">
-				<Header />
 				<div className="view-app">
 					<div className="block">
-						<form style={{ maxWidth: '340px', margin: '0 auto' }}>
-							<Dropzone className="avatar-cover" onDrop={(files) => this.onDrop(files, 'cover_image') } accept='image/*'>
-								<a className="placeholder"><i className="icon icon-md material-icons">file_upload</i> Edit</a>
-								<img src={avatarCoverSrc}/>
-							</Dropzone>
+						<div className="cover">
 							<Dropzone className="avatar" onDrop={(files) => this.onDrop(files, 'profile_image') } accept='image/*'>
 								<a className="placeholder"><i className="icon icon-md material-icons">file_upload</i> Edit</a>
-								<img src={avatarSrc}/>
+								<img src={avatar}/>
 							</Dropzone>
+							<Dropzone className='x' onDrop={(files) => this.onDrop(files, 'cover_image') } accept='image/*'><i className="icon icon-md material-icons">file_upload</i> Edit Cover</Dropzone>
+						</div>
+						<Header />
+						<form className="pvl mhl">
 							<fieldset className={"form-group"}>
 								<input autoFocus type="text" defaultValue={profile.name} placeholder="Name" className="form-control form-control-lg" ref="name" />
 							</fieldset>

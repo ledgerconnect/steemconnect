@@ -1,37 +1,32 @@
 const React = require('react'),
 	ReactRedux = require('react-redux'),
 	Header = require('./../containers/header'),
-	actions = require("../actions"),
-	steem = require("steem"),
+	actions = require('../actions'),
+	moment = require('moment'),
+	{formatter} = require('steem'),
 	{Link} = require('react-router');
-
-const Activity = ({id, transaction}) => {
-	let {op: operation} = transaction;
-	// console.log(transaction, operation);
-	let [name, details] = operation;
-	// console.log(details);
-	return <div key={id}>{name}</div>
-}
 
 class Dashboard extends React.Component {
 	componentDidMount() {
-		this.props.getRecentActivities(this.props.auth.user.name);
+		this.props.getAccountHistory(this.props.auth.user.name, -1, 5);
 	}
 	render() {
-		let {reputation, name, recentActivities} = this.props.auth.user;
-		console.log('recentActivities', recentActivities);
+		let {reputation, name, accountHistory} = this.props.auth.user;
 		return (
 			<div className="main-panel">
-				<Header />
 				<div className="view-app">
 					<div className="block">
-						<div className="avatar">
-							{reputation && <div>{steem.formatter.reputation(reputation) }</div>}
-							<img src={`https://img.busy6.com/@${name}`} />
+						<div className="cover">
+							<div className="avatar">
+								<img src={`https://img.busy6.com/@${name}`} />
+							</div>
+							{reputation && <div>{formatter.reputation(reputation)}</div>}
 						</div>
-						<h1> @{name}</h1>
-						<div>
-							{recentActivities && recentActivities.map(([id, transaction]) => <Activity key={id} id={id} transaction={transaction}/>)}
+						<Header />
+						<div className="pvl mhl">
+							{accountHistory && <h2>Last Activity</h2>}
+							{accountHistory && _.sortBy(accountHistory, 'timestamp').reverse().map(([id, transaction]) =>
+								<Activity key={id} id={id} transaction={transaction}/>)}
 						</div>
 					</div>
 				</div>
@@ -40,13 +35,26 @@ class Dashboard extends React.Component {
 	}
 }
 
+const Activity = ({id, transaction}) => {
+	let {op, timestamp} = transaction;
+	let [name, details] = op;
+	let label = name.replace('account_update', 'Account Update').replace('vote', 'Vote');
+	if (name == 'vote') {
+		return <p key={id}>{label} for <a href="#" target="_blank">@{details.author}/{details.permlink}</a> {moment(timestamp).fromNow()}</p>;
+	} else if (_.includes(['account_update', 'vote'], name)) {
+		return <p key={id}>{label} {moment(timestamp).fromNow()}</p>;
+	} else {
+		return null;
+	}
+};
+
 var mapStateToProps = function (state) {
 	return { auth: state.auth };
 };
 
 var mapDispatchToProps = function (dispatch) {
 	return {
-		getRecentActivities: (username) => dispatch(actions.getRecentActivities(username))
+		getAccountHistory: (username, from, limit) => dispatch(actions.getAccountHistory(username, from, limit))
 	}
 };
 

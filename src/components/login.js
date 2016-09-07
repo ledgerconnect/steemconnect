@@ -14,25 +14,27 @@ var Login = React.createClass({
 	render: function(){
 		return (
 			<div className="main-panel">
-				<form onSubmit={this.handleSubmit} className="view">
+				<div className="view-app">
 					<img className="logo mbl" src="/img/logo.svg" width="220" />
-					<div className="block">
-						<fieldset className="form-group">
-							<input autoFocus type="text" placeholder="You username ex.: ned" className="form-control form-control-lg" ref="username" />
-						</fieldset>
-						<fieldset className="form-group">
-							<input type="password" placeholder="Password or WIF" className="form-control form-control-lg" ref="passwordOrWif" />
-						</fieldset>
-						{this.props.auth.errorMessage &&
-						<ul className="errorMessages">
-							<li>{this.props.auth.errorMessage}</li>
-						</ul>}
-						<fieldset className="form-group"><button className="btn btn-primary" onClick={this.login}>Log In</button></fieldset>
-						<fieldset className="form-group"><button className="btn btn-secondary" onClick={this.demo}>Demo</button></fieldset>
+					<div className="block pal">
+						<form onSubmit={this.handleSubmit}>
+							<fieldset className="form-group">
+								<input autoFocus type="text" placeholder="You username ex.: ned" className="form-control form-control-lg" ref="username" />
+							</fieldset>
+							<fieldset className="form-group">
+								<input type="password" placeholder="Password or WIF" className="form-control form-control-lg" ref="passwordOrWif" />
+							</fieldset>
+							{this.props.auth.errorMessage &&
+							<ul className="errorMessages">
+								<li>{this.props.auth.errorMessage}</li>
+							</ul>}
+							<fieldset className="form-group"><button className="btn btn-primary" onClick={this.login}>Log In</button></fieldset>
+							<fieldset className="form-group"><button className="btn btn-secondary" onClick={this.demo}>Demo</button></fieldset>
+					</form>
 					</div>
 					<p>New to Steem? <a href="https://steemit.com/create_account" target="_blank">Sign up now</a></p>
 					<p><a href="https://steemit.com/recover_account_step_1" target="_blank">Forgot password?</a></p>
-				</form>
+				</div>
 			</div>
 		);
 	}

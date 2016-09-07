@@ -1,8 +1,8 @@
 var C = require("../constants"),
 	initialState = require("../initialstate");
 
-module.exports = function(state,action){
-	switch(action.type){
+module.exports = function (state, action) {
+	switch (action.type) {
 		case C.LOGIN_REQUEST:
 			return Object.assign({}, state, {
 				isFetching: true,
@@ -32,6 +32,6 @@ module.exports = function(state,action){
 			return Object.assign({}, state, {
 				user: Object.assign(state.user, action.user)
 			});
-		default: return state || initialState().auth;
+		default: return state || initialState().auth;
 	}
 };

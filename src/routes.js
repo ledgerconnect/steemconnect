@@ -6,7 +6,7 @@ var React = require('react'),
   Login = require('./components/login'),
   Logout = require('./components/logout'),
   Dashboard = require('./components/dashboard'),
-  Profile = require('./components/profile'),
+  Profile = require('./components/settings'),
   Authorize = require('./components/authorize');
 
 module.exports = (
