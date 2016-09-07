@@ -26,7 +26,7 @@ function login(username, passwordOrWif) {
 					user: { name: username, profile: json_metadata.profile, memo_key, reputation, balance },
 					errorMessage: ''
 				};
-				cookie.save(username, wif);
+				cookie.save(JSON.stringify({ username, wif }));
 				Object.assign(res);
 				dispatch(res);
 			} else {
@@ -41,7 +41,9 @@ function login(username, passwordOrWif) {
 }
 
 function logout() {
+	let userCookie = cookie.get();
 	cookie.clear();
+	cookie.save({ username: userCookie.username }, 'lastuser');
 	return { type: C.LOGOUT_SUCCESS };
 }
 
