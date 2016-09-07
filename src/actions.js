@@ -104,13 +104,13 @@ module.exports = {
 			});
 		}
 	},
-	getRecentActivities: function (username) {
+	getAccountHistory: function(username, from, limit) {
 		return (dispatch, getState) => {
-			steem.api.getAccountHistory(username, -1, 10, (err, result) => {
-				err && console.error('Error while getAccountHistory', JSON.stringify(err));
+			steem.api.getAccountHistory(username, from, limit, (err, result) => {
+				err && console.error(err);
 				dispatch({
 					type: C.UPDATE_PROFILE,
-					user: { recentActivities: result }
+					user: { accountHistory: result }
 				});
 			})
 		}

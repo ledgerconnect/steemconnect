@@ -66,24 +66,24 @@ var Dashboard = React.createClass({
 	render: function () {
 		const user = this.props.auth.user;
 		var profile = typeof user.profile === 'object' ? user.profile : {};
-		var avatarSrc = profile.profile_image ? profile.profile_image : ('//img.busy6.com/@' + user.name + '?cb=' + Math.floor(Math.random() * 10000000000));
-		var avatarCoverSrc = profile.cover_image ? profile.cover_image : ('//img.busy6.com/@' + user.name + '/cover?cb=' + Math.floor(Math.random() * 10000000000));
+		var avatar = '//img.busy6.com/@' + user.name + '?cb=' + Math.floor(Math.random() * 10000000000);
+		var cover = '//img.busy6.com/@' + user.name + '/cover?cb=' + Math.floor(Math.random() * 10000000000);
 		let passwordDialog;
 		if (this.state.showPasswordDialog)
-			passwordDialog = <PasswordDialog onClose={this.closePasswordDialog} onSave={this.savePassword} />
+			passwordDialog = <PasswordDialog onClose={this.closePasswordDialog} onSave={this.savePassword} />;
 		return (
 			<div className="main-panel">
 				<Header />
 				<div className="view-app">
 					<div className="block">
-						<form style={{ maxWidth: '340px', margin: '0 auto' }}>
-							<Dropzone className="avatar-cover" onDrop={(files) => this.onDrop(files, 'cover_image') } accept='image/*'>
+						<form className="form">
+							<Dropzone className="cover" onDrop={(files) => this.onDrop(files, 'cover_image') } accept='image/*'>
 								<a className="placeholder"><i className="icon icon-md material-icons">file_upload</i> Edit</a>
-								<img src={avatarCoverSrc}/>
+								<img src={cover}/>
 							</Dropzone>
 							<Dropzone className="avatar" onDrop={(files) => this.onDrop(files, 'profile_image') } accept='image/*'>
 								<a className="placeholder"><i className="icon icon-md material-icons">file_upload</i> Edit</a>
-								<img src={avatarSrc}/>
+								<img src={avatar}/>
 							</Dropzone>
 							<fieldset className={"form-group"}>
 								<input autoFocus type="text" defaultValue={profile.name} placeholder="Name" className="form-control form-control-lg" ref="name" />

@@ -1,37 +1,42 @@
 const React = require('react'),
 	ReactRedux = require('react-redux'),
 	Header = require('./../containers/header'),
-	actions = require("../actions"),
-	steem = require("steem"),
+	actions = require('../actions'),
+	moment = require('moment'),
+	{formatter} = require('steem'),
 	{Link} = require('react-router');
 
 const Activity = ({id, transaction}) => {
-	let {op: operation} = transaction;
-	// console.log(transaction, operation);
-	let [name, details] = operation;
-	// console.log(details);
-	return <div key={id}>{name}</div>
-}
+	let {op, timestamp} = transaction;
+	let [name, details] = op;
+	name = name.replace('account_update', 'Account Update')
+			.replace('vote', 'Vote');
+	return <p key={id}>{name} {moment(timestamp).fromNow()}</p>
+};
 
 class Dashboard extends React.Component {
 	componentDidMount() {
-		this.props.getRecentActivities(this.props.auth.user.name);
+		this.props.getAccountHistory(this.props.auth.user.name, -1, 10);
 	}
 	render() {
-		let {reputation, name, recentActivities} = this.props.auth.user;
-		console.log('recentActivities', recentActivities);
+		let {reputation, name, accountHistory} = this.props.auth.user;
+		console.log('recentActivities', accountHistory);
 		return (
 			<div className="main-panel">
 				<Header />
 				<div className="view-app">
 					<div className="block">
-						<div className="avatar">
-							{reputation && <div>{steem.formatter.reputation(reputation) }</div>}
-							<img src={`https://img.busy6.com/@${name}`} />
+						<div className="cover">
+							<div className="avatar">
+								{reputation && <div>{formatter.reputation(reputation) }</div>}
+								<img src={`https://img.busy6.com/@${name}`} />
+							</div>
 						</div>
-						<h1> @{name}</h1>
+						<h1>@{name}</h1>
 						<div>
-							{recentActivities && recentActivities.map(([id, transaction]) => <Activity key={id} id={id} transaction={transaction}/>)}
+							{accountHistory && <h2>Last Activity</h2>}
+							{accountHistory && accountHistory.reverse().map(([id, transaction]) =>
+								<Activity key={id} id={id} transaction={transaction}/>)}
 						</div>
 					</div>
 				</div>
@@ -46,7 +51,7 @@ var mapStateToProps = function (state) {
 
 var mapDispatchToProps = function (dispatch) {
 	return {
-		getRecentActivities: (username) => dispatch(actions.getRecentActivities(username))
+		getAccountHistory: (username, from, limit) => dispatch(actions.getAccountHistory(username, from, limit))
 	}
 };
 
