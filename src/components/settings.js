@@ -4,7 +4,7 @@ const React = require('react'),
 	Link = require('react-router').Link,
 	Header = require('./../containers/header'),
 	actions = require("../actions"),
-	EditImageHeader = require('./../containers/edit-image-header'),
+	EditImageHeader = require('./../containers/cover'),
 	PasswordDialog = require('./../containers/password-dialog');
 
 var Dashboard = React.createClass({
