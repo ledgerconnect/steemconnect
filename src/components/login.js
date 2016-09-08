@@ -27,10 +27,10 @@ var Login = React.createClass({
 						<form className="pvl mhl" onSubmit={this.handleSubmit}>
 							{userCookie? <h1>@{username}</h1>:
 							<fieldset className="form-group">
-								<input autoFocus type="text" placeholder="You username ex.: ned" className="form-control form-control-lg" ref="username" />
+								<input autoFocus type="text" placeholder="Username" className="form-control form-control-lg" ref="username" />
 							</fieldset>}
 							<fieldset className="form-group">
-								<input type="password" placeholder="Password or WIF" className="form-control form-control-lg" ref="passwordOrWif" />
+								<input type="password" placeholder="Password or posting WIF" className="form-control form-control-lg" ref="passwordOrWif" />
 							</fieldset>
 							{this.props.auth.errorMessage &&
 							<ul className="errorMessages">
