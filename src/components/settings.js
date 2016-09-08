@@ -4,8 +4,8 @@ const React = require('react'),
 	Link = require('react-router').Link,
 	Header = require('./../containers/header'),
 	actions = require("../actions"),
-	EditImageHeader = require('./edit-image-header'),
-	PasswordDialog = require('./password-dialog');
+	EditImageHeader = require('./../containers/edit-image-header'),
+	PasswordDialog = require('./../containers/password-dialog');
 
 var Dashboard = React.createClass({
 	getInitialState: function () {
@@ -75,6 +75,7 @@ var Dashboard = React.createClass({
 		return (
 			<div className="main-panel">
 				<div className="view-app">
+					<img className="logo mbl" src="/img/logo.svg" width="180" />
 					<div className="block">
 						<EditImageHeader avatar={avatar} cover={cover} onDrop={this.onDrop} />
 						<Header />

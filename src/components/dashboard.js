@@ -16,6 +16,7 @@ class Dashboard extends React.Component {
 		return (
 			<div className="main-panel">
 				<div className="view-app">
+					<img className="logo mbl" src="/img/logo.svg" width="180" />
 					<div className="block">
 						<div className="cover">
 							<div className="avatar">

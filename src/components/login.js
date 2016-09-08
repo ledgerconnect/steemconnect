@@ -1,6 +1,6 @@
 const React = require('react'),
 	ReactRedux = require("react-redux"),
-	EditImageHeader = require('./edit-image-header'),
+	EditImageHeader = require('./../containers/edit-image-header'),
 	cookie = require('../../lib/cookie'),
 	actions = require("../actions");
 
@@ -21,11 +21,11 @@ var Login = React.createClass({
 		return (
 			<div className="main-panel">
 				<div className="view-app">
-					<img className="logo mbl" src="/img/logo.svg" width="220" />
-					<EditImageHeader avatar={avatar} cover={cover}  />
-					<div className="block pal">
-						<form onSubmit={this.handleSubmit}>
-							{userCookie && <div>Welcoome back {username}</div>}
+					<img className="logo mbl" src="/img/logo.svg" width="180" />
+					<div className="block">
+						<EditImageHeader avatar={avatar} cover={cover}  />
+						<form className="pvl mhl" onSubmit={this.handleSubmit}>
+							{userCookie && <div>Welcome back {username}</div>}
 							<fieldset className="form-group">
 								<input autoFocus type="text" placeholder="You username ex.: ned" className="form-control form-control-lg" ref="username" />
 							</fieldset>

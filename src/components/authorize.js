@@ -9,8 +9,8 @@ var Dashboard = React.createClass({
 		var app = apps[this.props.params.app];
 		return (
 			<div className="main-panel">
-				<div className="view">
-					<img className="logo mbl" src="/img/logo.svg" width="220" />
+				<div className="view-app">
+					<img className="logo mbl" src="/img/logo.svg" width="180" />
 					<div className="block">
 						<div className="mbl"><img src={'/img/app/' + app.username + '.svg'} width="70" /></div>
 						<p>The app <b>{app.name}</b> is requesting permission to do the following:</p>
