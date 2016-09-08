@@ -25,7 +25,7 @@ var Login = React.createClass({
 					<div className="block">
 						<EditImageHeader avatar={avatar} cover={cover}  />
 						<form className="pvl mhl" onSubmit={this.handleSubmit}>
-							{userCookie && <div>Welcome back {username}</div>}
+							{userCookie && <h1>@{username}</h1>}
 							<fieldset className="form-group">
 								<input autoFocus type="text" placeholder="You username ex.: ned" className="form-control form-control-lg" ref="username" />
 							</fieldset>
