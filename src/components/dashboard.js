@@ -3,6 +3,7 @@ const React = require('react'),
 	Header = require('./../containers/header'),
 	actions = require('../actions'),
 	moment = require('moment'),
+	_ = require('lodash'),
 	{formatter} = require('steem'),
 	{Link} = require('react-router');
 
