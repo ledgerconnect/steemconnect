@@ -79,7 +79,7 @@ var Dashboard = React.createClass({
 					<div className="block">
 						<EditImageHeader avatar={avatar} cover={cover} onDrop={this.onDrop} />
 						<Header />
-						<form className="pvl mhl">
+						<form className="pvx mhl">
 							<fieldset className={"form-group"}>
 								<input autoFocus type="text" defaultValue={profile.name} placeholder="Name" className="form-control form-control-lg" ref="name" />
 							</fieldset>

@@ -24,7 +24,7 @@ var Login = React.createClass({
 					<img className="logo mbl" src="/img/logo.svg" width="180" />
 					<div className="block">
 						<EditImageHeader avatar={avatar} cover={cover}  />
-						<form className="pvl mhl" onSubmit={this.handleSubmit}>
+						<form className="pvx mhl" onSubmit={this.handleSubmit}>
 							{userCookie? <h1>@{username}</h1>:
 							<fieldset className="form-group">
 								<input autoFocus type="text" placeholder="Username" className="form-control form-control-lg" ref="username" />

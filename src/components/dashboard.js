@@ -22,10 +22,10 @@ class Dashboard extends React.Component {
 							<div className="avatar">
 								<img src={`https://img.busy6.com/@${name}`} />
 							</div>
-							{reputation && <div>{formatter.reputation(reputation)}</div>}
 						</div>
 						<Header />
-						<div className="pvl mhl">
+						<div className="pvx mhl">
+							<h2>Reputation: {reputation && formatter.reputation(reputation)}</h2>
 							{accountHistory && <h2>Last Activity</h2>}
 							{accountHistory && _.sortBy(accountHistory, 'timestamp').reverse().map(([id, transaction]) =>
 								<Activity key={id} id={id} transaction={transaction}/>)}
