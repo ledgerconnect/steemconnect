@@ -30,7 +30,6 @@ var Login = React.createClass({
 		let {lastUserList, selectedUser} = this.state;
 		let inputUser;
 		if (!selectedUser) {
-			console.log('here',selectedUser);
 			inputUser = (<fieldset className="form-group">
 			<input autoFocus type="text" defaultValue="" placeholder="Username" className="form-control form-control-lg" ref="username" />
 		</fieldset>);
