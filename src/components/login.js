@@ -23,10 +23,9 @@ var Login = React.createClass({
 	},
 	render: function(){
 		let currentUser,inputUser;
-		let userCookie = cookie.get('last_user');
+		let userCookie = cookie.get('last_users');
 		if(!_.isArray(userCookie) ||  userCookie.length ===0)
 			userCookie = ['steemconnect'];
-		userCookie.push('fabien');
 		if (userCookie[0] === 'steemconnect') {
 			currentUser = false;
 			inputUser = (<fieldset className="form-group">
