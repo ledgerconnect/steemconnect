@@ -48,6 +48,7 @@ function logout() {
 		lastUser = [];
 
 	lastUser.push(userCookie.username);
+	lastUser = _.uniq(lastUser);
 	cookie.clear();
 	cookie.save(lastUser, 'last_users');
 	return { type: C.LOGOUT_SUCCESS };
