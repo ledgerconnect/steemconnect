@@ -10,9 +10,10 @@ module.exports = (props) => {
             </Dropzone>
             <Dropzone className='x' onDrop={(files) => props.onDrop(files, 'cover_image') } accept='image/*'><i className="icon icon-md material-icons">file_upload</i> Edit Cover</Dropzone>
         </div> :
-        <div className="cover" style={{backgroundImage: 'url(' + props.cover + ')'}}>
+        <div onClick={props.onClick} className="cover" style={{backgroundImage: 'url(' + props.cover + ')'}}>
             <div className="avatar">
                 <img src={props.avatar}/>
             </div>
+            {props.name && <h1>{props.name}</h1>}
         </div>
 };
