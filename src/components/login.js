@@ -47,6 +47,7 @@ var Login = React.createClass({
 						{lastUserList.map((username,index)=>{
 							return <EditImageHeader username={username} onClick={()=> this.changeselectedUser(username)} key={index} />	
 						})}
+						{!selectedUser && <EditImageHeader username='steemconnect' />}
 						<form className="pvx mhl" onSubmit={this.handleSubmit}>
 							{inputUser}
 							<fieldset className="form-group">
