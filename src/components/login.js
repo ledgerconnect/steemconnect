@@ -18,9 +18,9 @@ var Login = React.createClass({
 		let lastUserList = cookie.get('last_users');
 		if (!_.isArray(lastUserList))
 			lastUserList = [];
-
+		
 		let addNewToList = lastUserList.length === 0;
-		let selectedUser = (lastUserList.length === 1) ? lastUserList[0] : undefined;
+		let selectedUser = lastUserList[0];
 		return { lastUserList, selectedUser, addNewToList };
 	},
 	login: function(event){
@@ -41,7 +41,6 @@ var Login = React.createClass({
 		let {lastUserList, selectedUser, addNewToList} = this.state;
 		let inputUser = (<fieldset className="form-group">
 			<input autoFocus type="hidden" defaultValue={selectedUser} className="form-control form-control-lg" ref="username" />
-			<h1> @{selectedUser}</h1>
 		</fieldset>);
 
 		if (addNewToList) {
@@ -54,7 +53,9 @@ var Login = React.createClass({
 				<div className="view-app">
 					<img className="logo mbl" src="/img/logo.svg" width="180" />
 					<div className="block">
-						{(selectedUser || addNewToList) ? <form className="pvx mhl" onSubmit={this.handleSubmit}>
+						{(selectedUser || addNewToList) ? <div> 
+							<EditImageHeader username={selectedUser || 'steemconnect'} /> 
+							<form className="pvx mhl" onSubmit={this.handleSubmit}>
 							{inputUser}
 							<fieldset className="form-group">
 								<input type="password" placeholder="Password or posting WIF" className="form-control form-control-lg" ref="passwordOrWif" />
@@ -66,7 +67,7 @@ var Login = React.createClass({
 							<fieldset className="form-group"><button className="btn btn-primary" onClick={this.login}>Log In</button></fieldset>
 							<fieldset className="form-group"><button className="btn btn-secondary" onClick={this.demo}>Demo</button></fieldset>
 							{!addNewToList && <a href="#" onClick={() => this.changeselectedUser() }>Not @{selectedUser}</a>}
-						</form> : <LastUserSelector lastUserList={lastUserList} changeselectedUser={this.changeselectedUser} />}
+						</form></div> : <LastUserSelector lastUserList={lastUserList} changeselectedUser={this.changeselectedUser} />}
 					</div>
 					<p>New to Steem? <a href="https://steemit.com/create_account" target="_blank">Sign up now</a></p>
 					<p><a href="https://steemit.com/recover_account_step_1" target="_blank">Forgot password?</a></p>
