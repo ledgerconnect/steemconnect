@@ -5,6 +5,9 @@ const React = require('react'),
 	actions = require("../actions");
 
 var Login = React.createClass({
+	getInitialState: function () {	
+		return { };
+	},
 	login: function(event){
 		event.preventDefault();
 		this.props.login(this.refs.username.value, this.refs.passwordOrWif.value);
@@ -13,22 +16,38 @@ var Login = React.createClass({
 		event.preventDefault();
 		this.props.login('guest123', '5JRaypasxMx1L97ZUX7YuC5Psb5EAbF821kkAGtBj7xCJFQcbLg');
 	},
+	changeCurrentUser:function(username){
+		this.setState({
+			currentUser: username
+		})
+	},
 	render: function(){
-		let userCookie = cookie.get('last_user');
-		let username = userCookie.username || 'steemconnect';
-		var avatar = '//img.busy6.com/@' + username + '?cb=' + Math.floor(Math.random() * 10000000000);
-		var cover = '//img.busy6.com/@' + username + '/cover?cb=' + Math.floor(Math.random() * 10000000000);
+		let currentUser,inputUser;
+		let userCookie = cookie.get('last_users');
+		if(!_.isArray(userCookie) ||  userCookie.length ===0)
+			userCookie = ['steemconnect'];
+		if (userCookie[0] === 'steemconnect') {
+			currentUser = false;
+			inputUser = (<fieldset className="form-group">
+			<input autoFocus type="text" placeholder="Username" className="form-control form-control-lg" ref="username" />
+		</fieldset>);
+		} else {
+			currentUser = this.state.currentUser || userCookie[0];
+			inputUser = (<fieldset className="form-group">
+			<input autoFocus type="hidden" defaultValue={currentUser} className="form-control form-control-lg" ref="username" />
+			<h1>@{currentUser}</h1>
+		</fieldset>);
+		}
 		return (
 			<div className="main-panel">
 				<div className="view-app">
 					<img className="logo mbl" src="/img/logo.svg" width="180" />
 					<div className="block">
-						<EditImageHeader avatar={avatar} cover={cover}  />
+						{userCookie.map((username,index)=>{
+							return <EditImageHeader username={username} onClick={()=> this.changeCurrentUser(username)} key={index} />	
+						})}
 						<form className="pvx mhl" onSubmit={this.handleSubmit}>
-							{userCookie? <h1>@{username}</h1>:
-							<fieldset className="form-group">
-								<input autoFocus type="text" placeholder="Username" className="form-control form-control-lg" ref="username" />
-							</fieldset>}
+							{inputUser}
 							<fieldset className="form-group">
 								<input type="password" placeholder="Password or posting WIF" className="form-control form-control-lg" ref="passwordOrWif" />
 							</fieldset>

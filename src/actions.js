@@ -3,6 +3,7 @@ const axios = require('axios'),
 	steem = require('steem'),
 	cookie = require('./../lib/cookie'),
 	validator = require('validator'),
+	_ = require('lodash'),
 	C = require('./constants');
 
 function login(username, passwordOrWif) {
@@ -42,8 +43,13 @@ function login(username, passwordOrWif) {
 
 function logout() {
 	let userCookie = cookie.get();
+	let lastUser = cookie.get('last_users');
+	if(!_.isArray(lastUser))
+		lastUser = [];
+
+	lastUser.push(userCookie.username);
 	cookie.clear();
-	cookie.save({ username: userCookie.username }, 'last_user');
+	cookie.save(lastUser, 'last_users');
 	return { type: C.LOGOUT_SUCCESS };
 }
 
