@@ -18,7 +18,7 @@ var Login = React.createClass({
 		let lastUserList = cookie.get('last_users');
 		if (!_.isArray(lastUserList))
 			lastUserList = [];
-		
+
 		let addNewToList = lastUserList.length === 0;
 		let selectedUser = lastUserList[0];
 		return { lastUserList, selectedUser, addNewToList };
@@ -54,7 +54,7 @@ var Login = React.createClass({
 					<img className="logo mbl" src="/img/logo.svg" width="180" />
 					<div className="block">
 						{(selectedUser || addNewToList) ? <div> 
-							<EditImageHeader username={selectedUser || 'steemconnect'} /> 
+							<EditImageHeader username={selectedUser} /> 
 							<form className="pvx mhl" onSubmit={this.handleSubmit}>
 							{inputUser}
 							<fieldset className="form-group">
@@ -66,7 +66,7 @@ var Login = React.createClass({
 								</ul>}
 							<fieldset className="form-group"><button className="btn btn-primary" onClick={this.login}>Log In</button></fieldset>
 							<fieldset className="form-group"><button className="btn btn-secondary" onClick={this.demo}>Demo</button></fieldset>
-							{!addNewToList && <a href="#" onClick={() => this.changeselectedUser() }>Not @{selectedUser}</a>}
+							{!addNewToList && <a href="#" onClick={() => this.changeselectedUser(undefined, lastUserList.length === 1) }>Not @{selectedUser}</a>}
 						</form></div> : <LastUserSelector lastUserList={lastUserList} changeselectedUser={this.changeselectedUser} />}
 					</div>
 					<p>New to Steem? <a href="https://steemit.com/create_account" target="_blank">Sign up now</a></p>
