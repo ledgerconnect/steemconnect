@@ -4,13 +4,24 @@ const React = require('react'),
 	cookie = require('../../lib/cookie'),
 	actions = require("../actions");
 
+const LastUserSelector = (props) => {
+	return <div>
+		{props.lastUserList.map((username, index) => {
+			return <EditImageHeader username={username} onClick={() => props.changeselectedUser(username) } key={index} />
+		}) }
+		<a href="#" onClick={() => props.changeselectedUser(undefined, true) }>I am not in List</a>
+	</div>
+}
+
 var Login = React.createClass({
 	getInitialState: function () {
 		let lastUserList = cookie.get('last_users');
 		if (!_.isArray(lastUserList))
 			lastUserList = [];
-		let selectedUser = lastUserList[0];
-		return { lastUserList, selectedUser };
+
+		let addNewToList = lastUserList.length === 0;
+		let selectedUser = (lastUserList.length === 1) ? lastUserList[0] : undefined;
+		return { lastUserList, selectedUser, addNewToList };
 	},
 	login: function(event){
 		event.preventDefault();
@@ -20,47 +31,42 @@ var Login = React.createClass({
 		event.preventDefault();
 		this.props.login('guest123', '5JRaypasxMx1L97ZUX7YuC5Psb5EAbF821kkAGtBj7xCJFQcbLg');
 	},
-	changeselectedUser:function(username){
-		this.refs.username.value = username ? username : '';
+	changeselectedUser:function(username,addNewToList){
 		this.setState({
-			selectedUser: username
+			selectedUser: username,
+			addNewToList: addNewToList
 		})
 	},
 	render: function(){
-		let {lastUserList, selectedUser} = this.state;
-		let inputUser;
-		if (!selectedUser) {
-			inputUser = (<fieldset className="form-group">
-			<input autoFocus type="text" defaultValue="" placeholder="Username" className="form-control form-control-lg" ref="username" />
-		</fieldset>);
-		} else {
-			inputUser = (<fieldset className="form-group">
+		let {lastUserList, selectedUser, addNewToList} = this.state;
+		let inputUser = (<fieldset className="form-group">
 			<input autoFocus type="hidden" defaultValue={selectedUser} className="form-control form-control-lg" ref="username" />
-			<h1>@{selectedUser}</h1>
+			<h1> @{selectedUser}</h1>
 		</fieldset>);
+
+		if (addNewToList) {
+			inputUser = (<fieldset className="form-group">
+				<input autoFocus type="text" defaultValue="" placeholder="Username" className="form-control form-control-lg" ref="username" />
+			</fieldset>);
 		}
 		return (
 			<div className="main-panel">
 				<div className="view-app">
 					<img className="logo mbl" src="/img/logo.svg" width="180" />
 					<div className="block">
-						{lastUserList.map((username,index)=>{
-							return <EditImageHeader username={username} onClick={()=> this.changeselectedUser(username)} key={index} />	
-						})}
-						{!selectedUser && <EditImageHeader username='steemconnect' />}
-						<form className="pvx mhl" onSubmit={this.handleSubmit}>
+						{(selectedUser || addNewToList) ? <form className="pvx mhl" onSubmit={this.handleSubmit}>
 							{inputUser}
 							<fieldset className="form-group">
 								<input type="password" placeholder="Password or posting WIF" className="form-control form-control-lg" ref="passwordOrWif" />
 							</fieldset>
 							{this.props.auth.errorMessage &&
-							<ul className="errorMessages">
-								<li>{this.props.auth.errorMessage}</li>
-							</ul>}
+								<ul className="errorMessages">
+									<li>{this.props.auth.errorMessage}</li>
+								</ul>}
 							<fieldset className="form-group"><button className="btn btn-primary" onClick={this.login}>Log In</button></fieldset>
 							<fieldset className="form-group"><button className="btn btn-secondary" onClick={this.demo}>Demo</button></fieldset>
-							{selectedUser && <a href="#" onClick={() => this.changeselectedUser() }>Not @{selectedUser}</a>}
-					</form>
+							{!addNewToList && <a href="#" onClick={() => this.changeselectedUser() }>Not @{selectedUser}</a>}
+						</form> : <LastUserSelector lastUserList={lastUserList} changeselectedUser={this.changeselectedUser} />}
 					</div>
 					<p>New to Steem? <a href="https://steemit.com/create_account" target="_blank">Sign up now</a></p>
 					<p><a href="https://steemit.com/recover_account_step_1" target="_blank">Forgot password?</a></p>
