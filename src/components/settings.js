@@ -67,8 +67,6 @@ var Dashboard = React.createClass({
 	render: function () {
 		const user = this.props.auth.user;
 		var profile = typeof user.profile === 'object' ? user.profile : {};
-		var avatar = '//img.busy6.com/@' + user.name + '?cb=' + Math.floor(Math.random() * 10000000000);
-		var cover = '//img.busy6.com/@' + user.name + '/cover?cb=' + Math.floor(Math.random() * 10000000000);
 		let passwordDialog;
 		if (this.state.showPasswordDialog)
 			passwordDialog = <PasswordDialog isUpdatingProfile={user.isUpdatingProfile} isUpdatingProfileError={user.isUpdatingProfileError} onClose={this.closePasswordDialog} onSave={this.savePassword} />;
@@ -77,7 +75,7 @@ var Dashboard = React.createClass({
 				<div className="view-app">
 					<img className="logo mbl" src="/img/logo.svg" width="180" />
 					<div className="block">
-						<EditImageHeader avatar={avatar} cover={cover} onDrop={this.onDrop} />
+						<EditImageHeader username={user.name} onDrop={this.onDrop} />
 						<Header />
 						<form className="pvx mhl">
 							<fieldset className={"form-group"}>

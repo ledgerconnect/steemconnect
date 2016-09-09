@@ -44,9 +44,7 @@ var Login = React.createClass({
 					<img className="logo mbl" src="/img/logo.svg" width="180" />
 					<div className="block">
 						{userCookie.map((username,index)=>{
-							let avatar = '//img.busy6.com/@' + username + '?cb=' + Math.floor(Math.random() * 10000000000);
-							let cover = '//img.busy6.com/@' + username + '/cover?cb=' + Math.floor(Math.random() * 10000000000);
-							return <EditImageHeader onClick={()=> this.changeCurrentUser(username)} key={index} name={username} avatar={avatar} cover={cover}  />	
+							return <EditImageHeader username={username} onClick={()=> this.changeCurrentUser(username)} key={index} />	
 						})}
 						<form className="pvx mhl" onSubmit={this.handleSubmit}>
 							{inputUser}
