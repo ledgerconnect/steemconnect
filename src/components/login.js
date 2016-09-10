@@ -56,7 +56,7 @@ var Login = React.createClass({
 					<img className="logo mbl" src="/img/logo.svg" width="180" />
 					<div className="block">
 						{this.props.auth.isFetching && <Loading />}
-						{!this.props.auth.isFetching && addNewToList &&
+						{!this.props.auth.isFetching && (addNewToList || selectedUser) &&
 						<div>
 							<EditImageHeader username={selectedUser} />
 							<form className="pvx mhl" onSubmit={this.handleSubmit}>
@@ -73,7 +73,7 @@ var Login = React.createClass({
 								{!addNewToList && <a href="#" onClick={() => this.changeselectedUser(undefined, lastUserList.length === 1) }>Sign in with a different account</a>}
 							</form>
 						</div>}
-						{!this.props.auth.isFetching && selectedUser && <LastUserSelector lastUserList={lastUserList} changeselectedUser={this.changeselectedUser} />}
+						{!this.props.auth.isFetching && (!addNewToList && selectedUser) && <LastUserSelector lastUserList={lastUserList} changeselectedUser={this.changeselectedUser} />}
 					</div>
 					<p>New to Steem?<a href="https://steemit.com/create_account" target="_blank">Sign up now</a></p>
 					<p><a href="https://steemit.com/recover_account_step_1" target="_blank">Forgot password?</a></p>
