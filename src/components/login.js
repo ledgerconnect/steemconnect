@@ -64,7 +64,7 @@ var Login = React.createClass({
 									</ul>}
 								<fieldset className="form-group"><button className="btn btn-primary" onClick={this.login}>Log In</button></fieldset>
 								<fieldset className="form-group"><button className="btn btn-secondary" onClick={this.demo}>Demo</button></fieldset>
-								{!addNewToList && <a href="#" onClick={() => this.changeselectedUser(undefined, lastUserList.length === 1) }>Sign in with a different account</a>}
+								{!addNewToList && <a href="#" onClick={() => this.changeSelectedUser(undefined, lastUserList.length === 1) }>Sign in with a different account</a>}
 							</form>
 						</div>}
 						{!this.props.auth.isFetching && !(addNewToList || selectedUser) && <LastUserSelector lastUserList={lastUserList} changeselectedUser={this.changeselectedUser} />}
