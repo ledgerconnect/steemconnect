@@ -10,7 +10,11 @@ const LastUserSelector = (props) => {
 		{props.lastUserList.map((username, index) => {
 			return <EditImageHeader username={username} onClick={() => props.changeSelectedUser(username)} key={index} />
 		})}
-		<fieldset className="pvx mhl"><button className="btn btn-secondary" onClick={() => props.changeSelectedUser(undefined, true)}>Add Account</button></fieldset>
+		<form className="pvx mhl">
+            <fieldset className="form-group">
+                <button className="btn btn-secondary" onClick={() => props.changeSelectedUser(undefined, true)}>Add Account</button>
+            </fieldset>
+        </form>
 	</div>
 }
 
