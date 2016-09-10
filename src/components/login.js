@@ -75,7 +75,7 @@ var Login = React.createClass({
 						</div>}
 						{!this.props.auth.isFetching && !(addNewToList || selectedUser) && <LastUserSelector lastUserList={lastUserList} changeselectedUser={this.changeselectedUser} />}
 					</div>
-					<p>New to Steem?<a href="https://steemit.com/create_account" target="_blank">Sign up now</a></p>
+					<p>New to Steem? <a href="https://steemit.com/create_account" target="_blank">Sign up now</a></p>
 					<p><a href="https://steemit.com/recover_account_step_1" target="_blank">Forgot password?</a></p>
 				</div>
 			</div>
