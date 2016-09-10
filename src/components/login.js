@@ -1,6 +1,7 @@
 const React = require('react'),
 	ReactRedux = require("react-redux"),
 	EditImageHeader = require('./../containers/cover'),
+	Loading = require('./../containers/Loading'),
 	cookie = require('../../lib/cookie'),
 	actions = require("../actions");
 
@@ -48,29 +49,29 @@ var Login = React.createClass({
 				<input autoFocus type="text" defaultValue="" placeholder="Username" className="form-control form-control-lg" ref="username" />
 			</fieldset>);
 		}
+
 		return (
 			<div className="main-panel">
 				<div className="view-app">
 					<img className="logo mbl" src="/img/logo.svg" width="180" />
-					<div className="block">
-						{(selectedUser || addNewToList) ? <div> 
-							<EditImageHeader username={selectedUser} /> 
+					{this.props.auth.isFetching ? <Loading /> : <div className="block">
+						{(selectedUser || addNewToList) ? <div>
+							<EditImageHeader username={selectedUser} />
 							<form className="pvx mhl" onSubmit={this.handleSubmit}>
-							{inputUser}
-							<fieldset className="form-group">
-								<input type="password" placeholder="Password or posting WIF" className="form-control form-control-lg" ref="passwordOrWif" />
-							</fieldset>
-							{this.props.auth.errorMessage &&
-								<ul className="errorMessages">
-									<li>{this.props.auth.errorMessage}</li>
-								</ul>}
-							<fieldset className="form-group"><button className="btn btn-primary" onClick={this.login}>Log In</button></fieldset>
-							<fieldset className="form-group"><button className="btn btn-secondary" onClick={this.demo}>Demo</button></fieldset>
-							{!addNewToList && <a href="#" onClick={() => this.changeselectedUser(undefined, lastUserList.length === 1) }>Not @{selectedUser}</a>}
-						</form></div> : <LastUserSelector lastUserList={lastUserList} changeselectedUser={this.changeselectedUser} />}
-					</div>
-					<p>New to Steem? <a href="https://steemit.com/create_account" target="_blank">Sign up now</a></p>
-					<p><a href="https://steemit.com/recover_account_step_1" target="_blank">Forgot password?</a></p>
+								{inputUser}
+								<fieldset className="form-group">
+									<input type="password" placeholder="Password or posting WIF" className="form-control form-control-lg" ref="passwordOrWif" />
+								</fieldset>
+								{this.props.auth.errorMessage &&
+									<ul className="errorMessages">
+										<li>{this.props.auth.errorMessage}</li>
+									</ul>}
+								<fieldset className="form-group"><button className="btn btn-primary" onClick={this.login}>Log In</button></fieldset>
+								<fieldset className="form-group"><button className="btn btn-secondary" onClick={this.demo}>Demo</button></fieldset>
+								{!addNewToList && <a href="#" onClick={() => this.changeselectedUser(undefined, lastUserList.length === 1) }>Not @{selectedUser}</a>}
+							</form></div> : <LastUserSelector lastUserList={lastUserList} changeselectedUser={this.changeselectedUser} />}
+						<p>New to Steem?<a href="https://steemit.com/create_account" target="_blank">Sign up now</a></p>
+						<p><a href="https://steemit.com/recover_account_step_1" target="_blank">Forgot password?</a></p></div>}
 				</div>
 			</div>
 		);
