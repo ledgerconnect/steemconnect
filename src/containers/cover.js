@@ -3,13 +3,13 @@ const React = require('react'),
     Dropzone = require('react-dropzone');
 
 module.exports = (props) => {
-    return <div className="cover pam" style={{ backgroundImage: 'url(' + `https://img.busy6.com/@${props.username}/cover` + ')' }}>
+    return <div className="cover pam" style={{backgroundImage: `url(https://img.busy6.com/@${props.username}/cover)`}}>
         {props.onDrop? <div>
-            <Dropzone className="avatar" onDrop={(files) => props.onDrop(files, 'profile_image') } accept='image/*'>
+            <Dropzone className="avatar" onDrop={(files) => props.onDrop(files, 'profile_image')} accept='image/*'>
                 <a className="placeholder"><i className="icon icon-md material-icons">file_upload</i> Edit</a>
                 <img src={`https://img.busy6.com/@${props.username}`}/>
             </Dropzone>
-            <Dropzone className="cover-edit" onDrop={(files) => props.onDrop(files, 'cover_image') } accept='image/*'>
+            <Dropzone className="cover-edit" onDrop={(files) => props.onDrop(files, 'cover_image')} accept='image/*'>
                 <i className="icon icon-md material-icons">file_upload</i> Edit Cover
             </Dropzone>
         </div> : <div className="avatar">
