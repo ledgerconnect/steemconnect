@@ -114,6 +114,7 @@ var Dashboard = React.createClass({
 								<input type="text" placeholder="Location" defaultValue={profile.location} className="form-control form-control-lg" ref="location" />
 							</fieldset>
 							<fieldset className="form-group"><button className="btn btn-primary" onClick={this.save}>Save</button></fieldset>
+							<p className="ptm"><a href="#" className="errorMessages">Clear profile</a></p>
 						</form>
 					</div>
 				</div>
