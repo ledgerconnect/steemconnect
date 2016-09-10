@@ -8,9 +8,9 @@ const React = require('react'),
 const LastUserSelector = (props) => {
 	return <div>
 		{props.lastUserList.map((username, index) => {
-			return <EditImageHeader username={username} onClick={() => props.changeselectedUser(username)} key={index} />
+			return <EditImageHeader username={username} onClick={() => props.changeSelectedUser(username)} key={index} />
 		})}
-		<a href="#" onClick={() => props.changeselectedUser(undefined, true) }>Add account</a>
+		<a href="#" onClick={() => props.changeSelectedUser(undefined, true)}>Add account</a>
 	</div>
 }
 
@@ -31,7 +31,8 @@ var Login = React.createClass({
 		event.preventDefault();
 		this.props.login('guest123', '5JRaypasxMx1L97ZUX7YuC5Psb5EAbF821kkAGtBj7xCJFQcbLg');
 	},
-	changeselectedUser:function(username,addNewToList){
+	changeSelectedUser:function(username, addNewToList){
+	    console.log('changeSelectedUser');
 		this.setState({
 			selectedUser: username,
 			addNewToList: addNewToList
