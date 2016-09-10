@@ -10,7 +10,7 @@ const LastUserSelector = (props) => {
 		{props.lastUserList.map((username, index) => {
 			return <EditImageHeader username={username} onClick={() => props.changeSelectedUser(username)} key={index} />
 		})}
-		<a href="#" onClick={() => props.changeSelectedUser(undefined, true)}>Add account</a>
+		<fieldset className="pvx mhl"><button className="btn btn-secondary" onClick={() => props.changeSelectedUser(undefined, true)}>Add Account</button></fieldset>
 	</div>
 }
 
@@ -32,7 +32,6 @@ var Login = React.createClass({
 		this.props.login('guest123', '5JRaypasxMx1L97ZUX7YuC5Psb5EAbF821kkAGtBj7xCJFQcbLg');
 	},
 	changeSelectedUser:function(username, addNewToList){
-	    console.log('changeSelectedUser');
 		this.setState({
 			selectedUser: username,
 			addNewToList: addNewToList
@@ -67,7 +66,7 @@ var Login = React.createClass({
 								{!addNewToList && <a href="#" onClick={() => this.changeSelectedUser(undefined, lastUserList.length === 1) }>Sign in with a different account</a>}
 							</form>
 						</div>}
-						{!this.props.auth.isFetching && !(addNewToList || selectedUser) && <LastUserSelector lastUserList={lastUserList} changeselectedUser={this.changeselectedUser} />}
+						{!this.props.auth.isFetching && !(addNewToList || selectedUser) && <LastUserSelector lastUserList={lastUserList} changeselectedUser={this.changeSelectedUser} />}
 					</div>
 					<p>New to Steem? <a href="https://steemit.com/create_account" target="_blank">Sign up now</a></p>
 					<p><a href="https://steemit.com/recover_account_step_1" target="_blank">Forgot password?</a></p>
