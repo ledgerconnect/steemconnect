@@ -1,5 +1,6 @@
 const React = require('react'),
 	ReactRedux = require('react-redux'),
+	EditImageHeader = require('./../containers/cover'),
 	Header = require('./../containers/header'),
 	actions = require('../actions'),
 	moment = require('moment'),
@@ -18,11 +19,7 @@ class Dashboard extends React.Component {
 				<div className="view-app">
 					<img className="logo mbl" src="/img/logo.svg" width="180" />
 					<div className="block">
-						<div className="cover">
-							<div className="avatar">
-								<img src={`https://img.busy6.com/@${name}`} />
-							</div>
-						</div>
+						<EditImageHeader username={name} />
 						<Header />
 						<div className="pvx mhl">
 							<h2>Reputation: {reputation && formatter.reputation(reputation)}</h2>

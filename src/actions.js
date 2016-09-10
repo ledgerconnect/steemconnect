@@ -63,7 +63,7 @@ function setAvatar(passwordOrWif, file, type) {
 		data.append('file', file);
 		let uploadUrl = 'https://img.busy6.com/@' + user.name;
 		if (type === 'cover_image')
-			uploadUrl += '/cover';
+			uploadUrl += '/cover.sass';
 		axios.post(uploadUrl, data, { origin: true })
 			.then(function (data) {
 				let {data: {url}} = data;

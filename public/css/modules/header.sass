@@ -30,3 +30,51 @@ header
         box-shadow: inset 0 -1px 0 #d4d4da
       &.active
         box-shadow: inset 0 -1px 0 $primary-color
+
+
+.change-avatar-btn
+  margin: 10px
+
+.avatar
+  position: relative
+  overflow: hidden
+  border-radius: 50%
+  background-color: rgba(0, 0, 0, 0.1)
+  text-align: center
+  display: inline-block
+  height: 96px
+  width: 96px
+  img
+    width: 96px
+    height: 96px
+  &:hover .placeholder
+    display: block
+  .placeholder
+    display: none
+    position: absolute
+    bottom: 0
+    top: 0
+    left: 0
+    right: 0
+    line-height: 96px
+    color: white !important
+    i
+      color: white
+
+.cover
+  position: relative
+  color: white
+  background-color: #434f66
+  background-size: cover
+  &:hover
+    .cover-edit
+      display: block
+  h3
+    color: white
+  .cover-edit
+    display: none
+    position: absolute
+    cursor: pointer
+    top: 10px
+    right: 10px
+    padding: 10px 20px

@@ -1,5 +1,5 @@
 const React = require('react'),
-	ReactRedux = require("react-redux"),
+	ReactRedux = require('react-redux'),
 	EditImageHeader = require('./../containers/cover'),
 	Loading = require('./../containers/loading'),
 	cookie = require('../../lib/cookie'),
@@ -9,7 +9,7 @@ const LastUserSelector = (props) => {
 	return <div>
 		{props.lastUserList.map((username, index) => {
 			return <EditImageHeader username={username} onClick={() => props.changeselectedUser(username)} key={index} />
-		}) }
+		})}
 		<a href="#" onClick={() => props.changeselectedUser(undefined, true) }>Add account</a>
 	</div>
 }
@@ -19,10 +19,9 @@ var Login = React.createClass({
 		let lastUserList = cookie.get('last_users');
 		if (!_.isArray(lastUserList))
 			lastUserList = [];
-
 		let addNewToList = lastUserList.length === 0;
 		let selectedUser = lastUserList[0];
-		return { lastUserList, selectedUser, addNewToList };
+		return {lastUserList, selectedUser, addNewToList};
 	},
 	login: function(event){
 		event.preventDefault();
@@ -40,16 +39,6 @@ var Login = React.createClass({
 	},
 	render: function(){
 		let {lastUserList, selectedUser, addNewToList} = this.state;
-		let inputUser = (<fieldset className="form-group">
-			<input autoFocus type="hidden" defaultValue={selectedUser} className="form-control form-control-lg" ref="username" />
-		</fieldset>);
-
-		if (addNewToList) {
-			inputUser = (<fieldset className="form-group">
-				<input autoFocus type="text" defaultValue="" placeholder="Username" className="form-control form-control-lg" ref="username" />
-			</fieldset>);
-		}
-
 		return (
 			<div className="main-panel">
 				<div className="view-app">
@@ -60,7 +49,11 @@ var Login = React.createClass({
 						<div>
 							<EditImageHeader username={selectedUser} />
 							<form className="pvx mhl" onSubmit={this.handleSubmit}>
-								{inputUser}
+								{addNewToList? <fieldset className="form-group">
+									<input autoFocus type="text" defaultValue="" placeholder="Username" className="form-control form-control-lg" ref="username" />
+								</fieldset> : <fieldset className="form-group">
+                                    <input autoFocus type="hidden" defaultValue={selectedUser} className="form-control form-control-lg" ref="username" />
+                                    </fieldset>}
 								<fieldset className="form-group">
 									<input type="password" placeholder="Password or posting WIF" className="form-control form-control-lg" ref="passwordOrWif" />
 								</fieldset>
