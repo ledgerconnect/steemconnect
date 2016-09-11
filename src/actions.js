@@ -44,7 +44,7 @@ function login(username, passwordOrWif) {
 function logout() {
 	let userCookie = cookie.get();
 	let lastUser = cookie.get('last_users');
-	if(!_.isArray(lastUser))
+	if (!_.isArray(lastUser))
 		lastUser = [];
 
 	lastUser = [userCookie.username].concat(lastUser);
@@ -73,17 +73,6 @@ function setAvatar(passwordOrWif, file, type) {
 			}).catch(function (err) {
 				console.error('Error While Setting Avatar', err);
 			});
-	}
-}
-
-function updateProfile(passwordOrWif, profileData) {
-	return function (dispatch, getState) {
-		var state = getState();
-		var user = state.auth.user;
-		if (typeof user.profile === 'object')
-			profileData = Object.assign(user.profile, profileData);
-
-		dispatch(accountUpdate(user.name, passwordOrWif, user.memo_key, { profile: profileData }));
 	}
 }
 
@@ -124,7 +113,6 @@ module.exports = {
 	login,
 	logout,
 	setAvatar,
-	updateProfile,
 	accountUpdate,
 	clearUpdatingProfileResult,
 	getAccountHistory

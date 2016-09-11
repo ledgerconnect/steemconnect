@@ -2,6 +2,7 @@ const React = require('react'),
 	ReactRedux = require('react-redux'),
 	validator = require('validator'),
 	Link = require('react-router').Link,
+	bindActionCreators = require('redux').bindActionCreators,
 	Header = require('./../containers/header'),
 	actions = require("../actions"),
 	EditImageHeader = require('./../containers/cover'),
@@ -19,6 +20,7 @@ var Dashboard = React.createClass({
 	},
 	save: function (event) {
 		event.preventDefault();
+		const user = this.props.auth.user;
 		var profileData = {};
 		for (var _item in this.refs) {
 			if (_item === 'gender_female' || _item === 'gender_male')
@@ -31,14 +33,14 @@ var Dashboard = React.createClass({
 		profileData.gender = this.refs.gender_female.checked ? 'female' : 'male';
 		this.setState({
 			showPasswordDialog: true,
-			passwordCallback: (passwordOrWif) => this.props.updateProfile(passwordOrWif, profileData)
+			passwordCallback: (passwordOrWif) => this.props.accountUpdate(user.name, passwordOrWif, user.memo_key, { profile: profileData })
 		});
 	},
 	validate: function (refs) {
 		var value = this.refs[refs] && this.refs[refs].value;
 		switch (refs) {
 			case 'email':
-				if (!validator.isEmail(value)) {
+				if (value.length && !validator.isEmail(value)) {
 					this.state.error[refs] = refs + ' in not valid';
 					this.setState({ error: this.state.error });
 				} else {
@@ -47,7 +49,7 @@ var Dashboard = React.createClass({
 				}
 				break;
 			case 'website':
-				if (!validator.isURL(value, { require_protocol: true, protocols: ['http', 'https'] })) {
+				if (value.length && !validator.isURL(value, { require_protocol: true, protocols: ['http', 'https'] })) {
 					this.state.error[refs] = refs + ' in not valid';
 					this.setState({ error: this.state.error });
 				} else {
@@ -63,6 +65,13 @@ var Dashboard = React.createClass({
 	},
 	savePassword: function (passwordOrWif) {
 		this.state.passwordCallback(passwordOrWif);
+	},
+	clearProfile: function () {
+		const user = this.props.auth.user;
+		this.setState({
+			showPasswordDialog: true,
+			passwordCallback: (passwordOrWif) => this.props.accountUpdate(user.name, passwordOrWif, user.memo_key, { profile: {} })
+		});
 	},
 	render: function () {
 		const user = this.props.auth.user;
@@ -114,7 +123,7 @@ var Dashboard = React.createClass({
 								<input type="text" placeholder="Location" defaultValue={profile.location} className="form-control form-control-lg" ref="location" />
 							</fieldset>
 							<fieldset className="form-group"><button className="btn btn-primary" onClick={this.save}>Save</button></fieldset>
-							<p className="ptm"><a href="#" className="errorMessages">Clear profile</a></p>
+							<p className="ptm"><a href="#" className="errorMessages" onClick={this.clearProfile}>Clear profile</a></p>
 						</form>
 					</div>
 				</div>
@@ -129,11 +138,8 @@ var mapStateToProps = function (state) {
 };
 
 var mapDispatchToProps = function (dispatch) {
-	return {
-		setAvatar: (passwordOrWif, img, type) => dispatch(actions.setAvatar(passwordOrWif, img, type)),
-		updateProfile: (passwordOrWif, profileData) => dispatch(actions.updateProfile(passwordOrWif, profileData)),
-		clearUpdatingProfileResult: () => dispatch(actions.clearUpdatingProfileResult())
-	}
+	let {setAvatar, accountUpdate, clearUpdatingProfileResult} = actions;
+	return bindActionCreators({ setAvatar, accountUpdate, clearUpdatingProfileResult }, dispatch);
 };
 
 module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Dashboard);
