@@ -12,7 +12,7 @@ const LastUserSelector = (props) => {
 		})}
 		<form className="pvx mhl">
             <fieldset className="form-group">
-                <button className="btn btn-secondary" onClick={() => props.changeSelectedUser(undefined, true)}>Add Account</button>
+                <button className="btn btn-secondary" onClick={(event) => { event.preventDefault(); props.changeSelectedUser(undefined, true); } }>Add Account</button>
             </fieldset>
         </form>
 	</div>
