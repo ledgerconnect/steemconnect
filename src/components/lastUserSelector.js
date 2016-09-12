@@ -26,24 +26,19 @@ const LastUserSelector = React.createClass({
     },
     render: function () {
         let {lastUserList} = this.state;
-        return <div className="main-panel">
-            <div className="view-app">
-                <img className="logo mbl" src="/img/logo.svg" width="180" />
-                <div className="block">
-                    {lastUserList.map((username, index) => {
-                        return <Link key={index} to={'/login/' + username}>
-                            <EditImageHeader username={username} />
-                        </Link>
-                    }) }
-                    <form className="pvx mhl">
-                        <fieldset className="form-group">
-                            <Link to={{ pathname: "/login", query: { redirect: false } }}>
-                                <button className="btn btn-secondary">Add Account</button>
-                            </Link>
-                        </fieldset>
-                    </form>
-                </div>
-            </div>
+        return <div className="block">
+            {lastUserList.map((username, index) => {
+                return <Link key={index} to={'/login/' + username}>
+                    <EditImageHeader username={username} />
+                </Link>
+            }) }
+            <form className="pvx mhl">
+                <fieldset className="form-group">
+                    <Link to={{ pathname: "/login", query: { redirect: false } }}>
+                        <button className="btn btn-secondary">Add Account</button>
+                    </Link>
+                </fieldset>
+            </form>
         </div>
     }
 });

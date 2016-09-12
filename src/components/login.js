@@ -44,35 +44,31 @@ var Login = React.createClass({
 	},
 	render: function () {
 		let { selectedUser} = this.state;
-		return (
-			<div className="main-panel">
-				<div className="view-app">
-					<img className="logo mbl" src="/img/logo.svg" width="180" />
-					<div className="block">
-						{this.props.auth.isFetching && <Loading />}
-						<div>
-							<EditImageHeader username={selectedUser} />
-							<form className="pvx mhl" onSubmit={this.handleSubmit}>
-								<fieldset className="form-group">
-									<input autoFocus type={selectedUser ? "hidden" : "text"} placeholder="name" defaultValue={selectedUser} className="form-control form-control-lg" ref="username" />
-								</fieldset>
-								<fieldset className="form-group">
-									<input type="password" placeholder="Password or posting WIF" className="form-control form-control-lg" ref="passwordOrWif" />
-								</fieldset>
-								{this.props.auth.errorMessage &&
-									<ul className="errorMessages">
-										<li>{this.props.auth.errorMessage}</li>
-									</ul>}
-								<fieldset className="form-group"><button className="btn btn-primary" onClick={this.login}>Log In</button></fieldset>
-								<fieldset className="form-group"><button className="btn btn-secondary" onClick={this.demo}>Demo</button></fieldset>
-								{this.state.showSignWithDifferent && <Link to={{ pathname: "/loginlist", query: { redirect: false } }}>Sign in with a different account</Link>}
-							</form>
-						</div>
-					</div>
-					<p>New to Steem?<a href="https://steemit.com/create_account" target="_blank">Sign up now</a></p>
-					<p><a href="https://steemit.com/recover_account_step_1" target="_blank">Forgot password?</a></p>
+		return (<div className="block">
+			{this.props.auth.isFetching && <Loading />}
+			{!this.props.auth.isFetching && <div>
+				<div>
+					<EditImageHeader username={selectedUser} />
+					<form className="pvx mhl" onSubmit={this.handleSubmit}>
+						<fieldset className="form-group">
+							<input autoFocus type={selectedUser ? "hidden" : "text"} placeholder="name" defaultValue={selectedUser} className="form-control form-control-lg" ref="username" />
+						</fieldset>
+						<fieldset className="form-group">
+							<input type="password" placeholder="Password or posting WIF" className="form-control form-control-lg" ref="passwordOrWif" />
+						</fieldset>
+						{this.props.auth.errorMessage &&
+							<ul className="errorMessages">
+								<li>{this.props.auth.errorMessage}</li>
+							</ul>}
+						<fieldset className="form-group"><button className="btn btn-primary" onClick={this.login}>Log In</button></fieldset>
+						<fieldset className="form-group"><button className="btn btn-secondary" onClick={this.demo}>Demo</button></fieldset>
+						{this.state.showSignWithDifferent && <Link to={{ pathname: "/loginlist", query: { redirect: false } }}>Sign in with a different account</Link>}
+					</form>
 				</div>
-			</div>
+				<p>New to Steem?<a href="https://steemit.com/create_account" target="_blank">Sign up now</a></p>
+				<p><a href="https://steemit.com/recover_account_step_1" target="_blank">Forgot password?</a></p>
+			</div>}
+		</div>
 		);
 	}
 });

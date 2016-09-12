@@ -15,19 +15,13 @@ class Dashboard extends React.Component {
 	render() {
 		let {reputation, name, accountHistory} = this.props.auth.user;
 		return (
-			<div className="main-panel">
-				<div className="view-app">
-					<img className="logo mbl" src="/img/logo.svg" width="180" />
-					<div className="block">
-						<EditImageHeader username={name} />
-						<Header />
-						<div className="pvx mhl">
-							<h2>Reputation: {reputation && formatter.reputation(reputation)}</h2>
-							{accountHistory && <h2>Last Activity</h2>}
-							{accountHistory && _.sortBy(accountHistory, 'timestamp').reverse().map(([id, transaction]) =>
-								<Activity key={id} id={id} transaction={transaction}/>)}
-						</div>
-					</div>
+			<div className="block">
+				<Header username={name}/>
+				<div className="pvx mhl">
+					<h2>Reputation: {reputation && formatter.reputation(reputation) }</h2>
+					{accountHistory && <h2>Last Activity</h2>}
+					{accountHistory && _.sortBy(accountHistory, 'timestamp').reverse().map(([id, transaction]) =>
+						<Activity key={id} id={id} transaction={transaction}/>) }
 				</div>
 			</div>
 		);
@@ -39,9 +33,9 @@ const Activity = ({id, transaction}) => {
 	let [name, details] = op;
 	let label = name.replace('account_update', 'Account Update').replace('vote', 'Vote');
 	if (name == 'vote') {
-		return <p key={id}>{label} for <a href="#" target="_blank">@{details.author}/{details.permlink}</a> {moment(timestamp).fromNow()}</p>;
+		return <p key={id}>{label} for <a href="#" target="_blank"> @{details.author}/{details.permlink}</a> {moment(timestamp).fromNow() }</p>;
 	} else if (_.includes(['account_update', 'vote'], name)) {
-		return <p key={id}>{label} {moment(timestamp).fromNow()}</p>;
+		return <p key={id}>{label} {moment(timestamp).fromNow() }</p>;
 	} else {
 		return null;
 	}

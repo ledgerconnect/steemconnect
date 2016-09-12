@@ -1,11 +1,13 @@
 var React = require('react'),
 	ReactRedux = require('react-redux'),
+	EditImageHeader = require('./cover'),
 	{Link} = require('react-router');
 
 var Header = React.createClass({
-	render: function(){
+	render: function () {
 		return (
 			<header>
+				<EditImageHeader username={this.props.username} onDrop={this.props.onDrop} />
 				<ul className="app-nav">
 					<li><Link to="/" onlyActiveOnIndex={true} activeClassName="active"><i className="icon icon-md material-icons">track_changes</i><span className="hidden-xs"> Dashboard</span></Link></li>
 					<li><Link to="/profile" onlyActiveOnIndex={true} activeClassName="active"><i className="icon icon-md material-icons">settings</i><span className="hidden-xs"> Settings</span></Link></li>
@@ -19,8 +21,8 @@ var Header = React.createClass({
 	}
 });
 
-var mapStateToProps = function(state){
-	return {auth: state.auth};
+var mapStateToProps = function (state) {
+	return { auth: state.auth };
 };
 
 module.exports = ReactRedux.connect(mapStateToProps)(Header);

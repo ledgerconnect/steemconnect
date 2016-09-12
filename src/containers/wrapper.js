@@ -19,8 +19,13 @@ var Wrapper = React.createClass({
 
     return (
       <div className='app-wrapper'>
-        {this.props.auth.isAuthenticated && this.props.children}
-        {!this.props.auth.isAuthenticated && nonisAuthenticatedComponent}
+        <div className="main-panel">
+          <div className="view-app">
+            <img className="logo mbl" src="/img/logo.svg" width="180" />
+            {this.props.auth.isAuthenticated && this.props.children}
+            {!this.props.auth.isAuthenticated && nonisAuthenticatedComponent}
+          </div>
+        </div>
       </div>
     );
   }
