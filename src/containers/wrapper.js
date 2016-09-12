@@ -1,5 +1,6 @@
 var React = require('react'),
   ReactRedux = require('react-redux'),
+  {withRouter} = require('react-router'),
   cookie = require('./../../lib/cookie'),
   actions = require('../actions'),
   LastUserSelector = require('../components/lastUserSelector'),
@@ -9,6 +10,11 @@ var Wrapper = React.createClass({
   componentWillMount: function () {
     var sca = cookie.get();
     if (sca) { this.props.login(sca.username, sca.wif); }
+  },
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated && nextProps.location.pathname.indexOf('/login') === 0) {
+      nextProps.router.push('/');
+    }
   },
   render: function () {
     let {routes} = this.props;
@@ -41,4 +47,4 @@ var mapDispatchToProps = function (dispatch) {
   }
 };
 
-module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Wrapper);
+module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(withRouter(Wrapper));
