@@ -7,12 +7,14 @@ var React = require('react'),
   Logout = require('./components/logout'),
   Dashboard = require('./components/dashboard'),
   Profile = require('./components/settings'),
+  LastUserSelector = require('./components/lastUserSelector'),
   Authorize = require('./components/authorize');
 
 module.exports = (
   <Route path="/" component={Wrapper}>
     <IndexRoute component={Dashboard} />
-    <Route path="/login" component={Login} />
+    <Route path="/login(/:username)" component={Login} />
+    <Route path="/loginlist" component={LastUserSelector} />
     <Route path="/logout" component={Logout} />
     <Route path="/apps" component={Dashboard} />
     <Route path="/profile" component={Profile} />

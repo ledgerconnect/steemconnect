@@ -15,6 +15,6 @@ module.exports = (props) => {
         </div> : <div className="avatar">
             <img src={`https://img.busy6.com/@${props.username}`}/>
         </div>}
-        {!_.isUndefined(props.username) && <h3>@{props.username}</h3>}
+        {!!props.username && <h3> @{props.username}</h3>}
         </div>
 };

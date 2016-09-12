@@ -3,61 +3,59 @@ const React = require('react'),
 	EditImageHeader = require('./../containers/cover'),
 	Loading = require('./../containers/loading'),
 	cookie = require('../../lib/cookie'),
+	{Link, withRouter} = require('react-router'),
 	actions = require("../actions");
-
-const LastUserSelector = (props) => {
-	return <div>
-		{props.lastUserList.map((username, index) => {
-			return <EditImageHeader username={username} onClick={() => props.changeSelectedUser(username)} key={index} />
-		})}
-		<form className="pvx mhl">
-            <fieldset className="form-group">
-                <button className="btn btn-secondary" onClick={(event) => { event.preventDefault(); props.changeSelectedUser(undefined, true); } }>Add Account</button>
-            </fieldset>
-        </form>
-	</div>
-}
 
 var Login = React.createClass({
 	getInitialState: function () {
+		let {params} = this.props;
 		let lastUserList = cookie.get('last_users');
 		if (!_.isArray(lastUserList))
 			lastUserList = [];
-		let addNewToList = lastUserList.length === 0;
-		let selectedUser = lastUserList[0];
-		return {lastUserList, selectedUser, addNewToList};
+		let showSignWithDifferent = lastUserList.length !== 0;
+
+		let selectedUser = params.username;
+		return { lastUserList, selectedUser, showSignWithDifferent };
 	},
-	login: function(event){
+	componentWillMount: function () {
+		let {lastUserList, selectedUser} = this.state;
+        let {location} = this.props;
+
+        if (location.query.redirect == 'false' || selectedUser) {
+            return;
+        }
+        if (lastUserList[0] !== undefined) {
+            this.props.router.push({
+				pathname: '/login/' + lastUserList[0],
+				params: { username: lastUserList[0] }
+			});
+			this.setState({
+				selectedUser: lastUserList[0]
+			})
+        }
+	},
+	login: function (event) {
 		event.preventDefault();
 		this.props.login(this.refs.username.value, this.refs.passwordOrWif.value);
 	},
-	demo: function(event){
+	demo: function (event) {
 		event.preventDefault();
 		this.props.login('guest123', '5JRaypasxMx1L97ZUX7YuC5Psb5EAbF821kkAGtBj7xCJFQcbLg');
 	},
-	changeSelectedUser:function(username, addNewToList){
-		this.setState({
-			selectedUser: username,
-			addNewToList: addNewToList
-		})
-	},
-	render: function(){
-		let {lastUserList, selectedUser, addNewToList} = this.state;
+	render: function () {
+		let { selectedUser} = this.state;
 		return (
 			<div className="main-panel">
 				<div className="view-app">
 					<img className="logo mbl" src="/img/logo.svg" width="180" />
 					<div className="block">
 						{this.props.auth.isFetching && <Loading />}
-						{!this.props.auth.isFetching && (addNewToList || selectedUser) &&
 						<div>
 							<EditImageHeader username={selectedUser} />
 							<form className="pvx mhl" onSubmit={this.handleSubmit}>
-								{addNewToList? <fieldset className="form-group">
-									<input autoFocus type="text" defaultValue="" placeholder="Username" className="form-control form-control-lg" ref="username" />
-								</fieldset> : <fieldset className="form-group">
-                                    <input autoFocus type="hidden" defaultValue={selectedUser} className="form-control form-control-lg" ref="username" />
-                                    </fieldset>}
+								<fieldset className="form-group">
+									<input autoFocus type={selectedUser ? "hidden" : "text"} placeholder="name" defaultValue={selectedUser} className="form-control form-control-lg" ref="username" />
+								</fieldset>
 								<fieldset className="form-group">
 									<input type="password" placeholder="Password or posting WIF" className="form-control form-control-lg" ref="passwordOrWif" />
 								</fieldset>
@@ -67,12 +65,11 @@ var Login = React.createClass({
 									</ul>}
 								<fieldset className="form-group"><button className="btn btn-primary" onClick={this.login}>Log In</button></fieldset>
 								<fieldset className="form-group"><button className="btn btn-secondary" onClick={this.demo}>Demo</button></fieldset>
-								{!addNewToList && <a href="#" onClick={() => this.changeSelectedUser(undefined, lastUserList.length === 1) }>Sign in with a different account</a>}
+								{this.state.showSignWithDifferent && <Link to={{ pathname: "/loginlist", query: { redirect: false } }}>Sign in with a different account</Link>}
 							</form>
-						</div>}
-						{!this.props.auth.isFetching && !(addNewToList || selectedUser) && <LastUserSelector lastUserList={lastUserList} changeSelectedUser={this.changeSelectedUser} />}
+						</div>
 					</div>
-					<p>New to Steem? <a href="https://steemit.com/create_account" target="_blank">Sign up now</a></p>
+					<p>New to Steem?<a href="https://steemit.com/create_account" target="_blank">Sign up now</a></p>
 					<p><a href="https://steemit.com/recover_account_step_1" target="_blank">Forgot password?</a></p>
 				</div>
 			</div>
@@ -80,16 +77,16 @@ var Login = React.createClass({
 	}
 });
 
-var mapStateToProps = function(state){
+var mapStateToProps = function (state) {
 	return {
 		auth: state.auth
 	};
 };
 
-var mapDispatchToProps = function(dispatch){
+var mapDispatchToProps = function (dispatch) {
 	return {
-		login: function(username, passwordOrWif){ dispatch(actions.login(username, passwordOrWif)); }
+		login: function (username, passwordOrWif) { dispatch(actions.login(username, passwordOrWif)); }
 	}
 };
 
-module.exports = ReactRedux.connect(mapStateToProps,mapDispatchToProps)(Login);
+module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));
