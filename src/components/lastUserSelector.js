@@ -1,5 +1,6 @@
 const React = require('react'),
     {Link, withRouter} = require('react-router'),
+    _ = require('lodash'),
     EditImageHeader = require('./../containers/cover'),
     cookie = require('../../lib/cookie');
 
@@ -24,13 +25,26 @@ const LastUserSelector = React.createClass({
             this.props.router.push('/login/' + lastUserList[0]);
         }
     },
+    onDelete: function (username) {
+        let {lastUserList} = this.state;
+        let index = lastUserList.indexOf(username);
+        if (index >= 0)
+            lastUserList.splice(index, 1);
+
+        this.setState({ lastUserList });
+        cookie.save(lastUserList, 'last_users');
+    },
+    selectUser: function (username) {
+        let {lastUserList} = this.state;
+        let index = lastUserList.indexOf(username);
+        if (index >= 0)
+            this.props.router.push('/login/' + username);
+    },
     render: function () {
         let {lastUserList} = this.state;
         return <div className="block">
             {lastUserList.map((username, index) => {
-                return <Link key={index} to={'/login/' + username}>
-                    <EditImageHeader username={username} />
-                </Link>
+                return <EditImageHeader key={index} onClick={this.selectUser} username={username} onDelete={ this.onDelete }/>
             }) }
             <form className="pvx mhl">
                 <fieldset className="form-group">
