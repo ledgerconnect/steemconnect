@@ -44,7 +44,7 @@ const LastUserSelector = React.createClass({
         let {lastUserList} = this.state;
         return <div className="block">
             {lastUserList.map((username, index) => {
-                return <EditImageHeader key={index} onClick={this.selectUser} username={username} onDelete={ this.onDelete }/>
+                return <EditImageHeader key={index} onClick={() => { this.selectUser(username) } } username={username} onDelete={ this.onDelete }/>
             }) }
             <form className="pvx mhl">
                 <fieldset className="form-group">
