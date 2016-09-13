@@ -44,12 +44,12 @@ var Login = React.createClass({
 	},
 	render: function () {
 		let { selectedUser} = this.state;
-		return (<div style={{ width: '100%' }}>
-			<div className="block" style={{ margin: '0 auto' }}>
+		return (<section>
+			<div className="block">
 				{this.props.auth.isFetching && <Loading />}
 				{!this.props.auth.isFetching && <div>
 					<div>
-						<EditImageHeader username={selectedUser} />
+						{selectedUser && <EditImageHeader username={selectedUser} />}
 						<form className="pvx mhl" onSubmit={this.handleSubmit}>
 							<fieldset className="form-group">
 								<input autoFocus type={selectedUser ? "hidden" : "text"} placeholder="name" defaultValue={selectedUser} className="form-control form-control-lg" ref="username" />
@@ -68,9 +68,11 @@ var Login = React.createClass({
 					</div>
 				</div>}
 			</div>
-			<p>New to Steem?<a href="https://steemit.com/create_account" target="_blank">Sign up now</a></p>
-			<p><a href="https://steemit.com/recover_account_step_1" target="_blank">Forgot password?</a></p>
-		</div>
+			<div className="mvl">
+				<p>New to Steem? <a href="https://steemit.com/create_account" target="_blank">Sign up now</a></p>
+				<p><a href="https://steemit.com/recover_account_step_1" target="_blank">Forgot password?</a></p>
+			</div>
+		</section>
 		);
 	}
 });
