@@ -20,9 +20,7 @@ router.post('/app/create', function (req, res, next) {
         let publicKey = newApp.getPublicKey().toString('hex');
         let computeSecret = newApp.computeSecret(serverPublicKey, 'hex', 'hex');
         appManifest = JSON.stringify(appManifest);
-        const cipher = crypto.createCipher('aes192', computeSecret);
-        var encryptedAppManifest = cipher.update(appManifest, 'utf8', 'hex');
-        encryptedAppManifest += cipher.final('hex');
+        var encryptedAppManifest = encryptMessage(appManifest, computeSecret);
 
         steem.api.getAccounts([username], (err, result) => {
             var isWif = steemAuth.isWif(passwordOrWif);
@@ -33,14 +31,9 @@ router.post('/app/create', function (req, res, next) {
                 })
             } else {
                 let user = result[0];
-                let jsonMetadata = user.json_metadata;
-                try {
-                    jsonMetadata = JSON.parse(jsonMetadata);
-                } catch (e) {
-                    jsonMetadata = {};
-                }
-                jsonMetadata.appCreated = jsonMetadata.appCreated || [];
-                jsonMetadata.appCreated.push({ appName, description, appManifest: encryptedAppManifest })
+                let jsonMetadata = getJSONMetadata(user);
+                jsonMetadata.appCreated = jsonMetadata.appCreated || {};
+                jsonMetadata.appCreated[appName] = { appName, description, appManifest: encryptedAppManifest };
                 steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, user.memo_key, jsonMetadata, function (err, result) {
                     res.json({
                         clientId: publicKey,
@@ -55,5 +48,75 @@ router.post('/app/create', function (req, res, next) {
         })
     }
 });
+
+router.get('/app/authorize', function (req, res, next) {
+
+    let {appAuthor, appName, clientId, redirect_uri, scope } = req.query;
+    const serverCrypto = crypto.createDiffieHellman(prime, 'hex');
+    serverCrypto.setPublicKey(serverPublicKey, 'hex');
+    serverCrypto.setPrivateKey(serverPrivateKey, 'hex');
+    let computeSecret = serverCrypto.computeSecret(clientId, 'hex', 'hex');
+    console.log('computed secret', computeSecret);
+    steem.api.getAccounts([appAuthor], (err, result) => {
+        if (err) {
+            res.json({
+                error: JSON.stringify(err)
+            })
+        } else {
+            try {
+                let jsonMetadata = getJSONMetadata(result[0]);
+                if (typeof jsonMetadata.appCreated === 'object' && jsonMetadata.appCreated[appName]) {
+                    let appDetails = jsonMetadata.appCreated[appName];
+                    var appManifest = decrypMessage(appDetails.appManifest, computeSecret)
+                    appManifest = JSON.parse(appManifest);
+                    let appOrigin = _.find(appManifest.origins, ['from', req.get('origin')]);
+                    if (!appOrigin)
+                        throw new Error('Invalid Origin');
+                    else if (appOrigin.to !== redirect_uri)
+                        throw new Error('Redirect uri mismatch');
+                    // console.log('clientId, redirect_uri, scope', clientId, redirect_uri, scope);
+                    // console.log('appManifest', appManifest);
+                    console.log('Perform login')
+                    res.json({
+                        token: 'token'
+                    });
+                } else {
+                    throw new Error('Invalid author or appName. App not found');
+                }
+            } catch (e) {
+                let message = e.message;
+                if (e.message.search('decrypt') >= 0)
+                    message = 'Invalid clientId';
+                res.json({
+                    error: message
+                })
+            }
+        }
+    });
+});
+
+function getJSONMetadata(user) {
+    let jsonMetadata = user.json_metadata;
+    try {
+        jsonMetadata = JSON.parse(jsonMetadata);
+    } catch (e) {
+        jsonMetadata = {};
+    }
+    return jsonMetadata;
+}
+
+function encryptMessage(message, secret) {
+    const cipher = crypto.createCipher('aes192', secret);
+    var data = cipher.update(message, 'utf8', 'hex');
+    data += cipher.final('hex');
+    return data;
+}
+
+function decrypMessage(message, secret) {
+    const cipher = crypto.createDecipher('aes192', secret);
+    var data = cipher.update(message, 'hex', 'utf8');
+    data += cipher.final('utf8');
+    return data;
+}
 
 module.exports = router;
