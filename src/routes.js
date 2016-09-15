@@ -6,7 +6,7 @@ var React = require('react'),
   Login = require('./auth/Login'),
   Logout = require('./auth/Logout'),
   Dashboard = require('./dashboard/Dashboard'),
-  Profile = require('./components/Settings'),
+  Profile = require('./app/Settings'),
   LastUserSelector = require('./components/LastUserSelector'),
   Authorize = require('./auth/Authorize');
 
