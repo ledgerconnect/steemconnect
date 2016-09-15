@@ -1,4 +1,5 @@
-var C = require("../constants"),
+/*
+  var C = require("../constants"),
 	initialState = require("../initialstate");
 
 module.exports = function(state,action){
@@ -34,3 +35,4 @@ module.exports = function(state,action){
 		default: return state || initialState().pages;
 	}
 };
+  */
