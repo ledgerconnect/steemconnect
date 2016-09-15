@@ -15,6 +15,7 @@ router.post('/app/create', function (req, res, next) {
         newApp.generateKeys();
         let publicKey = newApp.getPublicKey().toString('hex');
         let computeSecret = newApp.computeSecret(process.env.PUBLIC_KEY, 'hex', 'hex');
+        appManifest.author = username; //For security purpose
         appManifest = JSON.stringify(appManifest);
         let encryptedAppManifest = encryptMessage(appManifest, computeSecret);
 
@@ -46,7 +47,7 @@ router.post('/app/create', function (req, res, next) {
 });
 
 router.get('/app/authorize', function (req, res, next) {
-    let {appAuthor, appName, clientId, redirect_uri, scope, username, password } = req.query;
+    let {appAuthor, appName, clientId, redirect_uri, scope, username, passwordOrWif } = req.query;
     const serverCrypto = crypto.createDiffieHellman(process.env.PRIME, 'hex');
     serverCrypto.setPublicKey(process.env.PUBLIC_KEY, 'hex');
     serverCrypto.setPrivateKey(process.env.PRIVATE_KEY, 'hex');
@@ -70,14 +71,16 @@ router.get('/app/authorize', function (req, res, next) {
                     else if (appOrigin.to !== redirect_uri)
                         throw new Error('Redirect uri mismatch');
                     // console.log('appManifest', appManifest);
-                    if (!(username || password)) {
+                    if (!(username || passwordOrWif)) {
                         console.log('Perform login')
                         res.render('auth/login', { layout: 'user', title: 'Steem Connect' });
                     } else {
                         //Todo verify username and password
                         //Create token
+                        var isWif = steemAuth.isWif(passwordOrWif);
+                        var postingWif = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'posting');
                         req.session.auth = req.session.auth || {};
-                        req.session.auth[appName] = { username, password, scope, clientId, appName, appAuthor };
+                        req.session.auth[appName] = { username, postingWif, scope, clientId, appName, appAuthor };
                         let token = jwt.sign({ sessionId: req.session.id, username, scope, clientId, appName, appAuthor }, process.env.JWT_SECRET, { expiresIn: '36h' });
                         res.json({ token });
                     }
