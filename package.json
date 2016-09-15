@@ -40,7 +40,6 @@
     "moment": "^2.13.0",
     "morgan": "~1.6.1",
     "node-sass": "^3.10.0",
-    "node-sass-middleware": "0.8.0",
     "nodemon": "^1.9.2",
     "numeral": "^1.5.3",
     "react": "^15.0.2",
