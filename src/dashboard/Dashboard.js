@@ -1,6 +1,6 @@
 const React = require('react'),
 	ReactRedux = require('react-redux'),
-	EditImageHeader = require('./../containers/Cover'),
+	EditImageHeader = require('./../containers/EditImageHeader'),
 	Header = require('./../containers/Header'),
 	actions = require('../actions'),
 	moment = require('moment'),
