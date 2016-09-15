@@ -4,13 +4,14 @@ const express = require('express'),
     steem = require('steem'),
     steemAuth = require('steemauth'),
     crypto = require('crypto'),
+    jwt = require('jsonwebtoken'),
     cookie = require('./../lib/cookie');
 
 //TODO regenerate move to env. Now here for the purpose of debugging;
 let prime = 'eca59a04b80707d8bf72739b9e97f0692ef5614c83128e520348aa3cd81c1e3b';
 let serverPublicKey = "8658dddffbb10bf4ad762957205573d2335f18a9eea4f11a39cd7e5d5b971a56";
 let serverPrivateKey = "7cc13f49ad8737a8899b2eabbdb45f305169c984c0925c57f13410f04c4b97be";
-
+let jwtSecret = 'a2a30bd6fc5f44c1b30439db8b7ef0833effda2e505fbed65e96e889919f1813';
 router.post('/app/create', function (req, res, next) {
     var auth = (req.cookies['_sc_a']) ? JSON.parse(req.cookies['_sc_a']) : cookie.get();
     if (_.has(auth, 'username')) {
@@ -20,7 +21,7 @@ router.post('/app/create', function (req, res, next) {
         let publicKey = newApp.getPublicKey().toString('hex');
         let computeSecret = newApp.computeSecret(serverPublicKey, 'hex', 'hex');
         appManifest = JSON.stringify(appManifest);
-        var encryptedAppManifest = encryptMessage(appManifest, computeSecret);
+        let encryptedAppManifest = encryptMessage(appManifest, computeSecret);
 
         steem.api.getAccounts([username], (err, result) => {
             var isWif = steemAuth.isWif(passwordOrWif);
@@ -50,8 +51,7 @@ router.post('/app/create', function (req, res, next) {
 });
 
 router.get('/app/authorize', function (req, res, next) {
-
-    let {appAuthor, appName, clientId, redirect_uri, scope } = req.query;
+    let {appAuthor, appName, clientId, redirect_uri, scope, username, password } = req.query;
     const serverCrypto = crypto.createDiffieHellman(prime, 'hex');
     serverCrypto.setPublicKey(serverPublicKey, 'hex');
     serverCrypto.setPrivateKey(serverPrivateKey, 'hex');
@@ -74,12 +74,18 @@ router.get('/app/authorize', function (req, res, next) {
                         throw new Error('Invalid Origin');
                     else if (appOrigin.to !== redirect_uri)
                         throw new Error('Redirect uri mismatch');
-                    // console.log('clientId, redirect_uri, scope', clientId, redirect_uri, scope);
                     // console.log('appManifest', appManifest);
-                    console.log('Perform login')
-                    res.json({
-                        token: 'token'
-                    });
+                    if (!(username || password)) {
+                        console.log('Perform login')
+                        res.render('auth/login', { layout: 'user', title: 'Steem Connect' });
+                    } else {
+                        //Todo verify username and password
+                        //Create token
+                        req.session.auth = req.session.auth || {};
+                        req.session.auth[appName] = { username, password, scope, clientId, appName, appAuthor };
+                        let token = jwt.sign({ sessionId: req.session.id, username, scope, clientId, appName, appAuthor }, jwtSecret, { expiresIn: '36h' });
+                        res.json({ token });
+                    }
                 } else {
                     throw new Error('Invalid author or appName. App not found');
                 }
@@ -95,6 +101,12 @@ router.get('/app/authorize', function (req, res, next) {
     });
 });
 
+router.get('/app/test', function (req, res, next) {
+    console.log(req.session);
+    res.json({
+        test: 'true'
+    })
+});
 function getJSONMetadata(user) {
     let jsonMetadata = user.json_metadata;
     try {
@@ -107,14 +119,14 @@ function getJSONMetadata(user) {
 
 function encryptMessage(message, secret) {
     const cipher = crypto.createCipher('aes192', secret);
-    var data = cipher.update(message, 'utf8', 'hex');
+    let data = cipher.update(message, 'utf8', 'hex');
     data += cipher.final('hex');
     return data;
 }
 
 function decrypMessage(message, secret) {
     const cipher = crypto.createDecipher('aes192', secret);
-    var data = cipher.update(message, 'hex', 'utf8');
+    let data = cipher.update(message, 'hex', 'utf8');
     data += cipher.final('utf8');
     return data;
 }
