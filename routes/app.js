@@ -4,16 +4,19 @@ const express = require('express'),
     steem = require('steem'),
     steemAuth = require('steemauth'),
     crypto = require('crypto'),
+    createECDH = require('create-ecdh'),
     jwt = require('jsonwebtoken'),
     cookie = require('./../lib/cookie');
+
+var mod = 'secp256k1';
 
 router.post('/app/create', function (req, res, next) {
     var auth = (req.cookies['_sc_a']) ? JSON.parse(req.cookies['_sc_a']) : cookie.get();
     if (_.has(auth, 'username')) {
         let {username, passwordOrWif, publicMemo, appName, description, appManifest} = req.body;
-        const newApp = crypto.createDiffieHellman(process.env.PRIME, 'hex');
+        var newApp = createECDH(mod);
         newApp.generateKeys();
-        let publicKey = newApp.getPublicKey().toString('hex');
+        var publicKey = newApp.getPublicKey('hex');
         let computeSecret = newApp.computeSecret(process.env.PUBLIC_KEY, 'hex', 'hex');
         appManifest.author = username; //For security purpose
         appManifest = JSON.stringify(appManifest);
@@ -48,7 +51,7 @@ router.post('/app/create', function (req, res, next) {
 
 router.get('/app/authorize', function (req, res, next) {
     let {appAuthor, appName, clientId, redirect_uri, scope, username, passwordOrWif } = req.query;
-    const serverCrypto = crypto.createDiffieHellman(process.env.PRIME, 'hex');
+    var serverCrypto = createECDH(mod);
     serverCrypto.setPublicKey(process.env.PUBLIC_KEY, 'hex');
     serverCrypto.setPrivateKey(process.env.PRIVATE_KEY, 'hex');
     let computeSecret = serverCrypto.computeSecret(clientId, 'hex', 'hex');
