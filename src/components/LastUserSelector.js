@@ -1,7 +1,7 @@
 const React = require('react'),
     {Link, withRouter} = require('react-router'),
     _ = require('lodash'),
-    EditImageHeader = require('./../containers/coverComp'),
+    EditImageHeader = require('./../containers/Cover'),
     cookie = require('../../lib/cookie');
 
 const LastUserSelector = React.createClass({

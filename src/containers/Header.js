@@ -1,6 +1,6 @@
 var React = require('react'),
 	ReactRedux = require('react-redux'),
-	EditImageHeader = require('./coverComp'),
+	EditImageHeader = require('./Cover'),
 	{Link} = require('react-router');
 
 var Header = React.createClass({

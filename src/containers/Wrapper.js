@@ -3,7 +3,7 @@ var React = require('react'),
   {withRouter} = require('react-router'),
   cookie = require('./../../lib/cookie'),
   actions = require('../actions'),
-  LastUserSelector = require('../components/lastUserSelectorComp'),
+  LastUserSelector = require('../components/LastUserSelector'),
   Login = require('./../auth/Login');
 
 var Wrapper = React.createClass({

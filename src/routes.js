@@ -2,12 +2,12 @@ var React = require('react'),
   ReactRouter = require('react-router'),
   Route = ReactRouter.Route,
   IndexRoute = ReactRouter.IndexRoute,
-  Wrapper = require('./containers/wrapperComp'),
+  Wrapper = require('./containers/Wrapper'),
   Login = require('./auth/Login'),
   Logout = require('./auth/Logout'),
-  Dashboard = require('./dashboard/dashboardComp'),
-  Profile = require('./components/settingsComp'),
-  LastUserSelector = require('./components/lastUserSelectorComp'),
+  Dashboard = require('./dashboard/Dashboard'),
+  Profile = require('./components/Settings'),
+  LastUserSelector = require('./components/LastUserSelector'),
   Authorize = require('./auth/Authorize');
 
 module.exports = (
