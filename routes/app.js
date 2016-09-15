@@ -7,19 +7,14 @@ const express = require('express'),
     jwt = require('jsonwebtoken'),
     cookie = require('./../lib/cookie');
 
-//TODO regenerate move to env. Now here for the purpose of debugging;
-let prime = 'eca59a04b80707d8bf72739b9e97f0692ef5614c83128e520348aa3cd81c1e3b';
-let serverPublicKey = "8658dddffbb10bf4ad762957205573d2335f18a9eea4f11a39cd7e5d5b971a56";
-let serverPrivateKey = "7cc13f49ad8737a8899b2eabbdb45f305169c984c0925c57f13410f04c4b97be";
-let jwtSecret = 'a2a30bd6fc5f44c1b30439db8b7ef0833effda2e505fbed65e96e889919f1813';
 router.post('/app/create', function (req, res, next) {
     var auth = (req.cookies['_sc_a']) ? JSON.parse(req.cookies['_sc_a']) : cookie.get();
     if (_.has(auth, 'username')) {
         let {username, passwordOrWif, publicMemo, appName, description, appManifest} = req.body;
-        const newApp = crypto.createDiffieHellman(prime, 'hex');
+        const newApp = crypto.createDiffieHellman(process.env.PRIME, 'hex');
         newApp.generateKeys();
         let publicKey = newApp.getPublicKey().toString('hex');
-        let computeSecret = newApp.computeSecret(serverPublicKey, 'hex', 'hex');
+        let computeSecret = newApp.computeSecret(process.env.PUBLIC_KEY, 'hex', 'hex');
         appManifest = JSON.stringify(appManifest);
         let encryptedAppManifest = encryptMessage(appManifest, computeSecret);
 
@@ -52,11 +47,11 @@ router.post('/app/create', function (req, res, next) {
 
 router.get('/app/authorize', function (req, res, next) {
     let {appAuthor, appName, clientId, redirect_uri, scope, username, password } = req.query;
-    const serverCrypto = crypto.createDiffieHellman(prime, 'hex');
-    serverCrypto.setPublicKey(serverPublicKey, 'hex');
-    serverCrypto.setPrivateKey(serverPrivateKey, 'hex');
+    const serverCrypto = crypto.createDiffieHellman(process.env.PRIME, 'hex');
+    serverCrypto.setPublicKey(process.env.PUBLIC_KEY, 'hex');
+    serverCrypto.setPrivateKey(process.env.PRIVATE_KEY, 'hex');
     let computeSecret = serverCrypto.computeSecret(clientId, 'hex', 'hex');
-    console.log('computed secret', computeSecret);
+    // console.log('computed secret', computeSecret);
     steem.api.getAccounts([appAuthor], (err, result) => {
         if (err) {
             res.json({
@@ -83,7 +78,7 @@ router.get('/app/authorize', function (req, res, next) {
                         //Create token
                         req.session.auth = req.session.auth || {};
                         req.session.auth[appName] = { username, password, scope, clientId, appName, appAuthor };
-                        let token = jwt.sign({ sessionId: req.session.id, username, scope, clientId, appName, appAuthor }, jwtSecret, { expiresIn: '36h' });
+                        let token = jwt.sign({ sessionId: req.session.id, username, scope, clientId, appName, appAuthor }, process.env.JWT_SECRET, { expiresIn: '36h' });
                         res.json({ token });
                     }
                 } else {
