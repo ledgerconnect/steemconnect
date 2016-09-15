@@ -9,6 +9,9 @@ var React = require('react'),
 
 import store from './store';
 
+// load the stylesheet
+require('./styles/base.sass');
+
 ReactDOM.render(
 	<Provider store={store}>
 		<Router routes={routes} history={appHistory} />
