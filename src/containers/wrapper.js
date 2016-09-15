@@ -4,7 +4,7 @@ var React = require('react'),
   cookie = require('./../../lib/cookie'),
   actions = require('../actions'),
   LastUserSelector = require('../components/lastUserSelector'),
-  Login = require('./../auth/login');
+  Login = require('./../auth/Login');
 
 var Wrapper = React.createClass({
   componentWillMount: function () {
