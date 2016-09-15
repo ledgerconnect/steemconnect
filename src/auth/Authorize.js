@@ -1,7 +1,5 @@
 var React = require('react'),
 	ReactRedux = require('react-redux'),
-	Header = require('./../containers/header'),
-	Link = require('react-router').Link,
 	apps = require('./../../lib/apps');
 
 var Dashboard = React.createClass({

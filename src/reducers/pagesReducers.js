@@ -1,7 +1,20 @@
-var C = require("../constants"),
-	initialState = require("../initialstate");
+/*
+const initialState = {
+  current: {
+    isFetching: false,
+    isLoaded: false
+  },
+  single: {
+    isFetching: false,
+    isLoaded: false
+  },
+  profile: {
+    isFetching: false,
+    isLoaded: false
+  }
+};
 
-module.exports = function(state,action){
+module.exports = function(state = initialState, action){
 	switch(action.type){
 		case C.FEED_REQUEST:
 			return Object.assign({}, state, {
@@ -34,3 +47,4 @@ module.exports = function(state,action){
 		default: return state || initialState().pages;
 	}
 };
+  */
