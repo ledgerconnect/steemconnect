@@ -4,9 +4,9 @@ const initialState = {
   errorMessage: '',
 };
 
-module.exports = function(state,action) {
-	switch(action.type) {
-		default:
+export default (state = initialState, action) => {
+  switch(action.type) {
+    default:
       return state;
-	}
+  }
 };
