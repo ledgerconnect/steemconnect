@@ -3,12 +3,12 @@ var React = require('react'),
   Route = ReactRouter.Route,
   IndexRoute = ReactRouter.IndexRoute,
   Wrapper = require('./containers/wrapper'),
-  Login = require('./components/login'),
-  Logout = require('./components/logout'),
+  Login = require('./auth/login'),
+  Logout = require('./auth/logout'),
   Dashboard = require('./components/dashboard'),
   Profile = require('./components/settings'),
   LastUserSelector = require('./components/lastUserSelector'),
-  Authorize = require('./components/authorize');
+  Authorize = require('./auth/authorize');
 
 module.exports = (
   <Route path="/" component={Wrapper}>
