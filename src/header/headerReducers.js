@@ -1,24 +1,34 @@
-var C = require("../constants"),
-	initialState = require("../initialstate");
+import * as headerTypes from './headerActionTypes';
 
-module.exports = function(state,action){
+const initialState = {
+  menu: 'primary',
+  tabs: [],
+  query: '',
+};
+
+module.exports = function(state = initialState, action){
 	switch(action.type){
-		case C.SEARCH:
+		case headerTypes.SEARCH:
 			return Object.assign({}, state, {
 				query: action.query
 			});
-		case C.SET_MENU:
+		case headerTypes.SET_MENU:
 			return Object.assign({}, state, {
 				menu: action.menu
 			});
-		case C.TAB_CREATE:
+    // TODO(p0o): serious anti-pattern - avoid mutating redux state
+    // Lines commented in case there is a need for refactor
+    /*
+		case headerTypes.TAB_CREATE:
 			state.tabs.push(action.page);
 			return state;
-		case C.TAB_DELETE:
+		case headerTypes.TAB_DELETE:
 			if(state.tabs.indexOf(action.page) != -1) {
 				delete state.tabs[state.indexOf(action.page)];
 			}
 			return state;
-		default: return state || initialState().header;
+			*/
+		default:
+      return state;
 	}
 };

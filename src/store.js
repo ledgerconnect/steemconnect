@@ -3,7 +3,6 @@ var Redux = require("redux"),
 	authReducer = require("./auth/authReducers"),
 	headerReducer = require("./header/headerReducers"),
 	pagesReducer = require("./reducers/pagesReducers"),
-	initialState = require("./initialstate"),
 	thunk = require('redux-thunk').default;
 
 var rootReducer = Redux.combineReducers({
@@ -13,4 +12,4 @@ var rootReducer = Redux.combineReducers({
 	pages: pagesReducer
 });
 
-module.exports = Redux.applyMiddleware(thunk)(Redux.createStore)(rootReducer,initialState(), window.devToolsExtension && window.devToolsExtension());
+module.exports = Redux.applyMiddleware(thunk)(Redux.createStore)(rootReducer,{}, window.devToolsExtension && window.devToolsExtension());
