@@ -5,7 +5,7 @@ const React = require('react'),
 	bindActionCreators = require('redux').bindActionCreators,
 	Header = require('./../header/Header'),
 	actions = require("../actions"),
-	PasswordDialog = require('./../containers/PasswordDialog');
+	PasswordDialog = require('./../widgets/PasswordDialog');
 
 var Dashboard = React.createClass({
 	getInitialState: function () {
