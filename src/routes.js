@@ -8,7 +8,7 @@ var React = require('react'),
   Dashboard = require('./components/dashboard'),
   Profile = require('./components/settings'),
   LastUserSelector = require('./components/lastUserSelector'),
-  Authorize = require('./auth/authorize');
+  Authorize = require('./auth/Authorize');
 
 module.exports = (
   <Route path="/" component={Wrapper}>
