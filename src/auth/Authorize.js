@@ -1,6 +1,6 @@
 var React = require('react'),
 	ReactRedux = require('react-redux'),
-	Header = require('./../containers/header'),
+	Header = require('./../containers/headerComp'),
 	Link = require('react-router').Link,
 	apps = require('./../../lib/apps');
 
