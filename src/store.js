@@ -1,6 +1,6 @@
 var Redux = require("redux"),
 	appReducer = require("./reducers/appReducers"),
-	authReducer = require("./reducers/authReducers"),
+	authReducer = require("./auth/authReducers"),
 	headerReducer = require("./reducers/headerReducers"),
 	pagesReducer = require("./reducers/pagesReducers"),
 	initialState = require("./initialstate"),
