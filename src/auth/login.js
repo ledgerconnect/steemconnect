@@ -1,7 +1,7 @@
 const React = require('react'),
 	ReactRedux = require('react-redux'),
-	EditImageHeader = require('./../containers/cover'),
-	Loading = require('./../containers/loading'),
+	EditImageHeader = require('./../header/EditImageHeader'),
+	Loading = require('./../containers/Loading'),
 	cookie = require('../../lib/cookie'),
 	{Link, withRouter} = require('react-router'),
 	actions = require("../actions");
