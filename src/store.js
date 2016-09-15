@@ -1,8 +1,8 @@
 var Redux = require("redux"),
-	appReducer = require("./reducers/app"),
-	authReducer = require("./reducers/auth"),
-	headerReducer = require("./reducers/header"),
-	pagesReducer = require("./reducers/pages"),
+	appReducer = require("./reducers/appReducers"),
+	authReducer = require("./reducers/authReducers"),
+	headerReducer = require("./reducers/headerReducers"),
+	pagesReducer = require("./reducers/pagesReducers"),
 	initialState = require("./initialstate"),
 	thunk = require('redux-thunk').default;
 
