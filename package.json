@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "BABEL_ENV=test mocha --watch --require babel-register ./src/*/*-spec.js",
     "build": "webpack --progress -p --config webpack.prod.config.js",
     "lint": "eslint src/**",
     "postinstall": "npm run build"
