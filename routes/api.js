@@ -47,12 +47,11 @@ router.get('/api/getAccount', function (req, res, next) {
 });
 
 router.get('/api/verify', function (req, res, next) {
-	var auth = (req.cookies['_sc_a']) ? JSON.parse(req.cookies['_sc_a']) : cookie.get();
-	if (_.has(auth, 'username')) {
+	if (req.username) {
 		res.json({
 			isAuthenticated: true,
-			username: auth.username,
-			permissions: ['verify', 'vote']
+			username: req.username,
+			permissions: req.scope || ['verify', 'vote']
 		});
 	} else {
 		res.json({
