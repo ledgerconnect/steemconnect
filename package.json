@@ -6,6 +6,7 @@
     "start": "node ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --progress -p --config webpack.prod.config.js",
+    "lint": "eslint src/**",
     "postinstall": "npm run build"
   },
   "dependencies": {
@@ -59,6 +60,11 @@
     "webpack": "^1.13.2"
   },
   "devDependencies": {
+    "eslint": "^3.5.0",
+    "eslint-config-airbnb": "^11.1.0",
+    "eslint-plugin-import": "^1.15.0",
+    "eslint-plugin-jsx-a11y": "^2.2.2",
+    "eslint-plugin-react": "^6.2.2",
     "webpack-dev-server": "^1.15.1",
     "webpack-hot-middleware": "^2.10.0"
   }
