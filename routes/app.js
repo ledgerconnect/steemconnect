@@ -50,56 +50,82 @@ router.post('/app/create', function (req, res, next) {
 });
 
 router.get('/app/authorize', function (req, res, next) {
-    let {appAuthor, appName, clientId, redirect_uri, scope, username, passwordOrWif } = req.query;
-    var serverCrypto = createECDH(mod);
-    serverCrypto.setPublicKey(process.env.PUBLIC_KEY, 'hex');
-    serverCrypto.setPrivateKey(process.env.PRIVATE_KEY, 'hex');
-    let computeSecret = serverCrypto.computeSecret(clientId, 'hex', 'hex');
+    let {appAuthor, appName, clientId, redirect_uri, scope, username, wif } = req.query;
     // console.log('computed secret', computeSecret);
-    steem.api.getAccounts([appAuthor], (err, result) => {
-        if (err) {
-            res.json({
-                error: JSON.stringify(err)
-            })
-        } else {
-            try {
-                let jsonMetadata = getJSONMetadata(result[0]);
-                if (typeof jsonMetadata.appCreated === 'object' && jsonMetadata.appCreated[appName]) {
-                    let appDetails = jsonMetadata.appCreated[appName];
-                    var appManifest = decrypMessage(appDetails.appManifest, computeSecret)
-                    appManifest = JSON.parse(appManifest);
-                    let appOrigin = _.find(appManifest.origins, ['from', req.get('origin')]);
-                    if (!appOrigin)
-                        throw new Error('Invalid Origin');
-                    else if (appOrigin.to !== redirect_uri)
-                        throw new Error('Redirect uri mismatch');
-                    // console.log('appManifest', appManifest);
-                    if (!(username || passwordOrWif)) {
-                        console.log('Perform login')
-                        res.render('auth/login', { layout: 'user', title: 'Steem Connect' });
-                    } else {
-                        //Todo verify username and password
-                        //Create token
-                        var isWif = steemAuth.isWif(passwordOrWif);
-                        var postingWif = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'posting');
-                        req.session.auth = req.session.auth || {};
-                        req.session.auth[appName] = { username, postingWif, scope, clientId, appName, appAuthor };
-                        let token = jwt.sign({ sessionId: req.session.id, username, scope, clientId, appName, appAuthor }, process.env.JWT_SECRET, { expiresIn: '36h' });
-                        res.json({ token });
-                    }
-                } else {
-                    throw new Error('Invalid author or appName. App not found');
-                }
-            } catch (e) {
-                let message = e.message;
-                if (e.message.search('decrypt') >= 0)
-                    message = 'Invalid clientId';
+    console.log('appAuthor, appName, clientId, redirect_uri, scope, username, wif', appAuthor, appName, clientId, redirect_uri, scope, username, wif);
+    if (appAuthor) {
+        //Perform App Login
+        steem.api.getAccounts([appAuthor], (err, result) => {
+            if (err) {
                 res.json({
-                    error: message
+                    error: JSON.stringify(err)
+                })
+            } else {
+                try {
+                    let computeSecret = getSecretKeyForClientId(clientId);
+                    let jsonMetadata = getJSONMetadata(result[0]);
+                    if (typeof jsonMetadata.appCreated === 'object' && jsonMetadata.appCreated[appName]) {
+                        let appDetails = jsonMetadata.appCreated[appName];
+                        var appManifest = decrypMessage(appDetails.appManifest, computeSecret)
+                        appManifest = JSON.parse(appManifest);
+                        let appOrigin = _.find(appManifest.origins, ['from', req.get('origin')]);
+                        console.log(req.headers);
+                        if (!appOrigin)
+                            throw new Error('Invalid Origin');
+                        else if (appOrigin.to !== redirect_uri)
+                            throw new Error('Redirect uri mismatch');
+                        console.log('appManifest', appManifest);
+                        if (!(username || wif)) {
+                            console.log('Perform login')
+                            res.render('auth/login', { layout: 'auth', title: 'Steem Connect', serverPublicKey: process.env.PUBLIC_KEY });
+                        } else {
+                            //Todo verify username and wif
+                            // Create token
+                            req.session.auth = req.session.auth || {};
+                            req.session.auth[appName] = { username, wif, scope, clientId, appName, appAuthor };
+                            let token = jwt.sign({ sessionId: req.session.id, username, scope, clientId, appName, appAuthor }, process.env.JWT_SECRET, { expiresIn: '36h' });
+                            res.json({ token });
+                        }
+                    } else {
+                        throw new Error('Invalid author or appName. App not found');
+                    }
+                } catch (e) {
+                    let message = e.message;
+                    if (e.message.search('decrypt') >= 0)
+                        message = 'Invalid clientId';
+                    res.json({
+                        error: message
+                    })
+                }
+            }
+        });
+    } else {
+        //Perform Login for SteemConnect
+        let computeSecret = getSecretKeyForClientId(process.env.PUBLIC_KEY);
+        steem.api.getAccounts([username], (err, result) => {
+            if (err) {
+                err && console.error('Error while processing getAccounts', JSON.stringify(err));
+                res.send({
+                    error: JSON.stringify(err)
+                })
+            } else if (result.length === 0) {
+                res.send({
+                    error: 'Incorrect Username'
+                })
+            } else if (result[0] && steemAuth.wifIsValid(wif, result[0].posting.key_auths[0][0])) {
+                let secret = encryptMessage(JSON.stringify({ username, wif }), computeSecret);
+                let token = jwt.sign({ username, secret, for: 'SteemConnect' }, process.env.JWT_SECRET, { expiresIn: '36h' });
+                res.send({
+                    userAccount: result[0],
+                    token: token
+                })
+            } else {
+                res.send({
+                    error: 'Incorrect Password'
                 })
             }
-        }
-    });
+        });
+    }
 });
 
 router.get('/app/test', function (req, res, next) {
@@ -108,6 +134,14 @@ router.get('/app/test', function (req, res, next) {
         test: 'true'
     })
 });
+
+function getSecretKeyForClientId(clientId) {
+    var serverCrypto = createECDH(mod);
+    serverCrypto.setPublicKey(process.env.PUBLIC_KEY, 'hex');
+    serverCrypto.setPrivateKey(process.env.PRIVATE_KEY, 'hex');
+    return serverCrypto.computeSecret(clientId, 'hex', 'hex');
+}
+
 function getJSONMetadata(user) {
     let jsonMetadata = user.json_metadata;
     try {

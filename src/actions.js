@@ -11,30 +11,32 @@ function login(username, passwordOrWif) {
 		let isWif = steemAuth.isWif(passwordOrWif);
 		let wif = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'posting');
 		dispatch({ type: C.LOGIN_REQUEST });
-		steem.api.getAccounts([username], (err, result) => {
-			err && console.error('Error while processing getAccounts', JSON.stringify(err));
-			if (result.length === 0) {
+		console.log('Here');
+		axios.get('/app/authorize', {
+			params: {
+				username, wif
+			}
+		}).then(({data}) => {
+			let {error, userAccount, token} = data;
+			if (error) {
 				dispatch({
 					type: C.LOGIN_FAILURE,
 					user: {},
-					errorMessage: 'Incorrect Username'
+					errorMessage: error
 				});
-			} else if (result[0] && steemAuth.wifIsValid(wif, result[0].posting.key_auths[0][0])) {
-				let {json_metadata, memo_key, reputation, balance} = result[0];
+			} else if (userAccount && token.length) {
+				let {json_metadata, memo_key, reputation, balance} = userAccount;
 				json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
-				let res = {
+				dispatch({
 					type: C.LOGIN_SUCCESS,
 					user: { name: username, profile: json_metadata.profile, memo_key, reputation, balance },
-					errorMessage: ''
-				};
-				cookie.save(JSON.stringify({ username, wif }));
-				Object.assign(res);
-				dispatch(res);
+				});
+				cookie.save(token, 'auth');
 			} else {
 				dispatch({
 					type: C.LOGIN_FAILURE,
 					user: {},
-					errorMessage: 'Incorrect Password'
+					errorMessage: "Malformed request"
 				});
 			}
 		});
