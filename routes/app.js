@@ -5,47 +5,41 @@ const express = require('express'),
     steemAuth = require('steemauth'),
     createECDH = require('create-ecdh'),
     jwt = require('jsonwebtoken'),
+    {verifyAuth} = require('./middleware'),
     cookie = require('./../lib/cookie');
 
 const {getSecretKeyForClientId, getJSONMetadata, decrypMessage, encryptMessage} = require('../lib/utils');
 
-router.post('/app/create', function (req, res, next) {
-    var auth = (req.cookies['_sc_a']) ? JSON.parse(req.cookies['_sc_a']) : cookie.get();
-    if (_.has(auth, 'username')) {
-        let {username, passwordOrWif, publicMemo, appName, description, appManifest} = req.body;
-        var newApp = createECDH(process.env.CRYPTO_MOD);
-        newApp.generateKeys();
-        var publicKey = newApp.getPublicKey('hex');
-        let computeSecret = newApp.computeSecret(process.env.PUBLIC_KEY, 'hex', 'hex');
-        appManifest.author = username; //For security purpose
-        appManifest = JSON.stringify(appManifest);
-        let encryptedAppManifest = encryptMessage(appManifest, computeSecret);
+router.post('/app/create', verifyAuth, function (req, res, next) {
+    let {username, passwordOrWif, publicMemo, appName, description, appManifest} = req.body;
+    var newApp = createECDH(process.env.CRYPTO_MOD);
+    newApp.generateKeys();
+    var publicKey = newApp.getPublicKey('hex');
+    let computeSecret = newApp.computeSecret(process.env.PUBLIC_KEY, 'hex', 'hex');
+    appManifest.author = username; //For security purpose
+    appManifest = JSON.stringify(appManifest);
+    let encryptedAppManifest = encryptMessage(appManifest, computeSecret);
 
-        steem.api.getAccounts([username], (err, result) => {
-            var isWif = steemAuth.isWif(passwordOrWif);
-            var ownerKey = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'owner');
-            if (err) {
+    steem.api.getAccounts([username], (err, result) => {
+        var isWif = steemAuth.isWif(passwordOrWif);
+        var ownerKey = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'owner');
+        if (err) {
+            res.json({
+                error: JSON.stringify(err)
+            })
+        } else {
+            let user = result[0];
+            let jsonMetadata = getJSONMetadata(user);
+            jsonMetadata.appCreated = jsonMetadata.appCreated || {};
+            jsonMetadata.appCreated[appName] = { appName, description, appManifest: encryptedAppManifest };
+            steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, user.memo_key, jsonMetadata, function (err, result) {
                 res.json({
-                    error: JSON.stringify(err)
-                })
-            } else {
-                let user = result[0];
-                let jsonMetadata = getJSONMetadata(user);
-                jsonMetadata.appCreated = jsonMetadata.appCreated || {};
-                jsonMetadata.appCreated[appName] = { appName, description, appManifest: encryptedAppManifest };
-                steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, user.memo_key, jsonMetadata, function (err, result) {
-                    res.json({
-                        clientId: publicKey,
-                        clientSecret: computeSecret
-                    });
+                    clientId: publicKey,
+                    clientSecret: computeSecret
                 });
-            }
-        });
-    } else {
-        res.json({
-            isAuthenticated: false
-        })
-    }
+            });
+        }
+    });
 });
 
 router.get('/app/login', function (req, res, next) {
@@ -76,10 +70,8 @@ router.get('/app/login', function (req, res, next) {
     });
 });
 
-router.get('/app/authorize', function (req, res, next) {
-    let {appAuthor, appName, clientId, redirect_uri, scope, username, wif } = req.query;
-    // console.log('computed secret', computeSecret);
-    console.log('appAuthor, appName, clientId, redirect_uri, scope, username, wif', appAuthor, appName, clientId, redirect_uri, scope, username, wif);
+router.get('/app/authorize', verifyAuth, function (req, res, next) {
+    let {appAuthor, appName, clientId, redirect_uri, scope } = req.query;
     steem.api.getAccounts([appAuthor], (err, result) => {
         if (err) {
             res.json({
@@ -93,24 +85,10 @@ router.get('/app/authorize', function (req, res, next) {
                     let appDetails = jsonMetadata.appCreated[appName];
                     var appManifest = decrypMessage(appDetails.appManifest, computeSecret)
                     appManifest = JSON.parse(appManifest);
-                    let appOrigin = _.find(appManifest.origins, ['from', req.get('origin')]);
-                    console.log(req.headers);
-                    if (!appOrigin)
-                        throw new Error('Invalid Origin');
-                    else if (appOrigin.to !== redirect_uri)
+                    if (!_.find(appManifest.origins, ['to', redirect_uri]))
                         throw new Error('Redirect uri mismatch');
-                    console.log('appManifest', appManifest);
-                    if (!(username || wif)) {
-                        console.log('Perform login')
-                        res.render('auth/login', { layout: 'auth', title: 'Steem Connect', serverPublicKey: process.env.PUBLIC_KEY });
-                    } else {
-                        //Todo verify username and wif
-                        // Create token
-                        req.session.auth = req.session.auth || {};
-                        req.session.auth[appName] = { username, wif, scope, clientId, appName, appAuthor };
-                        let token = jwt.sign({ sessionId: req.session.id, username, scope, clientId, appName, appAuthor }, process.env.JWT_SECRET, { expiresIn: '36h' });
-                        res.json({ token });
-                    }
+                    let token = jwt.sign({ username: req.username, scope, clientId, appName, appAuthor }, process.env.JWT_SECRET, { expiresIn: '36h' });
+                    res.redirect(`${redirect_uri}?token=${token}`);
                 } else {
                     throw new Error('Invalid author or appName. App not found');
                 }
@@ -126,8 +104,7 @@ router.get('/app/authorize', function (req, res, next) {
     });
 });
 
-router.get('/app/test', function (req, res, next) {
-    console.log(req.session);
+router.get('/app/test', verifyAuth, function (req, res, next) {
     res.json({
         test: 'true'
     })
