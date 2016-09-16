@@ -54,11 +54,11 @@ function getAccount() {
 					errorMessage: JSON.stringify(err)
 				});
 			} else {
-				let {json_metadata, memo_key, reputation, balance, username} = result[0];
+				let {json_metadata, memo_key, reputation, balance, name} = result[0];
 				json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
 				dispatch({
 					type: C.LOGIN_SUCCESS,
-					user: { name: username, profile: json_metadata.profile, memo_key, reputation, balance },
+					user: { name, profile: json_metadata.profile, memo_key, reputation, balance },
 				});
 			}
 		});
