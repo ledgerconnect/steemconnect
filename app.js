@@ -23,6 +23,7 @@ process.env.PRIME = 'eca59a04b80707d8bf72739b9e97f0692ef5614c83128e520348aa3cd81
 process.env.PUBLIC_KEY = "0467e93f4a008220dc4f89a8446ffb96592b8a64222b71839392263b8eb9ccd1c8be169261eb41069b9a4e19e424b5d10749ce2dd8b0dafcc188a9a0865f768b83";
 process.env.PRIVATE_KEY = "70e97a7091f238948dd6efecbee658b1fb4b684fd6883cea4ff50cfc149b6d3a";
 process.env.JWT_SECRET = 'a2a30bd6fc5f44c1b30439db8b7ef0833effda2e505fbed65e96e889919f1813';
+process.env.CRYPTO_MOD = 'secp256k1';
 
 // view engine setup
 var hbs = require('hbs');

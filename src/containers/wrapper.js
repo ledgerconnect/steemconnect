@@ -8,8 +8,7 @@ var React = require('react'),
 
 var Wrapper = React.createClass({
   componentWillMount: function () {
-    var sca = cookie.get();
-    if (sca) { this.props.login(sca.username, sca.wif); }
+    this.props.getAccount();
   },
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated && nextProps.location.pathname.indexOf('/login') === 0) {
@@ -43,6 +42,7 @@ var mapStateToProps = function (state) {
 
 var mapDispatchToProps = function (dispatch) {
   return {
+    getAccount: function () { dispatch(actions.getAccount()) },
     login: function (username, password) { dispatch(actions.login(username, password)); }
   }
 };

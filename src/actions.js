@@ -11,8 +11,7 @@ function login(username, passwordOrWif) {
 		let isWif = steemAuth.isWif(passwordOrWif);
 		let wif = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'posting');
 		dispatch({ type: C.LOGIN_REQUEST });
-		console.log('Here');
-		axios.get('/app/authorize', {
+		axios.get('/app/login', {
 			params: {
 				username, wif
 			}
@@ -31,7 +30,7 @@ function login(username, passwordOrWif) {
 					type: C.LOGIN_SUCCESS,
 					user: { name: username, profile: json_metadata.profile, memo_key, reputation, balance },
 				});
-				cookie.save(token, 'auth');
+				cookie.save(token, 'token');
 			} else {
 				dispatch({
 					type: C.LOGIN_FAILURE,
@@ -41,6 +40,43 @@ function login(username, passwordOrWif) {
 			}
 		});
 	};
+}
+
+function getAccount() {
+	return function (dispatch, getState) {
+		let token = cookie.get('token');
+		dispatch({ type: C.LOGIN_REQUEST });
+		axios.get('/api/getAccount').then(({data: {err, result}}) => {
+			if (err) {
+				dispatch({
+					type: C.LOGIN_FAILURE,
+					user: {},
+					errorMessage: JSON.stringify(err)
+				});
+			} else {
+				let {json_metadata, memo_key, reputation, balance, username} = result[0];
+				json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
+				dispatch({
+					type: C.LOGIN_SUCCESS,
+					user: { name: username, profile: json_metadata.profile, memo_key, reputation, balance },
+				});
+			}
+		});
+	}
+}
+
+function authorize() {
+	return function (dispatch, getState) {
+		dispatch({ type: C.AUTHORIZE_REQUEST });
+		let token = cookie.get('token');
+		if (token) {
+			axios.get('/app/authorize', {
+				params: {
+					token
+				}
+			}).then(({data}) => { });
+		} else { }
+	}
 }
 
 function logout() {
@@ -119,5 +155,7 @@ module.exports = {
 	setAvatar,
 	accountUpdate,
 	clearUpdatingProfileResult,
+	getAccount,
+	authorize,
 	getAccountHistory
 };
