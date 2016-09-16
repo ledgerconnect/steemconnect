@@ -45,6 +45,8 @@ function login(username, passwordOrWif) {
 function getAccount() {
 	return function (dispatch, getState) {
 		let token = cookie.get('token');
+		if (!token)
+			return;
 		dispatch({ type: C.LOGIN_REQUEST });
 		axios.get('/api/getAccount').then(({data: {err, result}}) => {
 			if (err) {
@@ -80,18 +82,21 @@ function authorize() {
 }
 
 function logout() {
-	let userCookie = cookie.get();
-	let lastUser = cookie.get('last_users');
-	if (!_.isArray(lastUser))
-		lastUser = [];
+	return function (dispatch, getState) {
+		let state = getState();
+		let user = state.auth.user;
+		let lastUser = cookie.get('last_users');
+		if (!_.isArray(lastUser))
+			lastUser = [];
 
-	if (userCookie.username) {
-		lastUser = [userCookie.username].concat(lastUser);
-		lastUser = _.uniq(lastUser);
-	}
-	cookie.clear();
-	cookie.save(lastUser, 'last_users');
-	return { type: C.LOGOUT_SUCCESS };
+		if (user.name) {
+			lastUser = [user.name].concat(lastUser);
+			lastUser = _.uniq(lastUser);
+		}
+		cookie.clear();
+		cookie.save(lastUser, 'last_users');
+		dispatch({ type: C.LOGOUT_SUCCESS });
+	};
 }
 
 function setAvatar(passwordOrWif, file, type) {
