@@ -11,7 +11,7 @@ function login(username, passwordOrWif) {
 	return (dispatch, getState) => {
 		let isWif = steemAuth.isWif(passwordOrWif);
 		let wif = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'posting');
-		dispatch({ type: C.LOGIN_REQUEST });
+		dispatch({ type: authTypes.LOGIN_REQUEST });
 		axios.get('/app/login', {
 			params: {
 				username, wif
@@ -48,11 +48,11 @@ function getAccount() {
 		let token = cookie.get('token');
 		if (!token)
 			return;
-		dispatch({ type: C.LOGIN_REQUEST });
+		dispatch({ type: authTypes.LOGIN_REQUEST });
 		axios.get('/api/getAccount').then(({data: {err, result}}) => {
 			if (err) {
 				dispatch({
-					type: C.LOGIN_FAILURE,
+					type: authTypes.LOGIN_FAILURE,
 					user: {},
 					errorMessage: JSON.stringify(err)
 				});
@@ -60,7 +60,7 @@ function getAccount() {
 				let {json_metadata, memo_key, reputation, balance, name} = result[0];
 				json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
 				dispatch({
-					type: C.LOGIN_SUCCESS,
+					type: authTypes.LOGIN_SUCCESS,
 					user: { name, profile: json_metadata.profile, memo_key, reputation, balance },
 				});
 			}
@@ -70,7 +70,7 @@ function getAccount() {
 
 function authorize() {
 	return function (dispatch, getState) {
-		dispatch({ type: C.AUTHORIZE_REQUEST });
+		dispatch({ type: authTypes.AUTHORIZE_REQUEST });
 		let token = cookie.get('token');
 		if (token) {
 			axios.get('/app/authorize', {
@@ -96,7 +96,7 @@ function logout() {
 		}
 		cookie.clear();
 		cookie.save(lastUser, 'last_users');
-		dispatch({ type: C.LOGOUT_SUCCESS });
+		dispatch({ type: authTypes.LOGOUT_SUCCESS });
 	};
 }
 
