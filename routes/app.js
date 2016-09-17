@@ -83,7 +83,8 @@ router.get('/app/authorize', verifyAuth, (req, res) => {
           if (!_.find(appManifest.origins, ['to', redirect_uri])) { // eslint-disable-line
             throw new Error('Redirect uri mismatch');
           }
-          const token = jwt.sign({ username: req.username, scope, clientId, appName, appAuthor }, process.env.JWT_SECRET, { expiresIn: '36h' });
+          const allowedOrigin = _.chain(appManifest.origins).mapValues('from').filter().value();
+          const token = jwt.sign({ username: req.username, allowedOrigin, scope, clientId, appName, appAuthor }, process.env.JWT_SECRET, { expiresIn: '36h' });
           res.redirect(`${redirect_uri}?token=${token}`); // eslint-disable-line
         } else {
           throw new Error('Invalid author or appName. App not found');

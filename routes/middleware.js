@@ -10,7 +10,6 @@ function verifyAuth(req, res, next) {
     const auth = req.headers.authorization.substring('Bearer '.length);
     jwt.verify(auth, process.env.JWT_SECRET, (err, jwtData) => {
       if (err) {
-        // console.log('err', err);
         res.sendStatus(401);
       } else {
         const computeSecret = getSecretKeyForClientId(process.env.PUBLIC_KEY);
@@ -46,8 +45,13 @@ function verifyToken(req, res, next) {
         if (err) {
           res.sendStatus(401);
         } else {
-          req.token = jwtData; // eslint-disable-line no-param-reassign
-          next();
+          const isAuthorizedOrigin = _.indexOf(jwtData.allowedOrigin, origin) !== -1;
+          if (isAuthorizedOrigin) {
+            req.token = jwtData; // eslint-disable-line no-param-reassign
+            next();
+          } else {
+            res.sendStatus(401);
+          }
         }
       });
     }
