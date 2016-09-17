@@ -7,6 +7,7 @@ const http = require('http');
 const https = require('https');
 const cors = require('cors');
 const hbs = require('hbs');
+const helmet = require('helmet');
 const { verifyToken } = require('./routes/middleware');
 
 http.globalAgent.maxSockets = 100;
@@ -31,6 +32,7 @@ hbs.registerPartials(path.join(__dirname, 'views/partials'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
+app.use(helmet());
 app.use(cookieParser());
 app.use(logger('dev'));
 app.use(bodyParser.json());

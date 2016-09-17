@@ -39,6 +39,7 @@
     "express-session": "^1.13.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "hbs": "~3.1.0",
+    "helmet": "^2.2.0",
     "js-cookie": "^2.1.2",
     "json-loader": "^0.5.4",
     "jsonwebtoken": "^7.1.9",
