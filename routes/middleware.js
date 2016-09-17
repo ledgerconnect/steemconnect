@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { getSecretKeyForClientId, decrypMessage } = require('../lib/utils');
+const { getSecretKeyForClientId, decryptMessage } = require('../lib/utils');
 const jwt = require('jsonwebtoken');
 
 function verifyAuth(req, res, next) {
@@ -13,7 +13,7 @@ function verifyAuth(req, res, next) {
         res.sendStatus(401);
       } else {
         const computeSecret = getSecretKeyForClientId(process.env.PUBLIC_KEY);
-        let message = decrypMessage(jwtData.secret, computeSecret);
+        let message = decryptMessage(jwtData.secret, computeSecret);
         message = JSON.parse(message);
         if (message.username === jwtData.username && (typeof req.token === 'undefined' || req.token.username === jwtData.username)) {
           _.each(jwtData, (value, key) => {

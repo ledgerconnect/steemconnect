@@ -5,12 +5,14 @@ const steemAuth = require('steemauth');
 const createECDH = require('create-ecdh');
 const jwt = require('jsonwebtoken');
 const { verifyAuth } = require('./middleware');
-const { getSecretKeyForClientId, getJSONMetadata, decrypMessage, encryptMessage } = require('../lib/utils');
+const { getSecretKeyForClientId, getJSONMetadata, decryptMessage, encryptMessage } = require('../lib/utils');
 
 const router = new express.Router();
 
 router.get('/app/login', (req, res) => {
-  const { username, wif } = req.query;
+  const { encryptedData } = req.query;
+  const data = decryptMessage(encryptedData, req.cookies._csrf); // eslint-disable-line
+  const { username, wif } = JSON.parse(data);
   const computeSecret = getSecretKeyForClientId(process.env.PUBLIC_KEY);
   steem.api.getAccounts([username], (err, result) => {
     if (err) {
@@ -66,7 +68,7 @@ router.get('/app/authorize', verifyAuth, (req, res) => {
         const clientSecret = getSecretKeyForClientId(clientId);
         const jsonMetadata = getJSONMetadata(result[0]);
         if (typeof jsonMetadata.app === 'object' && jsonMetadata.app) {
-          let privateMetadata = decrypMessage(jsonMetadata.app.private_metadata, clientSecret);
+          let privateMetadata = decryptMessage(jsonMetadata.app.private_metadata, clientSecret);
           privateMetadata = JSON.parse(privateMetadata);
           if (_.indexOf(privateMetadata.redirect_urls, redirect_url) === -1) { // eslint-disable-line
             throw new Error('Redirect uri mismatch');
