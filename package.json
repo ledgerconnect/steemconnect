@@ -33,6 +33,7 @@
     "crypto": "0.0.3",
     "css-loader": "^0.24.0",
     "css-spacing": "^1.0.0",
+    "csurf": "^1.9.0",
     "debug": "~2.2.0",
     "ecurve": "^1.0.3",
     "express": "~4.13.1",

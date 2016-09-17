@@ -8,6 +8,7 @@ const https = require('https');
 const cors = require('cors');
 const hbs = require('hbs');
 const helmet = require('helmet');
+const csurf = require('csurf');
 const { verifyToken } = require('./routes/middleware');
 
 http.globalAgent.maxSockets = 100;
@@ -35,6 +36,7 @@ app.set('view engine', 'hbs');
 app.use(helmet());
 app.use(cookieParser());
 app.use(logger('dev'));
+app.use(csurf({ cookie: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
