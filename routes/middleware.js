@@ -3,7 +3,6 @@ const { getSecretKeyForClientId, decrypMessage } = require('../lib/utils');
 const jwt = require('jsonwebtoken');
 
 function verifyAuth(req, res, next) {
-  /* TODO Add Origin Check */
   if (req.cookies.auth && typeof req.headers.authorization === 'undefined') {
     req.headers.authorization = `Bearer ${req.cookies.auth}`; // eslint-disable-line no-param-reassign
   }
@@ -17,7 +16,7 @@ function verifyAuth(req, res, next) {
         const computeSecret = getSecretKeyForClientId(process.env.PUBLIC_KEY);
         let message = decrypMessage(jwtData.secret, computeSecret);
         message = JSON.parse(message);
-        if (message.username === jwtData.username) {
+        if (message.username === jwtData.username && (typeof req.token === 'undefined' || req.token.username === jwtData.username)) {
           _.each(jwtData, (value, key) => {
             req[key] = value; // eslint-disable-line no-param-reassign
           });
@@ -35,6 +34,30 @@ function verifyAuth(req, res, next) {
   }
 }
 
+function verifyToken(req, res, next) {
+  const origin = req.get('origin');
+  const token = req.get('x-steemconnect-token') || req.query.token;
+
+  if (origin) {
+    if (!token) {
+      res.sendStatus(401);
+    } else {
+      jwt.verify(token, process.env.JWT_SECRET, (err, jwtData) => {
+        if (err) {
+          res.sendStatus(401);
+        } else {
+          req.token = jwtData; // eslint-disable-line no-param-reassign
+          next();
+        }
+      });
+    }
+  } else {
+    /* For request made from steemconnect website */
+    next();
+  }
+}
+
 module.exports = {
   verifyAuth,
+  verifyToken,
 };

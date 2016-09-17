@@ -7,6 +7,7 @@ const http = require('http');
 const https = require('https');
 const cors = require('cors');
 const hbs = require('hbs');
+const { verifyToken } = require('./routes/middleware');
 
 http.globalAgent.maxSockets = 100;
 https.globalAgent.maxSockets = 100;
@@ -39,7 +40,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
 app.use(cors({ credentials: true, origin: true }));
-
+app.use(verifyToken);
 app.use('/', require('./routes/api'));
 app.use('/', require('./routes/app'));
 app.use('/', require('./routes/user'));
