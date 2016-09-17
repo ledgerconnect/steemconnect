@@ -9,46 +9,6 @@ const { getSecretKeyForClientId, getJSONMetadata, decrypMessage, encryptMessage 
 
 const router = new express.Router();
 
-router.post('/app/create', verifyAuth, (req, res) => {
-  const { username, ownerWif, appName, description } = req.body;
-  let { appManifest } = req.body;
-  const newApp = createECDH(process.env.CRYPTO_MOD);
-  newApp.generateKeys();
-  const publicKey = newApp.getPublicKey('hex');
-  const computeSecret = newApp.computeSecret(process.env.PUBLIC_KEY, 'hex', 'hex');
-  appManifest.author = username; /* For security purpose */
-  appManifest = JSON.stringify(appManifest);
-  const encryptedAppManifest = encryptMessage(appManifest, computeSecret);
-
-  steem.api.getAccounts([username], (err, result) => {
-    const isWif = steemAuth.isWif(ownerWif);
-    const ownerKey = (isWif) ? ownerWif : steemAuth.toWif(username, ownerWif, 'owner');
-    if (err) {
-      res.json({
-        error: JSON.stringify(err),
-      });
-    } else {
-      const user = result[0];
-      const jsonMetadata = getJSONMetadata(user);
-      jsonMetadata.appCreated = jsonMetadata.appCreated || {};
-      jsonMetadata.appCreated[appName] = {
-        appName, description, appManifest: encryptedAppManifest,
-      };
-      steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined,
-        user.memo_key, jsonMetadata, (accountUpdateErr) => {
-          if (accountUpdateErr) {
-            res.json({ error: JSON.stringify(accountUpdateErr) });
-          } else {
-            res.json({
-              clientId: publicKey,
-              clientSecret: computeSecret,
-            });
-          }
-        });
-    }
-  });
-});
-
 router.get('/app/login', (req, res) => {
   const { username, wif } = req.query;
   const computeSecret = getSecretKeyForClientId(process.env.PUBLIC_KEY);
@@ -67,24 +27,57 @@ router.get('/app/login', (req, res) => {
   });
 });
 
+router.post('/app/create', verifyAuth, (req, res) => {
+  const { appUserName, appOwnerWif, appName, author, origins, redirect_urls, permissions } = req.body; // eslint-disable-line
+  const newApp = createECDH(process.env.CRYPTO_MOD);
+  newApp.generateKeys();
+  const clientId = newApp.getPublicKey('hex');
+  const clientSecret = newApp.computeSecret(process.env.PUBLIC_KEY, 'hex', 'hex');
+
+  steem.api.getAccounts([appUserName], (err, result) => {
+    const isWif = steemAuth.isWif(appOwnerWif);
+    const ownerKey = (isWif) ? appOwnerWif : steemAuth.toWif(appUserName, appOwnerWif, 'owner');
+    if (err) {
+      res.json({ error: JSON.stringify(err) });
+    } else {
+      const user = result[0];
+      const jsonMetadata = getJSONMetadata(user);
+      const private_metadata = encryptMessage(JSON.stringify({ origins, redirect_urls }), clientSecret); // eslint-disable-line
+      jsonMetadata.app = { name: appName, author, permissions, private_metadata };
+      steem.broadcast.accountUpdate(ownerKey, appUserName, undefined, undefined, undefined,
+        user.memo_key, jsonMetadata, (accountUpdateErr) => {
+          if (accountUpdateErr) {
+            res.json({ error: JSON.stringify(accountUpdateErr) });
+          } else {
+            res.json({ clientId, clientSecret });
+          }
+        });
+    }
+  });
+});
+
 router.get('/app/authorize', verifyAuth, (req, res) => {
-  const { appAuthor, appName, clientId, redirect_uri, scope } = req.query;
-  steem.api.getAccounts([appAuthor], (err, result) => {
+  const { appUserName, clientId, redirect_uri, scope } = req.query;
+  steem.api.getAccounts([appUserName], (err, result) => {
     if (err) {
       res.json({ error: JSON.stringify(err) });
     } else {
       try {
-        const computeSecret = getSecretKeyForClientId(clientId);
+        const clientSecret = getSecretKeyForClientId(clientId);
         const jsonMetadata = getJSONMetadata(result[0]);
-        if (typeof jsonMetadata.appCreated === 'object' && jsonMetadata.appCreated[appName]) {
-          const appDetails = jsonMetadata.appCreated[appName];
-          let appManifest = decrypMessage(appDetails.appManifest, computeSecret);
-          appManifest = JSON.parse(appManifest);
-          if (!_.find(appManifest.origins, ['to', redirect_uri])) { // eslint-disable-line
+        if (typeof jsonMetadata.app === 'object' && jsonMetadata.app) {
+          let privateMetadata = decrypMessage(jsonMetadata.app.private_metadata, clientSecret);
+          privateMetadata = JSON.parse(privateMetadata);
+          if (!_.indexOf(privateMetadata.redirect_urls, redirect_uri)) { // eslint-disable-line
             throw new Error('Redirect uri mismatch');
           }
-          const allowedOrigin = _.chain(appManifest.origins).mapValues('from').filter().value();
-          const token = jwt.sign({ username: req.username, allowedOrigin, scope, clientId, appName, appAuthor }, process.env.JWT_SECRET, { expiresIn: '36h' });
+          const token = jwt.sign({
+            username: req.username,
+            allowedOrigin: privateMetadata.origins,
+            scope,
+            clientId,
+            appUserName,
+          }, process.env.JWT_SECRET, { expiresIn: '36h' });
           res.redirect(`${redirect_uri}?token=${token}`); // eslint-disable-line
         } else {
           throw new Error('Invalid author or appName. App not found');
