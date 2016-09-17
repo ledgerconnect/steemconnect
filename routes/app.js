@@ -57,7 +57,7 @@ router.post('/app/create', verifyAuth, (req, res) => {
 });
 
 router.get('/app/authorize', verifyAuth, (req, res) => {
-  const { appUserName, clientId, redirect_uri, scope } = req.query;
+  const { appUserName, clientId, redirect_url, scope } = req.query;
   steem.api.getAccounts([appUserName], (err, result) => {
     if (err) {
       res.json({ error: JSON.stringify(err) });
@@ -68,7 +68,7 @@ router.get('/app/authorize', verifyAuth, (req, res) => {
         if (typeof jsonMetadata.app === 'object' && jsonMetadata.app) {
           let privateMetadata = decrypMessage(jsonMetadata.app.private_metadata, clientSecret);
           privateMetadata = JSON.parse(privateMetadata);
-          if (!_.indexOf(privateMetadata.redirect_urls, redirect_uri)) { // eslint-disable-line
+          if (_.indexOf(privateMetadata.redirect_urls, redirect_url) === -1) { // eslint-disable-line
             throw new Error('Redirect uri mismatch');
           }
           const token = jwt.sign({
@@ -78,14 +78,16 @@ router.get('/app/authorize', verifyAuth, (req, res) => {
             clientId,
             appUserName,
           }, process.env.JWT_SECRET, { expiresIn: '36h' });
-          res.redirect(`${redirect_uri}?token=${token}`); // eslint-disable-line
+          res.redirect(`${redirect_url}?token=${token}`); // eslint-disable-line
         } else {
-          throw new Error('Invalid author or appName. App not found');
+          throw new Error('Invalid appName. App not found');
         }
       } catch (e) {
         let message = e.message;
         if (e.message.search('decrypt') >= 0) {
           message = 'Invalid clientId';
+        } else if (e.message.search('json_metadata') >= 0) {
+          message = 'Invalid appName';
         }
         res.json({ error: message });
       }
