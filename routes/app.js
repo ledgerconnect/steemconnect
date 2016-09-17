@@ -11,7 +11,7 @@ const express = require('express'),
 const {getSecretKeyForClientId, getJSONMetadata, decrypMessage, encryptMessage} = require('../lib/utils');
 
 router.post('/app/create', verifyAuth, function (req, res, next) {
-    let {username, passwordOrWif, publicMemo, appName, description, appManifest} = req.body;
+    let {username, ownerWif, appName, description, appManifest} = req.body;
     var newApp = createECDH(process.env.CRYPTO_MOD);
     newApp.generateKeys();
     var publicKey = newApp.getPublicKey('hex');
@@ -21,8 +21,8 @@ router.post('/app/create', verifyAuth, function (req, res, next) {
     let encryptedAppManifest = encryptMessage(appManifest, computeSecret);
 
     steem.api.getAccounts([username], (err, result) => {
-        var isWif = steemAuth.isWif(passwordOrWif);
-        var ownerKey = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'owner');
+        var isWif = steemAuth.isWif(ownerWif);
+        var ownerKey = (isWif) ? ownerWif : steemAuth.toWif(username, ownerWif, 'owner');
         if (err) {
             res.json({
                 error: JSON.stringify(err)
