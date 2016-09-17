@@ -59,8 +59,8 @@ router.get('/app/login', (req, res) => {
       res.send({ error: 'Incorrect Username' });
     } else if (result[0] && steemAuth.wifIsValid(wif, result[0].posting.key_auths[0][0])) {
       const secret = encryptMessage(JSON.stringify({ username, wif }), computeSecret);
-      const token = jwt.sign({ username, secret, for: 'SteemConnect' }, process.env.JWT_SECRET, { expiresIn: '36h' });
-      res.send({ userAccount: result[0], token });
+      const auth = jwt.sign({ username, secret }, process.env.JWT_SECRET, { expiresIn: '36h' });
+      res.send({ userAccount: result[0], auth });
     } else {
       res.send({ error: 'Incorrect Password' });
     }

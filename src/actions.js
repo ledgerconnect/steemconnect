@@ -17,21 +17,21 @@ function login(username, passwordOrWif) {
 				username, wif
 			}
 		}).then(({data}) => {
-			let {error, userAccount, token} = data;
+			let {error, userAccount, auth} = data;
 			if (error) {
 				dispatch({
 					type: authTypes.LOGIN_FAILURE,
 					user: {},
 					errorMessage: error
 				});
-			} else if (userAccount && token.length) {
+			} else if (userAccount && auth.length) {
 				let {json_metadata, memo_key, reputation, balance} = userAccount;
 				json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
 				dispatch({
 					type: authTypes.LOGIN_SUCCESS,
 					user: { name: username, profile: json_metadata.profile, memo_key, reputation, balance },
 				});
-				cookie.save(token, 'token');
+				cookie.save(auth, 'auth');
 			} else {
 				dispatch({
 					type: authTypes.LOGIN_FAILURE,
@@ -45,8 +45,8 @@ function login(username, passwordOrWif) {
 
 function getAccount() {
 	return function (dispatch, getState) {
-		let token = cookie.get('token');
-		if (!token)
+		let auth = cookie.get('auth');
+		if (!auth)
 			return;
 		dispatch({ type: authTypes.LOGIN_REQUEST });
 		axios.get('/api/getAccount').then(({data: {err, result}}) => {
@@ -69,17 +69,12 @@ function getAccount() {
 }
 
 function authorize() {
-	return function (dispatch, getState) {
-		dispatch({ type: authTypes.AUTHORIZE_REQUEST });
-		let token = cookie.get('token');
-		if (token) {
-			axios.get('/app/authorize', {
-				params: {
-					token
-				}
-			}).then(({data}) => { });
-		} else { }
-	}
+  return function (dispatch, getState) {
+    dispatch({ type: authTypes.AUTHORIZE_REQUEST });
+    axios.get('/app/authorize', {
+      params: {}
+    }).then(({data}) => { });
+  }
 }
 
 function logout() {

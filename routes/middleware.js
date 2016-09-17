@@ -4,12 +4,12 @@ const jwt = require('jsonwebtoken');
 
 function verifyAuth(req, res, next) {
   /* TODO Add Origin Check */
-  if (req.cookies.token && typeof req.headers.authorization === 'undefined') {
-    req.headers.authorization = `Bearer ${req.cookies.token}`; // eslint-disable-line no-param-reassign
+  if (req.cookies.auth && typeof req.headers.authorization === 'undefined') {
+    req.headers.authorization = `Bearer ${req.cookies.auth}`; // eslint-disable-line no-param-reassign
   }
   if (typeof req.headers.authorization !== 'undefined' && (req.headers.authorization.search('Bearer ') === 0)) {
-    const token = req.headers.authorization.substring('Bearer '.length);
-    jwt.verify(token, process.env.JWT_SECRET, (err, jwtData) => {
+    const auth = req.headers.authorization.substring('Bearer '.length);
+    jwt.verify(auth, process.env.JWT_SECRET, (err, jwtData) => {
       if (err) {
         // console.log('err', err);
         res.sendStatus(401);
