@@ -3,8 +3,9 @@ const axios = require('axios'),
 	steem = require('steem'),
 	cookie = require('./../lib/cookie'),
 	validator = require('validator'),
-	_ = require('lodash'),
-	C = require('./constants');
+	_ = require('lodash');
+
+import * as authTypes from './auth/authActionTypes';
 
 function login(username, passwordOrWif) {
 	return (dispatch, getState) => {
@@ -19,7 +20,7 @@ function login(username, passwordOrWif) {
 			let {error, userAccount, token} = data;
 			if (error) {
 				dispatch({
-					type: C.LOGIN_FAILURE,
+					type: authTypes.LOGIN_FAILURE,
 					user: {},
 					errorMessage: error
 				});
@@ -27,13 +28,13 @@ function login(username, passwordOrWif) {
 				let {json_metadata, memo_key, reputation, balance} = userAccount;
 				json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
 				dispatch({
-					type: C.LOGIN_SUCCESS,
+					type: authTypes.LOGIN_SUCCESS,
 					user: { name: username, profile: json_metadata.profile, memo_key, reputation, balance },
 				});
 				cookie.save(token, 'token');
 			} else {
 				dispatch({
-					type: C.LOGIN_FAILURE,
+					type: authTypes.LOGIN_FAILURE,
 					user: {},
 					errorMessage: "Malformed request"
 				});
@@ -123,13 +124,13 @@ function setAvatar(passwordOrWif, file, type) {
 
 function accountUpdate(username, passwordOrWif, memo_key, jsonMetadata) {
 	return function (dispatch, getState) {
-		dispatch({ type: C.UPDATE_PROFILE, user: { isUpdatingProfile: true, isUpdatingProfileError: undefined } });
+		dispatch({ type: authTypes.UPDATE_PROFILE, user: { isUpdatingProfile: true, isUpdatingProfileError: undefined } });
 		var isWif = steemAuth.isWif(passwordOrWif);
 		var ownerKey = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'owner');
 		steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, memo_key, jsonMetadata, function (err, result) {
 			err && console.error('Error while processing accountUpdate', JSON.stringify(err));
 			dispatch({
-				type: C.UPDATE_PROFILE,
+				type: authTypes.UPDATE_PROFILE,
 				user: { profile: jsonMetadata.profile, isUpdatingProfile: false, isUpdatingProfileError: err ? true : false }
 			});
 		});
@@ -141,7 +142,7 @@ function getAccountHistory(username, from, limit) {
 		steem.api.getAccountHistory(username, from, limit, (err, result) => {
 			err && console.error(err);
 			dispatch({
-				type: C.UPDATE_PROFILE,
+				type: authTypes.UPDATE_PROFILE,
 				user: { accountHistory: result }
 			});
 		})
@@ -150,7 +151,7 @@ function getAccountHistory(username, from, limit) {
 
 function clearUpdatingProfileResult() {
 	return {
-		type: C.UPDATE_PROFILE,
+		type: authTypes.UPDATE_PROFILE,
 		user: { isUpdatingProfile: undefined, isUpdatingProfileError: undefined }
 	}
 }

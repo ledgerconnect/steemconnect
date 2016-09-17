@@ -3,9 +3,9 @@ const React = require('react'),
 	validator = require('validator'),
 	Link = require('react-router').Link,
 	bindActionCreators = require('redux').bindActionCreators,
-	Header = require('./../containers/header'),
+	Header = require('./../header/Header'),
 	actions = require("../actions"),
-	PasswordDialog = require('./../containers/password-dialog');
+	PasswordDialog = require('./../widgets/PasswordDialog');
 
 var Dashboard = React.createClass({
 	getInitialState: function () {
