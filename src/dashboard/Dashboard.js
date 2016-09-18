@@ -22,6 +22,7 @@ class Dashboard extends React.Component {
 					{accountHistory && <h2>Last Activity</h2>}
 					{accountHistory && _.sortBy(accountHistory, 'timestamp').reverse().map(([id, transaction]) =>
 						<Activity key={id} id={id} transaction={transaction}/>) }
+          <p><Link to="/logout"><i className="icon icon-md material-icons">lock_open</i><span className="hidden-xs"> Log Out</span></Link></p>
 				</div>
 			</div>
 		);

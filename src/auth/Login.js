@@ -50,9 +50,9 @@ var Login = React.createClass({
 				{!this.props.auth.isFetching && <div>
 					<div>
 						{selectedUser && <EditImageHeader username={selectedUser} />}
-						<form className="pvx mhl" onSubmit={this.handleSubmit}>
+						<form className="form pvx mhl" onSubmit={this.handleSubmit}>
 							<fieldset className="form-group">
-								<input autoFocus type={selectedUser ? "hidden" : "text"} placeholder="name" defaultValue={selectedUser} className="form-control form-control-lg" ref="username" />
+								<input autoFocus type={selectedUser ? "hidden" : "text"} placeholder="Username" defaultValue={selectedUser} className="form-control form-control-lg" ref="username" />
 							</fieldset>
 							<fieldset className="form-group">
 								<input type="password" placeholder="Password or posting WIF" className="form-control form-control-lg" ref="passwordOrWif" />
