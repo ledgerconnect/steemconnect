@@ -3,7 +3,7 @@ const React = require('react'),
     Dropzone = require('react-dropzone');
 
 module.exports = (props) => {
-    return <div className="cover pam" onClick={props.onClick} style={{ backgroundImage: `url(https://img.busy6.com/@${props.username}/cover)` }}>
+    return <div className="cover pam" onClick={props.onClick} style={{ backgroundImage: `url(https://img.busy6.com/@${props.username}/cover) !important` }}>
         {props.onDrop ? <div>
             <Dropzone className="avatar" onDrop={(files) => props.onDrop(files, 'profile_image') } accept='image/*'>
                 <a className="placeholder"><i className="icon icon-md material-icons">file_upload</i> Edit</a>
