@@ -9,7 +9,7 @@ const { getSecretKeyForClientId, getJSONMetadata, decryptMessage, encryptMessage
 
 const router = new express.Router();
 
-router.get('/app/login', (req, res) => {
+router.get('/auth/login', (req, res) => {
   const { encryptedData } = req.query;
   const data = decryptMessage(encryptedData, req.cookies._csrf); // eslint-disable-line
   const { username, wif } = JSON.parse(data);
@@ -29,7 +29,7 @@ router.get('/app/login', (req, res) => {
   });
 });
 
-router.post('/app/create', verifyAuth, (req, res) => {
+router.post('/auth/create', verifyAuth, (req, res) => {
   const { appUserName, appOwnerWif, appName, author, origins, redirect_urls, permissions } = req.body; // eslint-disable-line
   const newApp = createECDH(process.env.CRYPTO_MOD);
   newApp.generateKeys();
@@ -58,7 +58,7 @@ router.post('/app/create', verifyAuth, (req, res) => {
   });
 });
 
-router.get('/app/authorize', verifyAuth, (req, res) => {
+router.get('/auth/authorize', verifyAuth, (req, res) => {
   const { appUserName, clientId, redirect_url, scope } = req.query;
   steem.api.getAccounts([appUserName], (err, result) => {
     if (err) {

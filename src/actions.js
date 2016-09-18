@@ -20,7 +20,7 @@ function login(username, passwordOrWif) {
     const isWif = steemAuth.isWif(passwordOrWif);
     const wif = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'posting');
     dispatch({ type: authTypes.LOGIN_REQUEST });
-    axios.get('/app/login', {
+    axios.get('/auth/login', {
       params: { encryptedData: encryptData(JSON.stringify({ username, wif })) },
     }).then(({ data }) => {
       const { error, userAccount, auth } = data;

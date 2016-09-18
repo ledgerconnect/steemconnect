@@ -46,7 +46,7 @@ app.use(express.static(path.join(__dirname, 'node_modules')));
 app.use(cors({ credentials: true, origin: true }));
 app.use(verifyToken);
 app.use('/', require('./routes/api'));
-app.use('/', require('./routes/app'));
+app.use('/', require('./routes/auth'));
 app.use('/', require('./routes/user'));
 
 app.use((req, res, next) => {

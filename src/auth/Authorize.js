@@ -23,7 +23,7 @@ const Dashboard = React.createClass({
             <ul className="mbm">
               <li><i className="icon icon-sm material-icons">check_box</i> Verify your identity</li>
             </ul>
-            <a href={`/app/authorize?clientId=${clientId}&redirect_url=${redirect_url}&appUserName=${appName}&scope=${scope}`} className="btn btn-primary mbm" ref="body">Continue as @{this.props.auth.user.name}</a>
+            <a href={`/auth/authorize?clientId=${clientId}&redirect_url=${redirect_url}&appUserName=${appName}&scope=${scope}`} className="btn btn-primary mbm" ref="body">Continue as @{this.props.auth.user.name}</a>
           </div>
         }
       </div>
