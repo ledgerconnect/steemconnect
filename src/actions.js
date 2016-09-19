@@ -9,8 +9,8 @@ const _ = require('lodash');
 
 function encryptData(object) {
   const crfs = cookie.get('_csrf');
-  if (!crfs) {
-    cookie.save(Date.now().toString(16), '_csrf', {});
+  if (typeof crfs !== 'string' || (typeof crfs === 'string' && crfs.length === 0)) {
+    cookie.save(Date.now().toString(16), '_csrf', { secure: global.location.hostname !== 'localhost' });
   }
   return crypto.AES.encrypt(crypto.enc.Utf8.parse(object), cookie.get('_csrf')).toString();
 }
@@ -58,11 +58,7 @@ function getAccount() {
     dispatch({ type: authTypes.LOGIN_REQUEST });
     axios.get('/api/getAccount').then(({ data: { err, result } }) => {
       if (err) {
-        dispatch({
-          type: authTypes.LOGIN_FAILURE,
-          user: {},
-          errorMessage: JSON.stringify(err),
-        });
+        throw new Error(JSON.stringify(err));
       } else {
         let { json_metadata, memo_key, reputation, balance, name } = result[0];
         json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
@@ -71,6 +67,12 @@ function getAccount() {
           user: { name, profile: json_metadata.profile, memo_key, reputation, balance },
         });
       }
+    }).catch((err) => {
+      dispatch({
+        type: authTypes.LOGIN_FAILURE,
+        user: {},
+        errorMessage: JSON.stringify(err),
+      });
     });
   };
 }
@@ -98,7 +100,7 @@ function setAvatar(passwordOrWif, file, type) {
     const state = getState();
     const user = state.auth.user;
     const profileData = user.profile;
-    let data = new FormData();
+    const data = new FormData();
     data.append('file', file);
     let uploadUrl = 'https://img.busy6.com/@' + user.name;
     if (type === 'cover_image')
@@ -118,8 +120,8 @@ function setAvatar(passwordOrWif, file, type) {
 function accountUpdate(username, passwordOrWif, memo_key, jsonMetadata) {
   return function (dispatch, getState) {
     dispatch({ type: authTypes.UPDATE_PROFILE, user: { isUpdatingProfile: true, isUpdatingProfileError: undefined } });
-    let isWif = steemAuth.isWif(passwordOrWif);
-    let ownerKey = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'owner');
+    const isWif = steemAuth.isWif(passwordOrWif);
+    const ownerKey = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'owner');
     steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, memo_key, jsonMetadata, (err, result) => {
       err && console.error('Error while processing accountUpdate', JSON.stringify(err));
       dispatch({
