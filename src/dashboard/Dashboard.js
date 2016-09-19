@@ -1,6 +1,5 @@
 const React = require('react'),
 	ReactRedux = require('react-redux'),
-	EditImageHeader = require('./../header/EditImageHeader'),
 	Header = require('./../header/Header'),
 	actions = require('../actions'),
 	moment = require('moment'),
