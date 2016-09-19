@@ -35,9 +35,11 @@ const EditImageHeader = (props) => {
   }
 
   return (<div className="cover pam" onClick={props.onClick} style={{ backgroundImage: `url(https://img.busy6.com/@${props.username}/cover) !important` }}>
-    {dropZone}
+    <a>
+      {dropZone}
+      {username}
+    </a>
     {deleteBtn}
-    {username}
   </div>);
 };
 
