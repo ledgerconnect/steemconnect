@@ -6,22 +6,6 @@ const EditImageHeader = (props) => {
   let deleteBtn;
   let dropZone;
 
-  if (props.onDrop) {
-    dropZone = (<div>
-      <Dropzone className="avatar" onDrop={files => props.onDrop(files, 'profile_image')} accept="image/*">
-        <a className="placeholder"><i className="icon icon-md material-icons">file_upload</i> Edit</a>
-        <img alt="Profile" src={`https://img.busy6.com/@${props.username}`} />
-      </Dropzone>
-      <Dropzone className="cover-edit" onDrop={files => props.onDrop(files, 'cover_image')} accept="image/*">
-        <i className="icon icon-md material-icons">file_upload</i> Edit Cover
-      </Dropzone>
-    </div>);
-  } else {
-    dropZone = (<div className="avatar">
-      <img alt="Profile" src={`https://img.busy6.com/@${props.username}`} />
-    </div>);
-  }
-
   if (props.onDelete) {
     deleteBtn = (<a
       style={{ position: 'absolute', right: 20, top: 70 }}
@@ -34,11 +18,28 @@ const EditImageHeader = (props) => {
     username = <h3> @{props.username}</h3>;
   }
 
-  return (<div className="cover pam" onClick={props.onClick} style={{ backgroundImage: `url(https://img.busy6.com/@${props.username}/cover) !important` }}>
-    <a>
-      {dropZone}
+  if (props.onDrop) {
+    dropZone = (<div>
+      <Dropzone className="avatar" onDrop={files => props.onDrop(files, 'profile_image')} accept="image/*">
+        <a className="placeholder"><i className="icon icon-md material-icons">file_upload</i> Edit</a>
+        <img alt="Profile" src={`https://img.busy6.com/@${props.username}`} />
+      </Dropzone>
+      <Dropzone className="cover-edit" onDrop={files => props.onDrop(files, 'cover_image')} accept="image/*">
+        <i className="icon icon-md material-icons">file_upload</i> Edit Cover
+      </Dropzone>
       {username}
-    </a>
+    </div>);
+  } else {
+    dropZone = (<a>
+      <div className="avatar">
+        <img alt="Profile" src={`https://img.busy6.com/@${props.username}`} />
+      </div>
+      {username}
+    </a>);
+  }
+
+  return (<div className="cover pam" onClick={props.onClick} style={{ backgroundImage: `url(https://img.busy6.com/@${props.username}/cover) !important` }}>
+    {dropZone}
     {deleteBtn}
   </div>);
 };
