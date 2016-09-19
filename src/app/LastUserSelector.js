@@ -1,63 +1,91 @@
-const React = require('react'),
-    {Link, withRouter} = require('react-router'),
-    _ = require('lodash'),
-    EditImageHeader = require('./../header/EditImageHeader'),
-    cookie = require('../../lib/cookie');
+import React, { Component, PropTypes } from 'react';
+import { withRouter } from 'react-router';
+import _ from 'lodash';
+import EditImageHeader from './../header/EditImageHeader';
+import cookie from '../../lib/cookie';
 
-const LastUserSelector = React.createClass({
-    getInitialState: function () {
-        let lastUserList = cookie.get('last_users');
-        if (!_.isArray(lastUserList))
-            lastUserList = [];
-        return { lastUserList };
-    },
-    componentWillMount: function () {
-        let {lastUserList} = this.state;
-        let {location} = this.props;
-
-        if (location.query.redirect == 'false') {
-            return;
-        }
-
-        if (lastUserList[0] === undefined) {
-            this.props.router.push('/login');
-        } else if (lastUserList[0]) {
-            this.props.router.push('/login/' + lastUserList[0]);
-        }
-    },
-    onDelete: function (username) {
-        let {lastUserList} = this.state;
-        let index = lastUserList.indexOf(username);
-        if (index >= 0)
-            lastUserList.splice(index, 1);
-
-        this.setState({ lastUserList });
-        cookie.save(lastUserList, 'last_users');
-    },
-    selectUser: function (username) {
-        let {lastUserList} = this.state;
-        let index = lastUserList.indexOf(username);
-        if (index >= 0)
-            this.props.router.push('/login/' + username);
-    },
-    render: function () {
-        let {lastUserList} = this.state;
-        return <div className="block">
-            {lastUserList.map((username, index) => {
-                return <EditImageHeader key={index} onClick={() => { this.selectUser(username) } } username={username} onDelete={ this.onDelete }/>
-            }) }
-            <form className="form pvx mhl">
-                <fieldset className="form-group">
-                  <input autoFocus type="text" placeholder="Username" className="form-control form-control-lg" ref="username" />
-                </fieldset>
-                <fieldset className="form-group">
-                    <Link to={{ pathname: "/login", query: { redirect: false } }}>
-                        <button className="btn btn-secondary">Add Account</button>
-                    </Link>
-                </fieldset>
-            </form>
-        </div>
+class LastUserSelector extends Component {
+  constructor(props) {
+    super(props);
+    let lastUserList = cookie.get('last_users');
+    if (!_.isArray(lastUserList)) {
+      lastUserList = [];
     }
-});
+    this.state = { lastUserList };
+  }
+  componentWillMount() {
+    const { lastUserList } = this.state;
+    const { location } = this.props;
+    if (location.state && location.state.redirect === false) {
+      return;
+    }
 
-module.exports = withRouter(LastUserSelector);
+    if (lastUserList[0] === undefined) {
+      this.props.router.push('/login');
+    } else if (lastUserList[0]) {
+      this.props.router.push({ path: '/login', state: { username: lastUserList[0] } });
+    }
+  }
+
+  onDelete = (username) => {
+    const { lastUserList } = this.state;
+    const index = lastUserList.indexOf(username);
+    if (index >= 0) {
+      lastUserList.splice(index, 1);
+      this.updateUser(lastUserList);
+    }
+  }
+
+  updateUser = (lastUserList) => {
+    this.setState({ lastUserList });
+    cookie.save(lastUserList, 'last_users');
+  }
+
+  selectUser = (username) => {
+    console.log('username', username);
+    const { lastUserList } = this.state;
+    const index = lastUserList.indexOf(username);
+    if (index >= 0) {
+      this.props.router.push({ path: '/login', state: { username } });
+    }
+  }
+  addUser = (event) => {
+    event.preventDefault();
+    const { lastUserList } = this.state;
+    if (this.username.value) {
+      lastUserList.push(this.username.value);
+      this.username.value = '';
+      this.updateUser(lastUserList);
+    }
+    return false;
+  }
+  render() {
+    const { lastUserList } = this.state;
+    return (<div className="block">
+      {lastUserList.map((username, index) => (
+        <EditImageHeader
+          key={index}
+          onClick={() => { this.selectUser(username); }}
+          username={username} onDelete={this.onDelete}
+        />
+      )) }
+      <form className="form pvx mhl" onSubmit={this.handleSubmit}>
+        <fieldset className="form-group">
+          <input autoFocus type="text" placeholder="Username" className="form-control form-control-lg" ref={(c) => { this.username = c; }} />
+        </fieldset>
+        <fieldset className="form-group">
+          <button className="btn btn-secondary" onClick={this.addUser}>Add Account</button>
+        </fieldset>
+      </form>
+    </div>);
+  }
+}
+
+LastUserSelector.propTypes = {
+  router: PropTypes.shape({
+    push: PropTypes.function,
+  }),
+  location: PropTypes.shape({}),
+};
+
+export default withRouter(LastUserSelector);

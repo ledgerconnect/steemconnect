@@ -4,8 +4,9 @@ module.exports = {
     "sourceType": "module",
   },
   "extends": "airbnb",
+  "parser": "babel-eslint",
   "rules": {
-    "jsx-filename-extension": "off",
+    "react/jsx-filename-extension": "off",
   },
   "plugins": [
     "react",

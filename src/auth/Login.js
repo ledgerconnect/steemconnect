@@ -1,92 +1,97 @@
-const React = require('react'),
-	ReactRedux = require('react-redux'),
-	EditImageHeader = require('./../header/EditImageHeader'),
-	Loading = require('./../widgets/Loading'),
-	cookie = require('../../lib/cookie'),
-	{Link, withRouter} = require('react-router'),
-	actions = require("../actions");
+import { bindActionCreators } from 'redux';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import _ from 'lodash';
+import { Link, withRouter } from 'react-router';
+import EditImageHeader from './../header/EditImageHeader';
+import Loading from './../widgets/Loading';
+import cookie from '../../lib/cookie';
+import actions from '../actions';
 
-var Login = React.createClass({
-	getInitialState: function () {
-		let {params} = this.props;
-		let lastUserList = cookie.get('last_users');
-		if (!_.isArray(lastUserList))
-			lastUserList = [];
-		let showSignWithDifferent = lastUserList.length !== 0;
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    const { location } = props;
+    let lastUserList = cookie.get('last_users');
+    if (!_.isArray(lastUserList)) {
+      lastUserList = [];
+    }
+    const showSignWithDifferent = lastUserList.length !== 0;
+    const selectedUser = location.state && location.state.username;
+    this.state = { lastUserList, selectedUser, showSignWithDifferent };
+  }
 
-		let selectedUser = params.username;
-		return { lastUserList, selectedUser, showSignWithDifferent };
-	},
-	componentWillMount: function () {
-		let {lastUserList, selectedUser} = this.state;
-        let {location} = this.props;
+  componentWillMount() {
+    const { lastUserList, selectedUser } = this.state;
 
-        if (location.query.redirect == 'false' || selectedUser) {
-            return;
-        }
-        if (lastUserList[0] !== undefined) {
-            this.props.router.push({
-				pathname: '/login/' + lastUserList[0],
-				params: { username: lastUserList[0] }
-			});
-			this.setState({
-				selectedUser: lastUserList[0]
-			})
-        }
-	},
-	login: function (event) {
-		event.preventDefault();
-		this.props.login(this.refs.username.value, this.refs.passwordOrWif.value);
-	},
-	demo: function (event) {
-		event.preventDefault();
-		this.props.login('guest123', '5JRaypasxMx1L97ZUX7YuC5Psb5EAbF821kkAGtBj7xCJFQcbLg');
-	},
-	render: function () {
-		let { selectedUser} = this.state;
-		return (<section>
-			<div className="block">
-				{this.props.auth.isFetching && <Loading />}
-				{!this.props.auth.isFetching && <div>
-					<div>
-						{selectedUser && <EditImageHeader username={selectedUser} />}
-						<form className="form pvx mhl" onSubmit={this.handleSubmit}>
-							<fieldset className="form-group">
-								<input autoFocus type={selectedUser ? "hidden" : "text"} placeholder="Username" defaultValue={selectedUser} className="form-control form-control-lg" ref="username" />
-							</fieldset>
-							<fieldset className="form-group">
-								<input type="password" placeholder="Password or posting WIF" className="form-control form-control-lg" ref="passwordOrWif" />
-							</fieldset>
-							{this.props.auth.errorMessage &&
-								<ul className="errorMessages">
-									<li>{this.props.auth.errorMessage}</li>
-								</ul>}
-							<fieldset className="form-group"><button className="btn btn-primary" onClick={this.login}>Log In</button></fieldset>
-							<fieldset className="form-group"><button className="btn btn-secondary" onClick={this.demo}>Demo</button></fieldset>
-							{this.state.showSignWithDifferent && <Link to={{ pathname: "/loginlist", query: { redirect: false } }}>Sign in with a different account</Link>}
-						</form>
-					</div>
-				</div>}
-			</div>
-			<div className="mvl">
-				<p>New to Steem? <a href="https://steemit.com/create_account" target="_blank">Sign up now</a></p>
-				<p><a href="https://steemit.com/recover_account_step_1" target="_blank">Forgot password?</a></p>
-			</div>
-		</section>
-		);
-	}
-});
+    if (typeof selectedUser !== 'string' && lastUserList[0] !== undefined) {
+      this.props.router.push({
+        pathname: '/login',
+        state: { username: lastUserList[0] },
+      });
+      this.setState({
+        selectedUser: lastUserList[0],
+      });
+    }
+  }
 
-var mapStateToProps = function (state) {
-	return {
-		auth: state.auth
-	};
+  login = (event) => {
+    event.preventDefault();
+    this.props.login(this.username.value, this.passwordOrWif.value);
+  }
+
+  demo = (event) => {
+    event.preventDefault();
+    this.props.login('guest123', '5JRaypasxMx1L97ZUX7YuC5Psb5EAbF821kkAGtBj7xCJFQcbLg');
+  }
+  render() {
+    const { selectedUser } = this.state;
+    return (<section>
+      <div className="block">
+        {this.props.auth.isFetching && <Loading />}
+        {!this.props.auth.isFetching && <div>
+          <div>
+            {selectedUser && <EditImageHeader username={selectedUser} />}
+            <form className="form pvx mhl" onSubmit={this.handleSubmit}>
+              <fieldset className="form-group">
+                <input autoFocus type={selectedUser ? 'hidden' : 'text'} placeholder="Username" defaultValue={selectedUser} className="form-control form-control-lg" ref={(c) => { this.username = c; }} />
+              </fieldset>
+              <fieldset className="form-group">
+                <input type="password" placeholder="Password or posting WIF" className="form-control form-control-lg" ref={(c) => { this.passwordOrWif = c; }} />
+              </fieldset>
+              {this.props.auth.errorMessage &&
+                <ul className="errorMessages">
+                  <li>{this.props.auth.errorMessage}</li>
+                </ul>}
+              <fieldset className="form-group"><button className="btn btn-primary" onClick={this.login}>Log In</button></fieldset>
+              <fieldset className="form-group"><button className="btn btn-secondary" onClick={this.demo}>Demo</button></fieldset>
+              {this.state.showSignWithDifferent && <Link to={{ pathname: '/loginlist', state: { redirect: false } }}>Sign in with a different account</Link>}
+            </form>
+          </div>
+        </div>}
+      </div>
+      <div className="mvl">
+        <p>New to Steem?<a href="https://steemit.com/create_account" rel="noopener noreferrer" target="_blank">Sign up now</a></p>
+        <p><a href="https://steemit.com/recover_account_step_1" rel="noopener noreferrer" target="_blank">Forgot password?</a></p>
+      </div>
+    </section>
+    );
+  }
+}
+
+Login.propTypes = {
+  auth: PropTypes.shape({
+    errorMessage: PropTypes.string.isRequired,
+    isFetching: PropTypes.bool.isRequired,
+  }),
+  login: PropTypes.function,
+  router: PropTypes.shape({
+    push: PropTypes.function,
+  }),
+  location: PropTypes.shape({}),
 };
 
-var mapDispatchToProps = function (dispatch) {
-	return {
-		login: function (username, passwordOrWif) { dispatch(actions.login(username, passwordOrWif)); }
-	}
-};
+const mapStateToProps = state => ({ auth: state.auth });
+const mapDispatchToProps = dispatch => ({ login: bindActionCreators(actions.login, dispatch) });
 
-module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));

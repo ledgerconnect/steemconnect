@@ -1,10 +1,11 @@
+import Login from './../auth/Login';
+import LastUserSelector from '../app/LastUserSelector';
+
 var React = require('react'),
   ReactRedux = require('react-redux'),
   {withRouter} = require('react-router'),
   cookie = require('./../../lib/cookie'),
-  actions = require('../actions'),
-  LastUserSelector = require('./LastUserSelector'),
-  Login = require('./../auth/Login');
+  actions = require('../actions');
 
 var Wrapper = React.createClass({
   componentWillMount: function () {

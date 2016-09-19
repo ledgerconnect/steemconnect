@@ -1,19 +1,20 @@
+import Login from './auth/Login';
+import LastUserSelector from './app/LastUserSelector';
+
 var React = require('react'),
   ReactRouter = require('react-router'),
   Route = ReactRouter.Route,
   IndexRoute = ReactRouter.IndexRoute,
   Wrapper = require('./app/Wrapper'),
-  Login = require('./auth/Login'),
   Logout = require('./auth/Logout'),
   Dashboard = require('./dashboard/Dashboard'),
   Profile = require('./app/Settings'),
-  LastUserSelector = require('./app/LastUserSelector'),
   Authorize = require('./auth/Authorize');
 
 module.exports = (
   <Route path="/" component={Wrapper}>
     <IndexRoute component={Dashboard} />
-    <Route path="/login(/:username)" component={Login} />
+    <Route path="/login" component={Login} />
     <Route path="/loginlist" component={LastUserSelector} />
     <Route path="/logout" component={Logout} />
     <Route path="/apps" component={Dashboard} />
