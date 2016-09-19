@@ -23,8 +23,9 @@ class Login extends Component {
 
   componentWillMount() {
     const { lastUserList, selectedUser } = this.state;
-
-    if (typeof selectedUser !== 'string' && lastUserList[0] !== undefined) {
+    if (lastUserList.length === 0 && typeof selectedUser !== 'string') {
+      this.props.router.push({ pathname: '/loginlist' });
+    } else if (typeof selectedUser !== 'string' && lastUserList[0] !== undefined) {
       this.props.router.push({
         pathname: '/login',
         state: { username: lastUserList[0] },
@@ -71,7 +72,7 @@ class Login extends Component {
         </div>}
       </div>
       <div className="mvl">
-        <p>New to Steem?<a href="https://steemit.com/create_account" rel="noopener noreferrer" target="_blank">Sign up now</a></p>
+        <p>New to Steem?&nbsp; <a href="https://steemit.com/create_account" rel="noopener noreferrer" target="_blank">Sign up now</a></p>
         <p><a href="https://steemit.com/recover_account_step_1" rel="noopener noreferrer" target="_blank">Forgot password?</a></p>
       </div>
     </section>

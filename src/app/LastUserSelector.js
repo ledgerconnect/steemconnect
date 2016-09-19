@@ -20,9 +20,7 @@ class LastUserSelector extends Component {
       return;
     }
 
-    if (lastUserList[0] === undefined) {
-      this.props.router.push('/login');
-    } else if (lastUserList[0]) {
+    if (lastUserList[0]) {
       this.props.router.push({ path: '/login', state: { username: lastUserList[0] } });
     }
   }
@@ -50,14 +48,11 @@ class LastUserSelector extends Component {
   }
   addUser = (event) => {
     event.preventDefault();
-    const { lastUserList } = this.state;
     if (this.username.value) {
-      lastUserList.push(this.username.value);
-      this.username.value = '';
-      this.updateUser(lastUserList);
+      this.props.router.push({ path: '/login', state: { username: this.username.value } });
     }
-    return false;
   }
+
   render() {
     const { lastUserList } = this.state;
     return (<div className="block">
