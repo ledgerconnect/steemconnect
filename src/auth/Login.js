@@ -84,9 +84,9 @@ Login.propTypes = {
     errorMessage: PropTypes.string.isRequired,
     isFetching: PropTypes.bool.isRequired,
   }),
-  login: PropTypes.function,
+  login: PropTypes.func,
   router: PropTypes.shape({
-    push: PropTypes.function,
+    push: PropTypes.func,
   }),
   location: PropTypes.shape({}),
 };

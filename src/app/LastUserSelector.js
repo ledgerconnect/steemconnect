@@ -42,7 +42,6 @@ class LastUserSelector extends Component {
   }
 
   selectUser = (username) => {
-    console.log('username', username);
     const { lastUserList } = this.state;
     const index = lastUserList.indexOf(username);
     if (index >= 0) {
@@ -83,7 +82,7 @@ class LastUserSelector extends Component {
 
 LastUserSelector.propTypes = {
   router: PropTypes.shape({
-    push: PropTypes.function,
+    push: PropTypes.func,
   }),
   location: PropTypes.shape({}),
 };
