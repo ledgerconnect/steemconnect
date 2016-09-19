@@ -46,7 +46,10 @@ const LastUserSelector = React.createClass({
             {lastUserList.map((username, index) => {
                 return <EditImageHeader key={index} onClick={() => { this.selectUser(username) } } username={username} onDelete={ this.onDelete }/>
             }) }
-            <form className="pvx mhl">
+            <form className="form pvx mhl">
+                <fieldset className="form-group">
+                  <input autoFocus type="text" placeholder="Username" className="form-control form-control-lg" ref="username" />
+                </fieldset>
                 <fieldset className="form-group">
                     <Link to={{ pathname: "/login", query: { redirect: false } }}>
                         <button className="btn btn-secondary">Add Account</button>

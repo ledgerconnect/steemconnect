@@ -1,4 +1,4 @@
-form
+.form
   max-width: 320px
   margin: 0 auto !important
 
@@ -21,33 +21,6 @@ input[type="checkbox"]
 \:focus
   outline: 0
 
-.form-control
-  box-shadow: inset 0 1px 2px rgba(203, 203, 210, 0.4)
-  padding-left: 8px
-  padding-right: 8px
-  color: #3F3F44
-  background-color: #fff
-  background-image: none
-  border: 1px solid #CBCBD2
-  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s
-
-.form-control-lg
-  line-height: 20px
-  font-size: 16px
-
-.input-group-lg >
-.form-control, .input-group-addon
-  line-height: 20px
-  font-size: 16px
-
-.input-under
-  font-size: 20px
-  background: transparent
-  border: none
-
-.form-group:last-child
-  margin: 0
-
 .password-dialog
   position: fixed
   left: calc(50% - 200px)
@@ -68,3 +41,16 @@ input[type="checkbox"]
     top: 0
     right: 0
     cursor: pointer
+
+.form-control
+  font-size: 18px
+  border: 0
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2)
+  border-radius: 0
+  box-shadow: none
+  text-align: center
+  &:focus
+    border-bottom: 1px solid $primary-color
+
+.form-group
+  text-align: center
