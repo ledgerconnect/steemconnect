@@ -8,6 +8,10 @@ const initialState = {
     name: 'fabien',
     recentActivities: {},
   },
+  lastUserList: {
+    selected: null,
+    show: false,
+  },
 };
 
 export default (state = initialState, action) => {
@@ -18,7 +22,7 @@ export default (state = initialState, action) => {
         isFetching: true,
         isAuthenticated: false,
         errorMessage: '',
-        user: []
+        user: [],
       };
     case authTypes.LOGIN_SUCCESS:
       return {
@@ -26,25 +30,30 @@ export default (state = initialState, action) => {
         isFetching: false,
         isAuthenticated: true,
         errorMessage: '',
-        user: action.user
+        user: action.user,
       };
     case authTypes.LOGIN_FAILURE:
       return {
         ...state,
         isFetching: false,
         isAuthenticated: false,
-        errorMessage: action.errorMessage
+        errorMessage: action.errorMessage,
       };
     case authTypes.LOGOUT_SUCCESS:
       return {
         ...state,
         isFetching: false,
-        isAuthenticated: false
+        isAuthenticated: false,
       };
     case authTypes.UPDATE_PROFILE:
       return {
         ...state,
-        user: Object.assign(state.user, action.user)
+        user: Object.assign(state.user, action.user),
+      };
+    case authTypes.UPDATE_LAST_USER_LIST:
+      return {
+        ...state,
+        lastUserList: action.lastUserList,
       };
     default:
       return state;

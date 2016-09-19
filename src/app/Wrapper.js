@@ -1,14 +1,13 @@
 import Login from './../auth/Login';
-import LastUserSelector from '../app/LastUserSelector';
 
-var React = require('react'),
+let React = require('react'),
   ReactRedux = require('react-redux'),
-  {withRouter} = require('react-router'),
+  { withRouter } = require('react-router'),
   cookie = require('./../../lib/cookie'),
   actions = require('../actions');
 
-var Wrapper = React.createClass({
-  componentWillMount: function () {
+const Wrapper = React.createClass({
+  componentWillMount() {
     this.props.getAccount();
   },
   componentWillReceiveProps(nextProps) {
@@ -16,36 +15,30 @@ var Wrapper = React.createClass({
       nextProps.router.push('/');
     }
   },
-  render: function () {
-    let {routes} = this.props;
-    let nonisAuthenticatedComponent = <Login {...this.props} />
-    if (routes.length && routes[1] && routes[1].path && routes[1].path.indexOf('loginlist') > 0) {
-      nonisAuthenticatedComponent = <LastUserSelector {...this.props} />
-    }
-
+  render() {
     return (
-      <div className='app-wrapper'>
+      <div className="app-wrapper">
         <div className="main-panel">
           <div className="view-app">
-            <img className="logo mbl" src="/img/logo.svg" width="180" />
+            <img alt="logo" className="logo mbl" src="/img/logo.svg" width="180" />
             {this.props.auth.isAuthenticated && this.props.children}
-            {!this.props.auth.isAuthenticated && nonisAuthenticatedComponent}
+            {!this.props.auth.isAuthenticated && <Login {...this.props} />}
           </div>
         </div>
       </div>
     );
-  }
+  },
 });
 
-var mapStateToProps = function (state) {
+const mapStateToProps = function (state) {
   return { auth: state.auth };
 };
 
-var mapDispatchToProps = function (dispatch) {
+const mapDispatchToProps = function (dispatch) {
   return {
-    getAccount: function () { dispatch(actions.getAccount()) },
-    login: function (username, password) { dispatch(actions.login(username, password)); }
-  }
+    getAccount() { dispatch(actions.getAccount()); },
+    login(username, password) { dispatch(actions.login(username, password)); },
+  };
 };
 
-module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(withRouter(Wrapper));
+module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Wrapper);

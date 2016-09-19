@@ -1,8 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import { withRouter } from 'react-router';
 import _ from 'lodash';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import EditImageHeader from './../header/EditImageHeader';
 import cookie from '../../lib/cookie';
+import { selectLoginWithUserName } from './authAction';
 
 class LastUserSelector extends Component {
   constructor(props) {
@@ -12,17 +14,6 @@ class LastUserSelector extends Component {
       lastUserList = [];
     }
     this.state = { lastUserList };
-  }
-  componentWillMount() {
-    const { lastUserList } = this.state;
-    const { location } = this.props;
-    if (location.state && location.state.redirect === false) {
-      return;
-    }
-
-    if (lastUserList[0]) {
-      this.props.router.push({ path: '/login', state: { username: lastUserList[0] } });
-    }
   }
 
   onDelete = (username) => {
@@ -43,13 +34,13 @@ class LastUserSelector extends Component {
     const { lastUserList } = this.state;
     const index = lastUserList.indexOf(username);
     if (index >= 0) {
-      this.props.router.push({ path: '/login', state: { username } });
+      this.props.selectLoginWithUserName(username);
     }
   }
   addUser = (event) => {
     event.preventDefault();
     if (this.username.value) {
-      this.props.router.push({ path: '/login', state: { username: this.username.value } });
+      this.props.selectLoginWithUserName(this.username.value);
     }
   }
 
@@ -76,10 +67,13 @@ class LastUserSelector extends Component {
 }
 
 LastUserSelector.propTypes = {
-  router: PropTypes.shape({
-    push: PropTypes.func,
-  }),
   location: PropTypes.shape({}),
+  selectLoginWithUserName: PropTypes.func,
 };
 
-export default withRouter(LastUserSelector);
+const mapStateToProps = state => ({ auth: state.auth });
+const mapDispatchToProps = dispatch => ({
+  selectLoginWithUserName: bindActionCreators(selectLoginWithUserName, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LastUserSelector);

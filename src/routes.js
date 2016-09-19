@@ -1,6 +1,3 @@
-import Login from './auth/Login';
-import LastUserSelector from './app/LastUserSelector';
-
 var React = require('react'),
   ReactRouter = require('react-router'),
   Route = ReactRouter.Route,
@@ -14,8 +11,6 @@ var React = require('react'),
 module.exports = (
   <Route path="/" component={Wrapper}>
     <IndexRoute component={Dashboard} />
-    <Route path="/login" component={Login} />
-    <Route path="/loginlist" component={LastUserSelector} />
     <Route path="/logout" component={Logout} />
     <Route path="/apps" component={Dashboard} />
     <Route path="/profile" component={Profile} />
