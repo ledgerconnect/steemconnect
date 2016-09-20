@@ -1,9 +1,10 @@
+import Header from './../header/Header';
+
 const React = require('react'),
 	ReactRedux = require('react-redux'),
 	validator = require('validator'),
 	Link = require('react-router').Link,
 	bindActionCreators = require('redux').bindActionCreators,
-	Header = require('./../header/Header'),
 	actions = require("../actions"),
 	PasswordDialog = require('./../widgets/PasswordDialog');
 

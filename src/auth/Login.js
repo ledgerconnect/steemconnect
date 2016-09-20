@@ -2,7 +2,6 @@ import { bindActionCreators } from 'redux';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { Link } from 'react-router';
 import EditImageHeader from './../header/EditImageHeader';
 import Loading from './../widgets/Loading';
 import cookie from '../../lib/cookie';

@@ -1,6 +1,7 @@
+import Header from './../header/Header';
+
 const React = require('react'),
 	ReactRedux = require('react-redux'),
-	Header = require('./../header/Header'),
 	actions = require('../actions'),
 	moment = require('moment'),
 	_ = require('lodash'),
