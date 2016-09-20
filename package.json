@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "BABEL_ENV=test mocha --watch --require babel-register ./src/*/*-spec.js",
     "build": "webpack --progress -p --config webpack.prod.config.js",
     "lint": "eslint src/**",
     "postinstall": "npm run build"
@@ -70,11 +70,17 @@
     "webpack": "^1.13.2"
   },
   "devDependencies": {
+    "babel-register": "^6.14.0",
+    "chai": "^3.5.0",
+    "chai-enzyme": "^0.5.1",
+    "cheerio": "^0.20.0",
+    "enzyme": "^2.4.1",
     "eslint": "^3.5.0",
     "eslint-config-airbnb": "^11.1.0",
     "eslint-plugin-import": "^1.15.0",
     "eslint-plugin-jsx-a11y": "^2.2.2",
     "eslint-plugin-react": "^6.2.2",
+    "mocha": "^3.0.2",
     "webpack-dev-server": "^1.15.1",
     "webpack-hot-middleware": "^2.10.0"
   }
