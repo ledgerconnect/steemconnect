@@ -46,7 +46,7 @@ class LastUserSelector extends Component {
 
   render() {
     const { lastUserList } = this.state;
-    return (<div className="block">
+    return (<div>
       {lastUserList.map((username, index) => (
         <EditImageHeader
           key={index}
