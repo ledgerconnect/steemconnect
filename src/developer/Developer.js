@@ -113,8 +113,8 @@ class Developer extends Component {
     let passwordDialog;
     if (this.state.showPasswordDialog) {
       passwordDialog = (<PasswordDialog
-        isUpdatingProfile={isUpdatingProfile}
-        isUpdatingProfileError={isUpdatingProfileError}
+        isUpdating={isUpdatingProfile}
+        error={isUpdatingProfileError}
         onClose={this.closePasswordDialog}
         onSave={this.savePassword}
       />);
