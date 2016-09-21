@@ -35,14 +35,11 @@ function verifyAuth(req, res, next) {
 }
 
 function verifyToken(req, res, next) {
-  const ref = req.headers.referer;
   const origin = req.get('origin');
   const token = req.get('x-steemconnect-token') || req.query.token;
   let hostname = 'localhost';
   if (origin) {
     hostname = url.parse(origin).hostname;
-  } else if (ref) {
-    hostname = url.parse(ref).hostname;
   }
 
   const isDifferentHost = (hostname !== 'localhost' && hostname !== 'steemconnect.com');
