@@ -75,7 +75,7 @@ var Dashboard = React.createClass({
 	},
 	render: function () {
 		const user = this.props.auth.user;
-		var profile = typeof user.profile === 'object' ? user.profile : {};
+		var profile = typeof user.json_metadata.profile === 'object' ? user.json_metadata.profile : {};
 		let passwordDialog;
 		if (this.state.showPasswordDialog)
 			passwordDialog = <PasswordDialog isUpdatingProfile={user.isUpdatingProfile} isUpdatingProfileError={user.isUpdatingProfileError} onClose={this.closePasswordDialog} onSave={this.savePassword} />;

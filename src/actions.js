@@ -36,7 +36,7 @@ function login(username, passwordOrWif) {
         json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {}; //eslint-disable-line
         dispatch({
           type: authTypes.LOGIN_SUCCESS,
-          user: { name: username, profile: json_metadata.profile, memo_key, reputation, balance },
+          user: { name: username, json_metadata, memo_key, reputation, balance },
         });
         cookie.save(auth, 'auth');
       } else {
@@ -51,20 +51,22 @@ function login(username, passwordOrWif) {
 }
 
 function getAccount() {
-  return function (dispatch, getState) {
+  return (dispatch) => {
     const auth = cookie.get('auth');
-    if (!auth)
+    if (!auth) {
       return;
+    }
     dispatch({ type: authTypes.LOGIN_REQUEST });
     axios.get('/api/getAccount').then(({ data: { err, result } }) => {
       if (err) {
         throw new Error(JSON.stringify(err));
       } else {
-        let { json_metadata, memo_key, reputation, balance, name } = result[0];
-        json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
+        const { memo_key, reputation, balance, name } = result[0];
+        let { json_metadata } = result[0];
+        json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {}; //eslint-disable-line
         dispatch({
           type: authTypes.LOGIN_SUCCESS,
-          user: { name, profile: json_metadata.profile, memo_key, reputation, balance },
+          user: { name, json_metadata, memo_key, reputation, balance },
         });
       }
     }).catch((err) => {
