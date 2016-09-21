@@ -42,7 +42,7 @@ function verifyToken(req, res, next) {
     hostname = url.parse(origin).hostname;
   }
 
-  const isDifferentHost = (hostname !== 'localhost' && hostname !== 'steemconnect.com');
+  const isDifferentHost = (hostname !== 'localhost' && hostname !== 'steemconnect.com' && hostname !== 'dev.steemconnect.com');
   if (isDifferentHost) {
     if (!token) {
       res.sendStatus(401);
