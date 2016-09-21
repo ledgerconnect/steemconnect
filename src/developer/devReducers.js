@@ -1,8 +1,6 @@
 import * as devTypes from './devActionTypes';
 
-const initialState = {
-  app: {},
-};
+const initialState = {};
 
 export default (state = initialState, action) => {
   switch (action.type) {

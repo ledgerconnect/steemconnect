@@ -14,7 +14,7 @@ export function createApplication({ appUserName, appOwnerWif, appName, author, o
     }, { headers: { 'x-csrf-token': document.querySelector('meta[name="_csrf"]').content } }).then(({ data }) => {
       dispatch({
         type: devTypes.CREATE_APPLICATION,
-        app: { result: data },
+        keys: data,
       });
     });
   };

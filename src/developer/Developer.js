@@ -92,17 +92,17 @@ class Developer extends Component {
   }
   render() {
     const { name, isUpdatingProfile, isUpdatingProfileError, json_metadata } = this.props.auth.user;
-    const { result } = this.props.app;
+    const { keys } = this.props.developer;
     let keysView;
     const { app: { appName, author, permissions = [], private_metadata } } = json_metadata;
-    if (result) {
-      keysView = (<div>
-        clientId: {result.clientId}<br />
-        secret: {result.clientSecret}
+    if (keys) {
+      keysView = (<div style={{ wordBreak: 'break-all' }}>
+        clientId: {keys.clientId}<br />
+        secret: {keys.clientSecret}
       </div>);
     }
 
-    console.log(this.props, result, appName, author, permissions, private_metadata);
+    console.log(this.props, keys, appName, author, permissions, private_metadata);
     let passwordDialog;
     if (this.state.showPasswordDialog) {
       passwordDialog = (<PasswordDialog
@@ -155,11 +155,11 @@ Developer.propTypes = {
   auth: PropTypes.shape({
     user: PropTypes.object.isRequired,
   }),
-  app: PropTypes.shape({ result: PropTypes.object }),
+  developer: PropTypes.shape({ keys: PropTypes.object }),
   createApplication: PropTypes.func,
 };
 
-const mapStateToProps = state => ({ auth: state.auth, app: state.app });
+const mapStateToProps = state => ({ auth: state.auth, developer: state.developer });
 const mapDispatchToProps = dispatch => ({
   createApplication: bindActionCreators(createApplication, dispatch),
 });
