@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import validator from 'validator';
+import steemAuth from 'steemauth';
 import FieldSet from './FieldSet';
 import { createApplication } from './devAction';
 import Header from './../header/Header';
@@ -19,8 +20,6 @@ class Developer extends Component {
   validate = (refs) => {
     const value = this.formFields[refs] && this.formFields[refs].value;
     switch (refs) {
-      case 'appUserName':
-      case 'appOwnerWif':
       case 'appName':
       case 'author':
         if (validator.trim(value).length === 0) {
@@ -80,7 +79,15 @@ class Developer extends Component {
       this.state.error.save = 'Please fill all fields';
       this.setState({ error: this.state.error });
     } else {
-      this.props.createApplication(this.formData);
+      this.setState({
+        showPasswordDialog: true,
+        passwordCallback: (passwordOrWif) => {
+          const isWif = steemAuth.isWif(passwordOrWif);
+          const ownerKey = (isWif) ? passwordOrWif : steemAuth.toWif(this.props.auth.user.name, passwordOrWif, 'owner');
+          this.formData.appOwnerWif = ownerKey;
+          this.props.createApplication(this.formData);
+        },
+      });
     }
   }
   closePasswordDialog = () => {
@@ -94,7 +101,7 @@ class Developer extends Component {
     const { name, isUpdatingProfile, isUpdatingProfileError, json_metadata } = this.props.auth.user;
     const { keys } = this.props.developer;
     let keysView;
-    const { app: { appName, author, permissions = [], private_metadata } } = json_metadata;
+    const { app: { name: appName, author, permissions = [], private_metadata } } = json_metadata;
     if (keys) {
       keysView = (<div style={{ wordBreak: 'break-all' }}>
         clientId: {keys.clientId}<br />
@@ -120,8 +127,6 @@ class Developer extends Component {
         <form className="form pvx mhl">
           {keysView}
           <div className="mbl">
-            <FieldSet name={'appUserName'} defaultValue={appName} error={this.state.error} validate={this.validate} formFields={this.formFields} />
-            <FieldSet name={'appOwnerWif'} error={this.state.error} validate={this.validate} formFields={this.formFields} />
             <FieldSet name={'appName'} defaultValue={appName} error={this.state.error} validate={this.validate} formFields={this.formFields} />
             <FieldSet name={'author'} defaultValue={author} error={this.state.error} validate={this.validate} formFields={this.formFields} />
             <fieldset className={"form-group"}>

@@ -30,7 +30,8 @@ router.get('/auth/login', (req, res) => {
 });
 
 router.post('/auth/create', verifyAuth, (req, res) => {
-  const { appUserName, appOwnerWif, appName, author, origins, redirect_urls, permissions } = req.body; // eslint-disable-line
+  const { appOwnerWif, appName, author, origins, redirect_urls, permissions } = req.body; // eslint-disable-line
+  const appUserName = req.username;
   const newApp = createECDH(process.env.CRYPTO_MOD);
   newApp.generateKeys();
   const clientId = newApp.getPublicKey('hex');

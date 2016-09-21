@@ -1,10 +1,9 @@
 import axios from 'axios';
 import * as devTypes from './devActionTypes';
 
-export function createApplication({ appUserName, appOwnerWif, appName, author, origins, redirect_urls, permissions }) {
+export function createApplication({ appOwnerWif, appName, author, origins, redirect_urls, permissions }) {
   return (dispatch) => {
     axios.post('/auth/create', {
-      appUserName,
       appOwnerWif,
       appName,
       author,
