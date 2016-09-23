@@ -2,7 +2,7 @@ import Login from './../auth/Login';
 
 let React = require('react'),
   ReactRedux = require('react-redux'),
-  { withRouter } = require('react-router'),
+  { withRouter, Link } = require('react-router'),
   cookie = require('./../../lib/cookie'),
   actions = require('../actions');
 
@@ -20,8 +20,8 @@ const Wrapper = React.createClass({
       <div className="app-wrapper">
         <div className="main-panel">
           <div className="view-app">
-            <img alt="logo" className="logo mbl" src="/img/logo.svg" width="180" />
             {this.props.auth.isAuthenticated && this.props.children}
+            {!this.props.auth.isAuthenticated && <Link to="/"><img alt="logo" className="logo mbm" src="/img/logo.svg" width="100" /></Link>}
             {!this.props.auth.isAuthenticated && <Login {...this.props} />}
           </div>
         </div>

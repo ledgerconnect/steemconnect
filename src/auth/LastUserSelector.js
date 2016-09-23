@@ -54,7 +54,7 @@ class LastUserSelector extends Component {
           username={username} onDelete={this.onDelete}
         />
       )) }
-      <form className="form pvx mhl" onSubmit={this.handleSubmit}>
+      <form className="form" onSubmit={this.handleSubmit}>
         <fieldset className="form-group">
           <input autoFocus type="text" placeholder="Username" className="form-control form-control-lg" ref={(c) => { this.username = c; }} />
         </fieldset>

@@ -40,7 +40,7 @@ class Login extends Component {
       view = (<div>
         <div>
           {selectedUser && <EditImageHeader username={selectedUser} />}
-          <form className="form pvx mhl" onSubmit={this.handleSubmit}>
+          <form className="form" onSubmit={this.handleSubmit}>
             <fieldset className="form-group">
               <input type={selectedUser ? 'hidden' : 'text'} placeholder="Username" defaultValue={selectedUser} className="form-control form-control-lg" ref={(c) => { this.username = c; }} />
             </fieldset>
@@ -59,7 +59,7 @@ class Login extends Component {
       </div>);
     }
     return (<section>
-      <div className="block">
+      <div className="block block-login">
         {view}
       </div>
       <div className="mvl">

@@ -6,11 +6,12 @@
   outline: 0 !important
 
 html, body
+  height: 100%
   text-align: center
   font-family: $font-primary
   font-size: 18px
   color: $text-color
-  background-color: #f1f2f4
+  background: radial-gradient(circle at 50% 50%, transparent, rgb(239, 239, 239)), #ffffff top center/cover !important
 
 a, a:not([href])
   color: $primary-color
@@ -53,6 +54,7 @@ ul, li
   margin: 0 auto
   position: relative
   top: 0
+  height: 100%
 
 #app
   height: 100%
@@ -105,7 +107,6 @@ ul, li
   text-align: center
   align-items: center
   justify-content: center
-  margin: 20px 0 80px
   min-height: 460px
 
 
@@ -116,17 +117,21 @@ ul, li
   text-align: center
   align-items: center
   justify-content: center
-  margin: 40px 0
   height: 100%
   .block
     width: 100%
     max-width: 600px
 
 .block
-  border: 1px solid rgba(0, 0, 0, 0.1)
-  box-shadow: 0 0 8px 0 rgba(0,0,0,0.05)
-  max-width: 340px
+  border: 1px solid #e7e7ec
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,.05)
   width: 100%
+  border-radius: 5px
   margin: 0 auto 40px
   text-align: center
+  max-width: 600px
   background-color: white
+
+.block-login
+    padding: 20px
+    max-width: 360px !important
