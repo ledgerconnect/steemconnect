@@ -8,6 +8,7 @@
   margin: 0 14px
   min-width: 28px
   width: 28px
+  overflow: hidden
 
 .icon-xs
   font-size: 16px
@@ -19,7 +20,7 @@
   font-size: 28px
 
 .icon-lg
-  font-size: 30px
+  font-size: 36px
 
 .icon-xl
   font-size: 100px
@@ -31,5 +32,56 @@
 
 .flag
   border-radius: 50%
-  width: 25px
-  height: 25px
+  width: 24px
+  height: 24px
+  line-height: 1em
+  vertical-align: middle
+
+.reputation
+  font-family: $font-alt
+  background-color: white
+  border-radius: 50%
+  text-align: center
+  color: #27d0a9
+  overflow: hidden
+
+.avatar
+  background-color: rgba(0, 0, 0, 0.1)
+  line-height: 1em
+  .reputation
+    position: absolute
+  &.avatar-xs
+    height: 24px
+    width: 24px
+    line-height: 1em
+    vertical-align: middle
+  &.avatar-sm .reputation
+    left: auto
+    margin: 8px 35px
+    font-size: 12px
+    height: 24px
+    width: 24px
+    line-height: 24px
+  &.avatar-xl .reputation
+    margin: 20px 60px
+    font-size: 15px
+    height: 30px
+    width: 30px
+    line-height: 30px
+
+.cell.cell-bottom
+  a.active
+    i
+      color: $primary-color
+
+.avatar
+  overflow: hidden
+  border-radius: 50%
+  text-align: center
+  display: inline-block
+.avatar-sm
+  width: 40px
+  height: 40px
+.avatar-xl
+  width: 70px
+  height: 70px
