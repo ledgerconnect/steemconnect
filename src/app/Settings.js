@@ -1,4 +1,4 @@
-import Header from './../header/Header';
+import EditImageHeader from './../header/EditImageHeader';
 
 const React = require('react'),
 	ReactRedux = require('react-redux'),
@@ -6,7 +6,8 @@ const React = require('react'),
 	Link = require('react-router').Link,
 	bindActionCreators = require('redux').bindActionCreators,
 	actions = require("../actions"),
-	PasswordDialog = require('./../widgets/PasswordDialog');
+	PasswordDialog = require('./../widgets/PasswordDialog'),
+  Header = require('./../app/header');
 
 var Dashboard = React.createClass({
 	getInitialState: function () {
@@ -81,7 +82,8 @@ var Dashboard = React.createClass({
 			passwordDialog = <PasswordDialog isUpdating={user.isUpdatingProfile} error={user.isUpdatingProfileError} onClose={this.closePasswordDialog} onSave={this.savePassword} />;
 		return (
 			<div>
-				<Header  username={user.name} onDrop={this.onDrop}/>
+        <Header />
+				<EditImageHeader username={user.name} onDrop={this.onDrop}/>
 				<form className="form pvx mhl">
           <div className="mbl">
             <fieldset className={"form-group"}>
