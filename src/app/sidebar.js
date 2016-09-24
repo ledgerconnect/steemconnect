@@ -44,7 +44,7 @@ var Sidebar = React.createClass({
               <Link to="/developers"><i className="icon icon-md material-icons">code</i> Developers</Link>
             </li>
             <li className="title">
-              <a href="https://steemconnect.com/logout"><i className="icon icon-md material-icons">lock_open</i> Log Out</a>
+              <Link to="/logout"><i className="icon icon-md material-icons">lock_open</i> Log Out</Link>
             </li>
           </ul>
         </div>
