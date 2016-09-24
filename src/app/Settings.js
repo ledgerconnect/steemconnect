@@ -80,7 +80,7 @@ var Dashboard = React.createClass({
 		if (this.state.showPasswordDialog)
 			passwordDialog = <PasswordDialog isUpdating={user.isUpdatingProfile} error={user.isUpdatingProfileError} onClose={this.closePasswordDialog} onSave={this.savePassword} />;
 		return (
-			<div className="block">
+			<div className="pvx mhl">
 				<Header  username={user.name} onDrop={this.onDrop}/>
 				<form className="form pvx mhl">
           <div className="mbl">

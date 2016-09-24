@@ -118,8 +118,6 @@ class Developer extends Component {
         onSave={this.savePassword}
       />);
     }
-
-
     return (
       <div className="pvx mhl">
         <form className="form">
@@ -148,7 +146,7 @@ class Developer extends Component {
             <div className="form-control-feedback">{this.state.error.save}</div>
           </fieldset>
         </form>
-        {passwordDialog }
+        { passwordDialog }
       </div>
     );
   }
