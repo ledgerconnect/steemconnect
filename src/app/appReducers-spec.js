@@ -6,6 +6,7 @@ const initialStateMock = {
   isFetching: false,
   isLoaded: false,
   errorMessage: '',
+  sidebarIsVisible: true,
 };
 
 describe('appReducers', function () {

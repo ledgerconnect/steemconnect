@@ -1,5 +1,3 @@
-import Header from './../header/Header';
-
 const React = require('react'),
 	ReactRedux = require('react-redux'),
 	actions = require('../actions'),
@@ -15,8 +13,6 @@ class Dashboard extends React.Component {
 	render() {
 		let {reputation, name, accountHistory} = this.props.auth.user;
 		return (
-			<div className="block">
-				<Header username={name}/>
 				<div className="pvx mhl">
 					<h2>Reputation: {reputation && formatter.reputation(reputation) }</h2>
 					{accountHistory && <h2>Last Activity</h2>}
@@ -24,7 +20,6 @@ class Dashboard extends React.Component {
 						<Activity key={id} id={id} transaction={transaction}/>) }
           <p><Link to="/logout"><i className="icon icon-md material-icons">lock_open</i><span className="hidden-xs"> Log Out</span></Link></p>
 				</div>
-			</div>
 		);
 	}
 }

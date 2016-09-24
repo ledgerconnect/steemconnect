@@ -6,7 +6,6 @@ import validator from 'validator';
 import steemAuth from 'steemauth';
 import FieldSet from './FieldSet';
 import { createApplication } from './devAction';
-import Header from './../header/Header';
 import PasswordDialog from './../widgets/PasswordDialog';
 
 class Developer extends Component {
@@ -60,7 +59,7 @@ class Developer extends Component {
       default:
         break;
     }
-  }
+  };
   save = (event) => {
     event.preventDefault();
     let missingData = false;
@@ -89,14 +88,14 @@ class Developer extends Component {
         },
       });
     }
-  }
+  };
   closePasswordDialog = () => {
     this.setState({ showPasswordDialog: false, passwordCallback: undefined });
     // this.props.clearUpdatingProfileResult();
-  }
+  };
   savePassword = (passwordOrWif) => {
     this.state.passwordCallback(passwordOrWif);
-  }
+  };
   render() {
     const { name, isUpdatingProfile, isUpdatingProfileError, json_metadata } = this.props.auth.user;
     const { keys } = this.props.developer;
@@ -122,9 +121,8 @@ class Developer extends Component {
 
 
     return (
-      <div className="block">
-        <Header username={name} />
-        <form className="form pvx mhl">
+      <div className="pvx mhl">
+        <form className="form">
           {keysView}
           <div className="mbl">
             <FieldSet name={'appName'} defaultValue={appName} error={this.state.error} validate={this.validate} formFields={this.formFields} />

@@ -1,10 +1,10 @@
-import Login from './../auth/Login';
+import Login from './auth/Login';
 
 let React = require('react'),
   ReactRedux = require('react-redux'),
-  { withRouter, Link } = require('react-router'),
-  cookie = require('./../../lib/cookie'),
-  actions = require('../actions');
+  cookie = require('./../lib/cookie'),
+  actions = require('./actions'),
+  Sidebar = require('./app/sidebar');
 
 const Wrapper = React.createClass({
   componentWillMount() {
@@ -16,13 +16,13 @@ const Wrapper = React.createClass({
     }
   },
   render() {
+    var className = (!this.props.app.sidebarIsVisible) ? 'app-wrapper full-width' : 'app-wrapper';
     return (
-      <div className="app-wrapper">
+    !this.props.auth.isAuthenticated ? <Login {...this.props} /> : <div className={className}>
+        <Sidebar />
         <div className="main-panel">
           <div className="view-app">
-            {this.props.auth.isAuthenticated && this.props.children}
-            {!this.props.auth.isAuthenticated && <Link to="/"><img alt="logo" className="logo mbm" src="/img/logo.svg" width="100" /></Link>}
-            {!this.props.auth.isAuthenticated && <Login {...this.props} />}
+            {this.props.children}
           </div>
         </div>
       </div>
@@ -31,7 +31,10 @@ const Wrapper = React.createClass({
 });
 
 const mapStateToProps = function (state) {
-  return { auth: state.auth };
+  return {
+    auth: state.auth,
+    app: state.app,
+  };
 };
 
 const mapDispatchToProps = function (dispatch) {

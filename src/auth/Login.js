@@ -1,5 +1,6 @@
 import { bindActionCreators } from 'redux';
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import EditImageHeader from './../header/EditImageHeader';
@@ -22,12 +23,12 @@ class Login extends Component {
   login = (event) => {
     event.preventDefault();
     this.props.login(this.username.value, this.passwordOrWif.value);
-  }
+  };
 
   demo = (event) => {
     event.preventDefault();
     this.props.login('guest123', '5JRaypasxMx1L97ZUX7YuC5Psb5EAbF821kkAGtBj7xCJFQcbLg');
-  }
+  };
   render() {
     const { lastUserList } = this.state;
     const selectedUser = this.props.auth.lastUserList.selected || lastUserList[0];
@@ -59,6 +60,7 @@ class Login extends Component {
       </div>);
     }
     return (<section>
+        <Link to="/"><img alt="logo" className="logo mbm" src="/img/logo.svg" width="100" /></Link>
       <div className="block block-login">
         {view}
       </div>
