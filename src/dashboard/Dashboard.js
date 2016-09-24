@@ -4,7 +4,8 @@ const React = require('react'),
 	moment = require('moment'),
 	_ = require('lodash'),
 	{formatter} = require('steem'),
-	{Link} = require('react-router');
+	{ Link }  = require('react-router'),
+  Header = require('./../app/header');
 
 class Dashboard extends React.Component {
 	componentDidMount() {
@@ -14,6 +15,7 @@ class Dashboard extends React.Component {
 		let {reputation, name, accountHistory} = this.props.auth.user;
 		return (
 				<div>
+          <Header />
 					<h2>Reputation: {reputation && formatter.reputation(reputation) }</h2>
 					{accountHistory && <h2>Last Activity</h2>}
 					{accountHistory && _.sortBy(accountHistory, 'timestamp').reverse().map(([id, transaction]) =>
