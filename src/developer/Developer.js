@@ -119,7 +119,7 @@ class Developer extends Component {
       />);
     }
     return (
-      <div className="pvx mhl">
+      <div>
         <form className="form">
           {keysView}
           <div className="mbl">

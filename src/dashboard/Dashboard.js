@@ -13,7 +13,7 @@ class Dashboard extends React.Component {
 	render() {
 		let {reputation, name, accountHistory} = this.props.auth.user;
 		return (
-				<div className="pvx mhl">
+				<div>
 					<h2>Reputation: {reputation && formatter.reputation(reputation) }</h2>
 					{accountHistory && <h2>Last Activity</h2>}
 					{accountHistory && _.sortBy(accountHistory, 'timestamp').reverse().map(([id, transaction]) =>
