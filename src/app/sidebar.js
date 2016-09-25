@@ -7,6 +7,11 @@ var React = require('react'),
   Link = require('react-router').Link;
 
 var Sidebar = React.createClass({
+  getInitialState() {
+    return {
+      menu: 'default'
+    };
+  },
   render(){
     var user = this.props.auth.user;
     return (
@@ -23,10 +28,11 @@ var Sidebar = React.createClass({
                 <img alt={user.name} src={`https://img.busy6.com/@${user.name}`} />
               </span>
             </Link>
-            <span style={{ clear: 'both', display: 'block' }}>@{user.name}</span>
+            <span style={{ clear: 'both', display: 'block' }}>@{user.name} <a onClick={() => this.setState({menu: 'settings'})}><i className="icon icon-xs material-icons">settings</i></a></span>
           </div>
         </div>
         <div className="sidebar-content">
+          {this.state.menu === 'default' &&
           <ul>
             <li className="title">
               <Link to="/"><i className="icon icon-md material-icons">show_chart</i> Dashboard</Link>
@@ -35,10 +41,16 @@ var Sidebar = React.createClass({
               <Link to="/activity"><i className="icon icon-md material-icons">track_changes</i> Activity</Link>
             </li>
             <li className="title">
-              <Link to="/profile"><i className="icon icon-md material-icons">perm_identity</i> Profile</Link>
+              <Link to="/payments"><i className="icon icon-md material-icons">payment</i> Payments</Link>
             </li>
             <li className="title">
               <Link to="/apps"><i className="icon icon-md material-icons">apps</i> Apps</Link>
+            </li>
+          </ul>}
+          {this.state.menu === 'settings' &&
+          <ul>
+            <li className="title">
+              <Link to="/profile"><i className="icon icon-md material-icons">perm_identity</i> Profile</Link>
             </li>
             <li className="title">
               <Link to="/developers"><i className="icon icon-md material-icons">code</i> Developers</Link>
@@ -49,7 +61,7 @@ var Sidebar = React.createClass({
             <li className="title">
               <Link to="/logout"><i className="icon icon-md material-icons">lock_open</i> Log Out</Link>
             </li>
-          </ul>
+          </ul>}
         </div>
       </nav>
     );

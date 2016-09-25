@@ -16,7 +16,6 @@ class Dashboard extends React.Component {
 		return (
 				<div>
           <Header />
-					<h2>Reputation: {reputation && formatter.reputation(reputation) }</h2>
 					{accountHistory && <h2>Last Activity</h2>}
 					{accountHistory && _.sortBy(accountHistory, 'timestamp').reverse().map(([id, transaction]) =>
 						<Activity key={id} id={id} transaction={transaction}/>) }
