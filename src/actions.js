@@ -15,7 +15,7 @@ function encryptData(object) {
   return crypto.AES.encrypt(crypto.enc.Utf8.parse(object), cookie.get('_csrf')).toString();
 }
 
-function login(username, passwordOrWif) {
+export function login(username, passwordOrWif) {
   return (dispatch) => {
     const isWif = steemAuth.isWif(passwordOrWif);
     const wif = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'posting');
@@ -50,7 +50,7 @@ function login(username, passwordOrWif) {
   };
 }
 
-function getAccount() {
+export function getAccount() {
   return (dispatch) => {
     const auth = cookie.get('auth');
     if (!auth) {
@@ -79,14 +79,14 @@ function getAccount() {
   };
 }
 
-function logout() {
-  return function (dispatch, getState) {
+export function logout() {
+  return (dispatch, getState) => {
     const state = getState();
     const user = state.auth.user;
     let lastUser = cookie.get('last_users');
-    if (!_.isArray(lastUser))
+    if (!_.isArray(lastUser)) {
       lastUser = [];
-
+    }
     if (user.name) {
       lastUser = [user.name].concat(lastUser);
       lastUser = _.uniq(lastUser);
@@ -97,19 +97,46 @@ function logout() {
   };
 }
 
-function setAvatar(passwordOrWif, file, type) {
-  return function (dispatch, getState) {
+export function accountUpdate(username, passwordOrWif, memo_key, jsonMetadata) {
+  return (dispatch) => {
+    dispatch({
+      type: authTypes.UPDATE_PROFILE,
+      user: { isUpdatingProfile: true, isUpdatingProfileError: undefined },
+    });
+    const isWif = steemAuth.isWif(passwordOrWif);
+    const ownerKey = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'owner');
+    steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined,
+      memo_key, jsonMetadata, (err) => {
+        if (err) {
+          console.error('Error while processing accountUpdate', JSON.stringify(err));
+        }
+
+        dispatch({
+          type: authTypes.UPDATE_PROFILE,
+          user: {
+            profile: jsonMetadata.profile,
+            isUpdatingProfile: false,
+            isUpdatingProfileError: !!err,
+          },
+        });
+      });
+  };
+}
+
+export function setAvatar(passwordOrWif, file, type) {
+  return (dispatch, getState) => {
     const state = getState();
     const user = state.auth.user;
     const profileData = user.profile;
     const data = new FormData();
     data.append('file', file);
-    let uploadUrl = 'https://img.busy6.com/@' + user.name;
-    if (type === 'cover_image')
+    let uploadUrl = `https://img.busy6.com/@${user.name}`;
+    if (type === 'cover_image') {
       uploadUrl += '/cover.sass';
+    }
     axios.post(uploadUrl, data, { origin: true })
-      .then((data) => {
-        const { data: { url } } = data;
+      .then((response) => {
+        const { data: { url } } = response;
         profileData[type] = url ? url : uploadUrl;
 
         dispatch(accountUpdate(user.name, passwordOrWif, user.memo_key, { profile: profileData }));
@@ -119,25 +146,12 @@ function setAvatar(passwordOrWif, file, type) {
   };
 }
 
-function accountUpdate(username, passwordOrWif, memo_key, jsonMetadata) {
-  return function (dispatch, getState) {
-    dispatch({ type: authTypes.UPDATE_PROFILE, user: { isUpdatingProfile: true, isUpdatingProfileError: undefined } });
-    const isWif = steemAuth.isWif(passwordOrWif);
-    const ownerKey = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'owner');
-    steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined, memo_key, jsonMetadata, (err, result) => {
-      err && console.error('Error while processing accountUpdate', JSON.stringify(err));
-      dispatch({
-        type: authTypes.UPDATE_PROFILE,
-        user: { profile: jsonMetadata.profile, isUpdatingProfile: false, isUpdatingProfileError: err ? true : false },
-      });
-    });
-  };
-}
-
-function getAccountHistory(username, from, limit) {
-  return (dispatch, getState) => {
+export function getAccountHistory(username, from, limit) {
+  return (dispatch) => {
     steem.api.getAccountHistory(username, from, limit, (err, result) => {
-      err && console.error(err);
+      if (err) {
+        console.error(err);
+      }
       dispatch({
         type: authTypes.UPDATE_PROFILE,
         user: { accountHistory: result },
@@ -146,18 +160,9 @@ function getAccountHistory(username, from, limit) {
   };
 }
 
-function clearUpdatingProfileResult() {
+export function clearUpdatingProfileResult() {
   return {
     type: authTypes.UPDATE_PROFILE,
     user: { isUpdatingProfile: undefined, isUpdatingProfileError: undefined },
   };
 }
-module.exports = {
-  login,
-  logout,
-  setAvatar,
-  accountUpdate,
-  clearUpdatingProfileResult,
-  getAccount,
-  getAccountHistory,
-};

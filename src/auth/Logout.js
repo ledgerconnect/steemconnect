@@ -1,26 +1,23 @@
-var React = require('react'),
-	ReactRedux = require('react-redux'),
-	withRouter = require('react-router').withRouter,
-	actions = require("../actions");
+import { logout } from '../actions';
 
-var Logout = React.createClass({
-	componentWillMount: function(){
-		this.props.logout();
-		this.props.router.replace('/');
-	},
-	render: function(){
-		return null;
-	}
+const React = require('react');
+const ReactRedux = require('react-redux');
+const withRouter = require('react-router').withRouter;
+
+const Logout = React.createClass({
+  componentWillMount() {
+    this.props.logout();
+    this.props.router.replace('/');
+  },
+  render() {
+    return null;
+  },
 });
 
-var mapStateToProps = function(state){
-	return {};
-};
+const mapStateToProps = () => ({});
 
-var mapDispatchToProps = function(dispatch){
-	return {
-		logout: function(){ dispatch(actions.logout()); }
-	}
-};
+const mapDispatchToProps = dispatch => ({
+  logout() { dispatch(logout()); },
+});
 
-module.exports = ReactRedux.connect(mapStateToProps,mapDispatchToProps)(withRouter(Logout));
+module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(withRouter(Logout));

@@ -6,7 +6,7 @@ import _ from 'lodash';
 import EditImageHeader from './../header/EditImageHeader';
 import Loading from './../widgets/Loading';
 import cookie from '../../lib/cookie';
-import actions from '../actions';
+import { login } from '../actions';
 import LastUserSelector from './LastUserSelector';
 import { ShowLastUserList } from './authAction';
 
@@ -43,10 +43,10 @@ class Login extends Component {
           {selectedUser && <EditImageHeader username={selectedUser} />}
           <form className="form" onSubmit={this.handleSubmit}>
             <fieldset className="form-group">
-              <input type={selectedUser ? 'hidden' : 'text'} placeholder="Username" defaultValue={selectedUser} className="form-control form-control-lg" ref={(c) => { this.username = c; } } />
+              <input type={selectedUser ? 'hidden' : 'text'} placeholder="Username" defaultValue={selectedUser} className="form-control form-control-lg" ref={(c) => { this.username = c; }} />
             </fieldset>
             <fieldset className="form-group">
-              <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control form-control-lg" ref={(c) => { this.passwordOrWif = c; } } />
+              <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control form-control-lg" ref={(c) => { this.passwordOrWif = c; }} />
             </fieldset>
             {this.props.auth.errorMessage &&
               <ul className="errorMessages">
@@ -86,7 +86,7 @@ Login.propTypes = {
 
 const mapStateToProps = state => ({ auth: state.auth });
 const mapDispatchToProps = dispatch => ({
-  login: bindActionCreators(actions.login, dispatch),
+  login: bindActionCreators(login, dispatch),
   showUserList: bindActionCreators(ShowLastUserList, dispatch),
 });
 

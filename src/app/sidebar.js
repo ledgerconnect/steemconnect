@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import formatter from 'steem/lib/formatter';
 import { Link } from 'react-router';
-import actions from './../actions';
+import { hideSidebar } from './../actions';
 
 class Sidebar extends Component {
   constructor(props) {
@@ -81,7 +81,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  hideSidebar() { dispatch(actions.hideSidebar()); },
+  hideSidebar() { dispatch(hideSidebar()); },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);

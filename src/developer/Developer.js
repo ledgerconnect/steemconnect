@@ -116,7 +116,7 @@ class Developer extends Component {
         error={isUpdatingProfileError}
         onClose={this.closePasswordDialog}
         onSave={this.savePassword}
-        />);
+      />);
     }
     return (
       <div>
@@ -127,17 +127,17 @@ class Developer extends Component {
             <FieldSet name={'author'} defaultValue={author} error={this.state.error} validate={this.validate} formFields={this.formFields} />
             <fieldset className={"form-group"}>
               Permissions <br />
-              <input type="checkbox" className="form-check-input" ref={c => (this.formFields.permissions.vote = c) } defaultChecked={permissions.indexOf('vote') >= 0} value="vote" /> Vote<br />
-              <input type="checkbox" className="form-check-input" ref={c => (this.formFields.permissions.verify = c) } defaultChecked={permissions.indexOf('verify') >= 0} value="verify" /> Verify<br />
-              <input type="checkbox" className="form-check-input" ref={c => (this.formFields.permissions.post = c) } defaultChecked={permissions.indexOf('post') >= 0} value="post" /> Post<br />
+              <input type="checkbox" className="form-check-input" ref={c => (this.formFields.permissions.vote = c)} defaultChecked={permissions.indexOf('vote') >= 0} value="vote" /> Vote<br />
+              <input type="checkbox" className="form-check-input" ref={c => (this.formFields.permissions.verify = c)} defaultChecked={permissions.indexOf('verify') >= 0} value="verify" /> Verify<br />
+              <input type="checkbox" className="form-check-input" ref={c => (this.formFields.permissions.post = c)} defaultChecked={permissions.indexOf('post') >= 0} value="post" /> Post<br />
             </fieldset>
             <fieldset className={"form-group"}>
               Permissions <br />
-              <textarea className="form-control form-control-lg" onBlur={() => this.validate('origins') } placeholder="each origins in new line" rows="3" ref={c => (this.formFields.origins = c) } />
+              <textarea className="form-control form-control-lg" onBlur={() => this.validate('origins')} placeholder="each origins in new line" rows="3" ref={c => (this.formFields.origins = c)} />
               <div className="form-control-feedback">{this.state.error.origins}</div>
             </fieldset>
             <fieldset className={"form-group"}>
-              <textarea className="form-control form-control-lg" onBlur={() => this.validate('redirect_urls') } placeholder="each redirect_urls in new line" rows="3" ref={c => (this.formFields.redirect_urls = c) } />
+              <textarea className="form-control form-control-lg" onBlur={() => this.validate('redirect_urls')} placeholder="each redirect_urls in new line" rows="3" ref={c => (this.formFields.redirect_urls = c)} />
               <div className="form-control-feedback">{this.state.error.redirect_urls}</div>
             </fieldset>
           </div>

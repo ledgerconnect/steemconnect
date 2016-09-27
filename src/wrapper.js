@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import actions from './actions';
+import { login, getAccount } from './actions';
 import Sidebar from './app/sidebar';
 import Login from './auth/Login';
 
@@ -50,8 +50,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getAccount() { dispatch(actions.getAccount()); },
-  login(username, password) { dispatch(actions.login(username, password)); },
+  getAccount() { dispatch(getAccount()); },
+  login(username, password) { dispatch(login(username, password)); },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wrapper);
