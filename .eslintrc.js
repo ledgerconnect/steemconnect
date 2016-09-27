@@ -12,6 +12,7 @@ module.exports = {
   "parser": "babel-eslint",
   "rules": {
     "react/jsx-filename-extension": "off",
+    "jsx-a11y/href-no-hash": "off",
   },
   "plugins": [
     "react",

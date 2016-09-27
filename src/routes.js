@@ -1,4 +1,5 @@
 import Developer from './developer/Developer';
+import Dashboard from './dashboard/Dashboard';
 
 let React = require('react'),
   ReactRouter = require('react-router'),
@@ -6,7 +7,6 @@ let React = require('react'),
   IndexRoute = ReactRouter.IndexRoute,
   Wrapper = require('./wrapper'),
   Logout = require('./auth/Logout'),
-  Dashboard = require('./dashboard/Dashboard'),
   Profile = require('./app/Settings'),
   Authorize = require('./auth/Authorize');
 

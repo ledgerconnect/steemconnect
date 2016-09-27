@@ -1,7 +1,7 @@
 const React = require('react');
 const ReactRedux = require('react-redux');
 
-const Dashboard = React.createClass({
+const Authorize = React.createClass({
   propTypes: {
     params: React.PropTypes.shape({ app: React.PropTypes.string.isRequired }),
     location: React.PropTypes.shape({ query: React.PropTypes.object.isRequired }),
@@ -35,4 +35,4 @@ const mapStateToProps = function (state) {
   return { auth: state.auth };
 };
 
-module.exports = ReactRedux.connect(mapStateToProps)(Dashboard);
+module.exports = ReactRedux.connect(mapStateToProps)(Authorize);

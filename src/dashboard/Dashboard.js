@@ -1,48 +1,41 @@
-const React = require('react'),
-	ReactRedux = require('react-redux'),
-	actions = require('../actions'),
-	moment = require('moment'),
-	_ = require('lodash'),
-	{formatter} = require('steem'),
-	{ Link }  = require('react-router'),
-  Header = require('./../app/header');
+import { bindActionCreators } from 'redux';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import _ from 'lodash';
+import Header from '../app/header';
+import Activity from './Activity';
+import { getAccountHistory } from '../actions';
 
-class Dashboard extends React.Component {
-	componentDidMount() {
-		this.props.getAccountHistory(this.props.auth.user.name, -1, 5);
-	}
-	render() {
-		let {reputation, name, accountHistory} = this.props.auth.user;
-		return (
-				<div>
-          <Header />
-					{accountHistory && <h2>Last Activity</h2>}
-					{accountHistory && _.sortBy(accountHistory, 'timestamp').reverse().map(([id, transaction]) =>
-						<Activity key={id} id={id} transaction={transaction}/>) }
-        </div>
-		);
-	}
+class Dashboard extends Component {
+  componentDidMount() {
+    this.props.getAccountHistory(this.props.auth.user.name, -1, 5);
+  }
+  render() {
+    const { accountHistory } = this.props.auth.user;
+    return (
+      <div>
+        <Header />
+        {accountHistory && <h2>Last Activity</h2>}
+        {accountHistory && _.sortBy(accountHistory, 'timestamp').reverse().map(([id, transaction]) =>
+          <Activity key={id} id={id} transaction={transaction} />) }
+      </div>
+    );
+  }
 }
 
-const Activity = ({id, transaction}) => {
-	let {op, timestamp} = transaction;
-	let [name, details] = op;
-	let label = name.replace('account_update', 'Account Update').replace('vote', 'Vote');
-	if (name == 'vote') {
-		return <p key={id}>{label} for <a href="#" target="_blank"> @{details.author}/{details.permlink}</a> {moment(timestamp).fromNow() }</p>;
-	} else if (_.includes(['account_update', 'vote'], name)) {
-		return <p key={id}>{label} {moment(timestamp).fromNow() }</p>;
-	}
+Dashboard.propTypes = {
+  auth: PropTypes.shape({
+    user: PropTypes.object.isRequired,
+  }),
+  getAccountHistory: PropTypes.func,
 };
 
-var mapStateToProps = function (state) {
-	return { auth: state.auth };
-};
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
 
-var mapDispatchToProps = function (dispatch) {
-	return {
-		getAccountHistory: (username, from, limit) => dispatch(actions.getAccountHistory(username, from, limit))
-	}
-};
+const mapDispatchToProps = dispatch => ({
+  getAccountHistory: bindActionCreators(getAccountHistory, dispatch),
+});
 
-module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

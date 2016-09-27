@@ -9,7 +9,7 @@ const React = require('react'),
 	PasswordDialog = require('./../widgets/PasswordDialog'),
   Header = require('./../app/header');
 
-var Dashboard = React.createClass({
+var Settings = React.createClass({
 	getInitialState: function () {
 		return { error: {}, showPasswordDialog: false };
 	},
@@ -140,4 +140,4 @@ var mapDispatchToProps = function (dispatch) {
 	return bindActionCreators({ setAvatar, accountUpdate, clearUpdatingProfileResult }, dispatch);
 };
 
-module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Settings);
