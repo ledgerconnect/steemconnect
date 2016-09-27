@@ -12,7 +12,9 @@ module.exports = {
   "parser": "babel-eslint",
   "rules": {
     "react/jsx-filename-extension": "off",
-    "jsx-a11y/href-no-hash": "off",
+    "camelcase": "off", //steem api includes underscore format
+    "jsx-a11y/href-no-hash": "warn",
+    "jsx-a11y/no-static-element-interactions": "warn",
   },
   "plugins": [
     "react",

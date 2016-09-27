@@ -9,14 +9,14 @@ const Authorize = React.createClass({
   },
   render() {
     const appName = this.props.params.app;
-    const { appAuthor, clientId, redirect_url, scope } = this.props.location.query;
+    const { clientId, redirect_url, scope } = this.props.location.query;
     let message;
     if (!clientId || !redirect_url) {
       message = <div>Missing ClientId or redirect_url</div>;
     }
     return (
       <div className="block">
-        <div className="mbl"><img src={`https://img.busy6.com/@${appName}`} width="70" /></div>
+        <div className="mbl"><img alt="app-logo" src={`https://img.busy6.com/@${appName}`} width="70" /></div>
         {message ? message :
           <div>
             <p>The app <b>{appName}</b> is requesting permission to do the following: </p>

@@ -1,24 +1,24 @@
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import actions from './actions';
+import Sidebar from './app/sidebar';
 import Login from './auth/Login';
 
-let React = require('react'),
-  ReactRedux = require('react-redux'),
-  cookie = require('./../lib/cookie'),
-  actions = require('./actions'),
-  Sidebar = require('./app/sidebar');
-
-const Wrapper = React.createClass({
+class Wrapper extends Component {
   componentWillMount() {
     this.props.getAccount();
-  },
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated && nextProps.location.pathname.indexOf('/login') === 0) {
-      nextProps.router.push('/');
+      this.props.router.push('/');
     }
-  },
+  }
+
   render() {
-    var className = (!this.props.app.sidebarIsVisible) ? 'app-wrapper full-width' : 'app-wrapper';
+    const className = (!this.props.app.sidebarIsVisible) ? 'app-wrapper full-width' : 'app-wrapper';
     return (
-    !this.props.auth.isAuthenticated ? <Login {...this.props} /> : <div className={className}>
+      !this.props.auth.isAuthenticated ? <Login {...this.props} /> : <div className={className}>
         <Sidebar />
         <div className="main-panel">
           <div className="view-app">
@@ -27,21 +27,31 @@ const Wrapper = React.createClass({
         </div>
       </div>
     );
-  },
+  }
+}
+
+Wrapper.propTypes = {
+  auth: PropTypes.shape({
+    isAuthenticated: PropTypes.bool.isRequired,
+  }),
+  app: PropTypes.shape({
+    sidebarIsVisible: PropTypes.bool,
+  }),
+  router: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }),
+  children: PropTypes.element,
+  getAccount: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  app: state.app,
 });
 
-const mapStateToProps = function (state) {
-  return {
-    auth: state.auth,
-    app: state.app,
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  getAccount() { dispatch(actions.getAccount()); },
+  login(username, password) { dispatch(actions.login(username, password)); },
+});
 
-const mapDispatchToProps = function (dispatch) {
-  return {
-    getAccount() { dispatch(actions.getAccount()); },
-    login(username, password) { dispatch(actions.login(username, password)); },
-  };
-};
-
-module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Wrapper);
+export default connect(mapStateToProps, mapDispatchToProps)(Wrapper);

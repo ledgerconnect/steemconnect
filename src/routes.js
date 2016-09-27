@@ -1,14 +1,11 @@
+import React from 'react';
+import { Route, IndexRoute } from 'react-router';
+import Wrapper from './wrapper';
+import Logout from './auth/Logout';
+import Profile from './app/Settings';
+import Authorize from './auth/Authorize';
 import Developer from './developer/Developer';
 import Dashboard from './dashboard/Dashboard';
-
-let React = require('react'),
-  ReactRouter = require('react-router'),
-  Route = ReactRouter.Route,
-  IndexRoute = ReactRouter.IndexRoute,
-  Wrapper = require('./wrapper'),
-  Logout = require('./auth/Logout'),
-  Profile = require('./app/Settings'),
-  Authorize = require('./auth/Authorize');
 
 module.exports = (
   <Route path="/" component={Wrapper}>

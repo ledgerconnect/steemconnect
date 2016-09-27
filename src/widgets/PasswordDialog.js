@@ -25,8 +25,8 @@ class PasswordDialog extends Component {
       <div className="password-dialog">
         <i className="icon icon-md material-icons password-close" onClick={this.props.onClose}>close</i>
         <fieldset className={"form-group"}>
-          {!showSuccess && <label className="message">Enter your password to update.</label>}
-          {!showSuccess && <input autoFocus type="password" placeholder="Password or owner WIF" className="form-control form-control-lg" ref={c => (this.passwordOrWif = c)} />}
+          {!showSuccess && <label HtmlFor="passwordInput" className="message">Enter your password to update.</label>}
+          {!showSuccess && <input id="passwordInput" autoFocus type="password" placeholder="Password or owner WIF" className="form-control form-control-lg" ref={c => (this.passwordOrWif = c)} />}
           {message}
         </fieldset>
         <fieldset className="form-group"><button disabled={isUpdating} className="btn btn-primary" onClick={this.savePassword}>{saveText}</button></fieldset>

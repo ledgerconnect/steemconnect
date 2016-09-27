@@ -1,6 +1,6 @@
-/* eslint-disable prefer-arrow-callback, no-undef, import/no-extraneous-dependencies */
-import appReducers from './appReducers';
+/* eslint-disable prefer-arrow-callback, no-undef, func-names, import/no-extraneous-dependencies */
 import { expect } from 'chai';
+import appReducers from './appReducers';
 
 const initialStateMock = {
   isFetching: false,

@@ -7,16 +7,16 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case headerTypes.SEARCH:
       return {
         ...state,
-        query: action.query
+        query: action.query,
       };
     case headerTypes.SET_MENU:
       return {
         ...state,
-        menu: action.menu
+        menu: action.menu,
       };
     default:
       return state;

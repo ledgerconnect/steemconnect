@@ -1,13 +1,17 @@
-var React = require("react");
+import React, { PropTypes } from 'react';
 
-module.exports = React.createClass({
-	render: function(){
-		var className = (this.props.color == 'white')? 'loading-white' : 'loading';
-		className = className + ' align-center';
-		return (
-			<div className="pam pbl">
-				<div className={className}><span>.</span><span>.</span><span>.</span></div>
-			</div>
-		);
-	}
-});
+const Loading = (props) => {
+  let className = (props.color === 'white') ? 'loading-white' : 'loading';
+  className += ' align-center';
+  return (
+    <div className="pam pbl">
+      <div className={className}><span>.</span><span>.</span><span>.</span></div>
+    </div>
+  );
+};
+
+Loading.propTypes = {
+  color: PropTypes.string,
+};
+
+export default Loading;
