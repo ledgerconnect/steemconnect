@@ -43,7 +43,7 @@ class Login extends Component {
           {selectedUser && <EditImageHeader username={selectedUser} />}
           <form className="form" onSubmit={this.handleSubmit}>
             <fieldset className="form-group">
-              <input type={selectedUser ? 'hidden' : 'text'} placeholder="Username" defaultValue={selectedUser} className="form-control form-control-lg" ref={(c) => { this.username = c; }} />
+              <input type={selectedUser ? 'hidden' : 'text'} placeholder="Username" defaultValue={selectedUser} className="form-control form-control-lg lowercase-input" ref={(c) => { this.username = c; }} />
             </fieldset>
             <fieldset className="form-group">
               <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control form-control-lg" ref={(c) => { this.passwordOrWif = c; }} />
