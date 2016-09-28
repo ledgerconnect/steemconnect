@@ -2,7 +2,7 @@
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { logout } from '../actions';
+import { logout } from './authAction';
 
 class Logout extends Component {
   componentWillMount() {

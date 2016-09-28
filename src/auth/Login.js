@@ -6,9 +6,8 @@ import _ from 'lodash';
 import EditImageHeader from './../header/EditImageHeader';
 import Loading from './../widgets/Loading';
 import cookie from '../../lib/cookie';
-import { login } from '../actions';
 import LastUserSelector from './LastUserSelector';
-import { ShowLastUserList } from './authAction';
+import { ShowLastUserList, login, demoLogin } from './authAction';
 
 class Login extends Component {
   constructor(props) {
@@ -27,7 +26,7 @@ class Login extends Component {
 
   demo = (event) => {
     event.preventDefault();
-    this.props.login('guest123', '5JRaypasxMx1L97ZUX7YuC5Psb5EAbF821kkAGtBj7xCJFQcbLg');
+    this.props.demoLogin();
   };
   render() {
     const { lastUserList } = this.state;
@@ -81,12 +80,14 @@ Login.propTypes = {
   }),
   login: PropTypes.func,
   showUserList: PropTypes.func,
+  demoLogin: PropTypes.func,
   location: PropTypes.shape({}),
 };
 
 const mapStateToProps = state => ({ auth: state.auth });
 const mapDispatchToProps = dispatch => ({
   login: bindActionCreators(login, dispatch),
+  demoLogin: bindActionCreators(demoLogin, dispatch),
   showUserList: bindActionCreators(ShowLastUserList, dispatch),
 });
 

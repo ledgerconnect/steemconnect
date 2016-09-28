@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import EditImageHeader from './../header/EditImageHeader';
 import cookie from '../../lib/cookie';
-import { selectLoginWithUserName } from './authAction';
+import { selectLoginWithUserName, demoLogin } from './authAction';
 
 class LastUserSelector extends Component {
   constructor(props) {
@@ -44,6 +44,11 @@ class LastUserSelector extends Component {
     }
   }
 
+  demo = (event) => {
+    event.preventDefault();
+    this.props.demoLogin();
+  }
+
   render() {
     const { lastUserList } = this.state;
     return (<div>
@@ -61,6 +66,9 @@ class LastUserSelector extends Component {
         <fieldset className="form-group">
           <button className="btn btn-secondary" onClick={this.addUser}>Add Account</button>
         </fieldset>
+        <fieldset className="form-group">
+          <fieldset className="form-group"><button className="btn btn-secondary" onClick={this.demo}>Demo</button></fieldset>
+        </fieldset>
       </form>
     </div>);
   }
@@ -69,11 +77,13 @@ class LastUserSelector extends Component {
 LastUserSelector.propTypes = {
   location: PropTypes.shape({}),
   selectLoginWithUserName: PropTypes.func,
+  demoLogin: PropTypes.func,
 };
 
 const mapStateToProps = state => ({ auth: state.auth });
 const mapDispatchToProps = dispatch => ({
   selectLoginWithUserName: bindActionCreators(selectLoginWithUserName, dispatch),
+  demoLogin: bindActionCreators(demoLogin, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LastUserSelector);
