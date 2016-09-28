@@ -1,80 +1,89 @@
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import validator from 'validator';
+import { bindActionCreators } from 'redux';
+import { each } from 'lodash';
 import EditImageHeader from './../header/EditImageHeader';
 import { setAvatar, accountUpdate, clearUpdatingProfileResult } from './../actions';
+import PasswordDialog from './../widgets/PasswordDialog';
+import Header from './../app/header';
 
-const React = require('react'),
-  ReactRedux = require('react-redux'),
-  validator = require('validator'),
-  Link = require('react-router').Link,
-  bindActionCreators = require('redux').bindActionCreators,
-  PasswordDialog = require('./../widgets/PasswordDialog'),
-  Header = require('./../app/header');
+class Settings extends Component {
 
-const Settings = React.createClass({
-  getInitialState() {
-    return { error: {}, showPasswordDialog: false };
-  },
-  onDrop(files, type) {
+  constructor(props) {
+    super(props);
+    this.state = { error: {}, showPasswordDialog: false };
+  }
+
+  onDrop = (files, type) => {
     this.setState({
       showPasswordDialog: true,
       passwordCallback: passwordOrWif => this.props.setAvatar(passwordOrWif, files[0], type),
     });
-  },
+  }
 
-  save(event) {
+  save = (event) => {
     event.preventDefault();
     const user = this.props.auth.user;
     const profileData = {};
-    for (const refKeys in this.refs) {
-      if (refKeys === 'gender_female' || refKeys === 'gender_male')
-        continue;
-      const item = this.refs[refKeys];
-      if (typeof item.value === 'string' && item.value.length && !this.state.error[refKeys]) {
-        profileData[refKeys] = validator.trim(item.value);
+    const refs = this.refs;
+    each(refs, (item, refKeys) => {
+      if (refKeys !== 'gender_female' && refKeys !== 'gender_male') {
+        if (typeof item.value === 'string' && item.value.length && !this.state.error[refKeys]) {
+          profileData[refKeys] = validator.trim(item.value);
+        }
       }
-    }
-    profileData.gender = this.refs.gender_female.checked ? 'female' : 'male';
+    });
+
+    profileData.gender = refs.gender_female.checked ? 'female' : 'male';
     this.setState({
       showPasswordDialog: true,
-      passwordCallback: passwordOrWif => this.props.accountUpdate(user.name, passwordOrWif, user.memo_key, { profile: profileData }),
+      passwordCallback: passwordOrWif =>
+        this.props.accountUpdate(user.name, passwordOrWif, user.memo_key, { profile: profileData }),
     });
-  },
-  validate(refs) {
-    const value = this.refs[refs] && this.refs[refs].value;
-    switch (refs) {
+  }
+  validate = (refKeys) => {
+    const refs = this.refs;
+    const value = refs[refKeys] && refs[refKeys].value;
+    switch (refKeys) {
       case 'email':
         if (value.length && !validator.isEmail(value)) {
-          this.state.error[refs] = refs + ' in not valid';
+          this.state.error[refKeys] = `${refKeys} in not valid`;
           this.setState({ error: this.state.error });
         } else {
-          this.state.error[refs] = undefined;
+          this.state.error[refKeys] = undefined;
           this.setState({ error: this.state.error });
         }
         break;
       case 'website':
         if (value.length && !validator.isURL(value, { require_protocol: true, protocols: ['http', 'https'] })) {
-          this.state.error[refs] = refs + ' in not valid';
+          this.state.error[refKeys] = `${refKeys} in not valid`;
           this.setState({ error: this.state.error });
         } else {
-          this.state.error[refs] = undefined;
+          this.state.error[refKeys] = undefined;
           this.setState({ error: this.state.error });
         }
         break;
+      default:
     }
-  },
-  closePasswordDialog() {
+  }
+
+  closePasswordDialog = () => {
     this.setState({ showPasswordDialog: false, passwordCallback: undefined });
     this.props.clearUpdatingProfileResult();
-  },
-  savePassword(passwordOrWif) {
+  }
+  savePassword = (passwordOrWif) => {
     this.state.passwordCallback(passwordOrWif);
-  },
-  clearProfile() {
+  }
+
+  clearProfile = () => {
     const user = this.props.auth.user;
     this.setState({
       showPasswordDialog: true,
-      passwordCallback: passwordOrWif => this.props.accountUpdate(user.name, passwordOrWif, user.memo_key, { profile: {} }),
+      passwordCallback: passwordOrWif =>
+        this.props.accountUpdate(user.name, passwordOrWif, user.memo_key, { profile: {} }),
     });
-  },
+  }
   render() {
     const user = this.props.auth.user;
     const profile = typeof user.json_metadata.profile === 'object' ? user.json_metadata.profile : {};
@@ -102,8 +111,8 @@ const Settings = React.createClass({
             <fieldset className={"form-group"}>
               <input type="text" placeholder="Last Name" defaultValue={profile.last_name} className="form-control form-control-lg" ref="last_name" />
             </fieldset>
-            <fieldset className={'form-group ' + (this.state.error.email ? 'has-danger' : '')}>
-              <input type="email" defaultValue={profile.email} placeholder="Email" className="form-control form-control-lg" ref="email" onBlur={this.validate.bind(this, 'email')} />
+            <fieldset className={`form-group ${(this.state.error.email ? 'has-danger' : '')}`}>
+              <input type="email" defaultValue={profile.email} placeholder="Email" className="form-control form-control-lg" ref="email" onBlur={() => this.validate('email')} />
               <div className="form-control-feedback">{this.state.error.email}</div>
             </fieldset>
             <fieldset className="form-group">
@@ -121,8 +130,8 @@ const Settings = React.createClass({
             <fieldset className={"form-group"}>
               <textarea className="form-control form-control-lg" defaultValue={profile.about} placeholder="About" rows="3" ref="about" />
             </fieldset>
-            <fieldset className={'form-group ' + (this.state.error.website ? 'has-danger' : '')}>
-              <input type="text" defaultValue={profile.website} placeholder="Website" className="form-control form-control-lg" ref="website" onBlur={this.validate.bind(this, 'website')} />
+            <fieldset className={`form-group ${(this.state.error.website ? 'has-danger' : '')}`}>
+              <input type="text" defaultValue={profile.website} placeholder="Website" className="form-control form-control-lg" ref="website" onBlur={() => this.validate('website')} />
               <div className="form-control-feedback">{this.state.error.website}</div>
             </fieldset>
             <fieldset className={"form-group"}>
@@ -135,15 +144,23 @@ const Settings = React.createClass({
         {passwordDialog }
       </div>
     );
-  },
+  }
+}
+
+Settings.propTypes = {
+  clearUpdatingProfileResult: PropTypes.func,
+  accountUpdate: PropTypes.func,
+  setAvatar: PropTypes.func,
+  auth: PropTypes.shape({
+    user: PropTypes.shape({}),
+  }),
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
 });
 
-const mapStateToProps = function (state) {
-  return { auth: state.auth };
-};
+const mapDispatchToProps = dispatch =>
+  (bindActionCreators({ setAvatar, accountUpdate, clearUpdatingProfileResult }, dispatch));
 
-const mapDispatchToProps = function (dispatch) {
-  return bindActionCreators({ setAvatar, accountUpdate, clearUpdatingProfileResult }, dispatch);
-};
-
-module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(Settings);
+module.exports = connect(mapStateToProps, mapDispatchToProps)(Settings);

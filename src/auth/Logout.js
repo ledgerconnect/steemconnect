@@ -1,18 +1,25 @@
+/* eslint-disable class-methods-use-this */
+import { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import { logout } from '../actions';
 
-const React = require('react');
-const ReactRedux = require('react-redux');
-const withRouter = require('react-router').withRouter;
-
-const Logout = React.createClass({
+class Logout extends Component {
   componentWillMount() {
     this.props.logout();
     this.props.router.replace('/');
-  },
+  }
+
   render() {
     return null;
-  },
-});
+  }
+}
+Logout.propTypes = {
+  logout: PropTypes.func,
+  router: PropTypes.shape({
+    replace: PropTypes.func,
+  }),
+};
 
 const mapStateToProps = () => ({});
 
@@ -20,4 +27,4 @@ const mapDispatchToProps = dispatch => ({
   logout() { dispatch(logout()); },
 });
 
-module.exports = ReactRedux.connect(mapStateToProps, mapDispatchToProps)(withRouter(Logout));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Logout));

@@ -137,7 +137,7 @@ export function setAvatar(passwordOrWif, file, type) {
     axios.post(uploadUrl, data, { origin: true })
       .then((response) => {
         const { data: { url } } = response;
-        profileData[type] = url ? url : uploadUrl;
+        profileData[type] = url || uploadUrl;
 
         dispatch(accountUpdate(user.name, passwordOrWif, user.memo_key, { profile: profileData }));
       }).catch((err) => {
