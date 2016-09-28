@@ -1,4 +1,4 @@
-import { hideSidebar, showSidebar } from './../actions';
+import { hideSidebar, showSidebar } from './appAction';
 
 let React = require('react'),
   ReactRedux = require('react-redux'),

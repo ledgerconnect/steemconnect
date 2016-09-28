@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import formatter from 'steem/lib/formatter';
 import { Link } from 'react-router';
-import { hideSidebar } from './../actions';
+import { hideSidebar } from './appAction';
 
 class Sidebar extends Component {
   constructor(props) {
