@@ -75,3 +75,7 @@ export function login(username, passwordOrWif) {
     });
   };
 }
+
+export function demoLogin() {
+  return login('guest123', '5JRaypasxMx1L97ZUX7YuC5Psb5EAbF821kkAGtBj7xCJFQcbLg');
+}
