@@ -6,9 +6,8 @@ import _ from 'lodash';
 import EditImageHeader from './../header/EditImageHeader';
 import Loading from './../widgets/Loading';
 import cookie from '../../lib/cookie';
-import { login } from '../actions';
 import LastUserSelector from './LastUserSelector';
-import { ShowLastUserList } from './authAction';
+import { ShowLastUserList, login } from './authAction';
 
 class Login extends Component {
   constructor(props) {
