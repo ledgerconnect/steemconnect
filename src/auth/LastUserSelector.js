@@ -56,7 +56,7 @@ class LastUserSelector extends Component {
       )) }
       <form className="form" onSubmit={this.handleSubmit}>
         <fieldset className="form-group">
-          <input autoFocus type="text" placeholder="Username" className="form-control form-control-lg" ref={(c) => { this.username = c; }} />
+          <input autoFocus type="text" placeholder="Username" className="form-control form-control-lg lowercase-input" ref={(c) => { this.username = c; }} />
         </fieldset>
         <fieldset className="form-group">
           <button className="btn btn-secondary" onClick={this.addUser}>Add Account</button>
