@@ -38,16 +38,6 @@ app.use(express.static(path.join(__dirname, 'node_modules')));
 app.use(cors({ credentials: true, origin: true }));
 app.use(verifyToken);
 
-// Debugging
-app.get('/keys', (req, res) => {
-  res.json({
-    PUBLIC_KEY: process.env.PUBLIC_KEY,
-    PRIVATE_KEY: process.env.PRIVATE_KEY,
-    JWT_SECRET: process.env.JWT_SECRET,
-    CRYPTO_MOD: process.env.CRYPTO_MOD,
-  });
-});
-
 app.use('/', require('./routes/api'));
 app.use('/', require('./routes/auth'));
 app.use('/', require('./routes/user'));
