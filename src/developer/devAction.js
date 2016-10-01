@@ -1,6 +1,10 @@
 import axios from 'axios';
 import * as devTypes from './devActionTypes';
 
+export function setPermission(permissionList) {
+  return { type: devTypes.UPDATE_PERMISSIONLIST, permissionList };
+}
+
 export function createApplication({
   appOwnerWif, appName, author, origins, redirect_urls, permissions,
 }) {
@@ -18,5 +22,15 @@ export function createApplication({
         keys: data,
       });
     });
+  };
+}
+
+export function getPermissionList() {
+  return (dispatch) => {
+    axios.get('/auth/permissionList')
+      .then(response => response.data)
+      .then((permissions) => {
+        dispatch(setPermission(permissions));
+      });
   };
 }

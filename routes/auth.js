@@ -102,4 +102,15 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
   });
 });
 
+router.get('/auth/permissionList', verifyAuth, (req, res) => {
+  res.send([
+    { name: 'Verify Identity', api: 'verify_identity' },
+    { name: 'Vote/Downvote', api: 'vote' },
+    { name: 'Comment', api: 'comment' },
+    { name: 'Post', api: 'post' },
+    { name: 'Reblog', api: 'reblog' },
+    { name: 'Follow/Mute', api: 'follow/mute' },
+  ]);
+});
+
 module.exports = router;

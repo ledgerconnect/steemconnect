@@ -5,7 +5,7 @@ import _ from 'lodash';
 import validator from 'validator';
 import steemAuth from 'steemauth';
 import FieldSet from './FieldSet';
-import { createApplication } from './devAction';
+import { createApplication, getPermissionList } from './devAction';
 import PasswordDialog from './../widgets/PasswordDialog';
 
 class Developer extends Component {
@@ -14,6 +14,10 @@ class Developer extends Component {
     this.state = { error: {}, showPasswordDialog: false };
     this.formFields = { permissions: {} };
     this.formData = {};
+  }
+
+  componentWillMount() {
+    this.props.getPermissionList();
   }
 
   validate = (refs) => {
@@ -98,9 +102,9 @@ class Developer extends Component {
   };
   render() {
     const { isUpdatingProfile, isUpdatingProfileError, json_metadata } = this.props.auth.user;
-    const { keys } = this.props.developer;
+    const { keys, permissionList } = this.props.developer;
     let keysView;
-    const { app: { name: appName, author, permissions = [], private_metadata } } = json_metadata;
+    const { name: appName, author, permissions = [], private_metadata } = json_metadata.app || {};
     if (keys) {
       keysView = (<div style={{ wordBreak: 'break-all' }}>
         clientId: {keys.clientId}<br />
@@ -118,6 +122,8 @@ class Developer extends Component {
         onSave={this.savePassword}
       />);
     }
+    console.log(this.props.developer);
+
     return (
       <div>
         <form className="form">
@@ -127,9 +133,11 @@ class Developer extends Component {
             <FieldSet name={'author'} defaultValue={author} error={this.state.error} validate={this.validate} formFields={this.formFields} />
             <fieldset className={"form-group"}>
               Permissions <br />
-              <input type="checkbox" className="form-check-input" ref={c => (this.formFields.permissions.vote = c)} defaultChecked={permissions.indexOf('vote') >= 0} value="vote" /> Vote<br />
-              <input type="checkbox" className="form-check-input" ref={c => (this.formFields.permissions.verify = c)} defaultChecked={permissions.indexOf('verify') >= 0} value="verify" /> Verify<br />
-              <input type="checkbox" className="form-check-input" ref={c => (this.formFields.permissions.post = c)} defaultChecked={permissions.indexOf('post') >= 0} value="post" /> Post<br />
+              {permissionList.map(({ name, api }) => <div key={api}>
+                <input type="checkbox" className="form-check-input" ref={c => (this.formFields.permissions[api] = c)} defaultChecked={permissions.indexOf(api) >= 0} value={api} />
+                {name}
+              </div>
+              ) }
             </fieldset>
             <fieldset className={"form-group"}>
               Permissions <br />
@@ -158,10 +166,12 @@ Developer.propTypes = {
   }),
   developer: PropTypes.shape({ keys: PropTypes.object }),
   createApplication: PropTypes.func,
+  getPermissionList: PropTypes.func,
 };
 
 const mapStateToProps = state => ({ auth: state.auth, developer: state.developer });
 const mapDispatchToProps = dispatch => ({
   createApplication: bindActionCreators(createApplication, dispatch),
+  getPermissionList: bindActionCreators(getPermissionList, dispatch),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Developer);
