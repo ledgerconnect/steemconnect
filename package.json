@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "BABEL_ENV=test mocha --watch --require babel-register ./src/*/*-spec.js",
+    "test": "BABEL_ENV=test mocha --require babel-register ./src/*/*-spec.js",
+    "test-watch": "BABEL_ENV=test mocha --watch --require babel-register ./src/*/*-spec.js",
     "build": "webpack --progress -p --config webpack.prod.config.js",
     "lint": "eslint src/**",
     "postinstall": "npm run build"
