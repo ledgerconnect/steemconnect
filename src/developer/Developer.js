@@ -122,7 +122,6 @@ class Developer extends Component {
         onSave={this.savePassword}
       />);
     }
-    console.log(this.props.developer);
 
     return (
       <div>
@@ -164,7 +163,10 @@ Developer.propTypes = {
   auth: PropTypes.shape({
     user: PropTypes.object.isRequired,
   }),
-  developer: PropTypes.shape({ keys: PropTypes.object }),
+  developer: PropTypes.shape({
+    keys: PropTypes.object,
+    permissionList: PropTypes.arrayOf(PropTypes.shape({})),
+  }),
   createApplication: PropTypes.func,
   getPermissionList: PropTypes.func,
 };
