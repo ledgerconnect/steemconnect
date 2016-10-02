@@ -1,9 +1,10 @@
+import _ from 'lodash';
 import * as authTypes from './authActionTypes';
 
 const axios = require('axios');
 const steemAuth = require('steemauth');
 const crypto = require('crypto-js');
-const _ = require('lodash');
+
 const cookie = require('../../lib/cookie');
 
 function encryptData(object) {
@@ -80,16 +81,16 @@ export function demoLogin() {
   return login('guest123', '5JRaypasxMx1L97ZUX7YuC5Psb5EAbF821kkAGtBj7xCJFQcbLg');
 }
 
-export function setAppPermission(appName, permissions) {
-  return { type: authTypes.SET_APP_PERMISSION, appName, permissions };
+export function setAppDetails(appName, appDetails) {
+  return { type: authTypes.SET_APP_DETAILS, appName, appDetails };
 }
 
-export function getAppPermission(clientId, appName) {
+export function getAppPermission(clientId, appUserName) {
   return (dispatch) => {
-    axios.get('/auth/permissionList')
+    axios.get('/auth/getAppDetails', { params: { clientId, appUserName } })
       .then(response => response.data)
-      .then((permissions) => {
-        dispatch(setAppPermission(appName, permissions));
+      .then((appDetails) => {
+        dispatch(setAppDetails(appUserName, appDetails));
       });
   };
 }

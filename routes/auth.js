@@ -105,6 +105,35 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
   });
 });
 
+router.get('/auth/getAppDetails', verifyAuth, (req, res) => {
+  const { appUserName } = req.query;
+  steem.api.getAccounts([appUserName], (err, result) => {
+    if (err) {
+      res.status(500).send({ error: JSON.stringify(err) });
+    } else {
+      try {
+        const jsonMetadata = getJSONMetadata(result[0]);
+        if (typeof jsonMetadata.app === 'object' && jsonMetadata.app) {
+          delete jsonMetadata.app.private_metadata;
+          if (jsonMetadata.app.permissions) {
+            jsonMetadata.app.permissions = _.map(jsonMetadata.app.permissions, v =>
+              Object.assign(apiList[v], { api: v }));
+          }
+          res.send(jsonMetadata.app);
+        } else {
+          throw new Error('Invalid appName. App not found');
+        }
+      } catch (e) {
+        let message = e.message;
+        if (e.message.search('json_metadata') >= 0) {
+          message = 'Invalid appName';
+        }
+        res.status(500).send({ error: message });
+      }
+    }
+  });
+});
+
 router.get('/auth/permissionList', verifyAuth, (req, res) => {
   res.send(apiList);
 });

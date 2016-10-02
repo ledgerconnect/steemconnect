@@ -25,9 +25,10 @@ class Authorize extends React.Component {
 
   render() {
     const appName = this.props.params.app;
-    const { appPermissions = {}, user = {} } = this.props.auth;
+    const { apps = {}, user = {} } = this.props.auth;
     const { clientId, redirect_url } = this.props.location.query;
-    const permissionList = appPermissions[appName] || [];
+    const appDetails = apps[appName] || {};
+    const permissionList = appDetails.permissions;
     let message;
     if (!clientId || !redirect_url) {
       message = <div>Missing ClientId or redirect_url</div>;
@@ -55,7 +56,7 @@ class Authorize extends React.Component {
 Authorize.propTypes = {
   params: PropTypes.shape({ app: PropTypes.string.isRequired }),
   location: PropTypes.shape({ query: PropTypes.object.isRequired }),
-  auth: PropTypes.shape({ user: PropTypes.object.isRequired, appPermissions: PropTypes.object }),
+  auth: PropTypes.shape({ user: PropTypes.object.isRequired, apps: PropTypes.object }),
   getAppPermission: PropTypes.func,
 };
 
