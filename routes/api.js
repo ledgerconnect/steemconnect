@@ -1,6 +1,6 @@
 const express = require('express');
 const steem = require('steem');
-const { verifyAuth } = require('./middleware');
+const { verifyAuth, checkPermission } = require('./middleware');
 const apiList = require('../lib/apiList');
 
 const router = new express.Router();
@@ -11,10 +11,6 @@ function sendResponse({ err: error, result }, res) {
   } else {
     res.json({ result });
   }
-}
-
-function checkPermission(req, res, next) {
-  next();
 }
 
 router.use('/api', verifyAuth, checkPermission);

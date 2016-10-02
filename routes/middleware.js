@@ -3,6 +3,7 @@ const _ = require('lodash');
 const url = require('url');
 const { getSecretKeyForClientId, decryptMessage } = require('../lib/utils');
 const jwt = require('jsonwebtoken');
+const apiList = require('../lib/apiList');
 
 function verifyAuth(req, res, next) {
   if (req.cookies.auth && typeof req.headers.authorization === 'undefined') {
@@ -68,7 +69,21 @@ function verifyToken(req, res, next) {
   }
 }
 
+function checkPermission(req, res, next) {
+  const token = req.token || {};
+  const permissions = _.map(token.permission, v => apiList[v]);
+  const requestUrl = url.parse(req.originalUrl);
+  const requestPath = requestUrl.pathname.replace(/\/$/, '');
+  const selectedQuery = _.find(permissions, p => (p.path === requestPath));
+  if (selectedQuery) {
+    next();
+  } else {
+    res.status(401).json({ acceptedPermissions: token.permission || [] });
+  }
+}
+
 module.exports = {
   verifyAuth,
   verifyToken,
+  checkPermission,
 };
