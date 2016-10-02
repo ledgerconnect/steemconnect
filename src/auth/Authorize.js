@@ -28,7 +28,7 @@ class Authorize extends React.Component {
     const { apps = {}, user = {} } = this.props.auth;
     const { clientId, redirect_url } = this.props.location.query;
     const appDetails = apps[appName] || {};
-    const permissionList = appDetails.permissions;
+    const permissionList = appDetails.permissions || [];
     let message;
     if (!clientId || !redirect_url) {
       message = <div>Missing ClientId or redirect_url</div>;
