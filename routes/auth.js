@@ -64,7 +64,9 @@ router.post('/auth/create', verifyAuth, (req, res) => {
 });
 
 router.get('/auth/authorize', verifyAuth, (req, res) => {
-  const { appUserName, clientId, redirect_url, scope } = req.query;
+  let { scope = '[]' } = req.query;
+  const { appUserName, clientId, redirect_url } = req.query;
+  try { scope = JSON.parse(scope); } catch (e) { scope = []; }
   steem.api.getAccounts([appUserName], (err, result) => {
     if (err) {
       res.status(500).send({ error: JSON.stringify(err) });
@@ -91,7 +93,7 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
         }
       } catch (e) {
         let message = e.message;
-        if (e.message.search('decrypt') >= 0) {
+        if (e.message.search('decrypt') >= 0 || e.message.search('Malformed UTF-8 data') >= 0) {
           message = 'Invalid clientId';
         } else if (e.message.search('json_metadata') >= 0) {
           message = 'Invalid appName';
