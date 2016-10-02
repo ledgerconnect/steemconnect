@@ -25,7 +25,7 @@ router.get('/api/verify', (req, res) => {
     res.json({
       isAuthenticated: true,
       username: req.username,
-      permissions: req.token.permission || ['verify', 'vote'],
+      permissions: (req.token && req.token.permission),
     });
   } else {
     res.json({

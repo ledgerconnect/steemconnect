@@ -64,7 +64,6 @@ function verifyToken(req, res, next) {
     }
   } else {
     /* For request made from steemconnect website */
-    req.token = {};
     next();
   }
 }
