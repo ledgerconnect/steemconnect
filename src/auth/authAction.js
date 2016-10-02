@@ -79,3 +79,17 @@ export function login(username, passwordOrWif) {
 export function demoLogin() {
   return login('guest123', '5JRaypasxMx1L97ZUX7YuC5Psb5EAbF821kkAGtBj7xCJFQcbLg');
 }
+
+export function setAppPermission(appName, permissions) {
+  return { type: authTypes.SET_APP_PERMISSION, appName, permissions };
+}
+
+export function getAppPermission(clientId, appName) {
+  return (dispatch) => {
+    axios.get('/auth/permissionList')
+      .then(response => response.data)
+      .then((permissions) => {
+        dispatch(setAppPermission(appName, permissions));
+      });
+  };
+}

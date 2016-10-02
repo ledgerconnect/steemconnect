@@ -12,6 +12,7 @@ const initialState = {
     selected: null,
     show: false,
   },
+  appPermissions: {},
 };
 
 export default (state = initialState, action) => {
@@ -54,6 +55,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         lastUserList: action.lastUserList,
+      };
+    case authTypes.SET_APP_PERMISSION:
+      return {
+        ...state,
+        appPermissions: Object.assign(state.appPermissions,
+          { [action.appName]: action.permissions }),
       };
     default:
       return state;
