@@ -77,7 +77,7 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
         const jsonMetadata = getJSONMetadata(result[0]);
         if (typeof jsonMetadata.app === 'object' && jsonMetadata.app) {
           let privateMetadata = decryptMessage(jsonMetadata.app.private_metadata, clientSecret);
-          privateMetadata = JSON.parse(privateMetadata);
+          try { privateMetadata = JSON.parse(privateMetadata); } catch (e) { throw new Error('Invalid clientId'); }
           if (_.indexOf(privateMetadata.redirect_urls, redirect_url) === -1) { // eslint-disable-line
             throw new Error('Redirect uri mismatch');
           }
