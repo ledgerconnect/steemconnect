@@ -14,7 +14,7 @@ export function getAccount() {
     dispatch({ type: authTypes.LOGIN_REQUEST });
     axios.get('/api/getAccount').then(({ data: { err, result } }) => {
       if (err) {
-        throw new Error(JSON.stringify(err));
+        throw err;
       } else {
         const { memo_key, reputation, balance, name } = result[0];
         let { json_metadata } = result[0];
@@ -28,7 +28,7 @@ export function getAccount() {
       dispatch({
         type: authTypes.LOGIN_FAILURE,
         user: {},
-        errorMessage: JSON.stringify(err),
+        errorMessage: err.statusText || JSON.stringify(err),
       });
     });
   };
