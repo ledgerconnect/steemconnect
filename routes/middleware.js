@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const _ = require('lodash');
 const url = require('url');
 const { getSecretKeyForClientId, decryptMessage } = require('../lib/utils');
@@ -5,7 +6,7 @@ const jwt = require('jsonwebtoken');
 
 function verifyAuth(req, res, next) {
   if (req.cookies.auth && typeof req.headers.authorization === 'undefined') {
-    req.headers.authorization = `Bearer ${req.cookies.auth}`; // eslint-disable-line no-param-reassign
+    req.headers.authorization = `Bearer ${req.cookies.auth}`;
   }
   if (typeof req.headers.authorization !== 'undefined' && (req.headers.authorization.search('Bearer ') === 0)) {
     const auth = req.headers.authorization.substring('Bearer '.length);
@@ -18,10 +19,10 @@ function verifyAuth(req, res, next) {
         message = JSON.parse(message);
         if (message.username === jwtData.username && (typeof req.token === 'undefined' || req.token.username === jwtData.username)) {
           _.each(jwtData, (value, key) => {
-            req[key] = value; // eslint-disable-line no-param-reassign
+            req[key] = value;
           });
           _.each(message, (value, key) => {
-            req[key] = value; // eslint-disable-line no-param-reassign
+            req[key] = value;
           });
           next();
         } else {
@@ -53,7 +54,7 @@ function verifyToken(req, res, next) {
         } else {
           const isAuthorizedOrigin = _.indexOf(jwtData.allowedOrigin, origin) !== -1;
           if (isAuthorizedOrigin) {
-            req.token = jwtData; // eslint-disable-line no-param-reassign
+            req.token = jwtData;
             next();
           } else {
             res.sendStatus(401);
@@ -63,6 +64,7 @@ function verifyToken(req, res, next) {
     }
   } else {
     /* For request made from steemconnect website */
+    req.token = {};
     next();
   }
 }

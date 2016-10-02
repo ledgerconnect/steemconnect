@@ -64,9 +64,9 @@ router.post('/auth/create', verifyAuth, (req, res) => {
 });
 
 router.get('/auth/authorize', verifyAuth, (req, res) => {
-  let { scope = '[]' } = req.query;
+  let { permission = '[]' } = req.query;
   const { appUserName, clientId, redirect_url } = req.query;
-  try { scope = JSON.parse(scope); } catch (e) { scope = []; }
+  try { permission = JSON.parse(permission); } catch (e) { permission = []; }
   steem.api.getAccounts([appUserName], (err, result) => {
     if (err) {
       res.status(500).send({ error: JSON.stringify(err) });
@@ -83,7 +83,7 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
           const token = jwt.sign({
             username: req.username,
             allowedOrigin: privateMetadata.origins,
-            scope,
+            permission,
             clientId,
             appUserName,
           }, process.env.JWT_SECRET, { expiresIn: '36h' });

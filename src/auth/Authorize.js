@@ -19,8 +19,8 @@ class Authorize extends React.Component {
   }
 
   authorizeUser = (clientId, redirect_url, appName) => {
-    const scope = _.chain(this.permissions).map((v1, k1) => v1.checked && k1).filter().value();
-    window.location = `/auth/authorize?clientId=${clientId}&redirect_url=${redirect_url}&appUserName=${appName}&scope=${JSON.stringify(scope)}`;
+    const permission = _.chain(this.permissions).map((v1, k1) => v1.checked && k1).filter().value();
+    window.location = `/auth/authorize?clientId=${clientId}&redirect_url=${redirect_url}&appUserName=${appName}&permission=${JSON.stringify(permission)}`;
   }
 
   render() {
