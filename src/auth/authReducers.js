@@ -12,6 +12,7 @@ const initialState = {
     selected: null,
     show: false,
   },
+  apps: {},
 };
 
 export default (state = initialState, action) => {
@@ -54,6 +55,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         lastUserList: action.lastUserList,
+      };
+    case authTypes.SET_APP_DETAILS:
+      return {
+        ...state,
+        apps: Object.assign(state.apps,
+          { [action.appName]: action.appDetails }),
       };
     default:
       return state;

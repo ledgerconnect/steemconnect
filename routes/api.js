@@ -1,6 +1,7 @@
 const express = require('express');
 const steem = require('steem');
-const { verifyAuth } = require('./middleware');
+const { verifyAuth, checkPermission } = require('./middleware');
+const apiList = require('../lib/apiList');
 
 const router = new express.Router();
 
@@ -12,7 +13,7 @@ function sendResponse({ err: error, result }, res) {
   }
 }
 
-router.use('/api', verifyAuth);
+router.use('/api', verifyAuth, checkPermission);
 
 router.get('/api/getAccount', (req, res) => {
   steem.api.getAccounts([req.username], (err, result) => {
@@ -20,12 +21,12 @@ router.get('/api/getAccount', (req, res) => {
   });
 });
 
-router.get('/api/verify', (req, res) => {
+router.get(apiList.verify.path, (req, res) => {
   if (req.username) {
     res.json({
       isAuthenticated: true,
       username: req.username,
-      permissions: req.scope || ['verify', 'vote'],
+      permissions: (req.token && req.token.permission),
     });
   } else {
     res.json({
@@ -34,7 +35,7 @@ router.get('/api/verify', (req, res) => {
   }
 });
 
-router.get('/api/vote', (req, res) => {
+router.get(apiList.vote.path, (req, res) => {
   const { voter, author, permlink } = req.query;
   const weight = parseInt(req.query.weight, 10);
   steem.broadcast.vote(req.wif, voter, author, permlink, weight, (err, result) => {
@@ -42,7 +43,7 @@ router.get('/api/vote', (req, res) => {
   });
 });
 
-router.get('/api/comment', (req, res) => {
+router.get(apiList.comment.path, (req, res) => {
   const { parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata } = req.query;
   steem.broadcast.comment(req.wif,
     parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata,

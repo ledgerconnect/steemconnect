@@ -1,11 +1,13 @@
+/* eslint-disable no-param-reassign */
 const _ = require('lodash');
 const url = require('url');
 const { getSecretKeyForClientId, decryptMessage } = require('../lib/utils');
 const jwt = require('jsonwebtoken');
+const apiList = require('../lib/apiList');
 
 function verifyAuth(req, res, next) {
   if (req.cookies.auth && typeof req.headers.authorization === 'undefined') {
-    req.headers.authorization = `Bearer ${req.cookies.auth}`; // eslint-disable-line no-param-reassign
+    req.headers.authorization = `Bearer ${req.cookies.auth}`;
   }
   if (typeof req.headers.authorization !== 'undefined' && (req.headers.authorization.search('Bearer ') === 0)) {
     const auth = req.headers.authorization.substring('Bearer '.length);
@@ -18,10 +20,10 @@ function verifyAuth(req, res, next) {
         message = JSON.parse(message);
         if (message.username === jwtData.username && (typeof req.token === 'undefined' || req.token.username === jwtData.username)) {
           _.each(jwtData, (value, key) => {
-            req[key] = value; // eslint-disable-line no-param-reassign
+            req[key] = value;
           });
           _.each(message, (value, key) => {
-            req[key] = value; // eslint-disable-line no-param-reassign
+            req[key] = value;
           });
           next();
         } else {
@@ -53,7 +55,7 @@ function verifyToken(req, res, next) {
         } else {
           const isAuthorizedOrigin = _.indexOf(jwtData.allowedOrigin, origin) !== -1;
           if (isAuthorizedOrigin) {
-            req.token = jwtData; // eslint-disable-line no-param-reassign
+            req.token = jwtData;
             next();
           } else {
             res.sendStatus(401);
@@ -67,7 +69,21 @@ function verifyToken(req, res, next) {
   }
 }
 
+function checkPermission(req, res, next) {
+  const token = req.token || {};
+  const permissions = _.map(token.permission, v => apiList[v]);
+  const requestUrl = url.parse(req.originalUrl);
+  const requestPath = requestUrl.pathname.replace(/\/$/, '');
+  const selectedQuery = _.find(permissions, p => (p.path === requestPath));
+  if (selectedQuery) {
+    next();
+  } else {
+    res.status(401).json({ acceptedPermissions: token.permission || [] });
+  }
+}
+
 module.exports = {
   verifyAuth,
   verifyToken,
+  checkPermission,
 };

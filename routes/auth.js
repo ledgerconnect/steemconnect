@@ -6,6 +6,7 @@ const createECDH = require('create-ecdh');
 const jwt = require('jsonwebtoken');
 const { verifyAuth } = require('./middleware');
 const { getSecretKeyForClientId, getJSONMetadata, decryptMessage, encryptMessage } = require('../lib/utils');
+const apiList = require('../lib/apiList');
 
 const router = new express.Router();
 
@@ -64,7 +65,9 @@ router.post('/auth/create', verifyAuth, (req, res) => {
 });
 
 router.get('/auth/authorize', verifyAuth, (req, res) => {
-  const { appUserName, clientId, redirect_url, scope } = req.query;
+  let { permission = '[]' } = req.query;
+  const { appUserName, clientId, redirect_url } = req.query;
+  try { permission = JSON.parse(permission); } catch (e) { permission = []; }
   steem.api.getAccounts([appUserName], (err, result) => {
     if (err) {
       res.status(500).send({ error: JSON.stringify(err) });
@@ -74,14 +77,14 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
         const jsonMetadata = getJSONMetadata(result[0]);
         if (typeof jsonMetadata.app === 'object' && jsonMetadata.app) {
           let privateMetadata = decryptMessage(jsonMetadata.app.private_metadata, clientSecret);
-          privateMetadata = JSON.parse(privateMetadata);
+          try { privateMetadata = JSON.parse(privateMetadata); } catch (e) { throw new Error('Invalid clientId'); }
           if (_.indexOf(privateMetadata.redirect_urls, redirect_url) === -1) { // eslint-disable-line
             throw new Error('Redirect uri mismatch');
           }
           const token = jwt.sign({
             username: req.username,
             allowedOrigin: privateMetadata.origins,
-            scope,
+            permission,
             clientId,
             appUserName,
           }, process.env.JWT_SECRET, { expiresIn: '36h' });
@@ -91,7 +94,7 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
         }
       } catch (e) {
         let message = e.message;
-        if (e.message.search('decrypt') >= 0) {
+        if (e.message.search('decrypt') >= 0 || e.message.search('Malformed UTF-8 data') >= 0) {
           message = 'Invalid clientId';
         } else if (e.message.search('json_metadata') >= 0) {
           message = 'Invalid appName';
@@ -102,15 +105,37 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
   });
 });
 
+router.get('/auth/getAppDetails', verifyAuth, (req, res) => {
+  const { appUserName } = req.query;
+  steem.api.getAccounts([appUserName], (err, result) => {
+    if (err) {
+      res.status(500).send({ error: JSON.stringify(err) });
+    } else {
+      try {
+        const jsonMetadata = getJSONMetadata(result[0]);
+        if (typeof jsonMetadata.app === 'object' && jsonMetadata.app) {
+          delete jsonMetadata.app.private_metadata;
+          if (jsonMetadata.app.permissions) {
+            jsonMetadata.app.permissions = _.map(jsonMetadata.app.permissions, v =>
+              Object.assign(apiList[v], { api: v }));
+          }
+          res.send(jsonMetadata.app);
+        } else {
+          throw new Error('Invalid appName. App not found');
+        }
+      } catch (e) {
+        let message = e.message;
+        if (e.message.search('json_metadata') >= 0) {
+          message = 'Invalid appName';
+        }
+        res.status(500).send({ error: message });
+      }
+    }
+  });
+});
+
 router.get('/auth/permissionList', verifyAuth, (req, res) => {
-  res.send([
-    { name: 'Verify Identity', api: 'verify_identity' },
-    { name: 'Vote/Downvote', api: 'vote' },
-    { name: 'Comment', api: 'comment' },
-    { name: 'Post', api: 'post' },
-    { name: 'Reblog', api: 'reblog' },
-    { name: 'Follow/Mute', api: 'follow/mute' },
-  ]);
+  res.send(apiList);
 });
 
 module.exports = router;
