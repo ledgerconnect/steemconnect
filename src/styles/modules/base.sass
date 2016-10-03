@@ -53,7 +53,7 @@ img
 
 html, body
   height: 100%
-  text-align: left
+  text-align: center
 
 ul, li
   list-style: none
@@ -85,6 +85,9 @@ ul, li
 
 #app
   height: 100%
+  display: flex
+  justify-content: center
+  align-items: center
 
 .main-panel
   position: relative
@@ -92,7 +95,8 @@ ul, li
   float: right
   display: flex
   flex-direction: column
-  width: calc(100% - 260px)
+  width: 100%
+  padding-left: 260px
 
 @media (max-width: 992px)
   .hidden-xs
@@ -120,6 +124,11 @@ ul, li
 .app-wrapper.full-width
   .main-panel
     width: 100% !important
+    padding-left: 0
+
+@media (max-width: 991px)
+  .main-panel
+    padding-left: 0
 
 
 .bg-green
@@ -180,18 +189,45 @@ a.btn-primary
 
 
 .block
-  border: 1px solid #e7e7ec
+  border: 1px solid #a2a2a2
   box-shadow: 0 2px 5px 0 rgba(0,0,0,.05)
   width: 100%
-  border-radius: 5px
+  border-radius: 15px
   margin: 0 auto 40px
   text-align: center
   max-width: 600px
   background-color: white
 
 .block-login
-    padding: 20px
-    max-width: 360px !important
+  padding: 20px 0 0
+  max-width: 360px !important
+  width: 340px
+
+@media (max-width: 768px)
+  .block-login
+    width: 100%
+  #app
+    display: initial
+
+.profile-image
+  border-radius: 50%
 
 .lowercase-input
   text-transform: lowercase
+
+.block-dashboard
+  padding: 0
+  border-radius: 6px
+  border: 1px solid #e8e8e8
+
+.list-element
+  padding: 4px 0 4px 8px
+  text-align: left
+  &:not(:last-of-type)
+    border-bottom: 1px solid #e8e8e8
+  &:hover
+    background-color: #edf7fd
+
+.list-image
+  height: 35px
+  width: 35px

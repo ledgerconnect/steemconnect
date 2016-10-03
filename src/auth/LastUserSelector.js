@@ -59,15 +59,14 @@ class LastUserSelector extends Component {
           username={username} onDelete={this.onDelete}
         />
       )) }
+      <span className="form-span">Log In with your Steem<br /> account</span>
       <form className="form" onSubmit={this.handleSubmit}>
-        <fieldset className="form-group">
-          <input autoFocus type="text" placeholder="Username" className="form-control form-control-lg lowercase-input" ref={(c) => { this.username = c; }} />
+        <fieldset className="form-group man mhs">
+          <i className="icon icon-md material-icons form-icon">account_box</i>
+          <input autoFocus type="text" placeholder="enter your username" className="form-control form-control-lg lowercase-input text-xs-left form-input" ref={(c) => { this.username = c; }} />
         </fieldset>
-        <fieldset className="form-group">
-          <button className="btn btn-secondary" onClick={this.addUser}>Add Account</button>
-        </fieldset>
-        <fieldset className="form-group">
-          <fieldset className="form-group"><button className="btn btn-secondary" onClick={this.demo}>Demo</button></fieldset>
+        <fieldset className="form-group man">
+          <button className="btn btn-primary form-submit" onClick={this.addUser}>Next</button>
         </fieldset>
       </form>
     </div>);

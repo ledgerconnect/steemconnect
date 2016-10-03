@@ -1,6 +1,7 @@
 .form
-  max-width: 320px
-  margin: 0 auto !important
+  max-width: initial
+  margin-top: 20px
+  border-top: 1px solid #a2a2a2
 
 textarea
   resize: none
@@ -45,12 +46,28 @@ input[type="checkbox"]
 .form-control
   font-size: 18px
   border: 0
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2)
   border-radius: 0
   box-shadow: none
   text-align: center
-  &:focus
-    border-bottom: 1px solid $primary-color
 
 .form-group
   text-align: center
+
+.form-span
+  font-weight: bold
+
+.form-input
+  float: right
+  width: calc(100% - 28px)
+  padding: 10px 5px
+
+.form-submit
+  border-radius: 14px
+  border-top-left-radius: 0
+  border-top-right-radius: 0
+  &:focus, &:active
+    outline: 0 !important
+
+.form-icon
+  float: left
+  padding: 8px 0

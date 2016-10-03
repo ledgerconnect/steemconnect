@@ -6,6 +6,7 @@ import Header from '../../app/header';
 import Activity from './Activity';
 import { getAccountHistory } from '../../actions';
 
+
 class Dashboard extends Component {
   componentDidMount() {
     this.props.getAccountHistory(this.props.auth.user.name, -1, 5);

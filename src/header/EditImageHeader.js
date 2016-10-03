@@ -17,14 +17,14 @@ const EditImageHeader = (props) => {
     dropZone = (<div>
       <Dropzone className="xx" onDrop={files => props.onDrop(files, 'profile_image')} accept="image/*">
         <a className="placeholder"><i className="icon icon-md material-icons">file_upload</i> Edit</a>
-        <img alt="Profile" src={`https://img.busy6.com/@${props.username}`} />
+        <img alt="Profile" className="profile-image" src={`https://img.busy6.com/@${props.username}`} />
       </Dropzone>
       <Dropzone className="xx" onDrop={files => props.onDrop(files, 'cover_image')} accept="image/*">
         <i className="icon icon-md material-icons">file_upload</i> Edit Cover
       </Dropzone>
     </div>);
   } else {
-    dropZone = (<a><img alt="Profile" src={`https://img.busy6.com/@${props.username}`} /></a>);
+    dropZone = (<a><img alt="Profile" className="profile-image" src={`https://img.busy6.com/@${props.username}`} /></a>);
   }
 
   return (<div onClick={props.onClick} style={{ backgroundImage: `url(https://img.busy6.com/@${props.username}/cover) !important` }}>
