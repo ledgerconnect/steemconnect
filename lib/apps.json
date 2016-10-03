@@ -1,0 +1,20 @@
+{
+  "busy": {
+    "name": "Busy",
+    "author": "fabien",
+    "tagline": "The social network for Steem blockchain",
+    "description": "",
+    "origins": ["https://busy.com/login", "https://www.busy.com/login"],
+    "redirect_urls": ["https://busy.com/dashboard", "https://www.busy.com/dashboard"],
+    "permissions": ["vote", "comment", "post", "follow"]
+  },
+  "steemstats": {
+    "name": "SteemStats",
+    "author": "jesta",
+    "tagline": "Steem Account Statistics + Monitoring",
+    "description": "SteemStats is an application created to help you monitor your account activity on steemit.com, a social media platform based on the steem blockchain.",
+    "origins": ["https://steemstats.com/login", "http://www.steemstats.com/login"],
+    "redirect_urls": ["https://steemstats.com/dashboard", "https://www.steemstats.com/dashboard"],
+    "permissions": ["vote", "follow"]
+  }
+}
