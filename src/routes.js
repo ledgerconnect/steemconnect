@@ -5,7 +5,7 @@ import Logout from './auth/Logout';
 import Profile from './app/Settings';
 import Authorize from './auth/Authorize';
 import Developer from './developer/Developer';
-import Dashboard from './dashboard/Dashboard';
+import Dashboard from './containers/dashboard/Dashboard';
 
 module.exports = (
   <Route path="/" component={Wrapper}>
