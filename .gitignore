@@ -5,6 +5,7 @@ public/js/app.min.js.map
 .save
 *.css.map
 *.css
+.DS_Store
 
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template
@@ -40,3 +41,6 @@ node_modules
 
 #vscode specific 
 .vscode/*
+
+#sublime specific
+run.sh
