@@ -44,7 +44,7 @@ class Login extends Component {
             <input type={selectedUser ? 'hidden' : 'text'} placeholder="Username" defaultValue={selectedUser} className="form-control form-control-lg lowercase-input" ref={(c) => { this.username = c; }} />
           </fieldset>
           <fieldset className="form-group man mhs">
-            <i className="icon icon-md material-icons form-icon">vpn_key</i>
+            <i className="icon icon-md material-icons form-icon">fingerprint</i>
             <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control form-control-lg text-xs-left form-input" ref={(c) => { this.passwordOrWif = c; }} />
           </fieldset>
           {this.props.auth.errorMessage &&
