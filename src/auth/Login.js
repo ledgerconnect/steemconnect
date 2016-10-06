@@ -31,33 +31,28 @@ class Login extends Component {
   render() {
     const { lastUserList } = this.state;
     const selectedUser = this.props.auth.lastUserList.selected || lastUserList[0];
-    let view;
-    if (typeof selectedUser !== 'string' || this.props.auth.lastUserList.show === true) {
-      view = <LastUserSelector />;
-    } else if (this.props.auth.isFetching) {
-      view = <Loading />;
-    } else {
-      view = (<div className="dialog">
-        {selectedUser && <AccountCard username={selectedUser} />}
-        <form className="form" onSubmit={this.handleSubmit}>
-          <input type="hidden" placeholder="Username" defaultValue={selectedUser} className="form-control form-control-lg" ref={(c) => { this.username = c; }} />
-          <fieldset className="form-group man mhs">
-            <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control form-control-lg" ref={(c) => { this.passwordOrWif = c; }} />
-          </fieldset>
-          {this.props.auth.errorMessage &&
-            <ul className="errorMessages">
-              <li>{this.props.auth.errorMessage}</li>
-            </ul>}
-          <fieldset className="form-group man">
-            <button className="btn btn-success form-submit" onClick={this.login}>Log In</button>
-          </fieldset>
-        </form>
-      </div>);
-    }
     return (<div>
       <Link to="/"><img alt="Steem Connect" className="dialog-logo mbm" src="/img/logo.svg" /></Link>
       <div className="block block-login">
-        {view}
+        {(typeof selectedUser !== 'string' || this.props.auth.lastUserList.show === true) ?
+          <LastUserSelector /> :
+          <div className="dialog">
+            {selectedUser && <AccountCard username={selectedUser} />}
+            <form className="form" onSubmit={this.handleSubmit}>
+              <input type="hidden" placeholder="Username" defaultValue={selectedUser} className="form-control form-control-lg" ref={(c) => { this.username = c; }} />
+              <fieldset className="form-group man mhs">
+                <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control form-control-lg" ref={(c) => { this.passwordOrWif = c; }} />
+              </fieldset>
+              {this.props.auth.errorMessage &&
+              <ul className="errorMessages">
+                <li>{this.props.auth.errorMessage}</li>
+              </ul>}
+              <fieldset className="form-group man">
+                <button disabled={this.props.auth.isFetching} className="btn btn-success form-submit" onClick={this.login}>
+                  {this.props.auth.isFetching ? <Loading /> : 'Log In'}</button>
+              </fieldset>
+            </form>
+          </div>}
       </div>
       <div className="mvl">
         {selectedUser &&
