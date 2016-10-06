@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import _ from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import EditImageHeader from './../header/EditImageHeader';
+import AccountCard from './AccountCard';
 import cookie from '../../lib/cookie';
 import { selectLoginWithUserName, demoLogin } from './authAction';
 
@@ -54,7 +54,7 @@ class LastUserSelector extends Component {
     const { lastUserList } = this.state;
     return (<div>
       {lastUserList.map((username, index) => (
-        <EditImageHeader
+        <AccountCard
           key={index}
           onClick={() => { this.selectUser(username); }}
           username={username} onDelete={this.onDelete}

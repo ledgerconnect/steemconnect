@@ -2,9 +2,9 @@ import { bindActionCreators } from 'redux';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import Header from '../../app/header';
+import Header from './../app/header';
 import Activity from './Activity';
-import { getAccountHistory } from '../../actions';
+import { getAccountHistory } from './../actions';
 
 
 class Dashboard extends Component {

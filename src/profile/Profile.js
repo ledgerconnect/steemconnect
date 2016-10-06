@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import validator from 'validator';
 import { bindActionCreators } from 'redux';
 import { each } from 'lodash';
-import EditImageHeader from './../header/EditImageHeader';
-import { setAvatar, accountUpdate, clearUpdatingProfileResult } from './../actions';
-import PasswordDialog from './../widgets/PasswordDialog';
-import Header from './../app/header';
+import AvatarUpdate from './AvatarUpdate';
+import { setAvatar, accountUpdate, clearUpdatingProfileResult } from '../actions';
+import PasswordDialog from '../widgets/PasswordDialog';
+import Header from '../app/header';
 
 class Settings extends Component {
 
@@ -99,7 +99,7 @@ class Settings extends Component {
     return (
       <div>
         <Header />
-        <EditImageHeader username={user.name} onDrop={this.onDrop} />
+        <AvatarUpdate username={user.name} onDrop={this.onDrop} />
         <form className="form pvx mhl">
           <div className="mbl">
             <fieldset className={"form-group"}>

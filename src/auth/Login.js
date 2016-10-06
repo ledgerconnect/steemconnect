@@ -3,10 +3,10 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import EditImageHeader from './../header/EditImageHeader';
+import AccountCard from '../auth/AccountCard';
 import Loading from './../widgets/Loading';
 import cookie from '../../lib/cookie';
-import LastUserSelector from './LastUserSelector';
+import LastUserSelector from './AccountSelector';
 import { ShowLastUserList, login, demoLogin } from './authAction';
 
 class Login extends Component {
@@ -38,30 +38,27 @@ class Login extends Component {
       view = <Loading />;
     } else {
       view = (<div>
-        <div>
-          {selectedUser && <EditImageHeader username={selectedUser} />}
-          @{selectedUser}
-          <form className="form" onSubmit={this.handleSubmit}>
-            <fieldset className="form-group">
-              <input type={selectedUser ? 'hidden' : 'text'} placeholder="Username" defaultValue={selectedUser} className="form-control form-control-lg lowercase-input" ref={(c) => { this.username = c; }} />
-            </fieldset>
-            <fieldset className="form-group man mhs">
-              <i className="icon icon-md material-icons form-icon">vpn_key</i>
-              <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control form-control-lg text-xs-left form-input" ref={(c) => { this.passwordOrWif = c; }} />
-            </fieldset>
-            {this.props.auth.errorMessage &&
-              <ul className="errorMessages">
-                <li>{this.props.auth.errorMessage}</li>
-              </ul>}
-            <fieldset className="form-group man">
-              <button className="btn btn-success form-submit" onClick={this.login}>Log In</button>
-            </fieldset>
-          </form>
-        </div>
+        {selectedUser && <AccountCard username={selectedUser} />}
+        <form className="form" onSubmit={this.handleSubmit}>
+          <fieldset className="form-group">
+            <input type={selectedUser ? 'hidden' : 'text'} placeholder="Username" defaultValue={selectedUser} className="form-control form-control-lg lowercase-input" ref={(c) => { this.username = c; }} />
+          </fieldset>
+          <fieldset className="form-group man mhs">
+            <i className="icon icon-md material-icons form-icon">vpn_key</i>
+            <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control form-control-lg text-xs-left form-input" ref={(c) => { this.passwordOrWif = c; }} />
+          </fieldset>
+          {this.props.auth.errorMessage &&
+            <ul className="errorMessages">
+              <li>{this.props.auth.errorMessage}</li>
+            </ul>}
+          <fieldset className="form-group man">
+            <button className="btn btn-success form-submit" onClick={this.login}>Log In</button>
+          </fieldset>
+        </form>
       </div>);
     }
     return (<section>
-      <Link to="/"><img alt="logo" className="logo mbm" src="/img/logo.svg" width="100" /></Link>
+      <Link to="/"><img alt="logo" className="logo mbm" src="/img/logo.svg" /></Link>
       <div className="block block-login">
         {view}
       </div>
@@ -70,8 +67,7 @@ class Login extends Component {
         <p>New to Steem?&nbsp; <a href="https://steemit.com/create_account" rel="noopener noreferrer" target="_blank">Sign up now</a></p>
         <p><a href="https://steemit.com/recover_account_step_1" rel="noopener noreferrer" target="_blank">Forgot password?</a></p>
       </div>
-
-      <button className="btn btn-secondary" onClick={this.demo}>Demo</button>
+      <a onClick={this.demo}>Demo</a>
     </section>
     );
   }
