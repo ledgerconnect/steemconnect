@@ -56,7 +56,6 @@ class Login extends Component {
             <fieldset className="form-group man">
               <button className="btn btn-success form-submit" onClick={this.login}>Log In</button>
             </fieldset>
-            
           </form>
         </div>
       </div>);
