@@ -40,13 +40,9 @@ class Login extends Component {
       view = (<div>
         {selectedUser && <AccountCard username={selectedUser} />}
         <form className="form" onSubmit={this.handleSubmit}>
-          {!selectedUser ? <fieldset className="form-group">
-            <input type="text" placeholder="Username" className="form-control form-control-lg lowercase-input" ref={(c) => { this.username = c; }} />
-          </fieldset> :
-          <input type="hidden" placeholder="Username" defaultValue={selectedUser} className="form-control form-control-lg lowercase-input" ref={(c) => { this.username = c; }} />}
+          <input type="hidden" placeholder="Username" defaultValue={selectedUser} className="form-control form-control-lg" ref={(c) => { this.username = c; }} />
           <fieldset className="form-group man mhs">
-            <i className="icon icon-md material-icons form-icon">fingerprint</i>
-            <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control form-control-lg text-xs-left form-input" ref={(c) => { this.passwordOrWif = c; }} />
+            <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control form-control-lg" ref={(c) => { this.passwordOrWif = c; }} />
           </fieldset>
           {this.props.auth.errorMessage &&
             <ul className="errorMessages">
