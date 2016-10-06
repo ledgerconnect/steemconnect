@@ -112,7 +112,6 @@ class Developer extends Component {
       </div>);
     }
 
-    console.log(this.props, keys, appName, author, permissions, private_metadata);
     let passwordDialog;
     if (this.state.showPasswordDialog) {
       passwordDialog = (<PasswordDialog
@@ -130,20 +129,21 @@ class Developer extends Component {
           <div className="mbl">
             <FieldSet name={'appName'} defaultValue={appName} error={this.state.error} validate={this.validate} formFields={this.formFields} />
             <FieldSet name={'author'} defaultValue={author} error={this.state.error} validate={this.validate} formFields={this.formFields} />
-            <fieldset className={"form-group"}>
-              Permissions <br />
+            <fieldset className="form-group">
+              <h3>Requested Permissions</h3>
               {permissionList.map(({ name, api }) => <div key={api}>
                 <input type="checkbox" className="form-check-input" ref={c => (this.formFields.permissions[api] = c)} defaultChecked={permissions.indexOf(api) >= 0} value={api} />
                 {name}
               </div>
               ) }
             </fieldset>
-            <fieldset className={"form-group"}>
-              Permissions <br />
+            <fieldset className="form-group">
+              <h3>Allowed Permissions</h3>
               <textarea className="form-control form-control-lg" onBlur={() => this.validate('origins')} placeholder="each origins in new line" rows="3" ref={c => (this.formFields.origins = c)} />
               <div className="form-control-feedback">{this.state.error.origins}</div>
             </fieldset>
-            <fieldset className={"form-group"}>
+            <fieldset className="form-group">
+              <h3>Allowed Redirect Urls</h3>
               <textarea className="form-control form-control-lg" onBlur={() => this.validate('redirect_urls')} placeholder="each redirect_urls in new line" rows="3" ref={c => (this.formFields.redirect_urls = c)} />
               <div className="form-control-feedback">{this.state.error.redirect_urls}</div>
             </fieldset>
