@@ -13,10 +13,11 @@ const router = new express.Router();
 router.get('/auth/login', (req, res) => {
   const { encryptedData } = req.query;
   const data = decryptMessage(encryptedData, req.cookies._csrf); // eslint-disable-line
-  console.log('data', data);
   const { username, wif } = JSON.parse(data);
+  console.log('username', username, req.cookies._csrf);// eslint-disable-line
   steem.api.getAccounts([username], (err, result) => {
     if (err) {
+      console.log('err', err);
       res.status(500).send({ error: JSON.stringify(err) });
     } else if (result.length === 0) {
       res.status(401).send({ error: 'Incorrect Username' });
