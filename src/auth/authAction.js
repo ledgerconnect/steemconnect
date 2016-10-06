@@ -52,11 +52,7 @@ export function login(username, passwordOrWif) {
     }).then(({ data }) => {
       const { error, userAccount, auth } = data;
       if (error) {
-        dispatch({
-          type: authTypes.LOGIN_FAILURE,
-          user: {},
-          errorMessage: error,
-        });
+        throw error;
       } else if (userAccount && auth.length) {
         const {  memo_key, reputation, balance } = userAccount; //eslint-disable-line
         let { json_metadata } = userAccount;
@@ -67,12 +63,14 @@ export function login(username, passwordOrWif) {
         });
         cookie.save(auth, 'auth');
       } else {
-        dispatch({
-          type: authTypes.LOGIN_FAILURE,
-          user: {},
-          errorMessage: 'Malformed request',
-        });
+        throw new Error('Malformed request');
       }
+    }).catch((err) => {
+      dispatch({
+        type: authTypes.LOGIN_FAILURE,
+        user: {},
+        errorMessage: (err.data && err.data.error) || err.statusText,
+      });
     });
   };
 }

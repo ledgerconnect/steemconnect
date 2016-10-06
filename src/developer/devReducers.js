@@ -1,6 +1,6 @@
 import * as devTypes from './devActionTypes';
 
-const initialState = { permissionList: [] };
+const initialState = {};
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -8,11 +8,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         ...action,
-      };
-    case devTypes.UPDATE_PERMISSIONLIST:
-      return {
-        ...state,
-        permissionList: action.permissionList,
       };
     default:
       return state;

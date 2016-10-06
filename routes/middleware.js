@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 const _ = require('lodash');
 const url = require('url');
-const { getSecretKeyForClientId, decryptMessage } = require('../lib/utils');
+const { decryptMessage } = require('../lib/utils');
 const jwt = require('jsonwebtoken');
 const apiList = require('../lib/apiList');
 
@@ -15,8 +15,7 @@ function verifyAuth(req, res, next) {
       if (err) {
         res.sendStatus(401);
       } else {
-        const computeSecret = getSecretKeyForClientId(process.env.PUBLIC_KEY);
-        let message = decryptMessage(jwtData.secret, computeSecret);
+        let message = decryptMessage(jwtData.secret, process.env.JWT_SECRET);
         message = JSON.parse(message);
         if (message.username === jwtData.username && (typeof req.token === 'undefined' || req.token.username === jwtData.username)) {
           _.each(jwtData, (value, key) => {
@@ -75,10 +74,10 @@ function checkPermission(req, res, next) {
   const requestUrl = url.parse(req.originalUrl);
   const requestPath = requestUrl.pathname.replace(/\/$/, '');
   const selectedQuery = _.find(permissions, p => (p.path === requestPath));
-  if (selectedQuery) {
+  if (selectedQuery || requestPath === '/api/getAccount') {
     next();
   } else {
-    res.status(401).json({ acceptedPermissions: token.permission || [] });
+    res.status(401).json({ error: 'Not permitted', acceptedPermissions: token.permission || [] });
   }
 }
 

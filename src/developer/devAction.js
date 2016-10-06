@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { map } from 'lodash';
 import * as devTypes from './devActionTypes';
 
 export function setPermission(permissionList) {
@@ -23,16 +22,5 @@ export function createApplication({
         keys: data,
       });
     });
-  };
-}
-
-export function getPermissionList() {
-  return (dispatch) => {
-    axios.get('/auth/permissionList')
-      .then(response => response.data)
-      .then((permissions) => {
-        const permissionArray = map(permissions, (v, k) => ({ ...v, api: k }));
-        dispatch(setPermission(permissionArray));
-      });
   };
 }

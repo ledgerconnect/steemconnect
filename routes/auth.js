@@ -13,19 +13,19 @@ const router = new express.Router();
 router.get('/auth/login', (req, res) => {
   const { encryptedData } = req.query;
   const data = decryptMessage(encryptedData, req.cookies._csrf); // eslint-disable-line
+  console.log('data', data);
   const { username, wif } = JSON.parse(data);
-  const computeSecret = getSecretKeyForClientId(process.env.PUBLIC_KEY);
   steem.api.getAccounts([username], (err, result) => {
     if (err) {
       res.status(500).send({ error: JSON.stringify(err) });
     } else if (result.length === 0) {
-      res.status(500).send({ error: 'Incorrect Username' });
+      res.status(401).send({ error: 'Incorrect Username' });
     } else if (result[0] && steemAuth.wifIsValid(wif, result[0].posting.key_auths[0][0])) {
-      const secret = encryptMessage(JSON.stringify({ username, wif }), computeSecret);
+      const secret = encryptMessage(JSON.stringify({ username, wif }), process.env.JWT_SECRET);
       const auth = jwt.sign({ username, secret }, process.env.JWT_SECRET, { expiresIn: '36h' });
       res.send({ userAccount: result[0], auth });
     } else {
-      res.status(500).send({ error: 'Incorrect Password' });
+      res.status(401).send({ error: 'Incorrect Password' });
     }
   });
 });
@@ -132,10 +132,6 @@ router.get('/auth/getAppDetails', verifyAuth, (req, res) => {
       }
     }
   });
-});
-
-router.get('/auth/permissionList', verifyAuth, (req, res) => {
-  res.send(apiList);
 });
 
 module.exports = router;
