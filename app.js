@@ -10,6 +10,7 @@ const hbs = require('hbs');
 const helmet = require('helmet');
 const csurf = require('csurf');
 const { verifyToken } = require('./routes/middleware');
+const steem = require('steem');
 
 http.globalAgent.maxSockets = 100;
 https.globalAgent.maxSockets = 100;
@@ -66,5 +67,6 @@ app.use((err, req, res) => {
   });
 });
 
+steem.api.setWebSocket('wss://steem.yt');
 
 module.exports = app;
