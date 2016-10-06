@@ -68,7 +68,9 @@ export function setAvatar(passwordOrWif, file, type) {
   return (dispatch, getState) => {
     const state = getState();
     const user = state.auth.user;
-    const profileData = user.profile;
+    user.json_metadata = user.json_metadata || {};
+    user.json_metadata.profile = user.json_metadata.profile || {};
+    const profileData = user.json_metadata.profile;
     const data = new FormData();
     data.append('file', file);
     let uploadUrl = `https://img.busy6.com/@${user.name}`;
@@ -79,8 +81,7 @@ export function setAvatar(passwordOrWif, file, type) {
       .then((response) => {
         const { data: { url } } = response;
         profileData[type] = url || uploadUrl;
-
-        dispatch(accountUpdate(user.name, passwordOrWif, user.memo_key, { profile: profileData }));
+        dispatch(accountUpdate(user.name, passwordOrWif, user.memo_key, user.json_metadata));
       }).catch((err) => {
         console.error('Error While Setting Avatar', err);
       });
