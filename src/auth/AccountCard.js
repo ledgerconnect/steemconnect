@@ -4,9 +4,9 @@ const AccountCard = (props) => {
   return (<div className="account-card" style={{ backgroundImage: `url(https://img.busy6.com/@${props.username}/cover` }}>
     <a><img className="profile-image" alt={`@${props.username}`} src={`https://img.busy6.com/@${props.username}`} /></a>
     <h2 className="mts">
-      @{props.username} <a className="icon icon-sm material-icons"
+      @{props.username} <a title="Remove Account" className="icon icon-sm material-icons"
         onClick={(event) => { event.preventDefault(); props.onDelete(props.username); return false; }}
-      >remove_circle</a>
+      >remove</a>
     </h2>
   </div>);
 };
