@@ -11,7 +11,7 @@ class Wrapper extends Component {
   render() {
     const className = (!this.props.app.sidebarIsVisible) ? 'app-wrapper full-width' : 'app-wrapper';
     return (
-      this.props.auth.isAuthenticated ? <Login {...this.props} /> : <div className={className}>
+      !this.props.auth.isAuthenticated ? <Login {...this.props} /> : <div className={className}>
         <Sidebar />
         <div className="main-panel">
             {this.props.children}
