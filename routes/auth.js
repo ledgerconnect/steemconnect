@@ -14,11 +14,8 @@ router.get('/auth/login', (req, res) => {
   const { encryptedData } = req.query;
   const data = decryptMessage(encryptedData, req.cookies._csrf); // eslint-disable-line
   const { username, wif } = JSON.parse(data);
-  steem.api.setWebSocket('wss://steem.yt');
   steem.api.getAccounts([username], (err, result) => {
     if (err) {
-      console.log('Steem getAccounts username', username);
-      console.log('Steem getAccounts Error', err);
       res.status(500).send({ error: JSON.stringify(err) });
     } else if (result.length === 0) {
       res.status(401).send({ error: 'Incorrect Username' });
