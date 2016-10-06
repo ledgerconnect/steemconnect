@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import validator from 'validator';
 import steemAuth from 'steemauth';
+import Header from './../app/header';
 import FieldSet from './FieldSet';
 import { createApplication } from './devAction';
 import PasswordDialog from './../widgets/PasswordDialog';
@@ -122,6 +123,7 @@ class Developer extends Component {
 
     return (
       <div>
+        <Header />
         <form className="form">
           {keysView}
           <div className="mbl">
