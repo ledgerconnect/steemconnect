@@ -23,12 +23,12 @@ class LastUserSelector extends Component {
       lastUserList.splice(index, 1);
       this.updateUser(lastUserList);
     }
-  }
+  };
 
   updateUser = (lastUserList) => {
     this.setState({ lastUserList });
     cookie.save(lastUserList, 'last_users');
-  }
+  };
 
   selectUser = (username) => {
     const { lastUserList } = this.state;
@@ -36,18 +36,19 @@ class LastUserSelector extends Component {
     if (index >= 0) {
       this.props.selectLoginWithUserName(username);
     }
-  }
+  };
+
   addUser = (event) => {
     event.preventDefault();
     if (this.username.value) {
       this.props.selectLoginWithUserName(this.username.value);
     }
-  }
+  };
 
   demo = (event) => {
     event.preventDefault();
     this.props.demoLogin();
-  }
+  };
 
   render() {
     const { lastUserList } = this.state;
@@ -59,11 +60,11 @@ class LastUserSelector extends Component {
           username={username} onDelete={this.onDelete}
         />
       )) }
-      <span className="form-span">Log In with your Steem<br /> account</span>
+      <span className="form-span"><h2 className="mhl">Log in with your Steem account</h2></span>
       <form className="form" onSubmit={this.handleSubmit}>
         <fieldset className="form-group man mhs">
-          <i className="icon icon-md material-icons form-icon">account_box</i>
-          <input autoFocus type="text" placeholder="enter your username" className="form-control form-control-lg lowercase-input text-xs-left form-input" ref={(c) => { this.username = c; }} />
+          <i className="icon icon-md material-icons form-icon">perm_identity</i>
+          <input autoFocus type="text" placeholder="Enter your username" className="form-control form-control-lg lowercase-input text-xs-left form-input" ref={(c) => { this.username = c; }} />
         </fieldset>
         <fieldset className="form-group man">
           <button className="btn btn-primary form-submit" onClick={this.addUser}>Next</button>
