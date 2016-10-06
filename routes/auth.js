@@ -134,8 +134,4 @@ router.get('/auth/getAppDetails', verifyAuth, (req, res) => {
   });
 });
 
-router.get('/auth/permissionList', verifyAuth, (req, res) => {
-  res.send(apiList);
-});
-
 module.exports = router;

@@ -5,8 +5,9 @@ import _ from 'lodash';
 import validator from 'validator';
 import steemAuth from 'steemauth';
 import FieldSet from './FieldSet';
-import { createApplication, getPermissionList } from './devAction';
+import { createApplication } from './devAction';
 import PasswordDialog from './../widgets/PasswordDialog';
+import apiList from '../../lib/apiList';
 
 class Developer extends Component {
   constructor(props) {
@@ -14,10 +15,6 @@ class Developer extends Component {
     this.state = { error: {}, showPasswordDialog: false };
     this.formFields = { permissions: {} };
     this.formData = {};
-  }
-
-  componentWillMount() {
-    this.props.getPermissionList();
   }
 
   validate = (refs) => {
@@ -101,10 +98,11 @@ class Developer extends Component {
     this.state.passwordCallback(passwordOrWif);
   };
   render() {
+    const permissionList = _.map(apiList, (v, k) => ({ ...v, api: k }));
     const { isUpdatingProfile, isUpdatingProfileError, json_metadata } = this.props.auth.user;
-    const { keys, permissionList } = this.props.developer;
+    const { keys } = this.props.developer;
     let keysView;
-    const { name: appName, author, permissions = [], private_metadata } = json_metadata.app || {};
+    const { name: appName, author, permissions = [] } = json_metadata.app || {};
     if (keys) {
       keysView = (<div style={{ wordBreak: 'break-all' }}>
         clientId: {keys.clientId}<br />
@@ -165,7 +163,6 @@ Developer.propTypes = {
   }),
   developer: PropTypes.shape({
     keys: PropTypes.object,
-    permissionList: PropTypes.arrayOf(PropTypes.shape({})),
   }),
   createApplication: PropTypes.func,
   getPermissionList: PropTypes.func,
@@ -174,6 +171,5 @@ Developer.propTypes = {
 const mapStateToProps = state => ({ auth: state.auth, developer: state.developer });
 const mapDispatchToProps = dispatch => ({
   createApplication: bindActionCreators(createApplication, dispatch),
-  getPermissionList: bindActionCreators(getPermissionList, dispatch),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Developer);
