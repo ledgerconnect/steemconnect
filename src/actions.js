@@ -28,7 +28,7 @@ export function login() {
       dispatch({
         type: authTypes.LOGIN_FAILURE,
         user: {},
-        errorMessage: err.statusText || JSON.stringify(err),
+        errorMessage: (err.data && err.data.error) || err.statusText,
       });
     });
   };
