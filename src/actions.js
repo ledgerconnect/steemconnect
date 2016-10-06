@@ -12,18 +12,22 @@ export function login() {
       return;
     }
     dispatch({ type: authTypes.LOGIN_REQUEST });
-    axios.get('/api/getAccount').then(({ data: { err, result } }) => {
-      if (err) {
-        throw err;
-      } else {
+    axios.get('/api/verify').then(({ data: { isAuthenticated, username } }) => {
+      if (!isAuthenticated) {
+        throw new Error('Not authenticated');
+      }
+      steem.api.getAccounts([username], (err, result) => {
+        if (!result || !result[0]) {
+          throw new Error('user not found');
+        }
         const { memo_key, reputation, balance, name } = result[0];
         let { json_metadata } = result[0];
-        json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {}; //eslint-disable-line
+        json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
         dispatch({
           type: authTypes.LOGIN_SUCCESS,
           user: { name, json_metadata, memo_key, reputation, balance },
         });
-      }
+      });
     }).catch((err) => {
       dispatch({
         type: authTypes.LOGIN_FAILURE,

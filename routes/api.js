@@ -14,11 +14,7 @@ function sendResponse({ err: error, result }, res) {
 
 router.use('/api', verifyAuth, checkPermission);
 
-router.get('/api/getAccount', (req, res) => {
-  steem.api.getAccounts([req.username], (err, result) => sendResponse({ err, result }, res));
-});
-
-router.get(apiList.verify.path, (req, res) => {
+router.get('/api/verify', (req, res) => {
   if (req.username) {
     return res.json({
       isAuthenticated: true,
