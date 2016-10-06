@@ -1,20 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { login, getAccount } from './actions';
+import { login } from './actions';
 import Sidebar from './app/sidebar';
 import Login from './auth/Login';
 
 class Wrapper extends Component {
   componentWillMount() {
-    this.props.getAccount();
+    this.props.login();
   }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.auth.isAuthenticated && nextProps.location.pathname.indexOf('/login') === 0) {
-      this.props.router.push('/');
-    }
-  }
-
   render() {
     const className = (!this.props.app.sidebarIsVisible) ? 'app-wrapper full-width' : 'app-wrapper';
     return (
@@ -37,11 +30,8 @@ Wrapper.propTypes = {
   app: PropTypes.shape({
     sidebarIsVisible: PropTypes.bool,
   }),
-  router: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }),
   children: PropTypes.element,
-  getAccount: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -50,8 +40,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getAccount() { dispatch(getAccount()); },
-  login(username, password) { dispatch(login(username, password)); },
+  login() { dispatch(login()); },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wrapper);

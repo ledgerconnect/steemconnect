@@ -5,7 +5,7 @@ const steemAuth = require('steemauth');
 const steem = require('steem');
 const cookie = require('./../lib/cookie');
 
-export function getAccount() {
+export function login() {
   return (dispatch) => {
     const auth = cookie.get('auth');
     if (!auth) {
