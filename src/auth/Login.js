@@ -58,16 +58,22 @@ class Login extends Component {
       </div>);
     }
     return (<section>
-      <Link to="/"><img alt="logo" className="logo mbm" src="/img/logo.svg" /></Link>
+      <Link to="/"><img alt="Steem Connect" className="logo mbm" src="/img/logo.svg" /></Link>
       <div className="block block-login">
         {view}
       </div>
       <div className="mvl">
-        <p><a onClick={this.props.showUserList}>Sign in with a different account</a></p>
-        <p>New to Steem?&nbsp; <a href="https://steemit.com/create_account" rel="noopener noreferrer" target="_blank">Sign up now</a></p>
-        <p><a href="https://steemit.com/recover_account_step_1" rel="noopener noreferrer" target="_blank">Forgot password?</a></p>
+        {selectedUser &&
+          <p><a onClick={this.props.showUserList}>Sign in with a different account</a></p>}
+        {selectedUser && <p><a href="https://steemit.com/recover_account_step_1" rel="noopener noreferrer" target="_blank">Forgot password?</a></p>}
+        {!selectedUser &&
+          <p>New to Steem?&nbsp;
+            <a href="https://steemit.com/create_account" rel="noopener noreferrer" target="_blank">Sign up now</a>
+          </p>}
+        {!selectedUser &&
+          <p>Try Steem Connect with a <a onClick={this.demo}>demo account</a></p>}
       </div>
-      <a onClick={this.demo}>Demo</a>
+
     </section>
     );
   }

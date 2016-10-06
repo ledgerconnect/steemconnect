@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 
 const AccountCard = (props) => {
-  return (<div style={{ backgroundImage: `url(https://img.busy6.com/@${props.username}/cover` }}>
+  return (<div className="account-card" style={{ backgroundImage: `url(https://img.busy6.com/@${props.username}/cover` }}>
     <a><img className="profile-image" alt={`@${props.username}`} src={`https://img.busy6.com/@${props.username}`} /></a>
     <h2>
       @{props.username} <a className="icon icon-sm material-icons"
