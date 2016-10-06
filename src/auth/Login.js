@@ -44,7 +44,7 @@ class Login extends Component {
                 <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control form-control-lg" ref={(c) => { this.passwordOrWif = c; }} />
               </fieldset>
               {this.props.auth.errorMessage &&
-              <ul className="errorMessages">
+              <ul className="errorMessages pam">
                 <li>{this.props.auth.errorMessage}</li>
               </ul>}
               <fieldset className="form-group man">
