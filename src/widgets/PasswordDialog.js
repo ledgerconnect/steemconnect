@@ -41,4 +41,4 @@ PasswordDialog.propTypes = {
   error: PropTypes.bool,
 };
 
-module.exports = PasswordDialog;
+export default PasswordDialog;

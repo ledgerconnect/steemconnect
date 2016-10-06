@@ -29,15 +29,13 @@ class Authorize extends React.Component {
     const { clientId, redirect_url } = this.props.location.query;
     const appDetails = apps[appName] || {};
     const permissionList = appDetails.permissions || [];
-    let message;
-    if (!clientId || !redirect_url) {
-      message = <div>Missing ClientId or redirect_url</div>;
-    }
+
     return (
       <div className="block">
         <div className="mbl"><img alt="app-logo" src={`https://img.busy6.com/@${appName}`} width="70" /></div>
-        {message ||
-          <div>
+        {(!clientId || !redirect_url) ?
+          <div>Missing ClientId or redirect_url</div> :
+          (<div>
             <p>The app <b>{appName}</b> is requesting permission to do the following: </p>
             <ul className="mbm">
               {permissionList.map(({ name, api }) => <div key={api}>
@@ -46,7 +44,7 @@ class Authorize extends React.Component {
               </div>) }
             </ul>
             <a onClick={() => this.authorizeUser(clientId, redirect_url, appName)} className="btn btn-primary mbm">Continue as @{user.name}</a>
-          </div>
+          </div>)
         }
       </div>
     );

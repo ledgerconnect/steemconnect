@@ -1,4 +1,4 @@
-/* eslint-disable no-param-reassign */
+/* eslint-disable no-param-reassign,consistent-return */
 const _ = require('lodash');
 const url = require('url');
 const { decryptMessage } = require('../lib/utils');
@@ -13,25 +13,22 @@ function verifyAuth(req, res, next) {
     const auth = req.headers.authorization.substring('Bearer '.length);
     jwt.verify(auth, process.env.JWT_SECRET, (err, jwtData) => {
       if (err) {
-        res.sendStatus(401);
-      } else {
-        let message = decryptMessage(jwtData.secret, process.env.JWT_SECRET);
-        message = JSON.parse(message);
-        if (message.username === jwtData.username && (typeof req.token === 'undefined' || req.token.username === jwtData.username)) {
-          _.each(jwtData, (value, key) => {
-            req[key] = value;
-          });
-          _.each(message, (value, key) => {
-            req[key] = value;
-          });
-          next();
-        } else {
-          res.sendStatus(401);
-        }
+        return res.sendStatus(401);
+      }
+      let message = decryptMessage(jwtData.secret, process.env.JWT_SECRET);
+      message = JSON.parse(message);
+      if (message.username === jwtData.username && (typeof req.token === 'undefined' || req.token.username === jwtData.username)) {
+        _.each(jwtData, (value, key) => {
+          req[key] = value;
+        });
+        _.each(message, (value, key) => {
+          req[key] = value;
+        });
+        return next();
       }
     });
   } else {
-    res.sendStatus(401);
+    return res.sendStatus(401);
   }
 }
 
@@ -45,27 +42,23 @@ function verifyToken(req, res, next) {
 
   const isDifferentHost = (hostname !== 'localhost' && hostname !== 'steemconnect.com' && hostname !== 'dev.steemconnect.com');
   if (isDifferentHost) {
-    if (!token) {
-      res.sendStatus(401);
-    } else {
+    if (token) {
       jwt.verify(token, process.env.JWT_SECRET, (err, jwtData) => {
         if (err) {
-          res.sendStatus(401);
-        } else {
-          const isAuthorizedOrigin = _.indexOf(jwtData.allowedOrigin, origin) !== -1;
-          if (isAuthorizedOrigin) {
-            req.token = jwtData;
-            next();
-          } else {
-            res.sendStatus(401);
-          }
+          return res.sendStatus(401);
+        }
+        const isAuthorizedOrigin = _.indexOf(jwtData.allowedOrigin, origin) !== -1;
+        if (isAuthorizedOrigin) {
+          req.token = jwtData;
+          return next();
         }
       });
+    } else {
+      return res.sendStatus(401);
     }
-  } else {
-    /* For request made from steemconnect website */
-    next();
   }
+    /* For request made from steemconnect website */
+  return next();
 }
 
 function checkPermission(req, res, next) {
@@ -75,10 +68,10 @@ function checkPermission(req, res, next) {
   const requestPath = requestUrl.pathname.replace(/\/$/, '');
   const selectedQuery = _.find(permissions, p => (p.path === requestPath));
   if (selectedQuery || requestPath === '/api/getAccount') {
-    next();
-  } else {
-    res.status(401).json({ error: 'Not permitted', acceptedPermissions: token.permission || [] });
+    return next();
   }
+
+  return res.status(401).json({ error: 'Not permitted', acceptedPermissions: token.permission || [] });
 }
 
 module.exports = {

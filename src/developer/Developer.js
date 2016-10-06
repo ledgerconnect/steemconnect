@@ -102,30 +102,16 @@ class Developer extends Component {
     const permissionList = _.map(apiList, (v, k) => ({ ...v, api: k }));
     const { isUpdatingProfile, isUpdatingProfileError, json_metadata } = this.props.auth.user;
     const { keys } = this.props.developer;
-    let keysView;
     const { name: appName, author, permissions = [] } = json_metadata.app || {};
-    if (keys) {
-      keysView = (<div style={{ wordBreak: 'break-all' }}>
-        clientId: {keys.clientId}<br />
-        secret: {keys.clientSecret}
-      </div>);
-    }
-
-    let passwordDialog;
-    if (this.state.showPasswordDialog) {
-      passwordDialog = (<PasswordDialog
-        isUpdating={isUpdatingProfile}
-        error={isUpdatingProfileError}
-        onClose={this.closePasswordDialog}
-        onSave={this.savePassword}
-      />);
-    }
 
     return (
       <div>
         <Header />
         <form className="form">
-          {keysView}
+          {keys && (<div style={{ wordBreak: 'break-all' }}>
+            clientId: {keys.clientId}<br />
+            secret: {keys.clientSecret}
+          </div>)}
           <div className="mbl">
             <FieldSet name={'appName'} defaultValue={appName} error={this.state.error} validate={this.validate} formFields={this.formFields} />
             <FieldSet name={'author'} defaultValue={author} error={this.state.error} validate={this.validate} formFields={this.formFields} />
@@ -153,7 +139,12 @@ class Developer extends Component {
             <div className="form-control-feedback">{this.state.error.save}</div>
           </fieldset>
         </form>
-        { passwordDialog }
+        {this.state.showPasswordDialog && <PasswordDialog
+          isUpdating={isUpdatingProfile}
+          error={isUpdatingProfileError}
+          onClose={this.closePasswordDialog}
+          onSave={this.savePassword}
+        />}
       </div>
     );
   }
@@ -167,7 +158,6 @@ Developer.propTypes = {
     keys: PropTypes.object,
   }),
   createApplication: PropTypes.func,
-  getPermissionList: PropTypes.func,
 };
 
 const mapStateToProps = state => ({ auth: state.auth, developer: state.developer });

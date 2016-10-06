@@ -12,7 +12,7 @@ class Apps extends Component {
         <div className="block block-dashboard">
           <ul className="list list-dashboard">
             {apps && _.map(apps, app =>
-              <li className="list-element pam">
+              <li key={app.name} className="list-element pam">
                 <img src="#" alt="asd" className="list-image mrs" />
                 <strong className="list-title">{app.name}</strong>
                 <span className="list-description pls">{app.tagline}</span>

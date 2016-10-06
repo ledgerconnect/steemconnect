@@ -40,25 +40,23 @@ router.post('/auth/create', verifyAuth, (req, res) => {
   steem.api.getAccounts([appUserName], (err, result) => {
     const isWif = steemAuth.isWif(appOwnerWif);
     const ownerKey = (isWif) ? appOwnerWif : steemAuth.toWif(appUserName, appOwnerWif, 'owner');
-    if (err) {
-      res.status(500).send({ error: JSON.stringify(err) });
-    } else {
-      try {
-        const user = result[0];
-        const jsonMetadata = getJSONMetadata(user);
+    try {
+      if (err) {
+        throw err;
+      }
+      const user = result[0];
+      const jsonMetadata = getJSONMetadata(user);
         const private_metadata = encryptMessage(JSON.stringify({ origins, redirect_urls }), clientSecret); // eslint-disable-line
-        jsonMetadata.app = { name: appName, author, permissions, private_metadata };
-        steem.broadcast.accountUpdate(ownerKey, appUserName, undefined, undefined, undefined,
+      jsonMetadata.app = { name: appName, author, permissions, private_metadata };
+      steem.broadcast.accountUpdate(ownerKey, appUserName, undefined, undefined, undefined,
           user.memo_key, jsonMetadata, (accountUpdateErr) => {
             if (accountUpdateErr) {
-              res.status(500).send({ error: JSON.stringify(accountUpdateErr) });
-            } else {
-              res.json({ clientId, clientSecret });
+              throw accountUpdateErr;
             }
+            res.json({ clientId, clientSecret });
           });
-      } catch (e) {
-        res.status(500).send({ error: JSON.stringify(e) });
-      }
+    } catch (e) {
+      res.status(500).send({ error: JSON.stringify(e) });
     }
   });
 });
@@ -68,38 +66,33 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
   const { appUserName, clientId, redirect_url } = req.query;
   try { permission = JSON.parse(permission); } catch (e) { permission = []; }
   steem.api.getAccounts([appUserName], (err, result) => {
-    if (err) {
-      res.status(500).send({ error: JSON.stringify(err) });
-    } else {
-      try {
-        const clientSecret = getSecretKeyForClientId(clientId);
-        const jsonMetadata = getJSONMetadata(result[0]);
-        if (typeof jsonMetadata.app === 'object' && jsonMetadata.app) {
-          let privateMetadata = decryptMessage(jsonMetadata.app.private_metadata, clientSecret);
-          try { privateMetadata = JSON.parse(privateMetadata); } catch (e) { throw new Error('Invalid clientId'); }
-          if (_.indexOf(privateMetadata.redirect_urls, redirect_url) === -1) { // eslint-disable-line
-            throw new Error('Redirect uri mismatch');
-          }
-          const token = jwt.sign({
-            username: req.username,
-            allowedOrigin: privateMetadata.origins,
-            permission,
-            clientId,
-            appUserName,
-          }, process.env.JWT_SECRET, { expiresIn: '36h' });
-          res.redirect(`${redirect_url}?token=${token}`); // eslint-disable-line
-        } else {
-          throw new Error('Invalid appName. App not found');
-        }
-      } catch (e) {
-        let message = e.message;
-        if (e.message.search('decrypt') >= 0 || e.message.search('Malformed UTF-8 data') >= 0) {
-          message = 'Invalid clientId';
-        } else if (e.message.search('json_metadata') >= 0) {
-          message = 'Invalid appName';
-        }
-        res.status(500).send({ error: message });
+    try {
+      if (err) { throw err; }
+      const clientSecret = getSecretKeyForClientId(clientId);
+      const jsonMetadata = getJSONMetadata(result[0]);
+      if (typeof jsonMetadata.app !== 'object' || !jsonMetadata.app) { throw new Error('Invalid appName. App not found'); }
+
+      let privateMetadata = decryptMessage(jsonMetadata.app.private_metadata, clientSecret);
+      try { privateMetadata = JSON.parse(privateMetadata); } catch (e) { throw new Error('Invalid clientId'); }
+
+      if (_.indexOf(privateMetadata.redirect_urls, redirect_url) === -1) { throw new Error('Redirect uri mismatch'); }
+
+      const token = jwt.sign({
+        username: req.username,
+        allowedOrigin: privateMetadata.origins,
+        permission,
+        clientId,
+        appUserName,
+      }, process.env.JWT_SECRET, { expiresIn: '36h' });
+      res.redirect(`${redirect_url}?token=${token}`);
+    } catch (e) {
+      let message = e.message;
+      if (e.message.search('decrypt') >= 0 || e.message.search('Malformed UTF-8 data') >= 0) {
+        message = 'Invalid clientId';
+      } else if (e.message.search('json_metadata') >= 0) {
+        message = 'Invalid appName';
       }
+      res.status(500).send({ error: message });
     }
   });
 });
@@ -107,28 +100,21 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
 router.get('/auth/getAppDetails', verifyAuth, (req, res) => {
   const { appUserName } = req.query;
   steem.api.getAccounts([appUserName], (err, result) => {
-    if (err) {
-      res.status(500).send({ error: JSON.stringify(err) });
-    } else {
-      try {
-        const jsonMetadata = getJSONMetadata(result[0]);
-        if (typeof jsonMetadata.app === 'object' && jsonMetadata.app) {
-          delete jsonMetadata.app.private_metadata;
-          if (jsonMetadata.app.permissions) {
-            jsonMetadata.app.permissions = _.map(jsonMetadata.app.permissions, v =>
+    try {
+      if (err) { throw err; }
+      const jsonMetadata = getJSONMetadata(result[0]);
+      if (typeof jsonMetadata.app !== 'object' || !jsonMetadata.app) { throw new Error('Invalid appName. App not found'); }
+
+      delete jsonMetadata.app.private_metadata;
+      jsonMetadata.app.permissions = _.map(jsonMetadata.app.permissions, v =>
               Object.assign(apiList[v], { api: v }));
-          }
-          res.send(jsonMetadata.app);
-        } else {
-          throw new Error('Invalid appName. App not found');
-        }
-      } catch (e) {
-        let message = e.message;
-        if (e.message.search('json_metadata') >= 0) {
-          message = 'Invalid appName';
-        }
-        res.status(500).send({ error: message });
+      res.send(jsonMetadata.app);
+    } catch (e) {
+      let message = e.message;
+      if (e.message.search('json_metadata') >= 0) {
+        message = 'Invalid appName';
       }
+      res.status(500).send({ error: message });
     }
   });
 });
