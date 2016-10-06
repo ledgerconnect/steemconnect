@@ -37,7 +37,7 @@ class Login extends Component {
     } else if (this.props.auth.isFetching) {
       view = <Loading />;
     } else {
-      view = (<div>
+      view = (<div className="dialog">
         {selectedUser && <AccountCard username={selectedUser} />}
         <form className="form" onSubmit={this.handleSubmit}>
           <input type="hidden" placeholder="Username" defaultValue={selectedUser} className="form-control form-control-lg" ref={(c) => { this.username = c; }} />
@@ -54,8 +54,8 @@ class Login extends Component {
         </form>
       </div>);
     }
-    return (<section>
-      <Link to="/"><img alt="Steem Connect" className="logo mbm" src="/img/logo.svg" /></Link>
+    return (<div>
+      <Link to="/"><img alt="Steem Connect" className="dialog-logo mbm" src="/img/logo.svg" /></Link>
       <div className="block block-login">
         {view}
       </div>
@@ -70,8 +70,7 @@ class Login extends Component {
         {!selectedUser &&
           <p>Try Steem Connect with a <a onClick={this.demo}>demo account</a></p>}
       </div>
-
-    </section>
+    </div>
     );
   }
 }
