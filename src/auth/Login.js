@@ -48,7 +48,7 @@ class Login extends Component {
                 <li>{this.props.auth.errorMessage}</li>
               </ul>}
               <fieldset className="form-group man">
-                <button disabled={this.props.auth.isFetching} className="btn btn-success form-submit" onClick={this.login}>
+                <button className="btn btn-success form-submit" onClick={this.login}>
                   {this.props.auth.isFetching ? <Loading color="white" /> : 'Log In'}</button>
               </fieldset>
             </form>
