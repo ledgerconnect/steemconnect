@@ -72,7 +72,7 @@ class Login extends Component {
 
 Login.propTypes = {
   auth: PropTypes.shape({
-    errorMessage: PropTypes.string.isRequired,
+    errorMessage: PropTypes.string,
     isFetching: PropTypes.bool.isRequired,
     lastUserList: PropTypes.object,
   }),

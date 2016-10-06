@@ -67,7 +67,7 @@ function checkPermission(req, res, next) {
   const requestUrl = url.parse(req.originalUrl);
   const requestPath = requestUrl.pathname.replace(/\/$/, '');
   const selectedQuery = _.find(permissions, p => (p.path === requestPath));
-  if (selectedQuery || requestPath === '/api/getAccount') {
+  if (selectedQuery || requestPath === '/api/verify') {
     return next();
   }
 
