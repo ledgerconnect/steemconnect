@@ -2,7 +2,10 @@ import React, { PropTypes } from 'react';
 
 const AccountCard = (props) => {
   return (<div className="account-card" style={{ backgroundImage: `url(https://img.busy6.com/@${props.username}/cover` }}>
-    <a><img className="profile-image" alt={`@${props.username}`} src={`https://img.busy6.com/@${props.username}`} /></a>
+  <span className="change-user">
+    <a onClick={props.showUserList}>Not you?</a>
+  </span>
+ <a><img className="profile-image" alt={`@${props.username}`} src={`https://img.busy6.com/@${props.username}`} /></a>
     <h2 className="mts">
       @{props.username} <a
         title="Remove Account"
