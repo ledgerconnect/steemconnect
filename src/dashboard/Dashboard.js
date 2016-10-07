@@ -16,9 +16,16 @@ class Dashboard extends Component {
     return (
       <div>
         <Header />
-        {accountHistory && <h2>Last Activity</h2>}
-        {accountHistory && _.sortBy(accountHistory, 'timestamp').reverse().map(([id, transaction]) =>
-          <Activity key={id} id={id} transaction={transaction} />) }
+        <h2 className="ptl pbm">Last Activity</h2>
+        <div className="block block-dashboard">
+          <ul className="list list-activity">
+            {accountHistory && _.sortBy(accountHistory, 'timestamp').reverse().map(([id, transaction]) =>
+              <Activity key={id} id={id} transaction={transaction} />) }
+          </ul>
+          <div className="list-more pas">
+            <a href="#">See more</a>
+          </div>
+        </div>
       </div>
     );
   }
