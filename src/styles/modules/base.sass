@@ -202,8 +202,9 @@ a.btn-primary
 
 .block-login
   padding: 0
-  max-width: 360px !important
-  width: 340px
+  width: 360px
+  @media (max-width: 560px)
+    width: 100%
 
 .login-section
   height: 100%
@@ -217,13 +218,6 @@ a.btn-primary
       margin: 0 auto
   .login-center
     display: inline-block
-
-
-@media (max-width: 768px)
-  .block-login
-    width: 100%
-  #app
-    display: initial
 
 .profile-image
   border-radius: 50%
