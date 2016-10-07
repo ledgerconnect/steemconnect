@@ -100,47 +100,59 @@ class Settings extends Component {
       <div>
         <Header />
         <AvatarUpdate username={user.name} onDrop={this.onDrop} />
-        <form className="form pvx mhl">
-          <div className="mbl">
-            <fieldset className={"form-group"}>
-              <input autoFocus type="text" defaultValue={profile.name} placeholder="Name" className="form-control form-control-lg" ref="name" />
-            </fieldset>
-            <fieldset className={"form-group"}>
-              <input type="text" placeholder="First Name" defaultValue={profile.first_name} className="form-control form-control-lg" ref="first_name" />
-            </fieldset>
-            <fieldset className={"form-group"}>
-              <input type="text" placeholder="Last Name" defaultValue={profile.last_name} className="form-control form-control-lg" ref="last_name" />
-            </fieldset>
-            <fieldset className={`form-group ${(this.state.error.email ? 'has-danger' : '')}`}>
-              <input type="email" defaultValue={profile.email} placeholder="Email" className="form-control form-control-lg" ref="email" onBlur={() => this.validate('email')} />
-              <div className="form-control-feedback">{this.state.error.email}</div>
-            </fieldset>
-            <fieldset className="form-group">
-              <label className="custom-control custom-radio">
-                <input name="radio" type="radio" value="female" className="custom-control-input" ref="gender_female" defaultChecked={profile.gender === 'female'} />
-                <span className="custom-control-indicator" />
-                <span className="custom-control-description">Female</span>
-              </label>
-              <label className="custom-control custom-radio">
-                <input name="radio" type="radio" value="male" className="custom-control-input" ref="gender_male" defaultChecked={profile.gender === 'male'} />
-                <span className="custom-control-indicator" />
-                <span className="custom-control-description">Male</span>
-              </label>
-            </fieldset>
-            <fieldset className={"form-group"}>
-              <textarea className="form-control form-control-lg" defaultValue={profile.about} placeholder="About" rows="3" ref="about" />
-            </fieldset>
-            <fieldset className={`form-group ${(this.state.error.website ? 'has-danger' : '')}`}>
-              <input type="text" defaultValue={profile.website} placeholder="Website" className="form-control form-control-lg" ref="website" onBlur={() => this.validate('website')} />
-              <div className="form-control-feedback">{this.state.error.website}</div>
-            </fieldset>
-            <fieldset className={"form-group"}>
-              <input type="text" placeholder="Location" defaultValue={profile.location} className="form-control form-control-lg" ref="location" />
-            </fieldset>
+          <div className="block block-profile mtl mbs">
+            <form className="form form-profile pam">
+              <div className="mbl">
+                <fieldset className={"form-group"}>
+                  <label htmlFor="name">Name</label>
+                  <input autoFocus type="text" defaultValue={profile.name} placeholder="Name" className="form-control" ref="name" />
+                </fieldset>
+                <fieldset className={"form-group"}>
+                  <label htmlFor="first_name">First Name</label>
+                  <input type="text" placeholder="First Name" defaultValue={profile.first_name} className="form-control" ref="first_name" />
+                </fieldset>
+                <fieldset className={"form-group"}>
+                  <label htmlFor="last_name">Last Name</label>
+                  <input type="text" placeholder="Last Name" defaultValue={profile.last_name} className="form-control" ref="last_name" />
+                </fieldset>
+                <fieldset className={`form-group ${(this.state.error.email ? 'has-danger' : '')}`}>
+                  <label htmlFor="email">Email</label>
+                  <input type="email" defaultValue={profile.email} placeholder="Email" className="form-control" ref="email" onBlur={() => this.validate('email')} />
+                  <div className="form-control-feedback">{this.state.error.email}</div>
+                </fieldset>
+                <fieldset className="form-group man">
+                  <label htmlFor="gender">Gender</label>
+                </fieldset>
+                <fieldset className="form-group">
+                  <label className="custom-control custom-radio">
+                    <input name="radio" type="radio" value="female" className="custom-control-input" ref="gender_female" defaultChecked={profile.gender === 'female'} />
+                    <span className="custom-control-indicator" />
+                    <span className="custom-control-description">Female</span>
+                  </label>
+                  <label className="custom-control custom-radio">
+                    <input name="radio" type="radio" value="male" className="custom-control-input" ref="gender_male" defaultChecked={profile.gender === 'male'} />
+                    <span className="custom-control-indicator" />
+                    <span className="custom-control-description">Male</span>
+                  </label>
+                </fieldset>
+                <fieldset className={"form-group"}>
+                  <label htmlFor="about">About</label>
+                  <textarea className="form-control" defaultValue={profile.about} placeholder="About" rows="3" ref="about" />
+                </fieldset>
+                <fieldset className={`form-group ${(this.state.error.website ? 'has-danger' : '')}`}>
+                  <label htmlFor="website">Website</label>
+                  <input type="text" defaultValue={profile.website} placeholder="Website" className="form-control" ref="website" onBlur={() => this.validate('website')} />
+                  <div className="form-control-feedback">{this.state.error.website}</div>
+                </fieldset>
+                <fieldset className={"form-group"}>
+                  <label htmlFor="location">Location</label>
+                  <input type="text" placeholder="Location" defaultValue={profile.location} className="form-control" ref="location" />
+                </fieldset>
+              </div>
+              <fieldset className="form-group"><button className="btn btn-primary" onClick={this.save}>Save</button></fieldset>
+            </form>
           </div>
-          <fieldset className="form-group"><button className="btn btn-primary" onClick={this.save}>Save</button></fieldset>
-          <p className="ptm"><a href="#" className="errorMessages" onClick={this.clearProfile}>Clear profile</a></p>
-        </form>
+          <p className="pas"><a href="#" className="errorMessages" onClick={this.clearProfile}>Clear profile</a></p>
         {passwordDialog }
       </div>
     );
