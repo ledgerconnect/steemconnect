@@ -64,24 +64,20 @@ router.post('/auth/create', verifyAuth, (req, res) => {
 
 router.get('/auth/authorize', verifyAuth, (req, res) => {
   let { permission = '[]' } = req.query;
-  const { appUserName, clientId, redirect_url } = req.query;
+  const { appUserName, redirect_url } = req.query;
   try { permission = JSON.parse(permission); } catch (e) { permission = []; }
   steem.api.getAccounts([appUserName], (err, result) => {
     try {
       if (err) { throw err; }
       const jsonMetadata = getJSONMetadata(result[0]);
-      if (typeof jsonMetadata.app !== 'object' || !jsonMetadata.app) { throw new Error('Invalid appName. App not found'); }
+      const app = jsonMetadata.app;
+      if (typeof app !== 'object' || !app) { throw new Error('Invalid appName. App not found'); }
 
-      let privateMetadata = decryptMessage(jsonMetadata.app.private_metadata, clientSecret);
-      try { privateMetadata = JSON.parse(privateMetadata); } catch (e) { throw new Error('Invalid clientId'); }
-
-      if (_.indexOf(privateMetadata.redirect_urls, redirect_url) === -1) { throw new Error('Redirect uri mismatch'); }
-
+      if (_.indexOf(app.redirect_urls, redirect_url) === -1) { throw new Error('Redirect uri mismatch'); }
       const token = jwt.sign({
         username: req.username,
-        allowedOrigin: privateMetadata.origins,
+        allowedOrigin: app.origins,
         permission,
-        clientId,
         appUserName,
       }, process.env.JWT_SECRET, { expiresIn: '36h' });
       res.redirect(`${redirect_url}?token=${token}`);
