@@ -16,5 +16,23 @@
     "origins": ["https://steemstats.com/login", "http://www.steemstats.com/login"],
     "redirect_urls": ["https://steemstats.com/dashboard", "https://www.steemstats.com/dashboard"],
     "permissions": ["vote", "follow"]
+  },
+  "steemstream": {
+    "name": "SteemStream",
+    "author": "jesta",
+    "tagline": "Steem Account Statistics + Monitoring",
+    "description": "SteemStats is an application created to help you monitor your account activity on steemit.com, a social media platform based on the steem blockchain.",
+    "origins": ["https://steemstats.com/login", "http://www.steemstats.com/login"],
+    "redirect_urls": ["https://steemstats.com/dashboard", "https://www.steemstats.com/dashboard"],
+    "permissions": ["vote", "follow"]
+  },
+  "steemq": {
+    "name": "SteemQ",
+    "author": "jesta",
+    "tagline": "Steem Account Statistics + Monitoring",
+    "description": "SteemStats is an application created to help you monitor your account activity on steemit.com, a social media platform based on the steem blockchain.",
+    "origins": ["https://steemstats.com/login", "http://www.steemstats.com/login"],
+    "redirect_urls": ["https://steemstats.com/dashboard", "https://www.steemstats.com/dashboard"],
+    "permissions": ["vote", "follow"]
   }
 }
