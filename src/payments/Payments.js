@@ -6,7 +6,7 @@ class Payments extends Component {
     return (
       <div>
         <Header />
-        Payments Placeholder
+        <div className="container">Payments Placeholder</div>
       </div>
     );
   }

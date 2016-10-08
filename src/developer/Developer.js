@@ -107,47 +107,49 @@ class Developer extends Component {
     return (
       <div>
         <Header />
-        <div className="block block-developer mvl">
-          <form className="form form-developer pam">
-            {keys && (<div style={{ wordBreak: 'break-all' }}>
-              clientId: {keys.clientId}<br />
-              secret: {keys.clientSecret}
-            </div>)}
-            <div className="mbl">
-              <label htmlFor="appName">App Name</label>
-              <FieldSet name={'appName'} defaultValue={appName} error={this.state.error} validate={this.validate} formFields={this.formFields} />
-              <label htmlFor="author">Author</label>
-              <FieldSet name={'author'} defaultValue={author} error={this.state.error} validate={this.validate} formFields={this.formFields} />
+        <div className="container">
+          <div className="block block-developer mvl">
+            <form className="form form-developer pam">
+              {keys && (<div style={{ wordBreak: 'break-all' }}>
+                clientId: {keys.clientId}<br />
+                secret: {keys.clientSecret}
+              </div>)}
+              <div className="mbl">
+                <label htmlFor="appName">App Name</label>
+                <FieldSet name={'appName'} defaultValue={appName} error={this.state.error} validate={this.validate} formFields={this.formFields} />
+                <label htmlFor="author">Author</label>
+                <FieldSet name={'author'} defaultValue={author} error={this.state.error} validate={this.validate} formFields={this.formFields} />
+                <fieldset className="form-group">
+                  <label htmlFor="origins">Requested permissions</label>
+                  {permissionList.map(({ name, api }) => <div key={api}>
+                    <input type="checkbox" className="form-check-input mls" ref={c => (this.formFields.permissions[api] = c)} defaultChecked={permissions.indexOf(api) >= 0} value={api} />
+                    {name}
+                  </div>
+                  ) }
+                </fieldset>
+                <fieldset className="form-group">
+                  <label htmlFor="origins">Allowed Origins</label>
+                  <textarea className="form-control form-control-lg" onBlur={() => this.validate('origins')} placeholder="each origins in new line" rows="3" ref={c => (this.formFields.origins = c)} />
+                  <div className="form-control-feedback">{this.state.error.origins}</div>
+                </fieldset>
+                <fieldset className="form-group">
+                  <h3>Allowed Redirect Urls</h3>
+                  <textarea className="form-control form-control-lg" onBlur={() => this.validate('redirect_urls')} placeholder="each redirect_urls in new line" rows="3" ref={c => (this.formFields.redirect_urls = c)} />
+                  <div className="form-control-feedback">{this.state.error.redirect_urls}</div>
+                </fieldset>
+              </div>
               <fieldset className="form-group">
-                <label htmlFor="origins">Requested permissions</label>
-                {permissionList.map(({ name, api }) => <div key={api}>
-                  <input type="checkbox" className="form-check-input mls" ref={c => (this.formFields.permissions[api] = c)} defaultChecked={permissions.indexOf(api) >= 0} value={api} />
-                  {name}
-                </div>
-                ) }
+                <button className="btn btn-primary" onClick={this.save}>Save</button>
+                <div className="form-control-feedback">{this.state.error.save}</div>
               </fieldset>
-              <fieldset className="form-group">
-                <label htmlFor="origins">Allowed Origins</label>
-                <textarea className="form-control form-control-lg" onBlur={() => this.validate('origins')} placeholder="each origins in new line" rows="3" ref={c => (this.formFields.origins = c)} />
-                <div className="form-control-feedback">{this.state.error.origins}</div>
-              </fieldset>
-              <fieldset className="form-group">
-                <h3>Allowed Redirect Urls</h3>
-                <textarea className="form-control form-control-lg" onBlur={() => this.validate('redirect_urls')} placeholder="each redirect_urls in new line" rows="3" ref={c => (this.formFields.redirect_urls = c)} />
-                <div className="form-control-feedback">{this.state.error.redirect_urls}</div>
-              </fieldset>
-            </div>
-            <fieldset className="form-group">
-              <button className="btn btn-primary" onClick={this.save}>Save</button>
-              <div className="form-control-feedback">{this.state.error.save}</div>
-            </fieldset>
-          </form>
-          {this.state.showPasswordDialog && <PasswordDialog
-            isUpdating={isUpdatingProfile}
-            error={isUpdatingProfileError}
-            onClose={this.closePasswordDialog}
-            onSave={this.savePassword}
-          />}
+            </form>
+            {this.state.showPasswordDialog && <PasswordDialog
+              isUpdating={isUpdatingProfile}
+              error={isUpdatingProfileError}
+              onClose={this.closePasswordDialog}
+              onSave={this.savePassword}
+            />}
+          </div>
         </div>
       </div>
     );

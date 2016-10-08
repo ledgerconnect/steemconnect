@@ -43,7 +43,7 @@ class Activity extends Component {
             </ul>
           </nav>
         </div>
-        <div>
+        <div className="container">
           <div className="block block-activity">
             <ul className="list list-activity">
               <li className="list-element pas">

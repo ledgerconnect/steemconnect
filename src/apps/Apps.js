@@ -38,16 +38,18 @@ class Apps extends Component {
             </ul>
           </nav>
         </div>
-        <div className="block block-apps">
-          <ul className="list list-apps">
-            {apps && _.map(apps, app =>
-              <li key={app.name} className="list-element pam">
-                <img src="#" alt="asd" className="list-image mrs" />
-                <strong className="list-title">{app.name}</strong>
-                <span className="list-description pls">{app.tagline}</span>
-                <i className="icon icon-md material-icons pull-right">keyboard_arrow_right</i>
-              </li>)}
-          </ul>
+        <div className="container">
+          <div className="block block-apps">
+            <ul className="list list-apps">
+              {apps && _.map(apps, app =>
+                <li key={app.name} className="list-element pam">
+                  <img src="#" alt="asd" className="list-image mrs" />
+                  <strong className="list-title">{app.name}</strong>
+                  <span className="list-description pls">{app.tagline}</span>
+                  <i className="icon icon-md material-icons pull-right">keyboard_arrow_right</i>
+                </li>)}
+            </ul>
+          </div>
         </div>
       </div>
     );

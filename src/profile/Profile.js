@@ -100,6 +100,7 @@ class Settings extends Component {
       <div>
         <Header />
         <AvatarUpdate username={user.name} onDrop={this.onDrop} />
+        <div className="container">
           <div className="block block-profile mtl mbs">
             <form className="form form-profile pam">
               <div className="mbl">
@@ -153,7 +154,8 @@ class Settings extends Component {
             </form>
           </div>
           <p className="pas"><a href="#" className="errorMessages" onClick={this.clearProfile}>Clear profile</a></p>
-        {passwordDialog }
+          {passwordDialog}
+        </div>
       </div>
     );
   }
