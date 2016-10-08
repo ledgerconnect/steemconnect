@@ -41,9 +41,9 @@ class Apps extends Component {
         <div className="container">
           <div className="block block-apps">
             <ul className="list list-apps">
-              {apps && _.map(apps, app =>
+              {apps && _.map(apps, (app, key) =>
                 <li key={app.name} className="list-element pam">
-                  <img src="#" alt="asd" className="list-image mrs" />
+                  <img src={`https://img.busy6.com/@${key}`} alt="asd" className="list-image mrs" />
                   <strong className="list-title">{app.name}</strong>
                   <span className="list-description pls">{app.tagline}</span>
                   <i className="icon icon-md material-icons pull-right">keyboard_arrow_right</i>
