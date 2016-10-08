@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+
 /**
  * Module dependencies.
  */

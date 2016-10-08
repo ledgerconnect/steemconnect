@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import * as authTypes from './authActionTypes';
 
-const axios = require('axios');
 const steemAuth = require('steemauth');
 const crypto = require('crypto-js');
 
@@ -47,31 +46,41 @@ export function login(username, passwordOrWif) {
     const isWif = steemAuth.isWif(passwordOrWif);
     const wif = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'posting');
     dispatch({ type: authTypes.LOGIN_REQUEST });
-    axios.get('/auth/login', {
-      params: { encryptedData: encryptData(JSON.stringify({ username, wif })) },
-    }).then(({ data }) => {
-      const { error, userAccount, auth } = data;
-      if (error) {
-        throw error;
-      } else if (userAccount && auth.length) {
-        const {  memo_key, reputation, balance } = userAccount; //eslint-disable-line
-        let { json_metadata } = userAccount;
-        json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {}; //eslint-disable-line
+
+    fetch('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ encryptedData: encryptData(JSON.stringify({ username, wif })) }),
+      credentials: 'include',
+      headers: new Headers({
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'x-csrf-token': document.querySelector('meta[name="_csrf"]').content,
+      }),
+    }).then(response => response.json())
+      .then((data) => {
+        const { error, userAccount, auth } = data;
+        if (error) {
+          throw error;
+        } else if (userAccount && auth.length) {
+          const { memo_key, reputation, balance } = userAccount;
+          let { json_metadata } = userAccount;
+          json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
+          dispatch({
+            type: authTypes.LOGIN_SUCCESS,
+            user: { name: username, json_metadata, memo_key, reputation, balance },
+          });
+          cookie.save(auth, 'auth');
+        } else {
+          throw new Error('Malformed request');
+        }
+      }).catch((err) => {
+        const errorMessage = typeof err !== 'string' ? ((err.data && err.data.error) || err.statusText) : err;
         dispatch({
-          type: authTypes.LOGIN_SUCCESS,
-          user: { name: username, json_metadata, memo_key, reputation, balance },
+          type: authTypes.LOGIN_FAILURE,
+          user: {},
+          errorMessage,
         });
-        cookie.save(auth, 'auth');
-      } else {
-        throw new Error('Malformed request');
-      }
-    }).catch((err) => {
-      dispatch({
-        type: authTypes.LOGIN_FAILURE,
-        user: {},
-        errorMessage: (err.data && err.data.error) || err.statusText,
       });
-    });
   };
 }
 
@@ -85,8 +94,12 @@ export function setAppDetails(appName, appDetails) {
 
 export function getAppPermission(clientId, appUserName) {
   return (dispatch) => {
-    axios.get('/auth/getAppDetails', { params: { clientId, appUserName } })
-      .then(response => response.data)
+    const getAppDetailsUrl = new URL(`${window.location.origin}/auth/getAppDetails`);
+    getAppDetailsUrl.searchParams.append('clientId', clientId);
+    getAppDetailsUrl.searchParams.append('appUserName', appUserName);
+    fetch(getAppDetailsUrl, {
+      credentials: 'include',
+    }).then(response => response.json())
       .then((appDetails) => {
         dispatch(setAppDetails(appUserName, appDetails));
       });

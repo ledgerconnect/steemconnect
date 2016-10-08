@@ -10,8 +10,8 @@ const apiList = require('../lib/apiList');
 
 const router = new express.Router();
 
-router.get('/auth/login', (req, res) => {
-  const { encryptedData } = req.query;
+router.post('/auth/login', (req, res) => {
+  const { encryptedData } = req.body;
   const data = decryptMessage(encryptedData, req.cookies._csrf); // eslint-disable-line
   const { username, wif } = JSON.parse(data);
   steem.api.getAccounts([username], (err, result) => {
@@ -30,7 +30,7 @@ router.get('/auth/login', (req, res) => {
 });
 
 router.post('/auth/create', verifyAuth, (req, res) => {
-  const { appOwnerWif, appName, author, origins, redirect_urls, permissions } = req.body; // eslint-disable-line
+  const { appOwnerWif, appName, author, origins, redirect_urls, permissions } = req.body;
   const appUserName = req.username;
   const newApp = createECDH(process.env.CRYPTO_MOD);
   newApp.generateKeys();
@@ -46,15 +46,16 @@ router.post('/auth/create', verifyAuth, (req, res) => {
       }
       const user = result[0];
       const jsonMetadata = getJSONMetadata(user);
-        const private_metadata = encryptMessage(JSON.stringify({ origins, redirect_urls }), clientSecret); // eslint-disable-line
+      const private_metadata = encryptMessage(JSON.stringify({ origins, redirect_urls }),
+        clientSecret);
       jsonMetadata.app = { name: appName, author, permissions, private_metadata };
       steem.broadcast.accountUpdate(ownerKey, appUserName, undefined, undefined, undefined,
-          user.memo_key, jsonMetadata, (accountUpdateErr) => {
-            if (accountUpdateErr) {
-              throw accountUpdateErr;
-            }
-            res.json({ clientId, clientSecret });
-          });
+        user.memo_key, jsonMetadata, (accountUpdateErr) => {
+          if (accountUpdateErr) {
+            throw accountUpdateErr;
+          }
+          res.json({ clientId, clientSecret });
+        });
     } catch (e) {
       res.status(500).send({ error: JSON.stringify(e) });
     }
@@ -107,7 +108,7 @@ router.get('/auth/getAppDetails', verifyAuth, (req, res) => {
 
       delete jsonMetadata.app.private_metadata;
       jsonMetadata.app.permissions = _.map(jsonMetadata.app.permissions, v =>
-              Object.assign(apiList[v], { api: v }));
+        Object.assign(apiList[v], { api: v }));
       res.send(jsonMetadata.app);
     } catch (e) {
       let message = e.message;

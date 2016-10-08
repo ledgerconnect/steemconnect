@@ -6,6 +6,9 @@ import ReactDOM from 'react-dom';
 import routes from './routes';
 import store from './store';
 
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+
 // load the stylesheet
 require('./styles/base.sass');
 

@@ -1,4 +1,3 @@
-import axios from 'axios';
 import * as devTypes from './devActionTypes';
 
 export function setPermission(permissionList) {
@@ -9,18 +8,28 @@ export function createApplication({
   appOwnerWif, appName, author, origins, redirect_urls, permissions,
 }) {
   return (dispatch) => {
-    axios.post('/auth/create', {
-      appOwnerWif,
-      appName,
-      author,
-      origins,
-      redirect_urls,
-      permissions,
-    }, { headers: { 'x-csrf-token': document.querySelector('meta[name="_csrf"]').content } }).then(({ data }) => {
-      dispatch({
-        type: devTypes.CREATE_APPLICATION,
-        keys: data,
+    fetch('/auth/create', {
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify({
+        appOwnerWif,
+        appName,
+        author,
+        origins,
+        redirect_urls,
+        permissions,
+      }),
+      headers: new Headers({
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'x-csrf-token': document.querySelector('meta[name="_csrf"]').content,
+      }),
+    }).then(response => response.json())
+      .then((data) => {
+        dispatch({
+          type: devTypes.CREATE_APPLICATION,
+          keys: data,
+        });
       });
-    });
   };
 }

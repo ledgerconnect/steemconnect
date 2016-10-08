@@ -1,6 +1,5 @@
 import * as authTypes from './auth/authActionTypes';
 
-const axios = require('axios');
 const steemAuth = require('steemauth');
 const steem = require('steem');
 const cookie = require('./../lib/cookie');
@@ -12,29 +11,34 @@ export function login() {
       return;
     }
     dispatch({ type: authTypes.LOGIN_REQUEST });
-    axios.get('/api/verify').then(({ data: { isAuthenticated, username } }) => {
-      if (!isAuthenticated) {
-        throw new Error('Not authenticated');
-      }
-      steem.api.getAccounts([username], (err, result) => {
-        if (!result || !result[0]) {
-          throw new Error('user not found');
+    fetch('/api/verify', {
+      credentials: 'include',
+    }).then(response => response.json())
+      .then(({ isAuthenticated, username }) => {
+        if (!isAuthenticated) {
+          throw new Error('Not authenticated');
         }
-        const { memo_key, reputation, balance, name } = result[0];
-        let { json_metadata } = result[0];
-        json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
+        steem.api.getAccounts([username], (err, result) => {
+          if (!result || !result[0]) {
+            throw new Error('user not found');
+          }
+          const { memo_key, reputation, balance, name } = result[0];
+          let { json_metadata } = result[0];
+          json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
+          dispatch({
+            type: authTypes.LOGIN_SUCCESS,
+            user: { name, json_metadata, memo_key, reputation, balance },
+          });
+        });
+      })
+      .catch((err) => {
+        const errorMessage = typeof err !== 'string' ? ((err.data && err.data.error) || err.statusText) : err;
         dispatch({
-          type: authTypes.LOGIN_SUCCESS,
-          user: { name, json_metadata, memo_key, reputation, balance },
+          type: authTypes.LOGIN_FAILURE,
+          user: {},
+          errorMessage,
         });
       });
-    }).catch((err) => {
-      dispatch({
-        type: authTypes.LOGIN_FAILURE,
-        user: {},
-        errorMessage: (err.data && err.data.error) || err.statusText,
-      });
-    });
   };
 }
 
@@ -71,15 +75,15 @@ export function setAvatar(passwordOrWif, file, type) {
     user.json_metadata = user.json_metadata || {};
     user.json_metadata.profile = user.json_metadata.profile || {};
     const profileData = user.json_metadata.profile;
-    const data = new FormData();
-    data.append('file', file);
+    const body = new FormData();
+    body.append('file', file);
     let uploadUrl = `https://img.busy6.com/@${user.name}`;
     if (type === 'cover_image') {
       uploadUrl += '/cover.sass';
     }
-    axios.post(uploadUrl, data, { origin: true })
-      .then((response) => {
-        const { data: { url } } = response;
+    fetch(uploadUrl, { method: 'POST', body, origin: true })
+      .then(response => response.json())
+      .then(({ url }) => {
         profileData[type] = url || uploadUrl;
         dispatch(accountUpdate(user.name, passwordOrWif, user.memo_key, user.json_metadata));
       }).catch((err) => {
