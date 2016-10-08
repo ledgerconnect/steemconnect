@@ -5,7 +5,6 @@ const steemAuth = require('steemauth');
 const jwt = require('jsonwebtoken');
 const { verifyAuth } = require('./middleware');
 const { getJSONMetadata, decryptMessage, encryptMessage } = require('../lib/utils');
-const apiList = require('../lib/apiList');
 
 const router = new express.Router();
 
@@ -91,28 +90,6 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
       if (e.message.search('decrypt') >= 0 || e.message.search('Malformed UTF-8 data') >= 0) {
         message = 'Invalid clientId';
       } else if (e.message.search('json_metadata') >= 0) {
-        message = 'Invalid appName';
-      }
-      res.status(500).send({ error: message });
-    }
-  });
-});
-
-router.get('/auth/getAppDetails', verifyAuth, (req, res) => {
-  const { appUserName } = req.query;
-  steem.api.getAccounts([appUserName], (err, result) => {
-    try {
-      if (err) { throw err; }
-      const jsonMetadata = getJSONMetadata(result[0]);
-      if (typeof jsonMetadata.app !== 'object' || !jsonMetadata.app) { throw new Error('Invalid appName. App not found'); }
-
-      delete jsonMetadata.app.private_metadata;
-      jsonMetadata.app.permissions = _.map(jsonMetadata.app.permissions, v =>
-        Object.assign(apiList[v], { api: v }));
-      res.send(jsonMetadata.app);
-    } catch (e) {
-      let message = e.message;
-      if (e.message.search('json_metadata') >= 0) {
         message = 'Invalid appName';
       }
       res.status(500).send({ error: message });
