@@ -50,7 +50,7 @@ class Sidebar extends Component {
                 <Link to="/profile"><i className="icon icon-md material-icons">perm_identity</i> Profile</Link>
               </li>
               <li className="title">
-                <Link to="/settings"><i className="icon icon-md material-icons">settings</i> Settings</Link>
+                <Link to="/#settings"><i className="icon icon-md material-icons">settings</i> Settings</Link>
               </li>
               <li className="title">
                 <Link to="/developers"><i className="icon icon-md material-icons">code</i> Developers</Link>
