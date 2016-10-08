@@ -5,16 +5,18 @@ export function setPermission(permissionList) {
 }
 
 export function createApplication({
-  appOwnerWif, appName, author, origins, redirect_urls, permissions,
+  name, ownerWif, author, tagline, description, origins, redirect_urls, permissions,
 }) {
   return (dispatch) => {
     fetch('/auth/create', {
       method: 'POST',
       credentials: 'include',
       body: JSON.stringify({
-        appOwnerWif,
-        appName,
+        name,
+        ownerWif,
         author,
+        tagline,
+        description,
         origins,
         redirect_urls,
         permissions,
@@ -24,12 +26,18 @@ export function createApplication({
         'Content-Type': 'application/json',
         'x-csrf-token': document.querySelector('meta[name="_csrf"]').content,
       }),
-    }).then(response => response.json())
-      .then((data) => {
+    }).then((response) => {
+      if (response.status === 201) {
         dispatch({
           type: devTypes.CREATE_APPLICATION,
-          keys: data,
+          error: false,
         });
-      });
+      } else {
+        dispatch({
+          type: devTypes.CREATE_APPLICATION,
+          error: 'Could not create app',
+        });
+      }
+    });
   };
 }

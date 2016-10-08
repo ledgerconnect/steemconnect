@@ -2,10 +2,9 @@ const express = require('express');
 const _ = require('lodash');
 const steem = require('steem');
 const steemAuth = require('steemauth');
-const createECDH = require('create-ecdh');
 const jwt = require('jsonwebtoken');
 const { verifyAuth } = require('./middleware');
-const { getSecretKeyForClientId, getJSONMetadata, decryptMessage, encryptMessage } = require('../lib/utils');
+const { getJSONMetadata, decryptMessage, encryptMessage } = require('../lib/utils');
 const apiList = require('../lib/apiList');
 
 const router = new express.Router();
@@ -30,31 +29,33 @@ router.post('/auth/login', (req, res) => {
 });
 
 router.post('/auth/create', verifyAuth, (req, res) => {
-  const { appOwnerWif, appName, author, origins, redirect_urls, permissions } = req.body;
+  const { name, ownerWif, author, tagline,
+    description, origins, redirect_urls, permissions } = req.body;
   const appUserName = req.username;
-  const newApp = createECDH(process.env.CRYPTO_MOD);
-  newApp.generateKeys();
-  const clientId = newApp.getPublicKey('hex');
-  const clientSecret = newApp.computeSecret(process.env.PUBLIC_KEY, 'hex', 'hex');
-
   steem.api.getAccounts([appUserName], (err, result) => {
-    const isWif = steemAuth.isWif(appOwnerWif);
-    const ownerKey = (isWif) ? appOwnerWif : steemAuth.toWif(appUserName, appOwnerWif, 'owner');
+    const isWif = steemAuth.isWif(ownerWif);
+    const ownerKey = (isWif) ? ownerWif : steemAuth.toWif(appUserName, ownerWif, 'owner');
     try {
       if (err) {
         throw err;
       }
       const user = result[0];
       const jsonMetadata = getJSONMetadata(user);
-      const private_metadata = encryptMessage(JSON.stringify({ origins, redirect_urls }),
-        clientSecret);
-      jsonMetadata.app = { name: appName, author, permissions, private_metadata };
+      jsonMetadata.app = {
+        name,
+        author,
+        tagline,
+        description,
+        origins,
+        redirect_urls,
+        permissions,
+      };
       steem.broadcast.accountUpdate(ownerKey, appUserName, undefined, undefined, undefined,
         user.memo_key, jsonMetadata, (accountUpdateErr) => {
           if (accountUpdateErr) {
             throw accountUpdateErr;
           }
-          res.json({ clientId, clientSecret });
+          res.sendStatus(201);
         });
     } catch (e) {
       res.status(500).send({ error: JSON.stringify(e) });
@@ -69,7 +70,6 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
   steem.api.getAccounts([appUserName], (err, result) => {
     try {
       if (err) { throw err; }
-      const clientSecret = getSecretKeyForClientId(clientId);
       const jsonMetadata = getJSONMetadata(result[0]);
       if (typeof jsonMetadata.app !== 'object' || !jsonMetadata.app) { throw new Error('Invalid appName. App not found'); }
 
