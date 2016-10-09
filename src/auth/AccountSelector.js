@@ -16,20 +16,6 @@ class LastUserSelector extends Component {
     this.state = { lastUserList };
   }
 
-  onDelete = (username) => {
-    const { lastUserList } = this.state;
-    const index = lastUserList.indexOf(username);
-    if (index >= 0) {
-      lastUserList.splice(index, 1);
-      this.updateUser(lastUserList);
-    }
-  };
-
-  updateUser = (lastUserList) => {
-    this.setState({ lastUserList });
-    cookie.save(lastUserList, 'last_users');
-  };
-
   selectUser = (username) => {
     const { lastUserList } = this.state;
     const index = lastUserList.indexOf(username);
@@ -60,7 +46,8 @@ class LastUserSelector extends Component {
           username={username} onDelete={this.onDelete}
         />
       )) }
-      <span className="form-span"><h2 className="mal">Log in with your Steem account</h2></span>
+      {_.isEmpty(lastUserList) && <h2 className="mal">Log in with your Steem account</h2>}
+      {!_.isEmpty(lastUserList) && <h2 className="mal">Add new Steem account</h2>}
       <form className="form form-login" onSubmit={this.handleSubmit}>
         <div className="input-group input-group-lg">
           <span className="input-group-addon"><i className="icon icon-md material-icons">perm_identity</i></span>
