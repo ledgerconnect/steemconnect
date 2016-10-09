@@ -54,7 +54,8 @@ router.post('/auth/create', verifyAuth, (req, res) => {
           if (accountUpdateErr) {
             throw accountUpdateErr;
           }
-          res.sendStatus(201);
+          user.json_metadata = JSON.stringify(jsonMetadata);
+          res.status(201).send(user);
         });
     } catch (e) {
       res.status(500).send({ error: JSON.stringify(e) });
