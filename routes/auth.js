@@ -4,7 +4,7 @@ const steem = require('steem');
 const steemAuth = require('steemauth');
 const jwt = require('jsonwebtoken');
 const { verifyAuth } = require('./middleware');
-const { getJSONMetadata, decryptMessage, encryptMessage } = require('../lib/utils');
+const { parseJSONMetadata, decryptMessage, encryptMessage } = require('../lib/utils');
 
 const router = new express.Router();
 
@@ -39,7 +39,7 @@ router.post('/auth/create', verifyAuth, (req, res) => {
         throw err;
       }
       const user = result[0];
-      const jsonMetadata = getJSONMetadata(user);
+      const jsonMetadata = parseJSONMetadata(user);
       jsonMetadata.app = {
         name,
         author,
@@ -67,7 +67,7 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
   steem.api.getAccounts([appUserName], (err, result) => {
     try {
       if (err) { throw err; }
-      const jsonMetadata = getJSONMetadata(result[0]);
+      const jsonMetadata = parseJSONMetadata(result[0]);
       const app = jsonMetadata.app;
       if (typeof app !== 'object' || !app) { throw new Error('Invalid appName. App not found'); }
 

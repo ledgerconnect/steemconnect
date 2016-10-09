@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign,consistent-return */
 const _ = require('lodash');
 const url = require('url');
-const { decryptMessage } = require('../lib/utils');
+const { decryptMessage, getJSONMetadata } = require('../lib/utils');
 const jwt = require('jsonwebtoken');
 const apiList = require('../lib/apiList');
 
@@ -33,49 +33,80 @@ function verifyAuth(req, res, next) {
 }
 
 function verifyToken(req, res, next) {
-  const origin = req.get('origin');
   const token = req.get('x-steemconnect-token') || req.query.token;
+  if (token) {
+    jwt.verify(token, process.env.JWT_SECRET, (err, jwtData) => {
+      if (err) {
+        return res.sendStatus(401);
+      }
+      req.token = jwtData;
+      return next();
+    });
+  } else {
+    return next();
+  }
+}
+
+function checkOrigin(req, res, next) {
+  const origin = req.get('origin');
   let hostname = 'localhost';
   if (origin) {
     hostname = url.parse(origin).hostname;
   }
-
   const isDifferentHost = (hostname !== 'localhost' && hostname !== 'steemconnect.com' && hostname !== 'dev.steemconnect.com');
+  const token = req.token || {};
   if (isDifferentHost) {
-    if (token) {
-      jwt.verify(token, process.env.JWT_SECRET, (err, jwtData) => {
-        if (err) {
-          return res.sendStatus(401);
+    getJSONMetadata(token.appUserName)
+      .then((appData) => {
+        const app = appData.app || {};
+        if (!app.origins) {
+          throw new Error('App does not have origins defined');
         }
-        const isAuthorizedOrigin = _.indexOf(jwtData.allowedOrigin, origin) !== -1;
-        if (isAuthorizedOrigin) {
-          req.token = jwtData;
-          return next();
+
+        if (app.origins.indexOf(origin) >= 0) {
+          next();
+        } else {
+          throw new Error('Origin does not match from list of allowed origin');
         }
+      }).catch((err) => {
+        res.status(500).send(err && err.toString());
       });
-    } else {
-      return res.sendStatus(401);
-    }
-  }
+  } else {
     /* For request made from steemconnect website */
-  return next();
+    return next();
+  }
 }
 
 function checkPermission(req, res, next) {
   const token = req.token || {};
-  const permissions = _.map(token.permission, v => apiList[v]);
   const requestUrl = url.parse(req.originalUrl);
   const requestPath = requestUrl.pathname.replace(/\/$/, '');
-  const selectedQuery = _.find(permissions, p => (p.path === requestPath));
-  if (selectedQuery || requestPath === '/api/verify') {
+  if (requestPath === '/api/verify') {
     return next();
   }
 
-  return res.status(401).json({ error: 'Not permitted', acceptedPermissions: token.permission || [] });
+  getJSONMetadata(token.username)
+    .then((userdata) => {
+      const userApps = userdata.apps || {};
+      const appDetails = userApps[token.appUserName];
+      if (!appDetails) {
+        throw new Error('Unauthorized');
+      }
+      const permissions = _.map((appDetails.permissions || []), v => apiList[v]);
+      const selectedQuery = _.find(permissions, p => (p.path === requestPath));
+      if (selectedQuery) {
+        next();
+      } else {
+        return res.status(401).json({ error: 'Not permitted', acceptedPermissions: appDetails.permissions || [] });
+      }
+    }).catch((err) => {
+      res.status(500).send(err && err.toString());
+    });
 }
 
 module.exports = {
   verifyAuth,
   verifyToken,
+  checkOrigin,
   checkPermission,
 };
