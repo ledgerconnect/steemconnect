@@ -204,9 +204,18 @@ a.btn-primary
   background-color: white
 
 .block-login
-  width: 360px
+  position: relative
+  min-width: 360px
+
+  .change-user
+    position: absolute
+    right: 10px
+    top: 10px
+    z-index: 1
+
   @media (max-width: 560px)
     width: 100%
+
 
 .login-section
   height: 100%
