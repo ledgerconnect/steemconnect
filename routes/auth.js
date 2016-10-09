@@ -4,7 +4,7 @@ const steem = require('steem');
 const steemAuth = require('steemauth');
 const jwt = require('jsonwebtoken');
 const { verifyAuth } = require('./middleware');
-const { parseJSONMetadata, decryptMessage, encryptMessage } = require('../lib/utils');
+const { parseJSONMetadata, getJSONMetadata, decryptMessage, encryptMessage } = require('../lib/utils');
 
 const router = new express.Router();
 
@@ -31,9 +31,9 @@ router.post('/auth/create', verifyAuth, (req, res) => {
   const { name, ownerWif, author, tagline,
     description, origins, redirect_urls, permissions } = req.body;
   const appUserName = req.username;
+  const isWif = steemAuth.isWif(ownerWif);
+  const ownerKey = (isWif) ? ownerWif : steemAuth.toWif(appUserName, ownerWif, 'owner');
   steem.api.getAccounts([appUserName], (err, result) => {
-    const isWif = steemAuth.isWif(ownerWif);
-    const ownerKey = (isWif) ? ownerWif : steemAuth.toWif(appUserName, ownerWif, 'owner');
     try {
       if (err) {
         throw err;
@@ -64,27 +64,26 @@ router.post('/auth/create', verifyAuth, (req, res) => {
 
 router.get('/auth/authorize', verifyAuth, (req, res) => {
   const { appUserName, redirect_url } = req.query;
-  steem.api.getAccounts([appUserName], (err, result) => {
-    try {
-      if (err) { throw err; }
-      const jsonMetadata = parseJSONMetadata(result[0]);
-      const app = jsonMetadata.app;
+  getJSONMetadata(appUserName)
+    .then(({ app }) => {
       if (typeof app !== 'object' || !app) { throw new Error('Invalid appName. App not found'); }
-
       if (_.indexOf(app.redirect_urls, redirect_url) === -1) { throw new Error('Redirect uri mismatch'); }
-      const token = jwt.sign({
-        username: req.username,
-        appUserName,
-      }, process.env.JWT_SECRET, { expiresIn: '36h' });
+
+      const token = jwt.sign({ username: req.username, appUserName },
+        process.env.JWT_SECRET, { expiresIn: '30d' });
+
       res.redirect(`${redirect_url}?token=${token}`);
-    } catch (e) {
-      let message = e.message;
-      if (e.message.search('json_metadata') >= 0) {
-        message = 'Invalid appName';
+    }).catch((err) => {
+      if (typeof err === 'string') {
+        res.status(500).send({ error: err });
+      } else {
+        let message = err.message;
+        if (err.message.search('json_metadata') >= 0) {
+          message = 'Invalid appName';
+        }
+        res.status(500).send({ error: message });
       }
-      res.status(500).send({ error: message });
-    }
-  });
+    });
 });
 
 module.exports = router;
