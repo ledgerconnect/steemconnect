@@ -50,21 +50,28 @@ export function accountUpdate(username, passwordOrWif, memo_key, jsonMetadata) {
     });
     const isWif = steemAuth.isWif(passwordOrWif);
     const ownerKey = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'owner');
-    steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined,
-      memo_key, jsonMetadata, (err) => {
-        if (err) {
-          console.error('Error while processing accountUpdate', JSON.stringify(err));
-        }
-
-        dispatch({
-          type: authTypes.UPDATE_PROFILE,
-          user: {
-            profile: jsonMetadata.profile,
-            isUpdatingProfile: false,
-            isUpdatingProfileError: !!err,
-          },
+    return new Promise((resolve, reject) => {
+      steem.broadcast.accountUpdate(ownerKey, username, undefined, undefined, undefined,
+        memo_key, jsonMetadata, (err) => {
+          if (err) {
+            console.error('Error while processing accountUpdate', JSON.stringify(err));
+            reject(dispatch({
+              type: authTypes.UPDATE_PROFILE,
+              user: {
+                isUpdatingProfile: false,
+                isUpdatingProfileError: err,
+              },
+            }));
+          }
+          resolve(dispatch({
+            type: authTypes.UPDATE_PROFILE,
+            user: {
+              isUpdatingProfile: false,
+              isUpdatingProfileError: !!err,
+            },
+          }));
         });
-      });
+    });
   };
 }
 

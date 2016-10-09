@@ -1,5 +1,7 @@
 import _ from 'lodash';
+import steem from 'steem';
 import * as authTypes from './authActionTypes';
+import apiList from '../../lib/apiList';
 
 const steemAuth = require('steemauth');
 const crypto = require('crypto-js');
@@ -92,16 +94,34 @@ export function setAppDetails(appName, appDetails) {
   return { type: authTypes.SET_APP_DETAILS, appName, appDetails };
 }
 
-export function getAppPermission(clientId, appUserName) {
+export function getAppDetails(appUserName, redirectUrl) {
   return (dispatch) => {
-    const getAppDetailsUrl = new URL(`${window.location.origin}/auth/getAppDetails`);
-    getAppDetailsUrl.searchParams.append('clientId', clientId);
-    getAppDetailsUrl.searchParams.append('appUserName', appUserName);
-    fetch(getAppDetailsUrl, {
-      credentials: 'include',
-    }).then(response => response.json())
-      .then((appDetails) => {
-        dispatch(setAppDetails(appUserName, appDetails));
-      });
+    steem.api.getAccounts([appUserName], (err, result) => {
+      if (err) {
+        dispatch(setAppDetails(appUserName, { error: 'could not get app details' }));
+      } else if (result && result[0]) {
+        let { json_metadata = {} } = result[0];
+        try { json_metadata = JSON.parse(json_metadata); } catch (e) { json_metadata = {}; }
+        const app = json_metadata.app;
+
+        if (app) {
+          app.permissions = _.map(app.permissions, v => Object.assign(apiList[v], { api: v }));
+          app.redirect_urls = app.redirect_urls || [];
+
+          // If there is list of redirect_url that developer must specify
+          // if there is only one that it will be selected automatically
+          if (app.redirect_urls.length > 1 && app.redirect_urls.indexOf(redirectUrl) === -1) {
+            dispatch(setAppDetails(appUserName, { error: 'RedirectUrl Mismatch' }));
+          } else {
+            app.redirect_url = redirectUrl || app.redirect_urls[0];
+            dispatch(setAppDetails(appUserName, app));
+          }
+        } else {
+          dispatch(setAppDetails(appUserName, { error: 'app is not configured' }));
+        }
+      } else {
+        dispatch(setAppDetails(appUserName, { error: 'Invalid app' }));
+      }
+    });
   };
 }

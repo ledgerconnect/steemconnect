@@ -1,20 +1,23 @@
 import * as devTypes from './devActionTypes';
+import { UPDATE_PROFILE } from '../auth/authActionTypes';
 
 export function setPermission(permissionList) {
   return { type: devTypes.UPDATE_PERMISSIONLIST, permissionList };
 }
 
 export function createApplication({
-  appOwnerWif, appName, author, origins, redirect_urls, permissions,
+  name, ownerWif, author, tagline, description, origins, redirect_urls, permissions,
 }) {
   return (dispatch) => {
     fetch('/auth/create', {
       method: 'POST',
       credentials: 'include',
       body: JSON.stringify({
-        appOwnerWif,
-        appName,
+        name,
+        ownerWif,
         author,
+        tagline,
+        description,
         origins,
         redirect_urls,
         permissions,
@@ -25,11 +28,21 @@ export function createApplication({
         'x-csrf-token': document.querySelector('meta[name="_csrf"]').content,
       }),
     }).then(response => response.json())
-      .then((data) => {
-        dispatch({
-          type: devTypes.CREATE_APPLICATION,
-          keys: data,
-        });
+    .then((userData) => {
+      dispatch({
+        type: devTypes.CREATE_APPLICATION,
+        error: false,
       });
+      dispatch({
+        type: UPDATE_PROFILE,
+        user: userData,
+      });
+    }).catch((err) => {
+      const errorMessage = typeof err !== 'string' ? ((err.data && err.data.error) || err.statusText) : err;
+      dispatch({
+        type: devTypes.CREATE_APPLICATION,
+        error: errorMessage || 'Could not create app',
+      });
+    });
   };
 }
