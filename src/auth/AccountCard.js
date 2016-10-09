@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import cookie from '../../lib/cookie';
+import cookie from './../../lib/cookie';
 
 class AccountCard extends Component {
   render() {
