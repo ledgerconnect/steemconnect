@@ -28,6 +28,7 @@ export function createApplication({
       }),
     }).then((response) => {
       if (response.status === 201) {
+        // Todo(nil1511) update current user object
         dispatch({
           type: devTypes.CREATE_APPLICATION,
           error: false,

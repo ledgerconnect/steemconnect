@@ -63,9 +63,7 @@ router.post('/auth/create', verifyAuth, (req, res) => {
 });
 
 router.get('/auth/authorize', verifyAuth, (req, res) => {
-  let { permission = '[]' } = req.query;
   const { appUserName, redirect_url } = req.query;
-  try { permission = JSON.parse(permission); } catch (e) { permission = []; }
   steem.api.getAccounts([appUserName], (err, result) => {
     try {
       if (err) { throw err; }
@@ -76,16 +74,12 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
       if (_.indexOf(app.redirect_urls, redirect_url) === -1) { throw new Error('Redirect uri mismatch'); }
       const token = jwt.sign({
         username: req.username,
-        allowedOrigin: app.origins,
-        permission,
         appUserName,
       }, process.env.JWT_SECRET, { expiresIn: '36h' });
       res.redirect(`${redirect_url}?token=${token}`);
     } catch (e) {
       let message = e.message;
-      if (e.message.search('decrypt') >= 0 || e.message.search('Malformed UTF-8 data') >= 0) {
-        message = 'Invalid clientId';
-      } else if (e.message.search('json_metadata') >= 0) {
+      if (e.message.search('json_metadata') >= 0) {
         message = 'Invalid appName';
       }
       res.status(500).send({ error: message });

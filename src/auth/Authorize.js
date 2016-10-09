@@ -1,13 +1,16 @@
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import _ from 'lodash';
+import { connect } from 'react-redux';
+import React, { PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
 import { getAppDetails } from './authAction';
+import { accountUpdate } from '../actions';
+import PasswordDialog from './../widgets/PasswordDialog';
 
 class Authorize extends React.Component {
   constructor(props) {
     super(props);
     this.permissions = {};
+    this.state = { error: {}, showPasswordDialog: false };
   }
 
   componentWillMount() {
@@ -16,9 +19,32 @@ class Authorize extends React.Component {
     this.props.getAppDetails(appName, redirect_url);
   }
 
+  closePasswordDialog = () => {
+    this.setState({ showPasswordDialog: false, passwordCallback: undefined });
+  };
+
+  savePassword = (passwordOrWif) => {
+    this.state.passwordCallback(passwordOrWif);
+  };
+
   authorizeUser = (redirect_url, appName) => {
-    const permission = _.chain(this.permissions).map((v1, k1) => v1.checked && k1).filter().value();
-    window.location = `/auth/authorize?&redirect_url=${redirect_url}&appUserName=${appName}&permission=${JSON.stringify(permission)}`;
+    const { user = {} } = this.props.auth;
+    this.setState({
+      showPasswordDialog: true,
+      passwordCallback: (passwordOrWif) => {
+        const permissions = _.chain(this.permissions).map((v1, k1) =>
+          v1.checked && k1).filter().value();
+        const jsonMetadata = user.json_metadata || {};
+        jsonMetadata.apps = jsonMetadata.apps || {};
+        jsonMetadata.apps[appName] = Object.assign((jsonMetadata.apps[appName] || {}), {
+          permissions,
+        });
+        this.props.accountUpdate(user.name, passwordOrWif, user.memo_key, jsonMetadata)
+          .then(() => {
+            window.location = `/auth/authorize?&redirect_url=${redirect_url}&appUserName=${appName}`;
+          });
+      },
+    });
   }
 
   render() {
@@ -43,6 +69,12 @@ class Authorize extends React.Component {
             <a onClick={() => this.authorizeUser(redirect_url, appName)} className="btn btn-primary mbm">Continue as @{user.name}</a>
           </div>)
         }
+        {this.state.showPasswordDialog && <PasswordDialog
+          isUpdating={false}
+          error={undefined}
+          onClose={this.closePasswordDialog}
+          onSave={this.savePassword}
+        />}
       </div>
     );
   }
@@ -53,12 +85,14 @@ Authorize.propTypes = {
   location: PropTypes.shape({ query: PropTypes.object.isRequired }),
   auth: PropTypes.shape({ user: PropTypes.object.isRequired, apps: PropTypes.object }),
   getAppDetails: PropTypes.func,
+  accountUpdate: PropTypes.func,
 };
 
 const mapStateToProps = state => ({ auth: state.auth });
 
 const mapDispatchToProps = dispatch => ({
   getAppDetails: bindActionCreators(getAppDetails, dispatch),
+  accountUpdate: bindActionCreators(accountUpdate, dispatch),
 });
 
 module.exports = connect(mapStateToProps, mapDispatchToProps)(Authorize);
