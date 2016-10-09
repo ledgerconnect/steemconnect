@@ -21,7 +21,7 @@ class Developer extends Component {
   validate = (refs) => {
     const value = this.formFields[refs] && this.formFields[refs].value;
     switch (refs) {
-      case 'appName':
+      case 'name':
       case 'author':
         if (validator.trim(value).length === 0) {
           this.state.error[refs] = `${refs} cannot be empty`;
@@ -59,6 +59,7 @@ class Developer extends Component {
 
         break;
       default:
+        this.formData[refs] = value.trim();
         break;
     }
   };
@@ -85,7 +86,7 @@ class Developer extends Component {
         passwordCallback: (passwordOrWif) => {
           const isWif = steemAuth.isWif(passwordOrWif);
           const ownerKey = (isWif) ? passwordOrWif : steemAuth.toWif(this.props.auth.user.name, passwordOrWif, 'owner');
-          this.formData.appOwnerWif = ownerKey;
+          this.formData.ownerWif = ownerKey;
           this.props.createApplication(this.formData);
         },
       });
@@ -100,9 +101,14 @@ class Developer extends Component {
   };
   render() {
     const permissionList = _.map(apiList, (v, k) => ({ ...v, api: k }));
-    const { isUpdatingProfile, isUpdatingProfileError, json_metadata } = this.props.auth.user;
-    const { keys } = this.props.developer;
-    const { name: appName, author, permissions = [] } = json_metadata.app || {};
+    const { json_metadata } = this.props.auth.user;
+    const isUpdating = false;
+    const { name, author, tagline, description, permissions = [] } = json_metadata.app || {};
+    let { origins = '', redirect_urls = '' } = json_metadata.app || {};
+    origins = origins.length ? origins.join('\n') : origins;
+    redirect_urls = redirect_urls.length ? redirect_urls.join('\n') : redirect_urls;
+    const { error: isUpdatingError } = this.props.developer;
+
 
     return (
       <div>
@@ -110,31 +116,31 @@ class Developer extends Component {
         <div className="container">
           <div className="block block-developer mvl">
             <form className="form form-developer pam">
-              {keys && (<div style={{ wordBreak: 'break-all' }}>
-                clientId: {keys.clientId}<br />
-                secret: {keys.clientSecret}
-              </div>)}
               <div className="mbl">
-                <label htmlFor="appName">App Name</label>
-                <FieldSet name={'appName'} defaultValue={appName} error={this.state.error} validate={this.validate} formFields={this.formFields} />
+                <label htmlFor="name">App Name</label>
+                <FieldSet name={'name'} defaultValue={name} error={this.state.error} validate={this.validate} formFields={this.formFields} />
                 <label htmlFor="author">Author</label>
                 <FieldSet name={'author'} defaultValue={author} error={this.state.error} validate={this.validate} formFields={this.formFields} />
+                <label htmlFor="tagline">Tagline</label>
+                <FieldSet name={'tagline'} defaultValue={tagline} error={this.state.error} validate={this.validate} formFields={this.formFields} />
+                <label htmlFor="description">Description</label>
+                <FieldSet name={'description'} defaultValue={description} error={this.state.error} validate={this.validate} formFields={this.formFields} />
                 <fieldset className="form-group">
                   <label htmlFor="origins">Requested permissions</label>
-                  {permissionList.map(({ name, api }) => <div key={api}>
+                  {permissionList.map(({ name: permissionName, api }) => <div key={api}>
                     <input type="checkbox" className="form-check-input mls" ref={c => (this.formFields.permissions[api] = c)} defaultChecked={permissions.indexOf(api) >= 0} value={api} />
-                    {name}
+                    {permissionName}
                   </div>
                   ) }
                 </fieldset>
                 <fieldset className="form-group">
                   <label htmlFor="origins">Allowed Origins</label>
-                  <textarea className="form-control form-control-lg" onBlur={() => this.validate('origins')} placeholder="each origins in new line" rows="3" ref={c => (this.formFields.origins = c)} />
+                  <textarea className="form-control form-control-lg" defaultValue={origins} onBlur={() => this.validate('origins')} placeholder="each origins in new line" rows="3" ref={c => (this.formFields.origins = c)} />
                   <div className="form-control-feedback">{this.state.error.origins}</div>
                 </fieldset>
                 <fieldset className="form-group">
                   <h3>Allowed Redirect Urls</h3>
-                  <textarea className="form-control form-control-lg" onBlur={() => this.validate('redirect_urls')} placeholder="each redirect_urls in new line" rows="3" ref={c => (this.formFields.redirect_urls = c)} />
+                  <textarea className="form-control form-control-lg" defaultValue={redirect_urls} onBlur={() => this.validate('redirect_urls')} placeholder="each redirect_urls in new line" rows="3" ref={c => (this.formFields.redirect_urls = c)} />
                   <div className="form-control-feedback">{this.state.error.redirect_urls}</div>
                 </fieldset>
               </div>
@@ -144,8 +150,8 @@ class Developer extends Component {
               </fieldset>
             </form>
             {this.state.showPasswordDialog && <PasswordDialog
-              isUpdating={isUpdatingProfile}
-              error={isUpdatingProfileError}
+              isUpdating={isUpdating}
+              error={isUpdatingError}
               onClose={this.closePasswordDialog}
               onSave={this.savePassword}
             />}
@@ -161,7 +167,7 @@ Developer.propTypes = {
     user: PropTypes.object.isRequired,
   }),
   developer: PropTypes.shape({
-    keys: PropTypes.object,
+    error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   }),
   createApplication: PropTypes.func,
 };

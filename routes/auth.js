@@ -2,11 +2,9 @@ const express = require('express');
 const _ = require('lodash');
 const steem = require('steem');
 const steemAuth = require('steemauth');
-const createECDH = require('create-ecdh');
 const jwt = require('jsonwebtoken');
 const { verifyAuth } = require('./middleware');
-const { getSecretKeyForClientId, getJSONMetadata, decryptMessage, encryptMessage } = require('../lib/utils');
-const apiList = require('../lib/apiList');
+const { parseJSONMetadata, getJSONMetadata, decryptMessage, encryptMessage } = require('../lib/utils');
 
 const router = new express.Router();
 
@@ -30,31 +28,34 @@ router.post('/auth/login', (req, res) => {
 });
 
 router.post('/auth/create', verifyAuth, (req, res) => {
-  const { appOwnerWif, appName, author, origins, redirect_urls, permissions } = req.body;
+  const { name, ownerWif, author, tagline,
+    description, origins, redirect_urls, permissions } = req.body;
   const appUserName = req.username;
-  const newApp = createECDH(process.env.CRYPTO_MOD);
-  newApp.generateKeys();
-  const clientId = newApp.getPublicKey('hex');
-  const clientSecret = newApp.computeSecret(process.env.PUBLIC_KEY, 'hex', 'hex');
-
+  const isWif = steemAuth.isWif(ownerWif);
+  const ownerKey = (isWif) ? ownerWif : steemAuth.toWif(appUserName, ownerWif, 'owner');
   steem.api.getAccounts([appUserName], (err, result) => {
-    const isWif = steemAuth.isWif(appOwnerWif);
-    const ownerKey = (isWif) ? appOwnerWif : steemAuth.toWif(appUserName, appOwnerWif, 'owner');
     try {
       if (err) {
         throw err;
       }
       const user = result[0];
-      const jsonMetadata = getJSONMetadata(user);
-      const private_metadata = encryptMessage(JSON.stringify({ origins, redirect_urls }),
-        clientSecret);
-      jsonMetadata.app = { name: appName, author, permissions, private_metadata };
+      const jsonMetadata = parseJSONMetadata(user);
+      jsonMetadata.app = {
+        name,
+        author,
+        tagline,
+        description,
+        origins,
+        redirect_urls,
+        permissions,
+      };
       steem.broadcast.accountUpdate(ownerKey, appUserName, undefined, undefined, undefined,
         user.memo_key, jsonMetadata, (accountUpdateErr) => {
           if (accountUpdateErr) {
             throw accountUpdateErr;
           }
-          res.json({ clientId, clientSecret });
+          user.json_metadata = JSON.stringify(jsonMetadata);
+          res.status(201).send(user);
         });
     } catch (e) {
       res.status(500).send({ error: JSON.stringify(e) });
@@ -63,61 +64,27 @@ router.post('/auth/create', verifyAuth, (req, res) => {
 });
 
 router.get('/auth/authorize', verifyAuth, (req, res) => {
-  let { permission = '[]' } = req.query;
-  const { appUserName, clientId, redirect_url } = req.query;
-  try { permission = JSON.parse(permission); } catch (e) { permission = []; }
-  steem.api.getAccounts([appUserName], (err, result) => {
-    try {
-      if (err) { throw err; }
-      const clientSecret = getSecretKeyForClientId(clientId);
-      const jsonMetadata = getJSONMetadata(result[0]);
-      if (typeof jsonMetadata.app !== 'object' || !jsonMetadata.app) { throw new Error('Invalid appName. App not found'); }
+  const { appUserName, redirect_url } = req.query;
+  getJSONMetadata(appUserName)
+    .then(({ app }) => {
+      if (typeof app !== 'object' || !app) { throw new Error('Invalid appName. App not found'); }
+      if (_.indexOf(app.redirect_urls, redirect_url) === -1) { throw new Error('Redirect uri mismatch'); }
 
-      let privateMetadata = decryptMessage(jsonMetadata.app.private_metadata, clientSecret);
-      try { privateMetadata = JSON.parse(privateMetadata); } catch (e) { throw new Error('Invalid clientId'); }
+      const token = jwt.sign({ username: req.username, appUserName },
+        process.env.JWT_SECRET, { expiresIn: '30d' });
 
-      if (_.indexOf(privateMetadata.redirect_urls, redirect_url) === -1) { throw new Error('Redirect uri mismatch'); }
-
-      const token = jwt.sign({
-        username: req.username,
-        allowedOrigin: privateMetadata.origins,
-        permission,
-        clientId,
-        appUserName,
-      }, process.env.JWT_SECRET, { expiresIn: '36h' });
       res.redirect(`${redirect_url}?token=${token}`);
-    } catch (e) {
-      let message = e.message;
-      if (e.message.search('decrypt') >= 0 || e.message.search('Malformed UTF-8 data') >= 0) {
-        message = 'Invalid clientId';
-      } else if (e.message.search('json_metadata') >= 0) {
-        message = 'Invalid appName';
+    }).catch((err) => {
+      if (typeof err === 'string') {
+        res.status(500).send({ error: err });
+      } else {
+        let message = err.message;
+        if (err.message.search('json_metadata') >= 0) {
+          message = 'Invalid appName';
+        }
+        res.status(500).send({ error: message });
       }
-      res.status(500).send({ error: message });
-    }
-  });
-});
-
-router.get('/auth/getAppDetails', verifyAuth, (req, res) => {
-  const { appUserName } = req.query;
-  steem.api.getAccounts([appUserName], (err, result) => {
-    try {
-      if (err) { throw err; }
-      const jsonMetadata = getJSONMetadata(result[0]);
-      if (typeof jsonMetadata.app !== 'object' || !jsonMetadata.app) { throw new Error('Invalid appName. App not found'); }
-
-      delete jsonMetadata.app.private_metadata;
-      jsonMetadata.app.permissions = _.map(jsonMetadata.app.permissions, v =>
-        Object.assign(apiList[v], { api: v }));
-      res.send(jsonMetadata.app);
-    } catch (e) {
-      let message = e.message;
-      if (e.message.search('json_metadata') >= 0) {
-        message = 'Invalid appName';
-      }
-      res.status(500).send({ error: message });
-    }
-  });
+    });
 });
 
 module.exports = router;

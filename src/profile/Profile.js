@@ -36,10 +36,12 @@ class Settings extends Component {
     });
 
     profileData.gender = refs.gender_female.checked ? 'female' : 'male';
+    const json_metadata = user.json_metadata || {};
+    json_metadata.profile = profileData;
     this.setState({
       showPasswordDialog: true,
       passwordCallback: passwordOrWif =>
-        this.props.accountUpdate(user.name, passwordOrWif, user.memo_key, { profile: profileData }),
+        this.props.accountUpdate(user.name, passwordOrWif, user.memo_key, json_metadata),
     });
   }
   validate = (refKeys) => {
@@ -78,10 +80,12 @@ class Settings extends Component {
 
   clearProfile = () => {
     const user = this.props.auth.user;
+    const json_metadata = user.json_metadata || {};
+    json_metadata.profile = {};
     this.setState({
       showPasswordDialog: true,
       passwordCallback: passwordOrWif =>
-        this.props.accountUpdate(user.name, passwordOrWif, user.memo_key, { profile: {} }),
+        this.props.accountUpdate(user.name, passwordOrWif, user.memo_key, json_metadata),
     });
   }
   render() {
@@ -94,7 +98,7 @@ class Settings extends Component {
         error={user.isUpdatingProfileError}
         onClose={this.closePasswordDialog}
         onSave={this.savePassword}
-      />);
+        />);
     }
     return (
       <div>
@@ -118,7 +122,7 @@ class Settings extends Component {
                 </fieldset>
                 <fieldset className={`form-group ${(this.state.error.email ? 'has-danger' : '')}`}>
                   <label htmlFor="email">Email</label>
-                  <input type="email" defaultValue={profile.email} placeholder="Email" className="form-control" ref="email" onBlur={() => this.validate('email')} />
+                  <input type="email" defaultValue={profile.email} placeholder="Email" className="form-control" ref="email" onBlur={() => this.validate('email') } />
                   <div className="form-control-feedback">{this.state.error.email}</div>
                 </fieldset>
                 <fieldset className="form-group man">
@@ -142,7 +146,7 @@ class Settings extends Component {
                 </fieldset>
                 <fieldset className={`form-group ${(this.state.error.website ? 'has-danger' : '')}`}>
                   <label htmlFor="website">Website</label>
-                  <input type="text" defaultValue={profile.website} placeholder="Website" className="form-control" ref="website" onBlur={() => this.validate('website')} />
+                  <input type="text" defaultValue={profile.website} placeholder="Website" className="form-control" ref="website" onBlur={() => this.validate('website') } />
                   <div className="form-control-feedback">{this.state.error.website}</div>
                 </fieldset>
                 <fieldset className={"form-group"}>
