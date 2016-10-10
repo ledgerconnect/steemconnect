@@ -44,3 +44,5 @@ node_modules
 
 #sublime specific
 run.sh
+.tern-port
+.envrc

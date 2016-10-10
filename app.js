@@ -28,7 +28,15 @@ app.set('view engine', 'hbs');
 
 app.use(helmet());
 app.use(cookieParser());
-app.use(logger('dev'));
+
+if (process.env.NODE_ENV !== 'test') {
+  app.use(logger(
+    process.env.NODE_ENV === 'production'
+    ? 'combined'
+    : 'dev'
+  ));
+}
+
 app.use(csurf({ cookie: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -38,16 +46,36 @@ app.use(express.static(path.join(__dirname, 'node_modules')));
 
 app.use(cors({ credentials: true, origin: true }));
 app.use(verifyToken);
+const debug = require('debug')('steemconnect:main');
 
-app.use('/', require('./routes/api'));
-app.use('/', require('./routes/auth'));
-app.use('/', require('./routes/user'));
+app.use((req, res, next) => {
+  debug('Passing through to API');
+  next();
+});
+app.use(require('./routes/api'));
+app.use((req, res, next) => {
+  debug('Passing through to Auth');
+  next();
+});
+app.use(require('./routes/auth'));
+app.use((req, res, next) => {
+  debug('Passing through to User');
+  next();
+});
+app.use(require('./routes/user'));
 
 app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
+
+if (app.get('env') !== 'production') {
+  app.use((err, req, res, next) => {
+    console.log(err.stack);
+    next(err);
+  });
+}
 
 if (app.get('env') === 'development') {
   app.use((err, req, res) => {
