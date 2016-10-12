@@ -6,43 +6,43 @@ class Activity extends Component {
     return (
       <div>
         <Header />
-        <div className="header header-activity mbl">
-          <div className="pam phxl-m phm">
+        <div className="header header-activity" style={{ background: `url(https://img.busy6.com/@${this.props.username}/cover) center/cover` }}>
+          <div className="container pvl">
             <h2>Activity</h2>
             <span>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
               tempor incididunt ut labore et dolore magna aliqua.
             </span>
           </div>
-          <nav className="header-nav">
-            <ul className="header-ul">
-              <li className="header-li">
-                <a className="header-a paxs" href="#">
-                  <i className="icon icon-sm material-icons">event</i>
-                  All Activity
-                </a>
-              </li>
-              <li className="header-li">
-                <a className="header-a paxs" href="#">
-                  <i className="icon icon-sm material-icons">chat_bubble_outline</i>
-                  Blog
-                </a>
-              </li>
-              <li className="header-li">
-                <a className="header-a paxs" href="#">
-                  <i className="icon icon-sm material-icons">compare_arrows</i>
-                  Transfers
-                </a>
-              </li>
-              <li className="header-li">
-                <a className="header-a paxs" href="#">
-                  <i className="pan icon icon-sm material-icons">save</i>
-                  Account Update
-                </a>
-              </li>
-            </ul>
-          </nav>
         </div>
+        <nav className="header-nav mbl">
+          <ul className="header-ul">
+            <li className="header-li">
+              <a className="header-a paxs" href="#">
+                <i className="icon icon-sm material-icons">event</i>
+                All Activity
+              </a>
+            </li>
+            <li className="header-li">
+              <a className="header-a paxs" href="#">
+                <i className="icon icon-sm material-icons">chat_bubble_outline</i>
+                Blog
+              </a>
+            </li>
+            <li className="header-li">
+              <a className="header-a paxs" href="#">
+                <i className="icon icon-sm material-icons">compare_arrows</i>
+                Transfers
+              </a>
+            </li>
+            <li className="header-li">
+              <a className="header-a paxs" href="#">
+                <i className="pan icon icon-sm material-icons">save</i>
+                Account Update
+              </a>
+            </li>
+          </ul>
+        </nav>
         <div className="container">
           <div className="block block-activity">
             <ul className="list list-activity">

@@ -8,36 +8,36 @@ class Apps extends Component {
     return (
       <div>
         <Header />
-        <div className="header header-activity mbl">
-          <div className="pam phxl-m phm">
+        <div className="header header-activity" style={{ background: `url(https://img.busy6.com/@${this.props.username}/cover) center/cover` }}>
+          <div className="container pvl">
             <h2>Apps</h2>
             <fieldset className="form-group man mhs plxs form-apps-searcher">
               <input autoFocus type="text" placeholder="Find a new app" className="paxs" />
             </fieldset>
           </div>
-          <nav className="header-nav">
-            <ul className="header-ul">
-              <li className="header-li">
-                <a className="header-a paxs" href="#">
-                  <i className="icon icon-sm material-icons">star</i>
-                  Featured
-                </a>
-              </li>
-              <li className="header-li">
-                <a className="header-a paxs" href="#">
-                  <i className="icon icon-sm material-icons">search</i>
-                  Browse
-                </a>
-              </li>
-              <li className="header-li">
-                <a className="header-a paxs" href="#">
-                  <i className="icon icon-sm material-icons">check</i>
-                  My Apps
-                </a>
-              </li>
-            </ul>
-          </nav>
         </div>
+        <nav className="header-nav mbl">
+          <ul className="header-ul">
+            <li className="header-li">
+              <a className="header-a paxs" href="#">
+                <i className="icon icon-sm material-icons">star</i>
+                Featured
+              </a>
+            </li>
+            <li className="header-li">
+              <a className="header-a paxs" href="#">
+                <i className="icon icon-sm material-icons">search</i>
+                Browse
+              </a>
+            </li>
+            <li className="header-li">
+              <a className="header-a paxs" href="#">
+                <i className="icon icon-sm material-icons">check</i>
+                My Apps
+              </a>
+            </li>
+          </ul>
+        </nav>
         <div className="container">
           <div className="block block-apps">
             <ul className="list list-apps">
