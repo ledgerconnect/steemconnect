@@ -17,7 +17,7 @@ module.exports = (
     <Route path="/activity" component={Activity} />
     <Route path="/payments" component={Payments} />
     <Route path="/apps" component={Apps} />
-    <Route path="/apps/:appId" component={AppDetails}/>
+    <Route path="/apps/:app" component={AppDetails}/>
     <Route path="/profile" component={Profile} />
     <Route path="/developers" component={Developer} />
     <Route path="/authorize/@:app" component={Authorize} />
