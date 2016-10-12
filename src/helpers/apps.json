@@ -1,12 +1,12 @@
 {
-  "busy": {
+  "busy.app": {
     "name": "Busy",
     "author": "fabien",
     "tagline": "The social network for Steem blockchain",
     "description": "",
-    "origins": ["https://busy.com/login", "https://www.busy.com/login"],
-    "redirect_urls": ["https://busy.com/dashboard", "https://www.busy.com/dashboard"],
-    "permissions": ["vote", "comment", "post", "follow"]
+    "origins": ["https://bus.yt/", "https://dev.bus.yt/"],
+    "redirect_urls": ["https://bus.yt/", "https://dev.bus.yt/"],
+    "permissions": ["vote", "comment", "post", "reblog", "follow"]
   },
   "steemstats": {
     "name": "SteemStats",
