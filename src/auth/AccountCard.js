@@ -3,7 +3,7 @@ import cookie from './../../lib/cookie';
 
 class AccountCard extends Component {
   render() {
-    return (<div className="account-card" style={{ backgroundImage: `url(https://img.busy6.com/@${this.props.username}/cover` }}>
+    return (<div className="account-card" style={{ background: `url(https://img.busy6.com/@${this.props.username}/cover) center/cover` }}>
       <a><img className="profile-image" alt={`@${this.props.username}`} src={`https://img.busy6.com/@${this.props.username}`} /></a>
       <h2 className="mts">
         @{this.props.username} <a
