@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import Header from './../app/header';
-import apps from './../helpers/apps.json';
+import Header from '../app/header';
+import apps from '../helpers/apps.json';
 
 class AppDetails extends Component {
   render() {
