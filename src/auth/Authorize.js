@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { getAppDetails } from './authAction';
-import { accountUpdate } from '../actions';
+import { accountUpdate, clearUpdatingResult } from '../actions';
 import PasswordDialog from './../widgets/PasswordDialog';
 
 class Authorize extends React.Component {
@@ -21,6 +21,7 @@ class Authorize extends React.Component {
 
   closePasswordDialog = () => {
     this.setState({ showPasswordDialog: false, passwordCallback: undefined });
+    this.props.clearUpdatingResult();
   };
 
   savePassword = (passwordOrWif) => {
@@ -86,6 +87,7 @@ Authorize.propTypes = {
   auth: PropTypes.shape({ user: PropTypes.object.isRequired, apps: PropTypes.object }),
   getAppDetails: PropTypes.func,
   accountUpdate: PropTypes.func,
+  clearUpdatingResult: PropTypes.func,
 };
 
 const mapStateToProps = state => ({ auth: state.auth });
@@ -93,6 +95,7 @@ const mapStateToProps = state => ({ auth: state.auth });
 const mapDispatchToProps = dispatch => ({
   getAppDetails: bindActionCreators(getAppDetails, dispatch),
   accountUpdate: bindActionCreators(accountUpdate, dispatch),
+  clearUpdatingResult: bindActionCreators(clearUpdatingResult, dispatch),
 });
 
 module.exports = connect(mapStateToProps, mapDispatchToProps)(Authorize);

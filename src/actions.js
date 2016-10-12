@@ -113,7 +113,7 @@ export function getAccountHistory(username, from, limit) {
   };
 }
 
-export function clearUpdatingProfileResult() {
+export function clearUpdatingResult() {
   return {
     type: authTypes.UPDATE_PROFILE,
     user: { isUpdatingProfile: undefined, isUpdatingProfileError: undefined },

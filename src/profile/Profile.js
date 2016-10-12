@@ -4,7 +4,7 @@ import validator from 'validator';
 import { bindActionCreators } from 'redux';
 import { each } from 'lodash';
 import AvatarUpdate from './AvatarUpdate';
-import { setAvatar, accountUpdate, clearUpdatingProfileResult } from '../actions';
+import { setAvatar, accountUpdate, clearUpdatingResult } from '../actions';
 import PasswordDialog from '../widgets/PasswordDialog';
 import Header from '../app/header';
 
@@ -72,7 +72,7 @@ class Settings extends Component {
 
   closePasswordDialog = () => {
     this.setState({ showPasswordDialog: false, passwordCallback: undefined });
-    this.props.clearUpdatingProfileResult();
+    this.props.clearUpdatingResult();
   }
   savePassword = (passwordOrWif) => {
     this.state.passwordCallback(passwordOrWif);
@@ -98,7 +98,7 @@ class Settings extends Component {
         error={user.isUpdatingProfileError}
         onClose={this.closePasswordDialog}
         onSave={this.savePassword}
-        />);
+      />);
     }
     return (
       <div>
@@ -122,7 +122,7 @@ class Settings extends Component {
                 </fieldset>
                 <fieldset className={`form-group ${(this.state.error.email ? 'has-danger' : '')}`}>
                   <label htmlFor="email">Email</label>
-                  <input type="email" defaultValue={profile.email} placeholder="Email" className="form-control" ref="email" onBlur={() => this.validate('email') } />
+                  <input type="email" defaultValue={profile.email} placeholder="Email" className="form-control" ref="email" onBlur={() => this.validate('email')} />
                   <div className="form-control-feedback">{this.state.error.email}</div>
                 </fieldset>
                 <fieldset className="form-group man">
@@ -146,7 +146,7 @@ class Settings extends Component {
                 </fieldset>
                 <fieldset className={`form-group ${(this.state.error.website ? 'has-danger' : '')}`}>
                   <label htmlFor="website">Website</label>
-                  <input type="text" defaultValue={profile.website} placeholder="Website" className="form-control" ref="website" onBlur={() => this.validate('website') } />
+                  <input type="text" defaultValue={profile.website} placeholder="Website" className="form-control" ref="website" onBlur={() => this.validate('website')} />
                   <div className="form-control-feedback">{this.state.error.website}</div>
                 </fieldset>
                 <fieldset className={"form-group"}>
@@ -166,7 +166,7 @@ class Settings extends Component {
 }
 
 Settings.propTypes = {
-  clearUpdatingProfileResult: PropTypes.func,
+  clearUpdatingResult: PropTypes.func,
   accountUpdate: PropTypes.func,
   setAvatar: PropTypes.func,
   auth: PropTypes.shape({
@@ -179,6 +179,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-  (bindActionCreators({ setAvatar, accountUpdate, clearUpdatingProfileResult }, dispatch));
+  (bindActionCreators({ setAvatar, accountUpdate, clearUpdatingResult }, dispatch));
 
 module.exports = connect(mapStateToProps, mapDispatchToProps)(Settings);

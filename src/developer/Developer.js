@@ -3,10 +3,9 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import validator from 'validator';
-import steemAuth from 'steemauth';
 import Header from './../app/header';
 import FieldSet from './FieldSet';
-import { createApplication } from './devAction';
+import { accountUpdate, clearUpdatingResult } from '../actions';
 import PasswordDialog from './../widgets/PasswordDialog';
 import PermissionList from '../../lib/PermissionList';
 
@@ -84,31 +83,29 @@ class Developer extends Component {
       this.setState({
         showPasswordDialog: true,
         passwordCallback: (passwordOrWif) => {
-          const isWif = steemAuth.isWif(passwordOrWif);
-          const ownerKey = (isWif) ? passwordOrWif : steemAuth.toWif(this.props.auth.user.name, passwordOrWif, 'owner');
-          this.formData.ownerWif = ownerKey;
-          this.props.createApplication(this.formData);
+          const user = this.props.auth.user;
+          const json_metadata = user.json_metadata || {};
+          json_metadata.app = this.formData;
+          this.props.accountUpdate(user.name, passwordOrWif, user.memo_key, json_metadata);
         },
       });
     }
   };
   closePasswordDialog = () => {
     this.setState({ showPasswordDialog: false, passwordCallback: undefined });
-    // this.props.clearUpdatingProfileResult();
+    this.props.clearUpdatingResult();
   };
   savePassword = (passwordOrWif) => {
     this.state.passwordCallback(passwordOrWif);
   };
   render() {
     const permissionList = _.map(PermissionList, (v, k) => ({ ...v, api: k }));
-    const { json_metadata } = this.props.auth.user;
-    const isUpdating = false;
+    const user = this.props.auth.user;
+    const { json_metadata } = user;
     const { name, author, tagline, description, permissions = [] } = json_metadata.app || {};
     let { origins = '', redirect_urls = '' } = json_metadata.app || {};
     origins = origins.length ? origins.join('\n') : origins;
     redirect_urls = redirect_urls.length ? redirect_urls.join('\n') : redirect_urls;
-    const { error: isUpdatingError } = this.props.developer;
-
 
     return (
       <div>
@@ -131,7 +128,7 @@ class Developer extends Component {
                     <input type="checkbox" className="form-check-input mls" ref={c => (this.formFields.permissions[api] = c)} defaultChecked={permissions.indexOf(api) >= 0} value={api} />
                     {permissionName}
                   </div>
-                  ) }
+                  )}
                 </fieldset>
                 <fieldset className="form-group">
                   <label htmlFor="origins">Allowed Origins</label>
@@ -150,8 +147,8 @@ class Developer extends Component {
               </fieldset>
             </form>
             {this.state.showPasswordDialog && <PasswordDialog
-              isUpdating={isUpdating}
-              error={isUpdatingError}
+              isUpdating={user.isUpdatingProfile}
+              error={user.isUpdatingProfileError}
               onClose={this.closePasswordDialog}
               onSave={this.savePassword}
             />}
@@ -166,14 +163,11 @@ Developer.propTypes = {
   auth: PropTypes.shape({
     user: PropTypes.object.isRequired,
   }),
-  developer: PropTypes.shape({
-    error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  }),
-  createApplication: PropTypes.func,
+  accountUpdate: PropTypes.func,
+  clearUpdatingResult: PropTypes.func,
 };
 
 const mapStateToProps = state => ({ auth: state.auth, developer: state.developer });
-const mapDispatchToProps = dispatch => ({
-  createApplication: bindActionCreators(createApplication, dispatch),
-});
+const mapDispatchToProps = dispatch =>
+  (bindActionCreators({ accountUpdate, clearUpdatingResult }, dispatch));
 export default connect(mapStateToProps, mapDispatchToProps)(Developer);
