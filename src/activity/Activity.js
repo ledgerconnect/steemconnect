@@ -6,7 +6,7 @@ class Activity extends Component {
     return (
       <div>
         <Header />
-        <div className="header header-activity" style={{ background: `url(https://img.busy6.com/@${this.props.username}/cover) center/cover` }}>
+        <div className="header header-activity">
           <div className="container pvl">
             <h2>Activity</h2>
             <span>
