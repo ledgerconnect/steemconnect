@@ -1,7 +1,6 @@
 const express = require('express');
 const steem = require('steem');
 const { verifyAuth, checkOrigin, checkPermission } = require('./middleware');
-const apiList = require('../lib/apiList');
 
 const router = new express.Router();
 
@@ -27,14 +26,14 @@ router.get('/api/verify', (req, res) => {
   });
 });
 
-router.get(apiList.vote.path, (req, res) => {
+router.get('/api/vote', (req, res) => {
   const { voter, author, permlink } = req.query;
   const weight = parseInt(req.query.weight, 10);
   steem.broadcast.vote(req.wif, voter, author, permlink, weight,
     (err, result) => sendResponse({ err, result }, res));
 });
 
-router.get(apiList.comment.path, (req, res) => {
+router.get('/api/comment', (req, res) => {
   const { parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata } = req.query;
   steem.broadcast.comment(req.wif, parentAuthor, parentPermlink,
     author, permlink, title, body, jsonMetadata,

@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import steem from 'steem';
 import * as authTypes from './authActionTypes';
-import apiList from '../../lib/apiList';
+import PermissionList from '../../lib/PermissionList';
 
 const steemAuth = require('steemauth');
 const crypto = require('crypto-js');
@@ -105,7 +105,7 @@ export function getAppDetails(appUserName, redirectUrl) {
         const app = json_metadata.app;
 
         if (app) {
-          app.permissions = _.map(app.permissions, v => Object.assign(apiList[v], { api: v }));
+          app.permissions = _.map(app.permissions, v => Object.assign(PermissionList[v], { api: v }));
           app.redirect_urls = app.redirect_urls || [];
 
           // If there is list of redirect_url that developer must specify

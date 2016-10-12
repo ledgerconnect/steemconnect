@@ -8,7 +8,7 @@ import Header from './../app/header';
 import FieldSet from './FieldSet';
 import { createApplication } from './devAction';
 import PasswordDialog from './../widgets/PasswordDialog';
-import apiList from '../../lib/apiList';
+import PermissionList from '../../lib/PermissionList';
 
 class Developer extends Component {
   constructor(props) {
@@ -100,7 +100,7 @@ class Developer extends Component {
     this.state.passwordCallback(passwordOrWif);
   };
   render() {
-    const permissionList = _.map(apiList, (v, k) => ({ ...v, api: k }));
+    const permissionList = _.map(PermissionList, (v, k) => ({ ...v, api: k }));
     const { json_metadata } = this.props.auth.user;
     const isUpdating = false;
     const { name, author, tagline, description, permissions = [] } = json_metadata.app || {};
