@@ -33,12 +33,92 @@ router.get('/api/vote', (req, res) => {
     (err, result) => sendResponse({ err, result }, res));
 });
 
+router.get('/api/upvote', (req, res) => {
+  const { voter, author, permlink } = req.query;
+  const weight = 10000;
+  steem.broadcast.vote(req.wif, voter, author, permlink, weight,
+    (err, result) => sendResponse({ err, result }, res));
+});
+
+router.get('/api/downvote', (req, res) => {
+  const { voter, author, permlink } = req.query;
+  const weight = 0;
+  steem.broadcast.vote(req.wif, voter, author, permlink, weight,
+    (err, result) => sendResponse({ err, result }, res));
+});
+
 router.get('/api/comment', (req, res) => {
   const { parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata } = req.query;
   steem.broadcast.comment(req.wif, parentAuthor, parentPermlink,
     author, permlink, title, body, jsonMetadata,
     (err, result) => sendResponse({ err, result }, res));
 });
+
+router.get('/api/deleteComment', (req, res) => {
+  const { author, permlink } = req.query;
+  steem.broadcast.comment(req.wif, author, permlink,
+    (err, result) => sendResponse({ err, result }, res));
+});
+
+router.get('/api/reblog', (req, res) => {
+  const { permlink, account, author } = req.query;
+  const requiredAuths = [];
+  const requiredPostingAuths = [req.username];
+  const id = 'reblog';
+  const json = JSON.stringify(['reblog', { account, author, permlink }]);
+  steem.broadcast.customJson(req.wif, requiredAuths, requiredPostingAuths, id, json,
+    (err, result) => sendResponse({ err, result }, res));
+});
+
+router.get('/api/follow', (req, res) => {
+  const { follower, following } = req.query;
+  const requiredAuths = [];
+  const requiredPostingAuths = [req.username];
+  const id = 'follow';
+  const json = JSON.stringify(['follow', { follower, following, what: ['blog'] }]);
+  steem.broadcast.customJson(req.wif, requiredAuths, requiredPostingAuths, id, json,
+    (err, result) => sendResponse({ err, result }, res));
+});
+
+router.get('/api/unfollow', (req, res) => {
+  const { follower, following } = req.query;
+  const requiredAuths = [];
+  const requiredPostingAuths = [req.username];
+  const id = 'follow';
+  const json = JSON.stringify(['follow', { follower, following, what: [] }]);
+  steem.broadcast.customJson(req.wif, requiredAuths, requiredPostingAuths, id, json,
+    (err, result) => sendResponse({ err, result }, res));
+});
+
+router.get('/api/ignore', (req, res) => {
+  const { follower, following } = req.query;
+  const requiredAuths = [];
+  const requiredPostingAuths = [req.username];
+  const id = 'follow';
+  const json = JSON.stringify(['follow', { follower, following, what: ['ignore'] }]);
+  steem.broadcast.customJson(req.wif, requiredAuths, requiredPostingAuths, id, json,
+    (err, result) => sendResponse({ err, result }, res));
+});
+
+router.get('/api/escrowTransfer', (req, res) => {
+  const { from, to, amount, memo, escrow_id: escrowId, agent, fee,
+    json_meta: jsonMeta, expiration } = req.query;
+  steem.broadcast.escrowTransfer(req.wif, from, to, amount,
+    memo, escrowId, agent, fee, jsonMeta, expiration,
+    (err, result) => sendResponse({ err, result }, res));
+});
+
+router.get('/api/escrowDispute', (req, res) => {
+  const { from, to, escrow_id: escrowId, who } = req.query;
+  steem.broadcast.escrowDispute(req.wif, from, to, escrowId, who,
+    (err, result) => sendResponse({ err, result }, res));
+});
+router.get('/api/escrowRelease', (req, res) => {
+  const { from, to, escrow_id: escrowId, who, amount } = req.query;
+  steem.broadcast.escrowRelease(req.wif, from, to, escrowId, who, amount,
+    (err, result) => sendResponse({ err, result }, res));
+});
+
 
 router.get('/api/accountCreate', (req, res) => {
   const { fee, creator, newAccountName, owner, active, posting, memoKey, jsonMetadata } = req.query;
@@ -52,7 +132,5 @@ router.get('/api/customJson', (req, res) => {
   steem.broadcast.customJson(req.wif, requiredAuths, requiredPostingAuths, id, json,
     (err, result) => sendResponse({ err, result }, res));
 });
-
-// router.post('/auth/privateMetaData', verifyAuth, );
 
 module.exports = router;
