@@ -66,7 +66,7 @@
     "sass-loader": "^4.0.2",
     "serve-favicon": "^2.3.0",
     "socket.io": "^1.4.5",
-    "steem": "^0.3.23",
+    "steem": "0.3.23",
     "steemauth": "0.0.16",
     "style-loader": "^0.13.1",
     "validator": "^5.6.0",

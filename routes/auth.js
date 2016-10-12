@@ -4,7 +4,7 @@ const steem = require('steem');
 const steemAuth = require('steemauth');
 const jwt = require('jsonwebtoken');
 const { verifyAuth } = require('./middleware');
-const { parseJSONMetadata, getJSONMetadata, decryptMessage, encryptMessage } = require('../lib/utils');
+const { getJSONMetadata, decryptMessage, encryptMessage } = require('../lib/utils');
 
 const router = new express.Router();
 
@@ -23,42 +23,6 @@ router.post('/auth/login', (req, res) => {
       res.send({ userAccount: result[0], auth });
     } else {
       res.status(401).send({ error: 'Incorrect Password' });
-    }
-  });
-});
-
-router.post('/auth/create', verifyAuth, (req, res) => {
-  const { name, ownerWif, author, tagline,
-    description, origins, redirect_urls, permissions } = req.body;
-  const appUserName = req.username;
-  const isWif = steemAuth.isWif(ownerWif);
-  const ownerKey = (isWif) ? ownerWif : steemAuth.toWif(appUserName, ownerWif, 'owner');
-  steem.api.getAccounts([appUserName], (err, result) => {
-    try {
-      if (err) {
-        throw err;
-      }
-      const user = result[0];
-      const jsonMetadata = parseJSONMetadata(user);
-      jsonMetadata.app = {
-        name,
-        author,
-        tagline,
-        description,
-        origins,
-        redirect_urls,
-        permissions,
-      };
-      steem.broadcast.accountUpdate(ownerKey, appUserName, undefined, undefined, undefined,
-        user.memo_key, jsonMetadata, (accountUpdateErr) => {
-          if (accountUpdateErr) {
-            throw accountUpdateErr;
-          }
-          user.json_metadata = JSON.stringify(jsonMetadata);
-          res.status(201).send(user);
-        });
-    } catch (e) {
-      res.status(500).send({ error: JSON.stringify(e) });
     }
   });
 });

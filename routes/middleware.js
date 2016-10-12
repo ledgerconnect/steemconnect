@@ -3,7 +3,7 @@ const _ = require('lodash');
 const url = require('url');
 const { decryptMessage, getJSONMetadata } = require('../lib/utils');
 const jwt = require('jsonwebtoken');
-const apiList = require('../lib/apiList');
+const PermissionList = require('../lib/PermissionList');
 
 function verifyAuth(req, res, next) {
   if (req.cookies.auth && typeof req.headers.authorization === 'undefined') {
@@ -92,8 +92,8 @@ function checkPermission(req, res, next) {
       if (!appDetails) {
         throw new Error('Unauthorized');
       }
-      const permissions = _.map((appDetails.permissions || []), v => apiList[v]);
-      const selectedQuery = _.find(permissions, p => (p.path === requestPath));
+      const permissions = _.map((appDetails.permissions || []), v => PermissionList[v]);
+      const selectedQuery = _.find(permissions, p => (p.paths.indexOf(requestPath) >= 0));
       if (selectedQuery) {
         next();
       } else {
