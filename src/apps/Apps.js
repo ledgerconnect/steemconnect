@@ -46,7 +46,7 @@ class Apps extends Component {
                   <img src={`https://img.busy6.com/@${key}`} alt="asd" className="list-image mrs" />
                   <strong className="list-title">{app.name}</strong>
                   <span className="list-description pls">{app.tagline}</span>
-                  <i className="icon icon-md material-icons pull-right">keyboard_arrow_right</i>
+                  <i className="icon icon-md material-icons pull-right list-icon">keyboard_arrow_right</i>
                 </li>)}
             </ul>
           </div>
