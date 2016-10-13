@@ -11,6 +11,7 @@ const AvatarUpdate = (props) => {
       <div className="container">
         <Dropzone className="dropzone dropzone-profile" onDrop={files => props.onDrop(files, 'profile_image')} accept="image/*">
           <a className="placeholder">
+            <i className="icon icon-md material-icons">file_upload</i>
             <img alt="Profile" className="profile-image" src={`https://img.busy6.com/@${props.username}`} />
           </a>
         </Dropzone>
