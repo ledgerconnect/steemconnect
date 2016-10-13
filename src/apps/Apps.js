@@ -4,11 +4,22 @@ import Header from './../app/header';
 import apps from './../helpers/apps.json';
 
 class Apps extends Component {
+  constructor() {
+    super();
+    this._setFilter = this._setFilter.bind(this);
+    this.state = {
+      appFilterValue: null
+    };
+  }
+
+  _setFilter(e) {
+    this.setState({appFilterValue: e.target.value})
+  }
+
   render() {
     return (
       <div>
         <Header />
-
         <section className="align-center profile-header">
           <div className="container">
             <h1>
@@ -16,7 +27,7 @@ class Apps extends Component {
             </h1>
             <div className="input-group input-group-lg apps-search">
               <span className="input-group-addon"><i className="icon icon-md material-icons">search</i></span>
-              <input autoFocus type="text" placeholder="Find a new app" className="form-control" />
+              <input autoFocus type="text" placeholder="Find a new app" className="form-control" onChange={this._setFilter} />
             </div>
           </div>
         </section>
@@ -44,13 +55,21 @@ class Apps extends Component {
         <div className="container">
           <div className="block block-apps">
             <ul className="list list-apps">
-              {apps && _.map(apps, (app, key) =>
-                <li key={app.name} className="list-element pam">
-                  <img src={`https://img.busy6.com/@${key}`} alt="asd" className="list-image mrs" />
-                  <strong className="list-title">{app.name}</strong>
-                  <span className="list-description pls">{app.tagline}</span>
-                  <i className="icon icon-md material-icons pull-right list-icon">keyboard_arrow_right</i>
-                </li>)}
+              {apps && _.map(apps, (app, key) => {
+                const filterValue = this.state.appFilterValue;
+                
+                // case insentitive filter is more user friendly
+                const showFilteredApp = filterValue && _.includes(`${app.name} ${app.tagline}`.toLowerCase(), filterValue.toLowerCase());
+                if(showFilteredApp || !filterValue) {
+                  return <li key={app.name} className="list-element pam">
+                    <img src={`https://img.busy6.com/@${key}`} alt="asd" className="list-image mrs" />
+                    <strong className="list-title">{app.name}</strong>
+                    <span className="list-description pls">{app.tagline}</span>
+                    <i className="icon icon-md material-icons pull-right list-icon">keyboard_arrow_right</i>
+                  </li>
+                }
+              })
+              }
             </ul>
           </div>
         </div>
