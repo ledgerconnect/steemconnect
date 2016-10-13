@@ -10,6 +10,14 @@ class Wrapper extends Component {
   }
   render() {
     const className = (!this.props.app.sidebarIsVisible) ? 'app-wrapper full-width' : 'app-wrapper';
+    
+    if(this.props.auth.isReadingCookies) {
+      // Show a user the loading indicator until we will fetch
+      // the proper const auth = cookie.get('auth') status
+      // via the login action from the authReducers
+      return <div>Loading ...</div>
+    }
+
     return (
       !this.props.auth.isAuthenticated ? <Login {...this.props} /> : <div className={className}>
         <Sidebar />

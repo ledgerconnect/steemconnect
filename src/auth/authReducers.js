@@ -3,6 +3,7 @@ import * as authTypes from './authActionTypes';
 const initialState = {
   isAuthenticated: false,
   isFetching: false,
+  isReadingCookies: true,
   errorMessage: '',
   user: {
     name: 'fabien',
@@ -17,6 +18,15 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case authTypes.LOGIN_NO_COOKIE:
+      return {
+        ...state,
+        isFetching: false,
+        isAuthenticated: false,
+        isReadingCookies: false,
+        errorMessage: '',
+        user: [],
+      };
     case authTypes.LOGIN_REQUEST:
       return {
         ...state,
@@ -30,6 +40,7 @@ export default (state = initialState, action) => {
         ...state,
         isFetching: false,
         isAuthenticated: true,
+        isReadingCookies: false,
         errorMessage: '',
         user: action.user,
       };
@@ -38,6 +49,7 @@ export default (state = initialState, action) => {
         ...state,
         isFetching: false,
         isAuthenticated: false,
+        isReadingCookies: false,
         errorMessage: action.errorMessage,
       };
     case authTypes.LOGOUT_SUCCESS:

@@ -8,6 +8,7 @@ export function login() {
   return (dispatch) => {
     const auth = cookie.get('auth');
     if (!auth) {
+      dispatch({ type: authTypes.LOGIN_NO_COOKIE });
       return;
     }
     dispatch({ type: authTypes.LOGIN_REQUEST });
