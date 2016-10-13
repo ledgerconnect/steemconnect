@@ -6,43 +6,44 @@ class Activity extends Component {
     return (
       <div>
         <Header />
-        <div className="header header-activity">
-          <div className="container pvl">
-            <h2>Activity</h2>
+
+        <section className="align-center profile-header">
+          <div className="container">
+            <h1>
+              Activity
+            </h1>
             <span>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-              tempor incididunt ut labore et dolore magna aliqua.
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </span>
           </div>
-        </div>
-        <nav className="header-nav mbl">
-          <ul className="header-ul">
-            <li className="header-li">
-              <a className="header-a paxs" href="#">
-                <i className="icon icon-sm material-icons">event</i>
-                All Activity
-              </a>
-            </li>
-            <li className="header-li">
-              <a className="header-a paxs" href="#">
-                <i className="icon icon-sm material-icons">chat_bubble_outline</i>
-                Blog
-              </a>
-            </li>
-            <li className="header-li">
-              <a className="header-a paxs" href="#">
-                <i className="icon icon-sm material-icons">compare_arrows</i>
-                Transfers
-              </a>
-            </li>
-            <li className="header-li">
-              <a className="header-a paxs" href="#">
-                <i className="pan icon icon-sm material-icons">save</i>
-                Account Update
-              </a>
-            </li>
-          </ul>
-        </nav>
+        </section>
+        <ul className="secondary-nav mbl">
+          <li>
+            <a href="#">
+              <i className="icon icon-md material-icons">event</i>
+              <span className="hidden-xs">All Activity</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i className="icon icon-md material-icons">chat_bubble_outline</i>
+              <span className="hidden-xs">Blog</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i className="icon icon-md material-icons">compare_arrows</i>
+              <span className="hidden-xs">Transfers</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i className="icon icon-md material-icons">save</i>
+              <span className="hidden-xs">Account Update</span>
+            </a>
+          </li>
+        </ul>
+
         <div className="container">
           <div className="block block-activity">
             <ul className="list list-activity">

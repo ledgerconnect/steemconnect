@@ -62,26 +62,26 @@ header
   .sidebar-toggle
     display: inline-block !important
 
-.header
+.profile-header
+  min-height: 200px
   .container
     position: relative
-.header-nav
-  background-color: #FFF
+
+.secondary-nav
+  height: 56px
+  position: relative
+  background-color: #fff
+  max-height: 100%
+  text-align: center
   border-bottom: 1px solid #e7e7ec
   border-top: 1px solid #e7e7ec
-.header-ul
-  line-height: 36px
-  text-align: center
-.header-li
-  display: inline-block
-  .header-a
-    display: block
-    color: #014c8c
-    .icon
-      color: #aaa
-      font-size: 28px
-      font-weight: 400
-      -webkit-font-smoothing: antialiased
-      text-rendering: optimizeLegibility
-      -moz-osx-font-smoothing: grayscale
-      font-feature-settings: 'liga'
+  li
+    display: inline-block
+    margin: 0 8px
+    line-height: 53px
+    a
+      display: block;
+      height: 57px;
+      line-height: 54px;
+      &:visited
+        color: #014c8c

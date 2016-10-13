@@ -8,36 +8,39 @@ class Apps extends Component {
     return (
       <div>
         <Header />
-        <div className="header header-activity" style={{ background: `url(https://img.busy6.com/@${this.props.username}/cover) center/cover` }}>
-          <div className="container pvl">
-            <h2>Apps</h2>
-            <fieldset className="form-group man mhs plxs form-apps-searcher">
-              <input autoFocus type="text" placeholder="Find a new app" className="paxs" />
-            </fieldset>
+
+        <section className="align-center profile-header">
+          <div className="container">
+            <h1>
+              Apps
+            </h1>
+            <div className="input-group input-group-lg apps-search">
+              <span className="input-group-addon"><i className="icon icon-md material-icons">search</i></span>
+              <input autoFocus type="text" placeholder="Find a new app" className="form-control" />
+            </div>
           </div>
-        </div>
-        <nav className="header-nav mbl">
-          <ul className="header-ul">
-            <li className="header-li">
-              <a className="header-a paxs" href="#">
-                <i className="icon icon-sm material-icons">star</i>
-                Featured
-              </a>
-            </li>
-            <li className="header-li">
-              <a className="header-a paxs" href="#">
-                <i className="icon icon-sm material-icons">search</i>
-                Browse
-              </a>
-            </li>
-            <li className="header-li">
-              <a className="header-a paxs" href="#">
-                <i className="icon icon-sm material-icons">check</i>
-                My Apps
-              </a>
-            </li>
-          </ul>
-        </nav>
+        </section>
+        <ul className="secondary-nav mbl">
+          <li>
+            <a href="#">
+              <i className="icon icon-md material-icons">star</i>
+              <span className="hidden-xs">Featured</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i className="icon icon-md material-icons">search</i>
+              <span className="hidden-xs">Browse</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i className="icon icon-md material-icons">check</i>
+              <span className="hidden-xs">My Apps</span>
+            </a>
+          </li>
+        </ul>
+
         <div className="container">
           <div className="block block-apps">
             <ul className="list list-apps">
