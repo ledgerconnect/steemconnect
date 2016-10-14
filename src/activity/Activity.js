@@ -21,25 +21,25 @@ class Activity extends Component {
           <li>
             <a href="#">
               <i className="icon icon-md material-icons">event</i>
-              <span className="hidden-xs">All Activity</span>
+              <span className="hidden-xs"> All Activity</span>
             </a>
           </li>
           <li>
             <a href="#">
               <i className="icon icon-md material-icons">chat_bubble_outline</i>
-              <span className="hidden-xs">Blog</span>
+              <span className="hidden-xs"> Blog</span>
             </a>
           </li>
           <li>
             <a href="#">
               <i className="icon icon-md material-icons">compare_arrows</i>
-              <span className="hidden-xs">Transfers</span>
+              <span className="hidden-xs"> Transfers</span>
             </a>
           </li>
           <li>
             <a href="#">
               <i className="icon icon-md material-icons">save</i>
-              <span className="hidden-xs">Account Update</span>
+              <span className="hidden-xs"> Account Update</span>
             </a>
           </li>
         </ul>

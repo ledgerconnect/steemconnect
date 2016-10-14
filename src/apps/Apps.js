@@ -35,19 +35,19 @@ class Apps extends Component {
           <li>
             <a href="#">
               <i className="icon icon-md material-icons">star</i>
-              <span className="hidden-xs">Featured</span>
+              <span className="hidden-xs"> Featured</span>
             </a>
           </li>
           <li>
             <a href="#">
               <i className="icon icon-md material-icons">search</i>
-              <span className="hidden-xs">Browse</span>
+              <span className="hidden-xs"> Browse</span>
             </a>
           </li>
           <li>
             <a href="#">
               <i className="icon icon-md material-icons">check</i>
-              <span className="hidden-xs">My Apps</span>
+              <span className="hidden-xs"> My Apps</span>
             </a>
           </li>
         </ul>
