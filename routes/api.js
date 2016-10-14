@@ -86,11 +86,11 @@ router.get('/api/follow', (req, res) => {
 });
 
 router.get('/api/unfollow', (req, res) => {
-  const { follower, following } = req.query;
+  const { unfollower, unfollowing } = req.query;
   const requiredAuths = [];
   const requiredPostingAuths = [req.username];
-  const id = 'follow';
-  const json = JSON.stringify(['follow', { follower, following, what: [] }]);
+  const id = 'unfollow';
+  const json = JSON.stringify(['unfollow', { unfollower, unfollowing, what: ['blog'] }]);
   steem.broadcast.customJson(req.wif, requiredAuths, requiredPostingAuths, id, json,
     (err, result) => sendResponse({ err, result }, res));
 });
