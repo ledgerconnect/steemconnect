@@ -1,5 +1,6 @@
 const express = require('express');
 const steem = require('steem');
+const querystring = require('querystring');
 const { verifyAuth, checkOrigin, checkPermission } = require('./middleware');
 
 const router = new express.Router();
@@ -10,6 +11,10 @@ function sendResponse({ err: error, result }, res) {
   }
   return res.json({ result });
 }
+
+router.get('/api/authorize', (req, res, next) => {
+  res.redirect(302, '/authorize?' + querystring.stringify(req.query));
+});
 
 router.use('/api', verifyAuth, checkOrigin, checkPermission);
 
