@@ -15,7 +15,7 @@ const app = require('../app');
 
 Promise.promisifyAll(supertest.Test.prototype);
 
-describe('/api/customJson', function () {
+describe.skip('/api/customJson', function () {
   before(function () {
     this.api = supertest(app);
   });
