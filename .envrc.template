@@ -1,0 +1,8 @@
+# For use with `direnv`
+# https://direnv.net/
+
+# export PORT=4444
+export DEBUG="steemconnect:*"
+# export JWT_SECRET="super-secret"
+# export TEST_USERNAME="yourusernamefortests"
+# export TEST_WIF="yourwiffortests"
