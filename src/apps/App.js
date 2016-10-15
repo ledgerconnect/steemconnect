@@ -8,9 +8,24 @@ class AppDetails extends Component {
     return (
       <div>
         <Header />
-        <div className="header header-activity mbl">
-          <div className="pam phxl-m phm">
-            <h2>App Information Placeholder</h2>
+        <div className="container">
+          <div className="apps apps-details ptl">
+            <div className="apps-photo">
+              <img src="#" height="175px" width="100%" className="mbm" />
+              <button className="btn btn-lg btn-success">
+                Connect
+              </button>
+            </div>
+            <div className="apps-description pls">
+              <h3>SteemStats</h3>
+              <span>Steem Account Statistics + Monitoring</span>
+              <p className="mts">
+                SteemStats is an application created to help you monitor your account activity on steemit.com, a social media platform based on steem blockchain
+              </p>
+              <strong className="author">Author:
+                <a href="#" alt="Author"> @jesta</a>
+              </strong>
+            </div>
           </div>
         </div>
       </div>
