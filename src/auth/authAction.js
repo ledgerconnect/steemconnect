@@ -24,25 +24,6 @@ export function ShowLastUserList() {
   return { type: authTypes.UPDATE_LAST_USER_LIST, lastUserList: { show: true } };
 }
 
-export function logout() {
-  return (dispatch, getState) => {
-    const state = getState();
-    const user = state.auth.user;
-    let lastUser = cookie.get('last_users');
-    if (!_.isArray(lastUser)) {
-      lastUser = [];
-    }
-    if (user.name) {
-      lastUser = [user.name].concat(lastUser);
-      lastUser = _.uniq(lastUser);
-    }
-    cookie.clear();
-    cookie.save(lastUser, 'last_users');
-    dispatch({ type: authTypes.LOGOUT_SUCCESS });
-  };
-}
-
-
 export function login(username, passwordOrWif) {
   return (dispatch) => {
     const isWif = steemAuth.isWif(passwordOrWif);

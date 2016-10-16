@@ -21,8 +21,6 @@ if (process.env.NODE_ENV !== 'production') {
   require('./webpack')(app); // eslint-disable-line
 }
 
-// view engine setup
-hbs.registerPartials(path.join(__dirname, 'views/partials'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
@@ -62,7 +60,7 @@ app.use((req, res, next) => {
   debug('Passing through to User');
   next();
 });
-app.use(require('./routes/user'));
+app.use(require('./routes/index'));
 
 app.use((req, res, next) => {
   const err = new Error('Not Found');

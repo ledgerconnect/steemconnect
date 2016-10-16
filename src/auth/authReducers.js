@@ -52,12 +52,6 @@ export default (state = initialState, action) => {
         isReadingCookies: false,
         errorMessage: action.errorMessage,
       };
-    case authTypes.LOGOUT_SUCCESS:
-      return {
-        ...state,
-        isFetching: false,
-        isAuthenticated: false,
-      };
     case authTypes.UPDATE_PROFILE:
       return {
         ...state,
