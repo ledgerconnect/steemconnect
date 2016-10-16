@@ -37,8 +37,8 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
   const { appUserName, redirect_url } = req.query;
   getJSONMetadata(appUserName)
     .then(({ app }) => {
-      if (typeof app !== 'object' || !app) { throw new Error('Invalid appName. App not found'); }
-      if (_.indexOf(app.redirect_urls, redirect_url) === -1) { throw new Error('Redirect uri mismatch'); }
+      if (typeof app !== 'object' || !app) { throw new Error('App not found'); }
+      if (_.indexOf(app.redirect_urls, redirect_url) === -1) { throw new Error('Redirect URL is missing'); }
 
       const token = jwt.sign({ username: req.username, appUserName },
         process.env.JWT_SECRET, { expiresIn: '30d' });
@@ -50,7 +50,7 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
       } else {
         let message = err.message;
         if (err.message.search('json_metadata') >= 0) {
-          message = 'Invalid appName';
+          message = 'App not found';
         }
         res.status(500).send({ error: message });
       }
