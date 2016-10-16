@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import Header from './../app/header';
 import apps from './../helpers/apps.json';
+import { Link } from 'react-router';
 
 class Apps extends Component {
   constructor() {
@@ -51,22 +52,20 @@ class Apps extends Component {
             </a>
           </li>
         </ul>
-
         <div className="container">
           <div className="block block-apps">
             <ul className="list list-apps">
               {apps && _.map(apps, (app, key) => {
                 const filterValue = this.state.appFilterValue;
-                
                 // case insentitive filter is more user friendly
                 const showFilteredApp = filterValue && _.includes(`${app.name} ${app.tagline}`.toLowerCase(), filterValue.toLowerCase());
-                if(showFilteredApp || !filterValue) {
-                  return <li key={app.name} className="list-element pam">
-                    <img src={`https://img.busy6.com/@${key}`} alt="asd" className="list-image mrs" />
-                    <strong className="list-title">{app.name}</strong>
+                if (showFilteredApp || !filterValue) {
+                  return (<li key={app.name} className="list-element pam">
+                    <img src={`https://img.busy6.com/@${key}`} className="list-image mrs" />
+                    <b className="list-title">{app.name}</b>
                     <span className="list-description pls">{app.tagline}</span>
-                    <i className="icon icon-md material-icons pull-right list-icon">keyboard_arrow_right</i>
-                  </li>
+                    <Link to={`/apps/@${key}`}><i className="icon icon-md material-icons list-icon">keyboard_arrow_right</i></Link>
+                  </li>);
                 }
               })
               }
