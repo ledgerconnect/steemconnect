@@ -153,6 +153,7 @@ class Developer extends Component {
               onSave={this.savePassword}
             />}
           </div>
+          <p className="pas"><a href="#" onClick={this.clearProfile}>Delete App</a></p>
         </div>
       </div>
     );

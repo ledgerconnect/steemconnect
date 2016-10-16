@@ -157,7 +157,7 @@ class Settings extends Component {
               <fieldset className="form-group"><button className="btn btn-primary" onClick={this.save}>Save</button></fieldset>
             </form>
           </div>
-          <p className="pas"><a href="#" className="errorMessages" onClick={this.clearProfile}>Clear profile</a></p>
+          <p className="pas"><a href="#" onClick={this.clearProfile}>Clear Profile</a></p>
           {passwordDialog}
         </div>
       </div>
