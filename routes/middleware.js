@@ -3,7 +3,7 @@ const _ = require('lodash');
 const url = require('url');
 const { decryptMessage, getJSONMetadata } = require('../lib/utils');
 const jwt = require('jsonwebtoken');
-const PermissionList = require('../lib/PermissionList');
+const PermissionList = require('../lib/permissions');
 
 function verifyAuth(req, res, next) {
   if (req.cookies.auth && typeof req.headers.authorization === 'undefined') {

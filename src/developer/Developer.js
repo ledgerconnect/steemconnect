@@ -7,7 +7,7 @@ import Header from './../app/header';
 import FieldSet from './FieldSet';
 import { accountUpdate, clearUpdatingResult } from '../actions';
 import PasswordDialog from './../widgets/PasswordDialog';
-import PermissionList from '../../lib/PermissionList';
+import PermissionList from '../../lib/permissions';
 
 class Developer extends Component {
   constructor(props) {

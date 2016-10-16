@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import steem from 'steem';
 import * as authTypes from './authActionTypes';
-import PermissionList from '../../lib/PermissionList';
+import PermissionList from '../../lib/permissions';
 
 const steemAuth = require('steemauth');
 const crypto = require('crypto-js');

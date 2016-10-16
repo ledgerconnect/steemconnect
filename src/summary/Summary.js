@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import Header from './../app/header';
-import Activity from './Activity';
+import Activity from '../activity/ActivityList';
 import { getAccountHistory } from './../actions';
 
 

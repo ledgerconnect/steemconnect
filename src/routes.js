@@ -4,7 +4,7 @@ import Wrapper from './wrapper';
 import Profile from './profile/Profile';
 import Authorize from './auth/Authorize';
 import Developer from './developer/Developer';
-import Dashboard from './dashboard/Dashboard';
+import Summary from './summary/Summary';
 import Apps from './apps/Apps';
 import App from './apps/App';
 import Payments from './payments/Payments';
@@ -12,7 +12,7 @@ import Activity from './activity/Activity';
 
 module.exports = (
   <Route path="/" component={Wrapper}>
-    <IndexRoute component={Dashboard} />
+    <IndexRoute component={Summary} />
     <Route path="/activity" component={Activity} />
     <Route path="/payments" component={Payments} />
     <Route path="/apps" component={Apps} />

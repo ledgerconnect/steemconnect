@@ -19,7 +19,7 @@ class Sidebar extends Component {
               <i className="icon icon-md icon-menu material-icons">arrow_back</i>
             </a>}
           <div className="me">
-            <Link to={`/@${user.name}`}>
+            <Link to="profile">
               <span className="avatar avatar-sm">
                 <span className="reputation">{formatter.reputation(user.reputation) }</span>
                 <img alt={user.name} src={`https://img.busy6.com/@${user.name}`} />
@@ -32,7 +32,7 @@ class Sidebar extends Component {
           {this.state.menu === 'default' &&
             <ul>
               <li className="title">
-                <Link to="/"><i className="icon icon-md material-icons">show_chart</i> Dashboard</Link>
+                <Link to="/"><i className="icon icon-md material-icons">show_chart</i> Summary</Link>
               </li>
               <li className="title">
                 <Link to="/activity"><i className="icon icon-md material-icons">track_changes</i> Activity</Link>
