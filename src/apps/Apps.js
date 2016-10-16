@@ -1,20 +1,18 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import _ from 'lodash';
 import Header from './../app/header';
 import apps from './../helpers/apps.json';
-import { Link } from 'react-router';
 
 class Apps extends Component {
   constructor() {
     super();
-    this._setFilter = this._setFilter.bind(this);
-    this.state = {
-      appFilterValue: null
-    };
+    this.setFilter = this.setFilter.bind(this);
+    this.state = { appFilterValue: null };
   }
 
-  _setFilter(e) {
-    this.setState({appFilterValue: e.target.value})
+  setFilter(e) {
+    this.setState({ appFilterValue: e.target.value});
   }
 
   render() {
@@ -26,9 +24,9 @@ class Apps extends Component {
             <h1>
               Apps
             </h1>
-            <div className="input-group input-group-lg apps-search">
+            <div className="input-group input-group-lg">
               <span className="input-group-addon"><i className="icon icon-md material-icons">search</i></span>
-              <input autoFocus type="text" placeholder="Find a new app" className="form-control" onChange={this._setFilter} />
+              <input autoFocus type="text" placeholder="Find a new app" className="form-control" onChange={this.setFilter} />
             </div>
           </div>
         </section>
