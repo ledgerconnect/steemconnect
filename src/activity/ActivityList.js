@@ -8,7 +8,7 @@ const Activity = ({ id, transaction }) => {
   const label = name.replace('account_update', 'Account Update').replace('vote', 'Vote');
   if (name === 'vote') {
     return (
-        <li className="list-element pas" key={id}>
+        <li className="list-element pam" key={id}>
           <div className="list-container">
             <h3 className="list-title man">{label}</h3>
             <span className="list-description">
@@ -22,7 +22,7 @@ const Activity = ({ id, transaction }) => {
       );
   } else if (_.includes(['account_update', 'vote'], name)) {
     return (
-      <li className="list-element pas" key={id}>
+      <li className="list-element pam" key={id}>
         <div className="list-container">
           <h3 className="list-title man">{label}</h3>
           <span className="list-description">
@@ -35,7 +35,7 @@ const Activity = ({ id, transaction }) => {
     );
   }
   return (
-    <li className="list-element pas" key={id}>
+    <li className="list-element pam" key={id}>
       <div className="list-container">
         <h3 className="list-title man">{label}</h3>
         <span className="list-description">

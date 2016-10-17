@@ -47,35 +47,35 @@ class Activity extends Component {
         <div className="container">
           <div className="block block-activity">
             <ul className="list list-activity">
-              <li className="list-element pas">
+              <li className="list-element pam">
                 <div className="list-container">
                   <h3 className="list-title man">Upvote</h3>
                   <span className="list-description">For "New Advanced Formatting Features" by @dan</span>
                 </div>
                 <span className="list-date">28 September</span>
               </li>
-              <li className="list-element pas">
+              <li className="list-element pam">
                 <div className="list-container">
                   <h3 className="list-title man">Post</h3>
                   <span className="list-description">Oslo Steemit hackaton with Ned Scott</span>
                 </div>
                 <span className="list-date">today</span>
               </li>
-              <li className="list-element pas">
+              <li className="list-element pam">
                 <div className="list-container">
                   <h3 className="list-title man">Transfer of 120.000 STEEM</h3>
                   <span className="list-description">To @dan</span>
                 </div>
                 <span className="list-date">today</span>
               </li>
-              <li className="list-element pas">
+              <li className="list-element pam">
                 <div className="list-container">
                   <h3 className="list-title man">Upvote</h3>
                   <span className="list-description">For "It's time for a Steem Bounty System!" by @ned</span>
                 </div>
                 <span className="list-date">today</span>
               </li>
-              <li className="list-element pas">
+              <li className="list-element pam">
                 <div className="list-container">
                   <h3 className="list-title man">Transfer of 56.00 SBD</h3>
                   <span className="list-description">To @jesf</span>
