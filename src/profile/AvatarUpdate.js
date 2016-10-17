@@ -4,9 +4,10 @@ import Dropzone from 'react-dropzone';
 
 const AvatarUpdate = (props) => {
   var userBackground = {
-    backgroundImage: `url(https://img.busy6.com/@${props.username}/cover)`,
-    backgroundImage: `url(http://placehold.it/350x150)`,
-  };
+      background: `radial-gradient(circle at 50% 0%, rgba(0, 0, 0, 0.0980392), rgba(0, 0, 0, 0.6)), url("https://img.busy6.com/@${props.username}/cover")`,
+      backgroundSize: `cover`,
+      backgroundPosition: `center`,
+    };
   return (
     <section className="align-center profile-header" onClick={props.onClick} style={userBackground}>
       <div className="container">
