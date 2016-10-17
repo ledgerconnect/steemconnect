@@ -62,7 +62,7 @@ class Apps extends Component {
                     <img src={`https://img.busy6.com/@${key}`} className="list-image mrs" />
                     <b className="list-title">{app.name}</b>
                     <span className="list-description pls">{app.tagline}</span>
-                    <Link to={`/apps/@${key}`}><i className="icon icon-md material-icons list-icon">keyboard_arrow_right</i></Link>
+                    <Link to={`/apps/@${key}`} className="list-link"><i className="icon icon-md material-icons list-icon">keyboard_arrow_right</i></Link>
                   </li>);
                 }
               })
