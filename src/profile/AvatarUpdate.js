@@ -5,6 +5,7 @@ import Dropzone from 'react-dropzone';
 const AvatarUpdate = (props) => {
   var userBackground = {
     backgroundImage: `url(https://img.busy6.com/@${props.username}/cover)`,
+    backgroundImage: `url(http://placehold.it/350x150)`,
   };
   return (
     <section className="align-center profile-header" onClick={props.onClick} style={userBackground}>
