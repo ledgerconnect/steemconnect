@@ -18,7 +18,7 @@ const AvatarUpdate = (props) => {
           </a>
         </Dropzone>
         <Dropzone className="dropzone dropzone-background" onDrop={files => props.onDrop(files, 'cover_image')} accept="image/*">
-          <a className="btn btn-md btn-secondary placeholder">
+          <a className="placeholder">
             <i className="icon icon-md material-icons">file_upload</i>Edit Cover
           </a>
         </Dropzone>
