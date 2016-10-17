@@ -106,8 +106,8 @@ class Settings extends Component {
         <AvatarUpdate username={user.name} onDrop={this.onDrop} />
         <div className="container">
           <div className="block block-profile mtl mbs">
-            <form className="form form-profile pam">
-              <div className="mbl">
+            <form className="form form-profile">
+              <div className="pam">
                 <fieldset className={"form-group"}>
                   <label htmlFor="name">Name</label>
                   <input autoFocus type="text" defaultValue={profile.name} placeholder="Name" className="form-control" ref="name" />
@@ -154,7 +154,7 @@ class Settings extends Component {
                   <input type="text" placeholder="Location" defaultValue={profile.location} className="form-control" ref="location" />
                 </fieldset>
               </div>
-              <fieldset className="form-group"><button className="btn btn-primary" onClick={this.save}>Save</button></fieldset>
+              <fieldset className="form-group man"><button className="btn btn-primary form-submit" onClick={this.save}>Save</button></fieldset>
             </form>
           </div>
           <p className="pas"><a href="#" onClick={this.clearProfile}>Clear Profile</a></p>

@@ -112,8 +112,8 @@ class Developer extends Component {
         <Header />
         <div className="container">
           <div className="block block-developer mvl">
-            <form className="form form-developer pam">
-              <div className="mbl">
+            <form className="form form-developer">
+              <div className="pam">
                 <label htmlFor="name">App Name</label>
                 <FieldSet name={'name'} defaultValue={name} error={this.state.error} validate={this.validate} formFields={this.formFields} />
                 <label htmlFor="author">Author</label>
@@ -141,9 +141,9 @@ class Developer extends Component {
                   <div className="form-control-feedback">{this.state.error.redirect_urls}</div>
                 </fieldset>
               </div>
-              <fieldset className="form-group">
-                <button className="btn btn-primary" onClick={this.save}>Save</button>
-                <div className="form-control-feedback">{this.state.error.save}</div>
+              <fieldset className="form-group man">
+              <div className="form-control-feedback man phm">{this.state.error.save}</div>
+                <button className="btn btn-primary form-submit" onClick={this.save}>Save</button>
               </fieldset>
             </form>
             {this.state.showPasswordDialog && <PasswordDialog
