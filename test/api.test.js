@@ -7,15 +7,20 @@
  */
 const Promise = require('bluebird');
 const assert = require('assert');
+const url = require('url');
 const crypto = require('crypto-js');
 const steemauth = require('steemauth');
+const steem = require('steem');
 const supertest = require('supertest');
 
 const app = require('../app');
 
 Promise.promisifyAll(supertest.Test.prototype);
+const permissions = ['vote'];
+const origins = ['http://test.url'];
+const redirect_urls = ['http://test.url/cb'];
 
-describe.skip('/api/customJson', function () {
+describe('/api', function () {
   before(function () {
     this.api = supertest(app);
   });
@@ -27,10 +32,10 @@ describe.skip('/api/customJson', function () {
       .endAsync();
   });
 
-  describe('GET /api/customJson', function () {
+  describe('GET /api/upvote', function () {
     it('requires authentication', function () {
       return this.api
-        .get('/api/customJson')
+        .get('/api/upvote')
         .expect(401)
         .endAsync();
     });
@@ -41,8 +46,11 @@ describe.skip('/api/customJson', function () {
         resP.then(
           (res) => {
             const setCookie = res.headers['set-cookie'];
-            this.csrfToken = setCookie[0].split(';')[0].split('=')[1];
+            this.csrfCookie = setCookie[0].split(';')[0].split('=')[1];
+            this.csrfToken = res.text.match(/<meta name="_csrf" content="(.+)">/)[1];
+
             assert(this.csrfToken);
+            assert(this.csrfCookie);
             done();
           },
           done
@@ -50,52 +58,97 @@ describe.skip('/api/customJson', function () {
       });
 
       it('authenticates with a cookie header', function () {
+        const encryptData = crypto.AES.encrypt(crypto.enc.Utf8.parse(JSON.stringify({
+          username: process.env.TEST_USERNAME,
+          wif: steemauth.toWif(process.env.TEST_USERNAME, process.env.TEST_WIF, 'posting'),
+        })), this.csrfCookie).toString();
+
         this.agent = supertest.agent(app);
-        return this.agent.get('/auth/login')
-          .query({
-            encryptedData: crypto.AES.encrypt(crypto.enc.Utf8.parse(JSON.stringify({
-              username: process.env.TEST_USERNAME,
-              wif: steemauth.toWif(process.env.TEST_USERNAME, process.env.TEST_WIF, 'owner'),
-            })), this.csrfToken).toString(),
-          })
-          .set('cookie', '_csrf=' + this.csrfToken + ';')
+        return this.agent.post('/auth/login')
+          .send({ encryptedData: encryptData })
+          .set('x-csrf-token', this.csrfToken)
+          .set('cookie', `_csrf=${this.csrfCookie};`)
           .expect(200)
           .endAsync()
           .then((res) => {
-            // console.log(res.headers);
-            // console.log(res.body);
-            this.jwt = res.body.auth;
+            const setCookie = res.headers['set-cookie'];
+            this.authCookie = setCookie[0].split(';')[0].split('=')[1];
+            this.user = res.body.userAccount;
+            assert(res.body.userAccount.name === process.env.TEST_USERNAME);
+            assert(this.authCookie);
           });
       });
 
-      it.skip('lets us authorize this action', function () {
-        return this.agent.get('/auth/authorize')
-          .query({
-            encryptedData: crypto.AES.encrypt(crypto.enc.Utf8.parse(JSON.stringify({
-              username: process.env.TEST_USERNAME,
-              wif: steemauth.toWif(process.env.TEST_USERNAME, process.env.TEST_WIF, 'owner'),
-            })), this.csrfToken).toString(),
-          })
-          .set('cookie', '_csrf=' + this.csrfToken + ';')
-          .expect(200)
-          .endAsync()
-          .then((res) => {
-            // console.log(res.headers);
-            // console.log(res.body);
-            assert(res.body.auth);
-            this.jwt = res.body.auth;
-          });
+      it('should create test app', function () {
+        this.timeout(15000);
+        let jsonMetadata = this.user.json_metadata;
+        try { jsonMetadata = typeof jsonMetadata === 'object' ? jsonMetadata : JSON.parse(jsonMetadata); } catch (e) { jsonMetadata = {}; }
+        jsonMetadata.app = {
+          name: 'TestApp',
+          author: 'John',
+          permissions,
+          origins,
+          redirect_urls,
+        };
+        this.user.json_metadata = jsonMetadata;
+        return new Promise((resolve, reject) => {
+          steem.broadcast.accountUpdate(steemauth.toWif(process.env.TEST_USERNAME, process.env.TEST_WIF, 'owner'),
+            process.env.TEST_USERNAME, undefined, undefined, undefined,
+            this.user.memo_key, jsonMetadata, (err) => {
+              if (err) {
+                reject(err);
+              }
+              resolve();
+            });
+        });
       });
 
-      it.skip('responds successfully', function () {
+      it('lets us authorize this action', function () {
+        this.timeout(15000);
+        const appName = process.env.TEST_USERNAME;
+        let jsonMetadata = this.user.json_metadata;
+        try { jsonMetadata = typeof jsonMetadata === 'object' ? jsonMetadata : JSON.parse(jsonMetadata); } catch (e) { jsonMetadata = {}; }
+        jsonMetadata.apps = jsonMetadata.apps || {};
+        jsonMetadata.apps[appName] = { permissions };
+        return new Promise((resolve, reject) => {
+          steem.broadcast.accountUpdate(steemauth.toWif(process.env.TEST_USERNAME, process.env.TEST_WIF, 'owner'),
+            process.env.TEST_USERNAME, undefined, undefined, undefined,
+            this.user.memo_key, jsonMetadata, (err) => {
+              if (err) {
+                reject(err);
+              }
+              resolve();
+            });
+        }).then(() => {
+          const redirect_url = redirect_urls[0];
+          return this.agent.get('/auth/authorize')
+            .query({ redirect_url, appUserName: appName })
+            .set('cookie', `_csrf=${this.csrfCookie};auth=${this.authCookie};`)
+            .expect(302)
+            .endAsync()
+            .then((res) => {
+              const location = url.parse(res.headers.location, true);
+              this.jwtToken = location.query.token;
+              assert(this.jwtToken);
+            });
+        });
+      });
+
+      it('responds successfully', function () {
+        const voter = process.env.TEST_USERNAME;
+        const author = 'fabien';
+        const permlink = 'steem-script-an-open-json-standard-for-trusted-workflows-proposal';
+        this.agent = supertest.agent(app);
         return this.agent
-          .get('/api/customJson')
-          .set('Authorization', 'Bearer ' + this.jwt)
+          .get('/api/upvote')
+          .query({ voter, author, permlink })
+          .set('cookie', `_csrf=${this.csrfCookie};auth=${this.authCookie};`)
+          .set('x-steemconnect-token', this.jwtToken)
+          .set('origin', origins[0])
           .expect(200)
           .endAsync()
-          .then((/* res */) => {
-            // console.log(res.text);
-            // console.log(res.body);
+          .then((res) => {
+            assert(res.body.result === null);
           });
       });
     });
