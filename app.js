@@ -30,8 +30,8 @@ app.use(cookieParser());
 if (process.env.NODE_ENV !== 'test') {
   app.use(logger(
     process.env.NODE_ENV === 'production'
-    ? 'combined'
-    : 'dev'
+      ? 'combined'
+      : 'dev'
   ));
 }
 

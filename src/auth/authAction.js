@@ -41,10 +41,10 @@ export function login(username, passwordOrWif) {
       }),
     }).then(response => response.json())
       .then((data) => {
-        const { error, userAccount, auth } = data;
+        const { error, userAccount } = data;
         if (error) {
           throw error;
-        } else if (userAccount && auth.length) {
+        } else if (userAccount) {
           const { memo_key, reputation, balance } = userAccount;
           let { json_metadata } = userAccount;
           json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
@@ -52,7 +52,6 @@ export function login(username, passwordOrWif) {
             type: authTypes.LOGIN_SUCCESS,
             user: { name: username, json_metadata, memo_key, reputation, balance },
           });
-          cookie.save(auth, 'auth');
         } else {
           throw new Error('Malformed request');
         }
@@ -86,7 +85,8 @@ export function getAppDetails(appUserName, redirectUrl) {
         const app = json_metadata.app;
 
         if (app) {
-          app.permissions = _.map(app.permissions, v => Object.assign(PermissionList[v], { api: v }));
+          app.permissions = _.map(app.permissions,
+            v => Object.assign(PermissionList[v], { api: v }));
           app.redirect_urls = app.redirect_urls || [];
 
           // If there is list of redirect_url that developer must specify
