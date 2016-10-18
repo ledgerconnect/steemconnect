@@ -80,7 +80,6 @@ describe('/api', function () {
       });
 
       it('should create test app', function () {
-        this.timeout(15000);
         let jsonMetadata = this.user.json_metadata;
         try { jsonMetadata = typeof jsonMetadata === 'object' ? jsonMetadata : JSON.parse(jsonMetadata); } catch (e) { jsonMetadata = {}; }
         jsonMetadata.app = {
@@ -104,7 +103,6 @@ describe('/api', function () {
       });
 
       it('lets us authorize this action', function () {
-        this.timeout(15000);
         const appName = process.env.TEST_USERNAME;
         let jsonMetadata = this.user.json_metadata;
         try { jsonMetadata = typeof jsonMetadata === 'object' ? jsonMetadata : JSON.parse(jsonMetadata); } catch (e) { jsonMetadata = {}; }
