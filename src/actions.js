@@ -120,3 +120,10 @@ export function clearUpdatingResult() {
     user: { isUpdatingProfile: undefined, isUpdatingProfileError: undefined },
   };
 }
+
+export function logout() {
+  cookie.remove('auth');
+  window.location = '/';
+
+  return { type: authTypes.LOGOUT_SUCCESS };
+}
