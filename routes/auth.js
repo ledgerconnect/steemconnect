@@ -5,12 +5,11 @@ const steemAuth = require('steemauth');
 const jwt = require('jsonwebtoken');
 const { verifyAuth } = require('./middleware');
 const { getJSONMetadata, decryptMessage, encryptMessage } = require('../lib/utils');
-const cookie = require('./../lib/cookie');
 
 const router = new express.Router();
 
 router.get('/logout', (req, res) => {
-  cookie.clear();
+  res.clearCookie('auth');
   res.redirect('/');
 });
 

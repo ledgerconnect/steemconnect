@@ -25,7 +25,7 @@ export default (state = initialState, action) => {
         isAuthenticated: false,
         isReadingCookies: false,
         errorMessage: '',
-        user: [],
+        user: {},
       };
     case authTypes.LOGIN_REQUEST:
       return {
@@ -33,7 +33,7 @@ export default (state = initialState, action) => {
         isFetching: true,
         isAuthenticated: false,
         errorMessage: '',
-        user: [],
+        user: {},
       };
     case authTypes.LOGIN_SUCCESS:
       return {
@@ -61,6 +61,13 @@ export default (state = initialState, action) => {
       return {
         ...state,
         lastUserList: action.lastUserList,
+      };
+    case authTypes.LOGOUT_SUCCESS:
+      return {
+        ...state,
+        user: {},
+        isFetching: false,
+        isAuthenticated: false,
       };
     case authTypes.SET_APP_DETAILS:
       return {

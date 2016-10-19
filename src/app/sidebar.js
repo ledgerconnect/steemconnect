@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import formatter from 'steem/lib/formatter';
 import { Link } from 'react-router';
 import { hideSidebar } from './appAction';
+import { logout } from '../actions';
 
 class Sidebar extends Component {
   constructor(props) {
@@ -21,7 +22,7 @@ class Sidebar extends Component {
           <div className="me">
             <Link to="profile">
               <span className="avatar avatar-sm">
-                <span className="reputation">{formatter.reputation(user.reputation) }</span>
+                <span className="reputation">{formatter.reputation(user.reputation)}</span>
                 <img alt={user.name} src={`https://img.busy6.com/@${user.name}`} />
               </span>
             </Link>
@@ -56,7 +57,7 @@ class Sidebar extends Component {
                 <Link to="/developers"><i className="icon icon-md material-icons">code</i> Developers</Link>
               </li>
               <li className="title">
-                <a href="/logout"><i className="icon icon-md material-icons">lock_open</i> Log Out</a>
+                <a href="#" onClick={this.props.logout}><i className="icon icon-md material-icons">lock_open</i> Log Out</a>
               </li>
             </ul>}
         </div>
@@ -73,6 +74,7 @@ Sidebar.propTypes = {
     user: PropTypes.object.isRequired,
   }),
   hideSidebar: PropTypes.func,
+  logout: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -82,6 +84,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   hideSidebar() { dispatch(hideSidebar()); },
+  logout() { dispatch(logout()); },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sidebar);
