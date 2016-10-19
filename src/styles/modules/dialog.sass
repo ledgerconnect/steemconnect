@@ -1,5 +1,41 @@
 .dialog
   text-align: center
+  width: 100%
+  height: 100%
+  background-color: rgba(0, 0, 0, 0.7)
+  position: fixed
+  z-index: 999
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  display: flex
+  align-items: center
+  justify-content: center
+  color: #FFF
+  .dialog-close
+    position: absolute
+    right: 5px
+    top: 40px
+    cursor: pointer
+  .dialog-logo
+    height: 82px
 
-.dialog-logo
-  height: 82px
+.dialog-password
+  .dialog-content
+    max-width: 360px
+    position: relative
+  .dialog-header
+    background-color: #FFF
+    border-top-left-radius: 14px
+    border-top-right-radius: 14px
+    color: #000
+  .dialog-form
+    background-color: #FFF
+    border-radius: 14px
+    border-top-left-radius: 0
+    border-top-right-radius: 0
+    overflow: hidden
+    color: #000
+  .dialog-lock-icon
+    color: #0084f5
