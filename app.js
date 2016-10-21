@@ -93,6 +93,6 @@ app.use((err, req, res) => {
   });
 });
 
-steem.api.setWebSocket('wss://steem.yt');
+// steem.api.setWebSocket('wss://steem.yt');
 
 module.exports = app;
