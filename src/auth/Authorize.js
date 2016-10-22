@@ -14,9 +14,17 @@ class Authorize extends React.Component {
   }
 
   componentWillMount() {
+    const { user = {} } = this.props.auth;
     const { redirect_url } = this.props.location.query;
     const appName = this.props.params.app;
-    this.props.getAppDetails(appName, redirect_url);
+    const jsonMetadata = typeof user.json_metadata !== 'object' ? {} : user.json_metadata;
+
+    jsonMetadata.apps = jsonMetadata.apps || {};
+    if (jsonMetadata.apps[appName] && jsonMetadata.apps[appName].permissions) {
+      window.location = `/auth/authorize?&redirect_url=${redirect_url}&appUserName=${appName}`;
+    } else {
+      this.props.getAppDetails(appName, redirect_url);
+    }
   }
 
   closePasswordDialog = () => {
@@ -35,7 +43,7 @@ class Authorize extends React.Component {
       passwordCallback: (passwordOrWif) => {
         const permissions = _.chain(this.permissions).map((v1, k1) =>
           v1.checked && k1).filter().value();
-        const jsonMetadata = user.json_metadata || {};
+        const jsonMetadata = typeof user.json_metadata !== 'object' ? {} : user.json_metadata;
         jsonMetadata.apps = jsonMetadata.apps || {};
         jsonMetadata.apps[appName] = Object.assign((jsonMetadata.apps[appName] || {}), {
           permissions,
@@ -65,7 +73,7 @@ class Authorize extends React.Component {
               {permissionList.map(({ name, api }) => <div key={api}>
                 <input type="checkbox" className="form-check-input" ref={c => (this.permissions[api] = c)} defaultChecked="true" value={api} />
                 {name}
-              </div>) }
+              </div>)}
             </ul>
             <a onClick={() => this.authorizeUser(redirect_url, appName)} className="btn btn-primary mbm">Continue as @{user.name}</a>
           </div>)

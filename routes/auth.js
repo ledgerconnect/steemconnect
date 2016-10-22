@@ -39,7 +39,7 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
   getJSONMetadata(appUserName)
     .then(({ app }) => {
       if (typeof app !== 'object' || !app) { throw new Error('App not found'); }
-      if (_.indexOf(app.redirect_urls, redirect_url) === -1) { throw new Error('Redirect URL is missing'); }
+      if (_.indexOf(app.redirect_urls, redirect_url) === -1) { throw new Error('Redirect URL mismatch'); }
 
       const token = jwt.sign({ username: req.username, appUserName },
         process.env.JWT_SECRET, { expiresIn: '30d' });

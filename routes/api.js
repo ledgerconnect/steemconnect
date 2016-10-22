@@ -12,8 +12,8 @@ function sendResponse({ err: error, result }, res) {
   return res.json({ result });
 }
 
-router.get('/api/authorize', (req, res, next) => {
-  res.redirect(302, '/authorize?' + querystring.stringify(req.query));
+router.get('/api/authorize', (req, res) => {
+  res.redirect(302, `/authorize?${querystring.stringify(req.query)}`);
 });
 
 router.use('/api', verifyAuth, checkOrigin, checkPermission);

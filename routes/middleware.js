@@ -63,7 +63,10 @@ function checkOrigin(req, res, next) {
           throw new Error('App does not have origins defined');
         }
 
-        if (app.origins.indexOf(origin) >= 0) {
+        // Remove trailing slash from app.origins
+        const acceptedOrigins = app.origins.map(acceptedOrigin => acceptedOrigin.replace(/\/$/, ''));
+
+        if (acceptedOrigins.indexOf(origin) >= 0) {
           next();
         } else {
           throw new Error('Origin does not match from list of allowed origin');
