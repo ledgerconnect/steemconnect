@@ -1,11 +1,11 @@
 const db = require('./index');
 
-function addPermissionToDB(username, appUserName, permissions) {
-  let insert = db('authorizedApps').insert({ username, appUserName, permissions }).toString();
+function addPermissionToDB(username, app, permissions) {
+  let insert = db('authorizedApps').insert({ username, app, permissions }).toString();
   insert = insert.replace(/\svalues\s\(/, ' select ').slice(0, -1);
 
   const update = db('authorizedApps').where('username', username)
-    .andWhere('appUserName', appUserName)
+    .andWhere('app', app)
     .update({ permissions })
     .toString();
 
@@ -18,11 +18,11 @@ function addPermissionToDB(username, appUserName, permissions) {
   return db.raw(query);
 }
 
-function getPermissionFromDB(username, appUserName) {
-  if (!username || !appUserName) { return Promise.resolve([]); }
+function getPermissionFromDB(username, app) {
+  if (!username || !app) { return Promise.resolve([]); }
 
   return db.select('*').from('authorizedApps').where('username', username)
-    .andWhere('appUserName', appUserName)
+    .andWhere('app', app)
     .limit(1)
     .then((result) => {
       if (result.length) {
