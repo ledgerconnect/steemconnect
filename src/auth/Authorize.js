@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { getAppDetails } from './authAction';
-import { accountUpdate, clearUpdatingResult } from '../actions';
-import PasswordDialog from './../widgets/PasswordDialog';
 import Loading from './../widgets/Loading';
 
 class Authorize extends React.Component {
@@ -28,33 +26,10 @@ class Authorize extends React.Component {
     }
   }
 
-  closePasswordDialog = () => {
-    this.setState({ showPasswordDialog: false, passwordCallback: undefined });
-    this.props.clearUpdatingResult();
-  };
-
-  savePassword = (passwordOrWif) => {
-    this.state.passwordCallback(passwordOrWif);
-  };
-
   authorizeUser = (redirect_url, appName) => {
-    const { user = {} } = this.props.auth;
-    this.setState({
-      showPasswordDialog: true,
-      passwordCallback: (passwordOrWif) => {
-        const permissions = _.chain(this.permissions).map((v1, k1) =>
-          v1.checked && k1).filter().value();
-        const jsonMetadata = typeof user.json_metadata !== 'object' ? {} : user.json_metadata;
-        jsonMetadata.apps = jsonMetadata.apps || {};
-        jsonMetadata.apps[appName] = Object.assign((jsonMetadata.apps[appName] || {}), {
-          permissions,
-        });
-        this.props.accountUpdate(user.name, passwordOrWif, user.memo_key, jsonMetadata)
-          .then(() => {
-            window.location = `/auth/authorize?&redirect_url=${redirect_url}&appUserName=${appName}`;
-          });
-      },
-    });
+    const permissions = _.chain(this.permissions).map((v1, k1) =>
+      v1.checked && k1).filter().value();
+    window.location = `/auth/authorize?&redirect_url=${redirect_url}&appUserName=${appName}&permissions=${permissions}`;
   }
 
   render() {
@@ -66,8 +41,9 @@ class Authorize extends React.Component {
     let errorOrLoading;
     if (isLoading) {
       errorOrLoading = <Loading />;
-    } else if (error) { errorOrLoading = <div>{error}</div>; }
-
+    } else if (error) {
+      errorOrLoading = <div>{error}</div>;
+    }
 
     return (
       <div className="block">
@@ -84,12 +60,6 @@ class Authorize extends React.Component {
           <a onClick={() => this.authorizeUser(redirect_url, appName)} className="btn btn-primary mbm">Continue as @{user.name}</a>
         </div>)
         }
-        {this.state.showPasswordDialog && <PasswordDialog
-          isUpdating={false}
-          error={undefined}
-          onClose={this.closePasswordDialog}
-          onSave={this.savePassword}
-        />}
       </div>
     );
   }
@@ -100,16 +70,12 @@ Authorize.propTypes = {
   location: PropTypes.shape({ query: PropTypes.object.isRequired }),
   auth: PropTypes.shape({ user: PropTypes.object.isRequired, apps: PropTypes.object }),
   getAppDetails: PropTypes.func,
-  accountUpdate: PropTypes.func,
-  clearUpdatingResult: PropTypes.func,
 };
 
 const mapStateToProps = state => ({ auth: state.auth });
 
 const mapDispatchToProps = dispatch => ({
   getAppDetails: bindActionCreators(getAppDetails, dispatch),
-  accountUpdate: bindActionCreators(accountUpdate, dispatch),
-  clearUpdatingResult: bindActionCreators(clearUpdatingResult, dispatch),
 });
 
 module.exports = connect(mapStateToProps, mapDispatchToProps)(Authorize);
