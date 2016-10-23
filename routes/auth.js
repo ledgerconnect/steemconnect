@@ -41,12 +41,7 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
     .then(({ app }) => {
       if (typeof app !== 'object' || !app) { throw new Error('App not found'); }
       if (_.indexOf(app.redirect_urls, redirect_url) === -1) { throw new Error('Redirect URL mismatch'); }
-
-      return addPermissionToDB(req.username, appUserName, permissions).then(() => {
-        const token = jwt.sign({ username: req.username, appUserName },
-          process.env.JWT_SECRET, { expiresIn: '30d' });
-        res.redirect(`${redirect_url}?token=${token}`);
-      });
+      return addPermissionToDB(req.username, appUserName, permissions).then(() => res.redirect(`${redirect_url}`));
     }).catch((err) => {
       if (typeof err === 'string') {
         res.status(500).send({ error: err });
