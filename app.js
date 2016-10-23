@@ -10,7 +10,6 @@ const helmet = require('helmet');
 const csurf = require('csurf');
 const steem = require('steem');
 const debug = require('debug')('steemconnect:main');
-const { verifyToken } = require('./routes/middleware');
 
 http.globalAgent.maxSockets = 100;
 https.globalAgent.maxSockets = 100;
@@ -43,7 +42,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
 app.use(cors({ credentials: true, origin: true }));
-app.use(verifyToken);
 
 app.use((req, res, next) => {
   debug('Passing through to API');
