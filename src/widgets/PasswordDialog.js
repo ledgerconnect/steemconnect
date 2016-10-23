@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 
 class PasswordDialog extends Component {
   savePassword = () => {
@@ -14,6 +15,11 @@ class PasswordDialog extends Component {
     let saveText = isUpdating === true ? 'Confirming' : 'Confirm';
     let message;
     let showSuccess;
+    let userBackground = {
+      background: `radial-gradient(circle at 50% 0%, rgba(0, 0, 0, 0.0980392), rgba(0, 0, 0, 0.6)), url("https://img.busy6.com/@${this.props.username}/cover")`,
+      backgroundSize: `cover`,
+      backgroundPosition: `center`,
+    };
     if (isUpdating === false && error === false) {
       message = <div>Success</div>;
       showSuccess = true;
@@ -23,14 +29,15 @@ class PasswordDialog extends Component {
     }
     return (
       <div className="dialog dialog-password">
-        <div className="dialog-content man maxl-ns">
+        <div className="dialog-body man maxl-ns">
           <i className="icon icon-md material-icons dialog-close" onClick={this.props.onClose}>close</i>
-          <i className="icon icon-md material-icons dialog-lock-icon">lock</i>
-          <div className="dialog-header pvs mts">
-            <img className="profile-image dialog-logo" alt={`@${this.props.username}`} src={`https://img.busy6.com/@${this.props.username}`} />
-            <p className="man">@{this.props.username}</p>
-          </div>
-            <div className="form form-login dialog-form mbs">
+          <Link to="/"><img alt="Steem Connect" className="dialog-logo mbm" src="/img/logo.svg" /></Link>
+          <div className="dialog-content mbs">
+            <div className="dialog-header pvs" style={userBackground}>
+              <img className="profile-image" alt={`@${this.props.username}`} src={`https://img.busy6.com/@${this.props.username}`} />
+              <p className="man">@{this.props.username}</p>
+            </div>
+            <div className="form form-login dialog-form">
               <div className="input-group input-group-lg"> 
                 <span className="input-group-addon">
                   <i className="icon icon-md material-icons">lock_outline</i>
@@ -40,6 +47,7 @@ class PasswordDialog extends Component {
               </div>
               <fieldset className="form-group man"><button disabled={isUpdating} className="btn btn-success form-submit" onClick={this.savePassword}>{saveText}</button></fieldset>
             </div>
+          </div>
           <p className="phl">
             Your password or owner WIF are never saved by Steem Connect. <a href="#">Learn more</a>
           </p>
