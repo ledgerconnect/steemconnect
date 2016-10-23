@@ -6,11 +6,10 @@ const bodyParser = require('body-parser');
 const http = require('http');
 const https = require('https');
 const cors = require('cors');
-const hbs = require('hbs');
 const helmet = require('helmet');
 const csurf = require('csurf');
-const { verifyToken } = require('./routes/middleware');
 const steem = require('steem');
+const debug = require('debug')('steemconnect:main');
 
 http.globalAgent.maxSockets = 100;
 https.globalAgent.maxSockets = 100;
@@ -43,19 +42,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
 app.use(cors({ credentials: true, origin: true }));
-app.use(verifyToken);
-const debug = require('debug')('steemconnect:main');
 
 app.use((req, res, next) => {
   debug('Passing through to API');
   next();
 });
+
 app.use(require('./routes/api'));
+
 app.use((req, res, next) => {
   debug('Passing through to Auth');
   next();
 });
+
 app.use(require('./routes/auth'));
+
 app.use((req, res, next) => {
   debug('Passing through to User');
   next();

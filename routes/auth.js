@@ -5,6 +5,7 @@ const steemAuth = require('steemauth');
 const jwt = require('jsonwebtoken');
 const { verifyAuth } = require('./middleware');
 const { getJSONMetadata, decryptMessage, encryptMessage } = require('../lib/utils');
+const { addPermissionToDB } = require('../db/utils');
 
 const router = new express.Router();
 
@@ -35,16 +36,17 @@ router.post('/auth/login', (req, res) => {
 });
 
 router.get('/auth/authorize', verifyAuth, (req, res) => {
-  const { appUserName, redirect_url } = req.query;
+  const { appUserName, redirect_url, permissions } = req.query;
   getJSONMetadata(appUserName)
     .then(({ app }) => {
       if (typeof app !== 'object' || !app) { throw new Error('App not found'); }
       if (_.indexOf(app.redirect_urls, redirect_url) === -1) { throw new Error('Redirect URL mismatch'); }
 
-      const token = jwt.sign({ username: req.username, appUserName },
-        process.env.JWT_SECRET, { expiresIn: '30d' });
-
-      res.redirect(`${redirect_url}?token=${token}`);
+      return addPermissionToDB(req.username, appUserName, permissions).then(() => {
+        const token = jwt.sign({ username: req.username, appUserName },
+          process.env.JWT_SECRET, { expiresIn: '30d' });
+        res.redirect(`${redirect_url}?token=${token}`);
+      });
     }).catch((err) => {
       if (typeof err === 'string') {
         res.status(500).send({ error: err });

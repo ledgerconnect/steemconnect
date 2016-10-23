@@ -4,6 +4,7 @@ const querystring = require('querystring');
 const { verifyAuth, checkOrigin, checkPermission } = require('./middleware');
 
 const router = new express.Router();
+const apiRouter = new express.Router();
 
 function sendResponse({ err: error, result }, res) {
   if (error) {
@@ -16,14 +17,18 @@ router.get('/api/authorize', (req, res) => {
   res.redirect(302, `/authorize?${querystring.stringify(req.query)}`);
 });
 
-router.use('/api', verifyAuth, checkOrigin, checkPermission);
+router.use('/api', verifyAuth);
 
-router.get('/api/verify', (req, res) => {
+// For steemconnect
+router.get('/api/verify', ({ username }, res) => res.json({ isAuthenticated: !!username, username }));
+
+router.use('/api/@:appUserName', checkOrigin, checkPermission, apiRouter);
+apiRouter.get('/verify', (req, res) => {
   if (req.username) {
     return res.json({
       isAuthenticated: true,
       username: req.username,
-      permissions: (req.token && req.token.permission),
+      permissions: req.permissions,
     });
   }
   return res.json({
@@ -31,41 +36,41 @@ router.get('/api/verify', (req, res) => {
   });
 });
 
-router.get('/api/vote', (req, res) => {
+apiRouter.get('/vote', (req, res) => {
   const { voter, author, permlink } = req.query;
   const weight = parseInt(req.query.weight, 10);
   steem.broadcast.vote(req.wif, voter, author, permlink, weight,
     (err, result) => sendResponse({ err, result }, res));
 });
 
-router.get('/api/upvote', (req, res) => {
+apiRouter.get('/upvote', (req, res) => {
   const { voter, author, permlink } = req.query;
   const weight = 10000;
   steem.broadcast.vote(req.wif, voter, author, permlink, weight,
     (err, result) => sendResponse({ err, result }, res));
 });
 
-router.get('/api/downvote', (req, res) => {
+apiRouter.get('/downvote', (req, res) => {
   const { voter, author, permlink } = req.query;
   const weight = 0;
   steem.broadcast.vote(req.wif, voter, author, permlink, weight,
     (err, result) => sendResponse({ err, result }, res));
 });
 
-router.get('/api/comment', (req, res) => {
+apiRouter.get('/comment', (req, res) => {
   const { parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata } = req.query;
   steem.broadcast.comment(req.wif, parentAuthor, parentPermlink,
     author, permlink, title, body, jsonMetadata,
     (err, result) => sendResponse({ err, result }, res));
 });
 
-router.get('/api/deleteComment', (req, res) => {
+apiRouter.get('/deleteComment', (req, res) => {
   const { author, permlink } = req.query;
   steem.broadcast.comment(req.wif, author, permlink,
     (err, result) => sendResponse({ err, result }, res));
 });
 
-router.get('/api/reblog', (req, res) => {
+apiRouter.get('/reblog', (req, res) => {
   const { permlink, account, author } = req.query;
   const requiredAuths = [];
   const requiredPostingAuths = [req.username];
@@ -75,7 +80,7 @@ router.get('/api/reblog', (req, res) => {
     (err, result) => sendResponse({ err, result }, res));
 });
 
-router.get('/api/follow', (req, res) => {
+apiRouter.get('/follow', (req, res) => {
   const { follower, following } = req.query;
   const requiredAuths = [];
   const requiredPostingAuths = [req.username];
@@ -85,7 +90,7 @@ router.get('/api/follow', (req, res) => {
     (err, result) => sendResponse({ err, result }, res));
 });
 
-router.get('/api/unfollow', (req, res) => {
+apiRouter.get('/unfollow', (req, res) => {
   const { unfollower, unfollowing } = req.query;
   const requiredAuths = [];
   const requiredPostingAuths = [req.username];
@@ -95,7 +100,7 @@ router.get('/api/unfollow', (req, res) => {
     (err, result) => sendResponse({ err, result }, res));
 });
 
-router.get('/api/ignore', (req, res) => {
+apiRouter.get('/ignore', (req, res) => {
   const { follower, following } = req.query;
   const requiredAuths = [];
   const requiredPostingAuths = [req.username];
@@ -105,7 +110,7 @@ router.get('/api/ignore', (req, res) => {
     (err, result) => sendResponse({ err, result }, res));
 });
 
-router.get('/api/escrowTransfer', (req, res) => {
+apiRouter.get('/escrowTransfer', (req, res) => {
   const { from, to, amount, memo, escrow_id: escrowId, agent, fee,
     json_meta: jsonMeta, expiration } = req.query;
   steem.broadcast.escrowTransfer(req.wif, from, to, amount,
@@ -113,26 +118,26 @@ router.get('/api/escrowTransfer', (req, res) => {
     (err, result) => sendResponse({ err, result }, res));
 });
 
-router.get('/api/escrowDispute', (req, res) => {
+apiRouter.get('/escrowDispute', (req, res) => {
   const { from, to, escrow_id: escrowId, who } = req.query;
   steem.broadcast.escrowDispute(req.wif, from, to, escrowId, who,
     (err, result) => sendResponse({ err, result }, res));
 });
-router.get('/api/escrowRelease', (req, res) => {
+apiRouter.get('/escrowRelease', (req, res) => {
   const { from, to, escrow_id: escrowId, who, amount } = req.query;
   steem.broadcast.escrowRelease(req.wif, from, to, escrowId, who, amount,
     (err, result) => sendResponse({ err, result }, res));
 });
 
 
-router.get('/api/accountCreate', (req, res) => {
+apiRouter.get('/accountCreate', (req, res) => {
   const { fee, creator, newAccountName, owner, active, posting, memoKey, jsonMetadata } = req.query;
   steem.broadcast.accountCreate(req.wif, fee, creator, newAccountName,
     owner, active, posting, memoKey, jsonMetadata,
     (err, result) => sendResponse({ err, result }, res));
 });
 
-router.get('/api/customJson', (req, res) => {
+apiRouter.get('/customJson', (req, res) => {
   const { id, json, requiredPostingAuths, requiredAuths } = req.query;
   steem.broadcast.customJson(req.wif, requiredAuths, requiredPostingAuths, id, json,
     (err, result) => sendResponse({ err, result }, res));

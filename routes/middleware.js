@@ -1,9 +1,11 @@
 /* eslint-disable no-param-reassign,consistent-return */
 const _ = require('lodash');
 const url = require('url');
-const { decryptMessage, getJSONMetadata } = require('../lib/utils');
 const jwt = require('jsonwebtoken');
+const debug = require('debug')('steemconnect:middleware');
+const { decryptMessage, getJSONMetadata } = require('../lib/utils');
 const PermissionList = require('../lib/permissions');
+const { getPermissionFromDB } = require('../db/utils');
 
 function verifyAuth(req, res, next) {
   if (req.cookies.auth && typeof req.headers.authorization === 'undefined') {
@@ -17,7 +19,7 @@ function verifyAuth(req, res, next) {
       }
       let message = decryptMessage(jwtData.secret, process.env.JWT_SECRET);
       message = JSON.parse(message);
-      if (message.username === jwtData.username && (typeof req.token === 'undefined' || req.token.username === jwtData.username)) {
+      if (message.username === jwtData.username) {
         _.each(jwtData, (value, key) => {
           req[key] = value;
         });
@@ -32,31 +34,18 @@ function verifyAuth(req, res, next) {
   }
 }
 
-function verifyToken(req, res, next) {
-  const token = req.get('x-steemconnect-token') || req.query.token;
-  if (token) {
-    jwt.verify(token, process.env.JWT_SECRET, (err, jwtData) => {
-      if (err) {
-        return res.sendStatus(401);
-      }
-      req.token = jwtData;
-      return next();
-    });
-  } else {
-    return next();
-  }
-}
-
 function checkOrigin(req, res, next) {
+  const { appUserName } = req.params || {};
   const origin = req.get('origin');
   let hostname = 'localhost';
   if (origin) {
     hostname = url.parse(origin).hostname;
   }
   const isDifferentHost = (hostname !== 'localhost' && hostname !== 'steemconnect.com' && hostname !== 'dev.steemconnect.com');
-  const token = req.token || {};
-  if (isDifferentHost) {
-    getJSONMetadata(token.appUserName)
+  if (!appUserName) {
+    res.status(500).send('Invalid AppUserName send requests as /api/appName');
+  } else if (isDifferentHost) {
+    getJSONMetadata(appUserName)
       .then((appData) => {
         const app = appData.app || {};
         if (!app.origins) {
@@ -72,7 +61,12 @@ function checkOrigin(req, res, next) {
           throw new Error('Origin does not match from list of allowed origin');
         }
       }).catch((err) => {
-        res.status(500).send(err && err.toString());
+        debug(err);
+        if (err.message === 'User not found') {
+          res.status(500).send('AppName not found');
+        } else {
+          res.status(500).send(err && err.toString());
+        }
       });
   } else {
     /* For request made from steemconnect website */
@@ -81,35 +75,34 @@ function checkOrigin(req, res, next) {
 }
 
 function checkPermission(req, res, next) {
-  const token = req.token || {};
-  const requestUrl = url.parse(req.originalUrl);
-  const requestPath = requestUrl.pathname.replace(/\/$/, '');
-  if (requestPath === '/api/verify') {
-    return next();
-  }
+  const { appUserName } = req.params || {};
 
-  getJSONMetadata(token.username)
-    .then((userdata) => {
-      const userApps = userdata.apps || {};
-      const appDetails = userApps[token.appUserName];
-      if (!appDetails) {
-        throw new Error('Unauthorized');
-      }
-      const permissions = _.map((appDetails.permissions || []), v => PermissionList[v]);
-      const selectedQuery = _.find(permissions, p => (p.paths.indexOf(requestPath) >= 0));
-      if (selectedQuery) {
-        next();
-      } else {
-        return res.status(401).json({ error: 'Not permitted', acceptedPermissions: appDetails.permissions || [] });
-      }
-    }).catch((err) => {
-      res.status(500).send(err && err.toString());
-    });
+  const username = req.username;
+  getPermissionFromDB(username, appUserName).then((permissions) => {
+    req.permissions = permissions;
+    const requestPath = req.path;
+    if (requestPath === '/verify') {
+      return next();
+    }
+
+    if (!permissions) {
+      throw new Error('Unauthorized');
+    }
+    permissions = _.map((permissions || []), v => PermissionList[v]);
+    const selectedQuery = _.find(permissions, p => (p.paths.indexOf(requestPath) >= 0));
+    if (selectedQuery) {
+      next();
+    } else {
+      return res.status(401).json({ error: 'Not permitted', acceptedPermissions: req.permissions || [] });
+    }
+  }).catch((err) => {
+    debug(err);
+    res.status(500).send(err && err.toString());
+  });
 }
 
 module.exports = {
   verifyAuth,
-  verifyToken,
   checkOrigin,
   checkPermission,
 };
