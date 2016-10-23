@@ -15,10 +15,9 @@ class Sidebar extends Component {
     return (
       <nav className="sidebar">
         <div className="sidebar-header">
-          {this.props.app.sidebarIsVisible &&
-            <a className="visible-xs hide-sidebar" onClick={() => this.props.hideSidebar()}>
-              <i className="icon icon-md icon-menu material-icons">arrow_back</i>
-            </a>}
+          <a className="hide-sidebar" onClick={() => this.props.hideSidebar()}>
+            <i className="icon icon-md icon-menu material-icons">arrow_back</i>
+          </a>
           <div className="me">
             <Link to="profile">
               <span className="avatar avatar-sm">
@@ -57,7 +56,10 @@ class Sidebar extends Component {
                 <Link to="/developers"><i className="icon icon-md material-icons">code</i> Developers</Link>
               </li>
               <li className="title">
-                <a href="#" onClick={this.props.logout}><i className="icon icon-md material-icons">lock_open</i> Log Out</a>
+                <a href="/logout"><i className="icon icon-md material-icons">lock_open</i> Log Out</a>
+              </li>
+              <li className="title">
+                <a onClick={() => this.setState({ menu: 'default' })}><i className="icon icon-md material-icons">arrow_back</i> Back</a>
               </li>
             </ul>}
         </div>
