@@ -5,12 +5,9 @@ import { hideSidebar, showSidebar } from './appAction';
 
 const Header = props => <header>
   <div className="top-nav">
-    {!props.app.sidebarIsVisible && <a onClick={() => props.showSidebar()}><i className="icon icon-md icon-menu material-icons">menu</i></a>}
-    {props.app.sidebarIsVisible && <a onClick={() => props.hideSidebar()}><i className="icon icon-md icon-menu material-icons">keyboard_backspace</i></a>}
     <div className="section-content">
       <Link to="/" onlyActiveOnIndex activeClassName="active"><img alt="logo" className="logo" src="/img/logo.svg" /></Link>
     </div>
-    <a><i className="icon icon-md icon-menu material-icons">notifications</i></a>
   </div>
 </header>;
 
