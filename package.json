@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "test": "BABEL_ENV=test mocha --require babel-register ./src/*/*-spec.js && DEBUG= NODE_ENV=test mocha --timeout 15000 --require babel-register --require babel-polyfill ./test/**/*.test.js",
+    "test": "BABEL_ENV=test mocha --require babel-register ./src/*/*-spec.js",
     "test-watch": "BABEL_ENV=test mocha --watch --require babel-register ./src/*/*-spec.js",
-    "test-api-watch": "DEBUG= NODE_ENV=test mocha --timeout 15000 --require babel-register --require babel-polyfill ./test/**/*.test.js",
+    "test-api-watch": "DEBUG= NODE_ENV=test mocha -t 15000 --require babel-register --require babel-polyfill ./test/**/*.test.js",
     "build": "webpack --progress -p --config webpack.prod.config.js",
     "lint": "eslint src/**",
     "postinstall": "npm run build"
