@@ -13,17 +13,9 @@ class Authorize extends React.Component {
   }
 
   componentWillMount() {
-    const { user = {} } = this.props.auth;
     const { redirect_url } = this.props.location.query;
     const appName = this.props.params.app;
-    const jsonMetadata = typeof user.json_metadata !== 'object' ? {} : user.json_metadata;
-
-    jsonMetadata.apps = jsonMetadata.apps || {};
-    if (redirect_url && jsonMetadata.apps[appName] && jsonMetadata.apps[appName].permissions) {
-      window.location = `/auth/authorize?&redirect_url=${redirect_url}&appUserName=${appName}`;
-    } else {
-      this.props.getAppDetails(appName, redirect_url);
-    }
+    this.props.getAppDetails(appName, redirect_url);
   }
 
   authorizeUser = (redirect_url, appName) => {

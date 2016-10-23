@@ -41,13 +41,15 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
     .then(({ app }) => {
       if (typeof app !== 'object' || !app) { throw new Error('App not found'); }
       if (_.indexOf(app.redirect_urls, redirect_url) === -1) { throw new Error('Redirect URL mismatch'); }
+      if (!permissions) { throw new Error('No permissions specified'); }
+
       return addPermissionToDB(req.username, appUserName, permissions).then(() => res.redirect(`${redirect_url}`));
     }).catch((err) => {
       if (typeof err === 'string') {
         res.status(500).send({ error: err });
       } else {
         let message = err.message;
-        if (err.message.search('json_metadata') >= 0) {
+        if (err.message.search('json_metadata') >= 0 || err.message === 'User not found') {
           message = 'App not found';
         }
         res.status(500).send({ error: message });
