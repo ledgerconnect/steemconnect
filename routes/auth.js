@@ -25,9 +25,9 @@ router.post('/auth/login', (req, res) => {
       res.status(401).send({ error: 'Incorrect Username' });
     } else if (result[0] && steemAuth.wifIsValid(wif, result[0].posting.key_auths[0][0])) {
       const secret = encryptMessage(JSON.stringify({ username, wif }), process.env.JWT_SECRET);
-      const expiresIn = 60 * 60 * 24 * 7;
+      const expiresIn = 60 * 60 * 24 * 30;
       const auth = jwt.sign({ username, secret }, process.env.JWT_SECRET, { expiresIn });
-      res.cookie('auth', auth, { path: '/', secure: req.hostname !== 'localhost', maxAge: expiresIn });
+      res.cookie('auth', auth, { path: '/', secure: req.hostname !== 'localhost', maxAge: expiresIn * 1000 });
       res.send({ userAccount: result[0] });
     } else {
       res.status(401).send({ error: 'Incorrect Password' });
