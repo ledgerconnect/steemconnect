@@ -4,6 +4,7 @@ const querystring = require('querystring');
 const { verifyAuth, checkOrigin, checkPermission } = require('./middleware');
 
 const router = new express.Router();
+const apiRouter = new express.Router();
 
 function sendResponse({ err: error, result }, res) {
   if (error) {
@@ -16,9 +17,12 @@ router.get('/api/authorize', (req, res) => {
   res.redirect(302, `/authorize?${querystring.stringify(req.query)}`);
 });
 
-const apiRouter = new express.Router();
-router.use('/api/@:appUserName', verifyAuth, checkOrigin, checkPermission, apiRouter);
+router.use('/api', verifyAuth);
 
+// For steemconnect
+router.get('/api/verify', ({ username }, res) => res.json({ isAuthenticated: !!username, username }));
+
+router.use('/api/@:appUserName', checkOrigin, checkPermission, apiRouter);
 apiRouter.get('/verify', (req, res) => {
   if (req.username) {
     return res.json({
