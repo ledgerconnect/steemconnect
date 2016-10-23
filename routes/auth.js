@@ -45,7 +45,6 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
       return addPermissionToDB(req.username, appUserName, permissions).then(() => {
         const token = jwt.sign({ username: req.username, appUserName },
           process.env.JWT_SECRET, { expiresIn: '30d' });
-        console.log('token', token);
         res.redirect(`${redirect_url}?token=${token}`);
       });
     }).catch((err) => {

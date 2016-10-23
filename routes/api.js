@@ -23,7 +23,7 @@ router.get('/api/verify', (req, res) => {
     return res.json({
       isAuthenticated: true,
       username: req.username,
-      permissions: (req.token && req.token.permission),
+      permissions: req.permissions,
     });
   }
   return res.json({

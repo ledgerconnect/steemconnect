@@ -4,6 +4,7 @@ const url = require('url');
 const { decryptMessage, getJSONMetadata } = require('../lib/utils');
 const jwt = require('jsonwebtoken');
 const PermissionList = require('../lib/permissions');
+const { getPermissionFromDB } = require('../db/utils');
 
 function verifyAuth(req, res, next) {
   if (req.cookies.auth && typeof req.headers.authorization === 'undefined') {
@@ -84,27 +85,28 @@ function checkPermission(req, res, next) {
   const token = req.token || {};
   const requestUrl = url.parse(req.originalUrl);
   const requestPath = requestUrl.pathname.replace(/\/$/, '');
-  if (requestPath === '/api/verify') {
-    return next();
-  }
 
-  getJSONMetadata(token.username)
-    .then((userdata) => {
-      const userApps = userdata.apps || {};
-      const appDetails = userApps[token.appUserName];
-      if (!appDetails) {
-        throw new Error('Unauthorized');
-      }
-      const permissions = _.map((appDetails.permissions || []), v => PermissionList[v]);
-      const selectedQuery = _.find(permissions, p => (p.paths.indexOf(requestPath) >= 0));
-      if (selectedQuery) {
-        next();
-      } else {
-        return res.status(401).json({ error: 'Not permitted', acceptedPermissions: appDetails.permissions || [] });
-      }
-    }).catch((err) => {
-      res.status(500).send(err && err.toString());
-    });
+  const username = token.username;
+  const appName = token.appUserName;
+  getPermissionFromDB(username, appName).then((permissions) => {
+    req.permissions = permissions;
+    if (requestPath === '/api/verify') {
+      return next();
+    }
+
+    if (!permissions) {
+      throw new Error('Unauthorized');
+    }
+    permissions = _.map((permissions || []), v => PermissionList[v]);
+    const selectedQuery = _.find(permissions, p => (p.paths.indexOf(requestPath) >= 0));
+    if (selectedQuery) {
+      next();
+    } else {
+      return res.status(401).json({ error: 'Not permitted', acceptedPermissions: req.permissions || [] });
+    }
+  }).catch((err) => {
+    res.status(500).send(err && err.toString());
+  });
 }
 
 module.exports = {
