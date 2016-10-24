@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { login } from './actions';
 import Sidebar from './app/sidebar';
 import Login from './auth/Login';
+import Loading from './widgets/Loading';
 
 class Wrapper extends Component {
   componentWillMount() {
@@ -10,12 +11,13 @@ class Wrapper extends Component {
   }
   render() {
     const className = (!this.props.app.sidebarIsVisible) ? 'app-wrapper full-width' : 'app-wrapper';
-    
-    if(this.props.auth.isReadingCookies) {
-      // Show a user the loading indicator until we will fetch
-      // the proper const auth = cookie.get('auth') status
-      // via the login action from the authReducers
-      return <div>Loading ...</div>
+
+    if (this.props.auth.isReadingCookies) {
+      return (<div className="login-section">
+        <div className="login-center">
+          <Loading />
+        </div>
+      </div>);
     }
 
     return (
