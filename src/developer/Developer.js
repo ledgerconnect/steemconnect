@@ -3,7 +3,6 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import validator from 'validator';
-import Header from './../app/header';
 import FieldSet from './FieldSet';
 import { accountUpdate, clearUpdatingResult } from '../actions';
 import PasswordDialog from './../widgets/PasswordDialog';
@@ -109,7 +108,6 @@ class Developer extends Component {
 
     return (
       <div>
-        <Header />
         <div className="container">
           <div className="block block-developer mvl">
             <form className="form form-developer">

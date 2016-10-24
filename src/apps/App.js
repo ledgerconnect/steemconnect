@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
-import Header from '../app/header';
-import apps from '../helpers/apps.json';
 
 class AppDetails extends Component {
   render() {
     return (
       <div>
-        <Header />
         <div className="container">
           <div className="apps apps-details ptl">
             <div className="apps-photo">

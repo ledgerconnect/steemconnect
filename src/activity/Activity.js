@@ -2,7 +2,6 @@ import { bindActionCreators } from 'redux';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import Header from '../app/header';
 import ActivityList from '../activity/ActivityList';
 import { getAccountHistory } from '../actions';
 import Loading from '../widgets/Loading';
@@ -15,7 +14,6 @@ class Activity extends Component {
     const { accountHistory } = this.props.auth.user;
     return (
       <div>
-        <Header />
         <h1>Activity</h1>
         <div className="container">
           <div className="block block-dashboard">

@@ -6,7 +6,6 @@ import { each } from 'lodash';
 import AvatarUpdate from './AvatarUpdate';
 import { setAvatar, accountUpdate, clearUpdatingResult } from '../actions';
 import PasswordDialog from '../widgets/PasswordDialog';
-import Header from '../app/header';
 
 class Settings extends Component {
 
@@ -102,7 +101,6 @@ class Settings extends Component {
     }
     return (
       <div>
-        <Header />
         <AvatarUpdate username={user.name} onDrop={this.onDrop} />
         <div className="container">
           <div className="block block-profile mtl mbs">
