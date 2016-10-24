@@ -4,7 +4,7 @@ class Payments extends Component {
   render() {
     return (
       <div>
-        <div className="container">Payments Placeholder</div>
+        <h1 className="mvl">Payments</h1>
       </div>
     );
   }

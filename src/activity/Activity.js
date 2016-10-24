@@ -14,7 +14,7 @@ class Activity extends Component {
     const { accountHistory } = this.props.auth.user;
     return (
       <div>
-        <h1>Activity</h1>
+        <h1 className="mvl">Activity</h1>
         <div className="container">
           <div className="block block-dashboard">
             {accountHistory ? <div>

@@ -4,7 +4,7 @@ module.exports = React.createClass({
   render() {
     return (
       <div>
-        <h1>Welcome onboard</h1>
+        <h1 className="mvl">Welcome!</h1>
       </div>
     );
   }
