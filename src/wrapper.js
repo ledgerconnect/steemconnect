@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { login } from './actions';
-import Sidebar from './app/sidebar';
+import Sidebar from './app/Sidebar';
 import Login from './auth/Login';
 import Loading from './widgets/Loading';
-import Header from './app/header';
+import Header from './app/Header';
 
 class Wrapper extends Component {
   componentWillMount() {
