@@ -34,6 +34,7 @@ class PasswordDialog extends Component {
             <Link to="/"><img alt="Steem Connect" className="dialog-logo mbm" src="/img/logo.svg" /></Link>
             <div className="block block-login">
               <div className="dialog">
+                <i className="icon icon-md material-icons dialog-close" onClick={this.props.onClose}>close</i>  
                 <div className="account-card" style={userBackground}>
                   <a><img className="profile-image" alt={`@guest123`} src={`https://img.busy6.com/@guest123`} /></a>
                   <h2 className="mts">
@@ -51,7 +52,7 @@ class PasswordDialog extends Component {
                 </form>
               </div>
             </div>
-            <div className="mvl phl">
+            <div className="mtl phl">
               Your password or owner WIF are never saved by Steem Connect. <a href="#">Learn more</a>
             </div>
           </div>
