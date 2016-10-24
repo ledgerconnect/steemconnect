@@ -16,7 +16,7 @@ class PasswordDialog extends Component {
     let message;
     let showSuccess;
     let userBackground = {
-      background: `radial-gradient(circle at 50% 0%, rgba(0, 0, 0, 0.0980392), rgba(0, 0, 0, 0.6)), url("https://img.busy6.com/@${this.props.username}/cover")`,
+      background: `radial-gradient(circle at 50% 0%, rgba(0, 0, 0, 0.0980392), rgba(0, 0, 0, 0.6)), url("https://img.busy6.com/@guest123/cover")`,
       backgroundSize: `cover`,
       backgroundPosition: `center`,
     };
@@ -29,28 +29,32 @@ class PasswordDialog extends Component {
     }
     return (
       <div className="dialog dialog-password">
-        <div className="dialog-body man maxl-ns">
-          <i className="icon icon-md material-icons dialog-close" onClick={this.props.onClose}>close</i>
-          <Link to="/"><img alt="Steem Connect" className="dialog-logo mbm" src="/img/logo.svg" /></Link>
-          <div className="dialog-content mbs">
-            <div className="dialog-header pvs" style={userBackground}>
-              <img className="profile-image" alt={`@${this.props.username}`} src={`https://img.busy6.com/@${this.props.username}`} />
-              <p className="man">@{this.props.username}</p>
-            </div>
-            <div className="form form-login dialog-form">
-              <div className="input-group input-group-lg"> 
-                <span className="input-group-addon">
-                  <i className="icon icon-md material-icons">lock_outline</i>
-                </span>          
-                {!showSuccess && <input id="passwordInput" autoFocus type="password" placeholder="Password or owner WIF" className="form-control" ref={c => (this.passwordOrWif = c)} />}
-                {message}
+        <div className="login-section">
+          <div className="login-center">
+            <Link to="/"><img alt="Steem Connect" className="dialog-logo mbm" src="/img/logo.svg" /></Link>
+            <div className="block block-login">
+              <div className="dialog">
+                <div className="account-card" style={userBackground}>
+                  <a><img className="profile-image" alt={`@guest123`} src={`https://img.busy6.com/@guest123`} /></a>
+                  <h2 className="mts">
+                    @guest213
+                  </h2>
+                </div>
+                <form className="form" onSubmit={this.handleSubmit}>
+                  <div className="input-group input-group-lg">
+                    <span className="input-group-addon"><i className="icon icon-md material-icons">lock_outline</i></span>
+                    <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control" ref={(c) => { this.passwordOrWif = c; }} />
+                  </div>
+                  <fieldset className="form-group man">
+                    <button disabled={isUpdating} className="btn btn-success form-submit" onClick={this.savePassword}>{saveText}</button>
+                  </fieldset>
+                </form>
               </div>
-              <fieldset className="form-group man"><button disabled={isUpdating} className="btn btn-success form-submit" onClick={this.savePassword}>{saveText}</button></fieldset>
+            </div>
+            <div className="mvl phl">
+              Your password or owner WIF are never saved by Steem Connect. <a href="#">Learn more</a>
             </div>
           </div>
-          <p className="phl">
-            Your password or owner WIF are never saved by Steem Connect. <a href="#">Learn more</a>
-          </p>
         </div>
       </div>
     );
