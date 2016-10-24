@@ -9,7 +9,7 @@ import { getAccountHistory } from './../actions';
 
 class Dashboard extends Component {
   componentDidMount() {
-    this.props.getAccountHistory(this.props.auth.user.name, -1, 5);
+    this.props.getAccountHistory(this.props.auth.user.name, -1, 10);
   }
   render() {
     const { accountHistory } = this.props.auth.user;
