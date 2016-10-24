@@ -35,6 +35,9 @@ class Sidebar extends Component {
                 <Link to="/"><i className="icon icon-md material-icons">show_chart</i> Summary</Link>
               </li>
               <li className="title">
+                <Link to="/profile"><i className="icon icon-md material-icons">perm_identity</i> Profile</Link>
+              </li>
+              <li className="title">
                 <Link to="/activity"><i className="icon icon-md material-icons">track_changes</i> Activity</Link>
               </li>
               <li className="title">
@@ -46,12 +49,6 @@ class Sidebar extends Component {
             </ul>}
           {this.state.menu === 'settings' &&
             <ul>
-              <li className="title">
-                <Link to="/profile"><i className="icon icon-md material-icons">perm_identity</i> Profile</Link>
-              </li>
-              <li className="title">
-                <Link to="/#settings"><i className="icon icon-md material-icons">settings</i> Settings</Link>
-              </li>
               <li className="title">
                 <Link to="/developers"><i className="icon icon-md material-icons">code</i> Developers</Link>
               </li>
