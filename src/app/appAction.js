@@ -1,9 +1,10 @@
-import * as types from './appActionTypes';
+export const SHOW_SIDEBAR = '@app/SHOW_SIDEBAR';
+export const HIDE_SIDEBAR = '@app/HIDE_SIDEBAR';
 
 export function hideSidebar() {
-  return { type: types.HIDE_SIDEBAR };
+  return { type: HIDE_SIDEBAR };
 }
 
 export function showSidebar() {
-  return { type: types.SHOW_SIDEBAR };
+  return { type: SHOW_SIDEBAR };
 }

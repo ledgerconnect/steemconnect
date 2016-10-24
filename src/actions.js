@@ -1,8 +1,8 @@
-import * as authTypes from './auth/authActionTypes';
+import * as authTypes from './auth/authAction';
 
 const steemAuth = require('steemauth');
 const steem = require('steem');
-const cookie = require('./../lib/cookie');
+const cookie = require('../lib/cookie');
 
 export function login() {
   return (dispatch) => {

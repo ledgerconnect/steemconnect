@@ -1,4 +1,4 @@
-import * as appTypes from './appActionTypes';
+import * as appTypes from './appAction';
 
 const initialState = {
   isFetching: false,

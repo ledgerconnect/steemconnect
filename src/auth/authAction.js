@@ -1,12 +1,20 @@
 import _ from 'lodash';
 import steem from 'steem';
-import * as authTypes from './authActionTypes';
 import PermissionList from '../../lib/permissions';
 
 const steemAuth = require('steemauth');
 const crypto = require('crypto-js');
 
 const cookie = require('../../lib/cookie');
+
+export const LOGIN_REQUEST = '@auth/LOGIN_REQUEST';
+export const LOGIN_SUCCESS = '@auth/LOGIN_SUCCESS';
+export const LOGIN_FAILURE = '@auth/LOGIN_FAILURE';
+export const LOGIN_NO_COOKIE = '@auth/LOGIN_NO_COOKIE';
+export const UPDATE_PROFILE = '@auth/UPDATE_PROFILE';
+export const UPDATE_LAST_USER_LIST = '@auth/UPDATE_LAST_USER_LIST';
+export const SET_APP_DETAILS = '@auth/SET_APP_DETAILS';
+export const LOGOUT_SUCCESS = '@auth/LOGOUT_SUCCESS';
 
 function encryptData(object) {
   const crfs = cookie.get('_csrf');
@@ -17,18 +25,18 @@ function encryptData(object) {
 }
 
 export function selectLoginWithUserName(selected) {
-  return { type: authTypes.UPDATE_LAST_USER_LIST, lastUserList: { selected, show: false } };
+  return { type: UPDATE_LAST_USER_LIST, lastUserList: { selected, show: false } };
 }
 
 export function ShowLastUserList() {
-  return { type: authTypes.UPDATE_LAST_USER_LIST, lastUserList: { show: true } };
+  return { type: UPDATE_LAST_USER_LIST, lastUserList: { show: true } };
 }
 
 export function login(username, passwordOrWif) {
   return (dispatch) => {
     const isWif = steemAuth.isWif(passwordOrWif);
     const wif = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'posting');
-    dispatch({ type: authTypes.LOGIN_REQUEST });
+    dispatch({ type: LOGIN_REQUEST });
 
     fetch('/auth/login', {
       method: 'POST',
@@ -49,7 +57,7 @@ export function login(username, passwordOrWif) {
           let { json_metadata } = userAccount;
           json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
           dispatch({
-            type: authTypes.LOGIN_SUCCESS,
+            type: LOGIN_SUCCESS,
             user: { name: username, json_metadata, memo_key, reputation, balance },
           });
         } else {
@@ -58,7 +66,7 @@ export function login(username, passwordOrWif) {
       }).catch((err) => {
         const errorMessage = typeof err !== 'string' ? ((err.data && err.data.error) || err.statusText) : err;
         dispatch({
-          type: authTypes.LOGIN_FAILURE,
+          type: LOGIN_FAILURE,
           user: {},
           errorMessage,
         });
@@ -71,7 +79,7 @@ export function demoLogin() {
 }
 
 export function setAppDetails(appName, appDetails) {
-  return { type: authTypes.SET_APP_DETAILS, appName, appDetails };
+  return { type: SET_APP_DETAILS, appName, appDetails };
 }
 
 export function getAppDetails(appUserName, redirectUrl) {

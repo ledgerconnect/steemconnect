@@ -1,4 +1,4 @@
-import * as authTypes from './authActionTypes';
+import * as authTypes from './authAction';
 
 const initialState = {
   isAuthenticated: false,
