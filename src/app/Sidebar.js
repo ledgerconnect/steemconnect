@@ -32,7 +32,7 @@ class Sidebar extends Component {
           {this.state.menu === 'default' &&
             <ul>
               <li className="title">
-                <Link to="/"><i className="icon icon-md material-icons">show_chart</i> Summary</Link>
+                <Link to="/"><i className="icon icon-md material-icons">done</i> Quickstart</Link>
               </li>
               <li className="title">
                 <Link to="/profile"><i className="icon icon-md material-icons">perm_identity</i> Profile</Link>
@@ -44,7 +44,7 @@ class Sidebar extends Component {
                 <Link to="/payments"><i className="icon icon-md material-icons">payment</i> Payments</Link>
               </li>
               <li className="title">
-                <Link to="/apps"><i className="icon icon-md material-icons">apps</i> Apps</Link>
+                <Link to="/apps"><i className="icon icon-md material-icons">apps</i> App Store</Link>
               </li>
             </ul>}
           {this.state.menu === 'settings' &&
