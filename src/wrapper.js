@@ -4,6 +4,7 @@ import { login } from './actions';
 import Sidebar from './app/sidebar';
 import Login from './auth/Login';
 import Loading from './widgets/Loading';
+import Header from './app/header';
 
 class Wrapper extends Component {
   componentWillMount() {
@@ -24,7 +25,8 @@ class Wrapper extends Component {
       !this.props.auth.isAuthenticated ? <Login {...this.props} /> : <div className={className}>
         <Sidebar />
         <div className="main-panel">
-            {this.props.children}
+          <Header />
+          {this.props.children}
         </div>
       </div>
     );
