@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import steem from 'steem';
 import PermissionList from '../../lib/permissions';
 
 const steemAuth = require('steemauth');
@@ -95,7 +94,6 @@ export function getAppDetails(appUserName, redirectUrl) {
     })
       .then(response => response.json())
       .then((response) => {
-        console.log('app', response);
         const app = response;
         app.permissions = _.map(app.permissions,
           v => Object.assign(PermissionList[v], { api: v }));
