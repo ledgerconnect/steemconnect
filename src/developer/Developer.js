@@ -91,9 +91,13 @@ class Developer extends Component {
 
   render() {
     const permissionList = _.map(PermissionList, (v, k) => ({ ...v, api: k }));
-    const { app: { name, author, tagline, description, origins,
-      redirect_urls, permissions = [] }, isFetching } = this.props.developer;
-
+    const { app: { name, author, tagline, description,
+      permissions = [] }, isFetching } = this.props.developer;
+    let { app: { origins = [], redirect_urls = [] } } = this.props.developer;
+    origins = typeof origins === 'string' ? JSON.parse(origins) : origins;
+    redirect_urls = typeof redirect_urls === 'string' ? JSON.parse(redirect_urls) : redirect_urls;
+    origins = origins.length ? origins.join('\n') : origins;
+    redirect_urls = redirect_urls.length ? redirect_urls.join('\n') : redirect_urls;
     return (
       <div>
         <div className="container">
