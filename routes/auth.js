@@ -12,7 +12,7 @@ const router = new express.Router();
 
 router.get('/logout', (req, res) => {
   res.clearCookie('auth');
-  res.redirect('/');
+  res.redirect(req.get('origin') || '/');
 });
 
 router.post('/auth/login', (req, res) => {
