@@ -73,7 +73,7 @@ function getApp(username) {
       if (result.length) {
         return result[0];
       }
-      return new Error('App not found');
+      throw new Error('App not found');
     });
 }
 

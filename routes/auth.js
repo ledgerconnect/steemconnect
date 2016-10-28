@@ -4,7 +4,7 @@ const steem = require('steem');
 const steemAuth = require('steemauth');
 const jwt = require('jsonwebtoken');
 const { verifyAuth } = require('./middleware');
-const { getJSONMetadata, decryptMessage, encryptMessage } = require('../lib/utils');
+const { decryptMessage, encryptMessage } = require('../lib/utils');
 const { addPermissionToDB, upsertApp, getApp } = require('../db/utils');
 const debug = require('debug')('steemconnect:route:auth');
 
@@ -38,8 +38,8 @@ router.post('/auth/login', (req, res) => {
 
 router.get('/auth/authorize', verifyAuth, (req, res) => {
   const { appUserName, redirect_url, permissions } = req.query;
-  getJSONMetadata(appUserName)
-    .then(({ app }) => {
+  getApp(appUserName)
+    .then((app) => {
       if (typeof app !== 'object' || !app) { throw new Error('App not found'); }
       if (_.indexOf(app.redirect_urls, redirect_url) === -1) { throw new Error('Redirect URL mismatch'); }
       if (!permissions) { throw new Error('No permissions specified'); }
@@ -62,14 +62,20 @@ router.post('/auth/app', verifyAuth, (req, res) => {
   const appData = req.body;
   appData.app = req.username;
 
-  upsertApp(appData).then(() => res.send(appData));
+  upsertApp(appData).then(() => res.send(appData))
+    .catch((err) => {
+      res.status(500).send({ error: err.message });
+    });
 });
 
 router.get('/auth/app/@:appUserName', verifyAuth, (req, res) => {
   const { appUserName } = req.params;
   debug('getting app ', appUserName);
   return getApp(appUserName)
-    .then(result => res.send(result));
+    .then(result => res.send(result))
+    .catch((err) => {
+      res.status(500).send({ error: err.message });
+    });
 });
 
 module.exports = router;

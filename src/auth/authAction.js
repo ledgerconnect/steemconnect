@@ -84,33 +84,35 @@ export function setAppDetails(appName, appDetails) {
 
 export function getAppDetails(appUserName, redirectUrl) {
   return (dispatch) => {
-    steem.api.getAccounts([appUserName], (err, result) => {
-      if (err) {
-        dispatch(setAppDetails(appUserName, { error: 'could not get app details' }));
-      } else if (result && result[0]) {
-        let { json_metadata = {} } = result[0];
-        try { json_metadata = JSON.parse(json_metadata); } catch (e) { json_metadata = {}; }
-        const app = json_metadata.app;
+    fetch(`/auth/app/@${appUserName}`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: new Headers({
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'x-csrf-token': document.querySelector('meta[name="_csrf"]').content,
+      }),
+    })
+      .then(response => response.json())
+      .then((response) => {
+        console.log('app', response);
+        const app = response;
+        app.permissions = _.map(app.permissions,
+          v => Object.assign(PermissionList[v], { api: v }));
+        app.redirect_urls = app.redirect_urls || [];
 
-        if (app) {
-          app.permissions = _.map(app.permissions,
-            v => Object.assign(PermissionList[v], { api: v }));
-          app.redirect_urls = app.redirect_urls || [];
-
-          // If there is list of redirect_url that developer must specify
-          // if there is only one that it will be selected automatically
-          if (app.redirect_urls.length > 1 && app.redirect_urls.indexOf(redirectUrl) === -1) {
-            dispatch(setAppDetails(appUserName, { error: 'RedirectUrl Mismatch' }));
-          } else {
-            app.redirect_url = redirectUrl || app.redirect_urls[0];
-            dispatch(setAppDetails(appUserName, app));
-          }
+        // If there is list of redirect_url that developer must specify
+        // if there is only one that it will be selected automatically
+        if (app.redirect_urls.length > 1 && app.redirect_urls.indexOf(redirectUrl) === -1) {
+          dispatch(setAppDetails(appUserName, { error: 'RedirectUrl Mismatch' }));
         } else {
-          dispatch(setAppDetails(appUserName, { error: 'app is not configured' }));
+          app.redirect_url = redirectUrl || app.redirect_urls[0];
+          dispatch(setAppDetails(appUserName, app));
         }
-      } else {
-        dispatch(setAppDetails(appUserName, { error: 'Invalid app' }));
-      }
-    });
+      }).catch((err) => {
+        console.log('err', err);
+        const errorMessage = typeof err !== 'string' ? ((err.data && err.data.error) || err.statusText) : err;
+        dispatch(setAppDetails(appUserName, { error: errorMessage }));
+      });
   };
 }

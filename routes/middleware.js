@@ -3,9 +3,9 @@ const _ = require('lodash');
 const url = require('url');
 const jwt = require('jsonwebtoken');
 const debug = require('debug')('steemconnect:middleware');
-const { decryptMessage, getJSONMetadata } = require('../lib/utils');
+const { decryptMessage } = require('../lib/utils');
 const PermissionList = require('../lib/permissions');
-const { getPermissionFromDB } = require('../db/utils');
+const { getPermissionFromDB, getApp } = require('../db/utils');
 
 function verifyAuth(req, res, next) {
   if (req.cookies.auth && typeof req.headers.authorization === 'undefined') {
@@ -45,21 +45,19 @@ function checkOrigin(req, res, next) {
   if (!appUserName) {
     res.status(500).send('Invalid AppUserName send requests as /api/appName');
   } else if (isDifferentHost) {
-    getJSONMetadata(appUserName)
-      .then((appData) => {
-        const app = appData.app || {};
-        if (!app.origins) {
-          throw new Error('App does not have origins defined');
-        }
+    return getApp(appUserName)
+      .then((app) => {
+        if (!app.origins) { throw new Error('App does not have origins defined'); }
 
         // Remove trailing slash from app.origins
         const acceptedOrigins = app.origins.map(acceptedOrigin => acceptedOrigin.replace(/\/$/, ''));
-
         if (acceptedOrigins.indexOf(origin) >= 0) {
           next();
         } else {
           throw new Error('Origin does not match from list of allowed origin');
         }
+
+        return null;
       }).catch((err) => {
         debug(err);
         if (err.message === 'User not found') {
