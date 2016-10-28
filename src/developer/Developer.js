@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import validator from 'validator';
 import FieldSet from './FieldSet';
-import { accountUpdate, clearUpdatingResult } from '../actions';
-import PasswordDialog from './../widgets/PasswordDialog';
+import { createApp, getApp } from './actions';
 import PermissionList from '../../lib/permissions';
+import Loading from '../widgets/Loading';
 
 class Developer extends Component {
   constructor(props) {
@@ -14,6 +14,11 @@ class Developer extends Component {
     this.state = { error: {}, showPasswordDialog: false };
     this.formFields = { permissions: {} };
     this.formData = {};
+  }
+
+  componentDidMount() {
+    const user = this.props.auth.user;
+    this.props.getApp(user.name);
   }
 
   validate = (refs) => {
@@ -61,6 +66,7 @@ class Developer extends Component {
         break;
     }
   };
+
   save = (event) => {
     event.preventDefault();
     let missingData = false;
@@ -79,38 +85,21 @@ class Developer extends Component {
       this.state.error.save = 'Please fill all fields';
       this.setState({ error: this.state.error });
     } else {
-      this.setState({
-        showPasswordDialog: true,
-        passwordCallback: (passwordOrWif) => {
-          const user = this.props.auth.user;
-          const json_metadata = user.json_metadata || {};
-          json_metadata.app = this.formData;
-          this.props.accountUpdate(user.name, passwordOrWif, user.memo_key, json_metadata);
-        },
-      });
+      this.props.createApp(this.formData);
     }
   };
-  closePasswordDialog = () => {
-    this.setState({ showPasswordDialog: false, passwordCallback: undefined });
-    this.props.clearUpdatingResult();
-  };
-  savePassword = (passwordOrWif) => {
-    this.state.passwordCallback(passwordOrWif);
-  };
+
   render() {
     const permissionList = _.map(PermissionList, (v, k) => ({ ...v, api: k }));
-    const user = this.props.auth.user;
-    const { json_metadata } = user;
-    const { name, author, tagline, description, permissions = [] } = json_metadata.app || {};
-    let { origins = '', redirect_urls = '' } = json_metadata.app || {};
-    origins = origins.length ? origins.join('\n') : origins;
-    redirect_urls = redirect_urls.length ? redirect_urls.join('\n') : redirect_urls;
+    const { app: { name, author, tagline, description, origins,
+      redirect_urls, permissions = [] }, isFetching } = this.props.developer;
 
     return (
       <div>
         <div className="container">
           <div className="block block-developer mvl">
-            <form className="form form-developer">
+            {isFetching && <Loading />}
+            {!isFetching && <form className="form form-developer">
               <div className="pam">
                 <label htmlFor="name">App Name</label>
                 <FieldSet name={'name'} defaultValue={name} error={this.state.error} validate={this.validate} formFields={this.formFields} />
@@ -140,16 +129,10 @@ class Developer extends Component {
                 </fieldset>
               </div>
               <fieldset className="form-group man">
-              <div className="form-control-feedback man phm">{this.state.error.save}</div>
+                <div className="form-control-feedback man phm">{this.state.error.save}</div>
                 <button className="btn btn-primary form-submit" onClick={this.save}>Save</button>
               </fieldset>
-            </form>
-            {this.state.showPasswordDialog && <PasswordDialog
-              isUpdating={user.isUpdatingProfile}
-              error={user.isUpdatingProfileError}
-              onClose={this.closePasswordDialog}
-              onSave={this.savePassword}
-            />}
+            </form>}
           </div>
           <p className="pas"><a href="#" onClick={this.clearProfile}>Delete App</a></p>
         </div>
@@ -162,11 +145,15 @@ Developer.propTypes = {
   auth: PropTypes.shape({
     user: PropTypes.object.isRequired,
   }),
-  accountUpdate: PropTypes.func,
-  clearUpdatingResult: PropTypes.func,
+  developer: PropTypes.shape({
+    app: PropTypes.object,
+    isFetching: PropTypes.bool,
+  }),
+  createApp: PropTypes.func,
+  getApp: PropTypes.func,
 };
 
 const mapStateToProps = state => ({ auth: state.auth, developer: state.developer });
 const mapDispatchToProps = dispatch =>
-  (bindActionCreators({ accountUpdate, clearUpdatingResult }, dispatch));
+  (bindActionCreators({ createApp, getApp }, dispatch));
 export default connect(mapStateToProps, mapDispatchToProps)(Developer);
