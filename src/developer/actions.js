@@ -9,6 +9,13 @@ export const GET_APP_REQUEST = '@developer/GET_APP_REQUEST';
 export const GET_APP_SUCCESS = '@developer/GET_APP_SUCCESS';
 export const GET_APP_FAILURE = '@developer/GET_APP_FAILURE';
 
+function handleErrors(response) {
+  if (!response.ok) {
+    throw Error(response.statusText);
+  }
+  return response;
+}
+
 export function createApp(appData) {
   return (dispatch) => {
     dispatch({ type: CREATE_APP_REQUEST });
@@ -22,10 +29,11 @@ export function createApp(appData) {
         'x-csrf-token': document.querySelector('meta[name="_csrf"]').content,
       }),
     })
+      .then(handleErrors)
       .then(response => response.json())
       .then(app => dispatch({ type: CREATE_APP_SUCCESS, app }))
       .catch((err) => {
-        const errorMessage = typeof err !== 'string' ? ((err.data && err.data.error) || err.statusText) : err;
+        const errorMessage = err.toString();
         dispatch({
           type: CREATE_APP_FAILURE,
           app: {},
@@ -46,11 +54,11 @@ export function getApp(appUserName) {
         'Content-Type': 'application/json',
         'x-csrf-token': document.querySelector('meta[name="_csrf"]').content,
       }),
-    })
+    }).then(handleErrors)
       .then(response => response.json())
       .then(app => dispatch({ type: GET_APP_SUCCESS, app }))
       .catch((err) => {
-        const errorMessage = typeof err !== 'string' ? ((err.data && err.data.error) || err.statusText) : err;
+        const errorMessage = err.toString();
         dispatch({
           type: GET_APP_FAILURE,
           app: {},

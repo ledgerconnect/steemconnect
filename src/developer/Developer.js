@@ -11,7 +11,7 @@ import Loading from '../widgets/Loading';
 class Developer extends Component {
   constructor(props) {
     super(props);
-    this.state = { error: {}, showPasswordDialog: false };
+    this.state = { error: {}, creatingNewApp: false };
     this.formFields = { permissions: {} };
     this.formData = {};
   }
@@ -89,21 +89,32 @@ class Developer extends Component {
     }
   };
 
+  deleteApp = () => {
+    console.log('deleteApp');
+  }
+
+  createApp = () => this.setState({ creatingNewApp: true })
+
   render() {
     const permissionList = _.map(PermissionList, (v, k) => ({ ...v, api: k }));
     const { app: { name, author, tagline, description,
       permissions = [] }, isFetching } = this.props.developer;
     let { app: { origins = [], redirect_urls = [] } } = this.props.developer;
+
     origins = typeof origins === 'string' ? JSON.parse(origins) : origins;
     redirect_urls = typeof redirect_urls === 'string' ? JSON.parse(redirect_urls) : redirect_urls;
     origins = origins.length ? origins.join('\n') : origins;
     redirect_urls = redirect_urls.length ? redirect_urls.join('\n') : redirect_urls;
+
+    const appExist = !_.isEmpty(this.props.developer.app);
+    const showApp = appExist || this.state.creatingNewApp;
+
     return (
       <div>
         <div className="container">
           <div className="block block-developer mvl">
             {isFetching && <Loading />}
-            {!isFetching && <form className="form form-developer">
+            {!isFetching && showApp && <form className="form form-developer">
               <div className="pam">
                 <label htmlFor="name">App Name</label>
                 <FieldSet name={'name'} defaultValue={name} error={this.state.error} validate={this.validate} formFields={this.formFields} />
@@ -138,7 +149,8 @@ class Developer extends Component {
               </fieldset>
             </form>}
           </div>
-          <p className="pas"><a href="#" onClick={this.clearProfile}>Delete App</a></p>
+          {!isFetching && appExist && <p className="pas"><a href="#" onClick={this.deleteApp}>Delete App</a></p>}
+          {!showApp && <p className="pas"><a href="#" onClick={this.createApp}>Create App</a></p>}
         </div>
       </div>
     );
