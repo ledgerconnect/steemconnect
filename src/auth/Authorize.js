@@ -34,13 +34,14 @@ class Authorize extends React.Component {
     if (isLoading) {
       errorOrLoading = <Loading />;
     } else if (error) {
-      errorOrLoading = <div>{error}</div>;
+      errorOrLoading = <div className="mvl">{error}</div>;
     }
 
     return (
       <div className="block block-login">
-          <img alt="app-logo" src={`https://img.busy6.com/@${appName}`} width="70" />
-          {(errorOrLoading) && (<div>
+          <div className="mvl"><img alt="app-logo" src={`https://img.busy6.com/@${appName}`} width="70" /></div>
+          {errorOrLoading}
+          {(!errorOrLoading) && (<div className="mtl">
             <p>The app <b>@{appName}</b> is requesting permission to do the following: </p>
             <ul className="mbm">
               {permissionList.map(({ name, api }) => <div key={api}>
@@ -55,8 +56,7 @@ class Authorize extends React.Component {
               </fieldset>
             </form>
           </div>
-        </div>)
-        }
+        </div>)}
       </div>
     );
   }
