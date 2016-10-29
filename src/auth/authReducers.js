@@ -75,6 +75,29 @@ export default (state = initialState, action) => {
         apps: Object.assign(state.apps,
           { [action.appName]: action.appDetails }),
       };
+    case authTypes.SIGNUP_REQUEST:
+      return {
+        ...state,
+        user: {},
+        isFetching: true,
+        success: false,
+        isAuthenticated: false,
+      };
+    case authTypes.SIGNUP_SUCCESS:
+      return {
+        ...state,
+        user: {},
+        isFetching: false,
+        success: true,
+      };
+    case authTypes.SIGNUP_FAILURE:
+      return {
+        ...state,
+        user: {},
+        isFetching: false,
+        success: false,
+        errorMessage: action.errorMessage,
+      };
     default:
       return state;
   }

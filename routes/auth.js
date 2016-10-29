@@ -44,16 +44,15 @@ router.post('/auth/signup', (req, res) => {
   const owner = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.owner, 1]] };
   const active = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.active, 1]] };
   const posting = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.posting, 1]] };
-
   steem.broadcast.accountCreate(process.env.SIGNUP_OWNER_WIF, process.env.SIGNUP_FEES,
       process.env.SIGNUP_CREATOR, username, owner, active, posting, publicKeys.memo, '',
       (err, result) => {
         debug(err, result);
-        if (err) {
-          debug('Error while creating account', err);
-          res.status(500).send(err);
+        if (result === null) {
+          res.send({ success: true });
         } else {
-          res.send(result);
+          debug('Error while creating account', err);
+          res.status(500).send({ error: 'Could not signup. Please try later' });
         }
       });
 });

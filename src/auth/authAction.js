@@ -40,7 +40,7 @@ export function login(username, passwordOrWif) {
     const wif = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'posting');
     dispatch({ type: LOGIN_REQUEST });
 
-    fetch('/auth/login', {
+    return fetch('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ encryptedData: encryptData(JSON.stringify({ username, wif })) }),
       credentials: 'include',
@@ -66,7 +66,7 @@ export function login(username, passwordOrWif) {
           throw new Error('Malformed request');
         }
       }).catch((err) => {
-        const errorMessage = typeof err !== 'string' ? ((err.data && err.data.error) || err.statusText) : err;
+        const errorMessage = typeof err !== 'string' ? err.message : err;
         dispatch({
           type: LOGIN_FAILURE,
           user: {},
@@ -79,7 +79,7 @@ export function login(username, passwordOrWif) {
 export function signup(username, password) {
   return (dispatch) => {
     dispatch({ type: SIGNUP_REQUEST });
-    fetch('/auth/signup', {
+    return fetch('/auth/signup', {
       method: 'POST',
       body: JSON.stringify({ encryptedData: encryptData(JSON.stringify({ username, password })) }),
       credentials: 'include',
@@ -90,10 +90,10 @@ export function signup(username, password) {
       }),
     }).then(response => response.json())
       .then((data) => {
+        if (data.error) { throw new Error(data.error); }
         dispatch({ type: SIGNUP_SUCCESS });
-        console.log('here', data);
       }).catch((err) => {
-        const errorMessage = typeof err !== 'string' ? ((err.data && err.data.error) || err.statusText) : err;
+        const errorMessage = typeof err !== 'string' ? err.message : err;
         dispatch({
           type: SIGNUP_FAILURE,
           user: {},
@@ -113,7 +113,7 @@ export function setAppDetails(appName, appDetails) {
 
 export function getAppDetails(appUserName, redirectUrl) {
   return (dispatch) => {
-    fetch(`/auth/app/@${appUserName}`, {
+    return fetch(`/auth/app/@${appUserName}`, {
       method: 'GET',
       credentials: 'include',
       headers: new Headers({
