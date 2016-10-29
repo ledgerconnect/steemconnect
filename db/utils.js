@@ -63,7 +63,7 @@ function upsertApp(appData) {
 }
 
 function getApp(username) {
-  debug('finding app');
+  debug('finding app', username);
   if (!username) { return Promise.reject({ error: new Error('Please specify username') }); }
 
   return db.select('*').from('apps')
@@ -77,9 +77,19 @@ function getApp(username) {
     });
 }
 
+function deleteApp(username) {
+  debug('deleting app', username);
+  if (!username) { return Promise.reject({ error: new Error('Please specify username') }); }
+
+  return db('apps')
+    .where('app', username)
+    .del();
+}
+
 module.exports = {
   addPermissionToDB,
   getPermissionFromDB,
   upsertApp,
   getApp,
+  deleteApp,
 };

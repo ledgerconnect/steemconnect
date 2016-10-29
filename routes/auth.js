@@ -5,7 +5,7 @@ const steemAuth = require('steemauth');
 const jwt = require('jsonwebtoken');
 const { verifyAuth } = require('./middleware');
 const { decryptMessage, encryptMessage } = require('../lib/utils');
-const { addPermissionToDB, upsertApp, getApp } = require('../db/utils');
+const { addPermissionToDB, upsertApp, getApp, deleteApp } = require('../db/utils');
 const debug = require('debug')('steemconnect:route:auth');
 
 const router = new express.Router();
@@ -58,6 +58,16 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
     });
 });
 
+router.get('/auth/app/@:appUserName', verifyAuth, (req, res) => {
+  const { appUserName } = req.params;
+  debug('getting app ', appUserName);
+  return getApp(appUserName)
+    .then(result => res.send(result))
+    .catch((err) => {
+      res.status(500).send({ error: err.message });
+    });
+});
+
 router.post('/auth/app', verifyAuth, (req, res) => {
   const appData = req.body;
   appData.app = req.username;
@@ -68,14 +78,14 @@ router.post('/auth/app', verifyAuth, (req, res) => {
     });
 });
 
-router.get('/auth/app/@:appUserName', verifyAuth, (req, res) => {
-  const { appUserName } = req.params;
-  debug('getting app ', appUserName);
-  return getApp(appUserName)
-    .then(result => res.send(result))
+router.delete('/auth/app', verifyAuth, (req, res) => {
+  const username = req.username;
+  debug('delete app ', username);
+  deleteApp(username).then(() => res.send({ deleted: true }))
     .catch((err) => {
       res.status(500).send({ error: err.message });
     });
 });
+
 
 module.exports = router;

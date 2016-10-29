@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import validator from 'validator';
 import FieldSet from './FieldSet';
-import { createApp, getApp } from './actions';
+import { createApp, getApp, deleteApp } from './actions';
 import PermissionList from '../../lib/permissions';
 import Loading from '../widgets/Loading';
 
@@ -89,10 +89,6 @@ class Developer extends Component {
     }
   };
 
-  deleteApp = () => {
-    console.log('deleteApp');
-  }
-
   createApp = () => this.setState({ creatingNewApp: true })
 
   render() {
@@ -149,7 +145,7 @@ class Developer extends Component {
               </fieldset>
             </form>}
           </div>
-          {!isFetching && appExist && <p className="pas"><a href="#" onClick={this.deleteApp}>Delete App</a></p>}
+          {!isFetching && appExist && <p className="pas"><a href="#" onClick={this.props.deleteApp}>Delete App</a></p>}
           {!showApp && <p className="pas"><a href="#" onClick={this.createApp}>Create App</a></p>}
         </div>
       </div>
@@ -167,9 +163,10 @@ Developer.propTypes = {
   }),
   createApp: PropTypes.func,
   getApp: PropTypes.func,
+  deleteApp: PropTypes.func,
 };
 
 const mapStateToProps = state => ({ auth: state.auth, developer: state.developer });
 const mapDispatchToProps = dispatch =>
-  (bindActionCreators({ createApp, getApp }, dispatch));
+  (bindActionCreators({ createApp, getApp, deleteApp }, dispatch));
 export default connect(mapStateToProps, mapDispatchToProps)(Developer);
