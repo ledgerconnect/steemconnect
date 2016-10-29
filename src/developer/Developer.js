@@ -109,9 +109,10 @@ class Developer extends Component {
     return (
       <div>
         <div className="container">
+          {isFetching && <Loading />}
+          {!isFetching && showApp &&
           <div className="block block-developer mvl">
-            {isFetching && <Loading />}
-            {!isFetching && showApp && <form className="form form-developer">
+            <form className="form form-developer">
               <div className="pam">
                 <label htmlFor="name">App Name</label>
                 <FieldSet name={'name'} defaultValue={name} error={this.state.error} validate={this.validate} formFields={this.formFields} />
@@ -144,10 +145,10 @@ class Developer extends Component {
                 <div className="form-control-feedback man phm">{this.state.error.save}</div>
                 <button className="btn btn-primary form-submit" onClick={this.save}>Save</button>
               </fieldset>
-            </form>}
-          </div>
+            </form>
+          </div>}
           {!isFetching && appExist && <p className="pas"><a href="#" onClick={this.props.deleteApp}>Delete App</a></p>}
-          {!showApp && <p className="pas"><a href="#" onClick={this.createApp}>Create App</a></p>}
+          {!isFetching && !showApp && <p className="pas"><a href="#" onClick={this.createApp}>Create App</a></p>}
         </div>
       </div>
     );
