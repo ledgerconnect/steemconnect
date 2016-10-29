@@ -10,6 +10,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case types.CREATE_APP_REQUEST:
     case types.GET_APP_REQUEST:
+    case types.DELETE_APP_REQUEST:
       return {
         isFetching: true,
         errorMessage: '',
@@ -17,6 +18,7 @@ export default (state = initialState, action) => {
       };
     case types.CREATE_APP_FAILURE:
     case types.GET_APP_FAILURE:
+    case types.DELETE_APP_FAILURE:
       return {
         isFetching: false,
         errorMessage: action.errorMessage,
@@ -28,6 +30,12 @@ export default (state = initialState, action) => {
         isFetching: false,
         errorMessage: '',
         app: action.app,
+      };
+    case types.DELETE_APP_SUCCESS:
+      return {
+        isFetching: false,
+        errorMessage: '',
+        app: {},
       };
     default:
       return state;

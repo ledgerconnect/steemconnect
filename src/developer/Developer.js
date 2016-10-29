@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import validator from 'validator';
 import FieldSet from './FieldSet';
-import { createApp, getApp } from './actions';
+import { createApp, getApp, deleteApp } from './actions';
 import PermissionList from '../../lib/permissions';
 import Loading from '../widgets/Loading';
 
 class Developer extends Component {
   constructor(props) {
     super(props);
-    this.state = { error: {}, showPasswordDialog: false };
+    this.state = { error: {}, creatingNewApp: false };
     this.formFields = { permissions: {} };
     this.formData = {};
   }
@@ -77,10 +77,11 @@ class Developer extends Component {
         this.formData[k] = v.value.trim().split('\n');
       } else if (v.value) {
         this.formData[k] = v.value.trim();
-      } else {
+      } else if (k !== 'tagline' && k !== 'description') {
         missingData = true;
       }
     });
+
     if (missingData) {
       this.state.error.save = 'Please fill all fields';
       this.setState({ error: this.state.error });
@@ -89,21 +90,28 @@ class Developer extends Component {
     }
   };
 
+  createApp = () => this.setState({ creatingNewApp: true })
+
   render() {
     const permissionList = _.map(PermissionList, (v, k) => ({ ...v, api: k }));
     const { app: { name, author, tagline, description,
       permissions = [] }, isFetching } = this.props.developer;
     let { app: { origins = [], redirect_urls = [] } } = this.props.developer;
+
     origins = typeof origins === 'string' ? JSON.parse(origins) : origins;
     redirect_urls = typeof redirect_urls === 'string' ? JSON.parse(redirect_urls) : redirect_urls;
     origins = origins.length ? origins.join('\n') : origins;
     redirect_urls = redirect_urls.length ? redirect_urls.join('\n') : redirect_urls;
+
+    const appExist = !_.isEmpty(this.props.developer.app);
+    const showApp = appExist || this.state.creatingNewApp;
+
     return (
       <div>
         <div className="container">
           <div className="block block-developer mvl">
             {isFetching && <Loading />}
-            {!isFetching && <form className="form form-developer">
+            {!isFetching && showApp && <form className="form form-developer">
               <div className="pam">
                 <label htmlFor="name">App Name</label>
                 <FieldSet name={'name'} defaultValue={name} error={this.state.error} validate={this.validate} formFields={this.formFields} />
@@ -138,7 +146,8 @@ class Developer extends Component {
               </fieldset>
             </form>}
           </div>
-          <p className="pas"><a href="#" onClick={this.clearProfile}>Delete App</a></p>
+          {!isFetching && appExist && <p className="pas"><a href="#" onClick={this.props.deleteApp}>Delete App</a></p>}
+          {!showApp && <p className="pas"><a href="#" onClick={this.createApp}>Create App</a></p>}
         </div>
       </div>
     );
@@ -155,9 +164,10 @@ Developer.propTypes = {
   }),
   createApp: PropTypes.func,
   getApp: PropTypes.func,
+  deleteApp: PropTypes.func,
 };
 
 const mapStateToProps = state => ({ auth: state.auth, developer: state.developer });
 const mapDispatchToProps = dispatch =>
-  (bindActionCreators({ createApp, getApp }, dispatch));
+  (bindActionCreators({ createApp, getApp, deleteApp }, dispatch));
 export default connect(mapStateToProps, mapDispatchToProps)(Developer);
