@@ -77,10 +77,11 @@ class Developer extends Component {
         this.formData[k] = v.value.trim().split('\n');
       } else if (v.value) {
         this.formData[k] = v.value.trim();
-      } else {
+      } else if (k !== 'tagline' && k !== 'description') {
         missingData = true;
       }
     });
+
     if (missingData) {
       this.state.error.save = 'Please fill all fields';
       this.setState({ error: this.state.error });
