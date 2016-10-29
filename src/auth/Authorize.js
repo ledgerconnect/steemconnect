@@ -38,18 +38,23 @@ class Authorize extends React.Component {
     }
 
     return (
-      <div className="block">
-        <div className="mbl"><img alt="app-logo" src={`https://img.busy6.com/@${appName}`} width="70" /></div>
-        {(errorOrLoading)}
-        {(!errorOrLoading) && (<div>
-          <p>The app <b>{appName}</b> is requesting permission to do the following: </p>
-          <ul className="mbm">
-            {permissionList.map(({ name, api }) => <div key={api}>
-              <input type="checkbox" className="form-check-input" ref={c => (this.permissions[api] = c)} defaultChecked="true" value={api} />
-              {name}
-            </div>)}
-          </ul>
-          <a onClick={() => this.authorizeUser(redirect_url, appName)} className="btn btn-primary mbm">Continue as @{user.name}</a>
+      <div className="block block-login">
+          <img alt="app-logo" src={`https://img.busy6.com/@${appName}`} width="70" />
+          {(errorOrLoading) && (<div>
+            <p>The app <b>@{appName}</b> is requesting permission to do the following: </p>
+            <ul className="mbm">
+              {permissionList.map(({ name, api }) => <div key={api}>
+                <input type="checkbox" className="form-check-input" ref={c => (this.permissions[api] = c)} defaultChecked="true" value={api} />
+                {name}
+              </div>)}
+            </ul>
+          <div className="dialog">
+            <form className="form" onSubmit={this.handleSubmit}>
+              <fieldset className="form-group man">
+                <button onClick={() => this.authorizeUser(redirect_url, appName)} className="btn btn-success form-submit">Continue as @{user.name}</button>
+              </fieldset>
+            </form>
+          </div>
         </div>)
         }
       </div>

@@ -19,10 +19,8 @@ class ModelWrapper extends Component {
     }
 
     return (
-      !this.props.auth.isAuthenticated ? <Login {...this.props} /> : <div className={'app-wrapper full-width'}>
-        <div className="main-panel">
-          {this.props.children}
-        </div>
+      !this.props.auth.isAuthenticated ? <Login {...this.props} /> : <div className="login-section">
+        {this.props.children}
       </div>
     );
   }
