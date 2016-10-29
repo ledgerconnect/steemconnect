@@ -12,6 +12,7 @@ class Sidebar extends Component {
   }
   render() {
     const user = this.props.auth.user;
+    const cacheBuster = Math.random() * 10000000000000000;
     return (
       <nav className="sidebar">
         <div className="sidebar-header">
@@ -22,7 +23,7 @@ class Sidebar extends Component {
             <Link to="profile">
               <span className="avatar avatar-sm">
                 <span className="reputation">{formatter.reputation(user.reputation)}</span>
-                <img alt={user.name} src={`https://img.busy6.com/@${user.name}`} />
+                <img alt={user.name} src={`https://img.busy6.com/@${user.name}?${cacheBuster}`} />
               </span>
             </Link>
             <span style={{ clear: 'both', display: 'block' }}> @{user.name} <a onClick={() => this.setState({ menu: 'settings' })}><i className="icon icon-xs material-icons">settings</i></a></span>
