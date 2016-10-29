@@ -47,11 +47,10 @@ router.post('/auth/signup', (req, res) => {
   steem.broadcast.accountCreate(process.env.SIGNUP_OWNER_WIF, process.env.SIGNUP_FEES,
       process.env.SIGNUP_CREATOR, username, owner, active, posting, publicKeys.memo, '',
       (err, result) => {
-        debug(err, result);
         if (result === null) {
           res.send({ success: true });
         } else {
-          debug('Error while creating account', err);
+          debug('Error while creating account', err, result);
           res.status(500).send({ error: 'Could not signup. Please try later' });
         }
       });
