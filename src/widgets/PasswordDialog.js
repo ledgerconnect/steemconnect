@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 class PasswordDialog extends Component {
@@ -15,10 +16,11 @@ class PasswordDialog extends Component {
     let saveText = isUpdating === true ? 'Confirming' : 'Confirm';
     let message;
     let showSuccess;
-    let userBackground = {
-      background: `radial-gradient(circle at 50% 0%, rgba(0, 0, 0, 0.0980392), rgba(0, 0, 0, 0.6)), url("https://img.busy6.com/@guest123/cover")`,
-      backgroundSize: `cover`,
-      backgroundPosition: `center`,
+    const { name: username } = this.props.auth.user;
+    const userBackground = {
+      background: `radial-gradient(circle at 50% 0%, rgba(0, 0, 0, 0.0980392), rgba(0, 0, 0, 0.6)), url("https://img.busy6.com/@${username}/cover")`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
     };
     if (isUpdating === false && error === false) {
       message = <div>Success</div>;
@@ -34,14 +36,14 @@ class PasswordDialog extends Component {
             <Link to="/"><img alt="Steem Connect" className="dialog-logo mbm" src="/img/logo.svg" /></Link>
             <div className="block block-login">
               <div className="dialog">
-                <i className="icon icon-md material-icons dialog-close" onClick={this.props.onClose}>close</i>  
+                <i className="icon icon-md material-icons dialog-close" onClick={this.props.onClose}>close</i>
                 <div className="account-card" style={userBackground}>
-                  <a><img className="profile-image" alt={`@guest123`} src={`https://img.busy6.com/@guest123`} /></a>
+                  <a><img className="profile-image" alt={`@${username}`} src={`https://img.busy6.com/@${username}`} /></a>
                   <h2 className="mts">
-                    @guest213
+                    {`@${username}`}
                   </h2>
                 </div>
-                <form className="form" onSubmit={this.handleSubmit}>
+                <div className="form">
                   <div className="input-group input-group-lg">
                     <span className="input-group-addon"><i className="icon icon-md material-icons">lock_outline</i></span>
                     <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control" ref={(c) => { this.passwordOrWif = c; }} />
@@ -49,7 +51,7 @@ class PasswordDialog extends Component {
                   <fieldset className="form-group man">
                     <button disabled={isUpdating} className="btn btn-success form-submit" onClick={this.savePassword}>{saveText}</button>
                   </fieldset>
-                </form>
+                </div>
               </div>
             </div>
             <div className="mtl phl">
@@ -66,6 +68,16 @@ PasswordDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   isUpdating: PropTypes.bool,
   error: PropTypes.bool,
+  auth: PropTypes.shape({
+    user: PropTypes.shape({
+      name: PropTypes.string,
+    }),
+  }),
 };
 
-export default PasswordDialog;
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps)(PasswordDialog);
