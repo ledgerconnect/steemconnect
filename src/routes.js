@@ -10,9 +10,11 @@ import Apps from './apps/Apps';
 import App from './apps/App';
 import Payments from './payments/Payments';
 import Activity from './activity/Activity';
+import SignUp from './auth/SignUp';
 
 module.exports = (
   <Route path="/">
+    <Route path="/signup" component={SignUp} />
     <Route component={Wrapper}>
       <IndexRoute component={Summary} />
       <Route path="/activity" component={Activity} />
