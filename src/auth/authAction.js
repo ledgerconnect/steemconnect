@@ -9,6 +9,9 @@ const cookie = require('../../lib/cookie');
 export const LOGIN_REQUEST = '@auth/LOGIN_REQUEST';
 export const LOGIN_SUCCESS = '@auth/LOGIN_SUCCESS';
 export const LOGIN_FAILURE = '@auth/LOGIN_FAILURE';
+export const SIGNUP_SUCCESS = '@auth/SIGNUP_SUCCESS';
+export const SIGNUP_FAILURE = '@auth/SIGNUP_FAILURE';
+export const SIGNUP_REQUEST = '@auth/SIGNUP_REQUEST';
 export const LOGIN_NO_COOKIE = '@auth/LOGIN_NO_COOKIE';
 export const UPDATE_PROFILE = '@auth/UPDATE_PROFILE';
 export const UPDATE_LAST_USER_LIST = '@auth/UPDATE_LAST_USER_LIST';
@@ -66,6 +69,33 @@ export function login(username, passwordOrWif) {
         const errorMessage = typeof err !== 'string' ? ((err.data && err.data.error) || err.statusText) : err;
         dispatch({
           type: LOGIN_FAILURE,
+          user: {},
+          errorMessage,
+        });
+      });
+  };
+}
+
+export function signup(username, password) {
+  return (dispatch) => {
+    dispatch({ type: SIGNUP_REQUEST });
+    fetch('/auth/signup', {
+      method: 'POST',
+      body: JSON.stringify({ encryptedData: encryptData(JSON.stringify({ username, password })) }),
+      credentials: 'include',
+      headers: new Headers({
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'x-csrf-token': document.querySelector('meta[name="_csrf"]').content,
+      }),
+    }).then(response => response.json())
+      .then((data) => {
+        dispatch({ type: SIGNUP_SUCCESS });
+        console.log('here', data);
+      }).catch((err) => {
+        const errorMessage = typeof err !== 'string' ? ((err.data && err.data.error) || err.statusText) : err;
+        dispatch({
+          type: SIGNUP_FAILURE,
           user: {},
           errorMessage,
         });
