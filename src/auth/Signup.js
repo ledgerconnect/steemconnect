@@ -30,7 +30,7 @@ class SignUp extends Component {
       <div className="login-center">
         <Link to="/"><img alt="Steem Connect" className="dialog-logo mbm" src="/img/logo.svg" /></Link>
         <div className="block block-login">
-          <h2 className="mal">Sign Up fo Steem</h2>
+          <h2 className="mal">Sign Up for Steem</h2>
           <div className="dialog">
             <form className="form form-login" onSubmit={this.handleSubmit}>
               <div className="input-group input-group-lg">
