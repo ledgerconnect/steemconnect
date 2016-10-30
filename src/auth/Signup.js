@@ -30,15 +30,16 @@ class SignUp extends Component {
       <div className="login-center">
         <Link to="/"><img alt="Steem Connect" className="dialog-logo mbm" src="/img/logo.svg" /></Link>
         <div className="block block-login">
+          <h2 className="mal">Sign Up fo Steem</h2>
           <div className="dialog">
-            <form className="form" onSubmit={this.handleSubmit}>
+            <form className="form form-login" onSubmit={this.handleSubmit}>
               <div className="input-group input-group-lg">
-                <span className="input-group-addon"><i className="icon icon-md material-icons">lock_outline</i></span>
+                <span className="input-group-addon"><i className="icon icon-md material-icons">perm_identity</i></span>
                 <input type="text" placeholder="Username" className="form-control" ref={(c) => { this.username = c; } } />
               </div>
               <div className="input-group input-group-lg">
                 <span className="input-group-addon"><i className="icon icon-md material-icons">lock_outline</i></span>
-                <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control" ref={(c) => { this.passwordOrWif = c; } } />
+                <input autoFocus type="password" placeholder="Password" className="form-control" ref={(c) => { this.passwordOrWif = c; } } />
               </div>
               {errorMessage &&
                 <ul className="errorMessages pam">
@@ -57,6 +58,9 @@ class SignUp extends Component {
               </fieldset>
             </form>
           </div>
+        </div>
+        <div className="mvl">
+          <p>Have an account? <Link to="/">Log in</Link></p>
         </div>
       </div>
     </div>

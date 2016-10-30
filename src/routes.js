@@ -10,7 +10,7 @@ import Apps from './apps/Apps';
 import App from './apps/App';
 import Payments from './payments/Payments';
 import Activity from './activity/Activity';
-import SignUp from './auth/SignUp';
+import SignUp from './auth/Signup';
 
 module.exports = (
   <Route path="/">
