@@ -112,35 +112,34 @@ export function setAppDetails(appName, appDetails) {
 }
 
 export function getAppDetails(appUserName, redirectUrl) {
-  return (dispatch) => {
-    return fetch(`/auth/app/@${appUserName}`, {
-      method: 'GET',
-      credentials: 'include',
-      headers: new Headers({
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'x-csrf-token': document.querySelector('meta[name="_csrf"]').content,
-      }),
-    })
-      .then(response => response.json())
-      .then((response) => {
-        const app = response;
-        app.permissions = _.map(app.permissions,
-          v => Object.assign(PermissionList[v], { api: v }));
-        app.redirect_urls = app.redirect_urls || [];
+  return dispatch => fetch(`/auth/app/@${appUserName}`, {
+    method: 'GET',
+    credentials: 'include',
+    headers: new Headers({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'x-csrf-token': document.querySelector('meta[name="_csrf"]').content,
+    }),
+  })
+    .then(response => response.json())
+    .then((response) => {
+      const app = response;
+      app.permissions = _.map(app.permissions,
+        v => Object.assign(PermissionList[v], { api: v }));
+      app.redirect_urls = app.redirect_urls || [];
 
-        // If there is list of redirect_url that developer must specify
-        // if there is only one that it will be selected automatically
-        if (app.redirect_urls.length > 1 && app.redirect_urls.indexOf(redirectUrl) === -1) {
-          dispatch(setAppDetails(appUserName, { error: 'RedirectUrl Mismatch' }));
-        } else {
-          app.redirect_url = redirectUrl || app.redirect_urls[0];
-          dispatch(setAppDetails(appUserName, app));
-        }
-      }).catch((err) => {
-        console.log('err', err);
-        const errorMessage = typeof err !== 'string' ? ((err.data && err.data.error) || err.statusText) : err;
-        dispatch(setAppDetails(appUserName, { error: errorMessage }));
-      });
-  };
+      // If there is list of redirect_url that developer must specify
+      // if there is only one that it will be selected automatically
+      if (app.redirect_urls.length > 1 && app.redirect_urls.indexOf(redirectUrl) === -1) {
+        dispatch(setAppDetails(appUserName, { error: 'RedirectUrl Mismatch' }));
+      } else {
+        app.redirect_url = redirectUrl || app.redirect_urls[0];
+        dispatch(setAppDetails(appUserName, app));
+      }
+      return app;
+    }).catch((err) => {
+      console.log('err', err);
+      const errorMessage = typeof err !== 'string' ? ((err.data && err.data.error) || err.statusText) : err;
+      dispatch(setAppDetails(appUserName, { error: errorMessage }));
+    });
 }
