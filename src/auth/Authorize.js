@@ -15,13 +15,19 @@ class Authorize extends React.Component {
   componentWillMount() {
     const { redirect_url } = this.props.location.query;
     const appName = this.props.params.app;
-    this.props.getAppDetails(appName, redirect_url);
+    this.props.getAppDetails(appName, redirect_url).then((({ permissions } = {}) => {
+      if (permissions && redirect_url) {
+        const permissionsValues = _.chain(permissions).map(v1 => v1.api).filter().value();
+        window.location = `/auth/authorize?redirect_url=${redirect_url}&appUserName=${appName}&permissions=${permissionsValues}`;
+      }
+    }));
   }
 
-  authorizeUser = (redirect_url, appName) => {
+  authorizeUser = (event, redirect_url, appName) => {
+    event.preventDefault();
     const permissions = _.chain(this.permissions).map((v1, k1) =>
       v1.checked && k1).filter().value();
-    window.location = `/auth/authorize?&redirect_url=${redirect_url}&appUserName=${appName}&permissions=${permissions}`;
+    window.location = `/auth/authorize?redirect_url=${redirect_url}&appUserName=${appName}&permissions=${permissions}`;
   }
 
   render() {
@@ -39,20 +45,20 @@ class Authorize extends React.Component {
 
     return (
       <div className="block block-login">
-          <div className="mvl"><img alt="app-logo" src={`https://img.busy.org/@${appName}`} width="70" /></div>
-          {errorOrLoading}
-          {(!errorOrLoading) && (<div className="mtl">
-            <p>The app <b>@{appName}</b> is requesting permission to do the following: </p>
-            <ul className="mbm">
-              {permissionList.map(({ name, api }) => <div key={api}>
-                <input type="checkbox" className="form-check-input" ref={c => (this.permissions[api] = c)} defaultChecked="true" value={api} />
-                {name}
-              </div>)}
-            </ul>
+        <div className="mvl"><img alt="app-logo" src={`https://img.busy6.com/@${appName}`} width="70" /></div>
+        {errorOrLoading}
+        {(!errorOrLoading) && (<div className="mtl">
+          <p>The app <b>@{appName}</b> is requesting permission to do the following: </p>
+          <ul className="mbm">
+            {permissionList.map(({ name, api }) => <div key={api}>
+              <input type="checkbox" className="form-check-input" ref={c => (this.permissions[api] = c)} defaultChecked="true" value={api} />
+              {name}
+            </div>)}
+          </ul>
           <div className="dialog">
             <form className="form" onSubmit={this.handleSubmit}>
               <fieldset className="form-group man">
-                <button onClick={() => this.authorizeUser(redirect_url, appName)} className="btn btn-success form-submit">Continue as @{user.name}</button>
+                <button onClick={event => this.authorizeUser(event, redirect_url, appName)} className="btn btn-success form-submit">Continue as @{user.name}</button>
               </fieldset>
             </form>
           </div>
