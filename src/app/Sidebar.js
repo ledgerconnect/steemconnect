@@ -23,7 +23,7 @@ class Sidebar extends Component {
             <Link to="profile">
               <span className="avatar avatar-sm">
                 <span className="reputation">{formatter.reputation(user.reputation)}</span>
-                <img alt={user.name} src={`https://img.busy6.com/@${user.name}?${cacheBuster}`} />
+                <img alt={user.name} src={`https://img.busy.org/@${user.name}?${cacheBuster}`} />
               </span>
             </Link>
             <span style={{ clear: 'both', display: 'block' }}> @{user.name} <a onClick={() => this.setState({ menu: 'settings' })}><i className="icon icon-xs material-icons">settings</i></a></span>

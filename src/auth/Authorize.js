@@ -39,7 +39,7 @@ class Authorize extends React.Component {
 
     return (
       <div className="block block-login">
-          <div className="mvl"><img alt="app-logo" src={`https://img.busy6.com/@${appName}`} width="70" /></div>
+          <div className="mvl"><img alt="app-logo" src={`https://img.busy.org/@${appName}`} width="70" /></div>
           {errorOrLoading}
           {(!errorOrLoading) && (<div className="mtl">
             <p>The app <b>@{appName}</b> is requesting permission to do the following: </p>

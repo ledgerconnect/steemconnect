@@ -55,7 +55,7 @@ class Apps extends Component {
                 const showFilteredApp = filterValue && _.includes(`${app.name} ${app.tagline}`.toLowerCase(), filterValue.toLowerCase());
                 if (showFilteredApp || !filterValue) {
                   return (<li key={app.name} className="list-element pam">
-                    <img src={`https://img.busy6.com/@${key}`} className="list-image mrs" />
+                    <img src={`https://img.busy.org/@${key}`} className="list-image mrs" />
                     <b className="list-title">{app.name}</b>
                     <span className="list-description pls">{app.tagline}</span>
                     <Link to={`/apps/@${key}`} className="list-link"><i className="icon icon-md material-icons list-icon">keyboard_arrow_right</i></Link>

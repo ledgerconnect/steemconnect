@@ -85,7 +85,7 @@ export function setAvatar(passwordOrWif, file, type) {
     const profileData = user.json_metadata.profile;
     const body = new FormData();
     body.append('file', file);
-    let uploadUrl = `https://img.busy6.com/@${user.name}`;
+    let uploadUrl = `https://img.busy.org/@${user.name}`;
     if (type === 'cover_image') {
       uploadUrl += '/cover.sass';
     }

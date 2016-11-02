@@ -18,7 +18,7 @@ class PasswordDialog extends Component {
     let showSuccess;
     const { name: username } = this.props.auth.user;
     const userBackground = {
-      background: `radial-gradient(circle at 50% 0%, rgba(0, 0, 0, 0.0980392), rgba(0, 0, 0, 0.6)), url("https://img.busy6.com/@${username}/cover")`,
+      background: `radial-gradient(circle at 50% 0%, rgba(0, 0, 0, 0.0980392), rgba(0, 0, 0, 0.6)), url("https://img.busy.org/@${username}/cover")`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
     };
@@ -38,7 +38,7 @@ class PasswordDialog extends Component {
               <div className="dialog">
                 <i className="icon icon-md material-icons dialog-close" onClick={this.props.onClose}>close</i>
                 <div className="account-card" style={userBackground}>
-                  <a><img className="profile-image" alt={`@${username}`} src={`https://img.busy6.com/@${username}`} /></a>
+                  <a><img className="profile-image" alt={`@${username}`} src={`https://img.busy.org/@${username}`} /></a>
                   <h2 className="mts">
                     {`@${username}`}
                   </h2>

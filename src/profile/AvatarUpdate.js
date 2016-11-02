@@ -4,7 +4,7 @@ import Dropzone from 'react-dropzone';
 const AvatarUpdate = (props) => {
   const cacheBuster = Math.random() * 10000000000000000;
   const userBackground = {
-    background: `radial-gradient(circle at 50% 0%, rgba(0, 0, 0, 0.0980392), rgba(0, 0, 0, 0.6)), url("https://img.busy6.com/@${props.username}/cover?${cacheBuster}")`,
+    background: `radial-gradient(circle at 50% 0%, rgba(0, 0, 0, 0.0980392), rgba(0, 0, 0, 0.6)), url("https://img.busy.org/@${props.username}/cover?${cacheBuster}")`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
   };
@@ -14,7 +14,7 @@ const AvatarUpdate = (props) => {
         <Dropzone className="dropzone dropzone-profile" onDrop={files => props.onDrop(files, 'profile_image')} accept="image/*">
           <a className="placeholder">
             <i className="icon icon-md material-icons">file_upload</i>
-            <img alt="Profile" className="profile-image" src={`https://img.busy6.com/@${props.username}?${cacheBuster}`} />
+            <img alt="Profile" className="profile-image" src={`https://img.busy.org/@${props.username}?${cacheBuster}`} />
           </a>
         </Dropzone>
         <Dropzone className="dropzone dropzone-background" onDrop={files => props.onDrop(files, 'cover_image')} accept="image/*">
