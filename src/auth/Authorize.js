@@ -9,7 +9,7 @@ class Authorize extends React.Component {
   constructor(props) {
     super(props);
     this.permissions = {};
-    this.state = { error: {}, showPasswordDialog: false };
+    this.state = { error: {}, showPasswordDialog: false, isRedirecting: false };
   }
 
   componentWillMount() {
@@ -18,7 +18,9 @@ class Authorize extends React.Component {
     this.props.getAppDetails(appName, redirect_url).then((({ permissions } = {}) => {
       if (permissions && redirect_url) {
         const permissionsValues = _.chain(permissions).map(v1 => v1.api).filter().value();
-        window.location = `/auth/authorize?redirect_url=${redirect_url}&appUserName=${appName}&permissions=${permissionsValues}`;
+        this.setState({ isRedirecting: true }, () => {
+          window.location = `/auth/authorize?redirect_url=${redirect_url}&appUserName=${appName}&permissions=${permissionsValues}`;
+        });
       }
     }));
   }
@@ -35,7 +37,7 @@ class Authorize extends React.Component {
     const { apps = {}, user = {} } = this.props.auth;
     const appDetails = apps[appName] || {};
     const { permissions: permissionList = [], redirect_url, error } = appDetails;
-    const isLoading = _.isEmpty(appDetails);
+    const isLoading = _.isEmpty(appDetails) || this.state.isRedirecting;
     let errorOrLoading;
     if (isLoading) {
       errorOrLoading = <Loading />;
