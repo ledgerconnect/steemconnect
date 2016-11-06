@@ -1,20 +1,23 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import _ from 'lodash';
-import apps from './../helpers/apps.json';
+import { getAppList } from './actions';
 
 class Apps extends Component {
-  constructor() {
-    super();
-    this.setFilter = this.setFilter.bind(this);
-    this.state = { appFilterValue: null };
+
+  componentWillMount() {
+    this.props.getAppList();
+    this.getAppList = _.debounce(this.props.getAppList, 250);
   }
 
-  setFilter(e) {
-    this.setState({ appFilterValue: e.target.value});
+  setFilter = (e) => {
+    this.getAppList(e.target.value);
   }
 
   render() {
+    const { appList } = this.props.apps;
     return (
       <div>
         <section className="align-center profile-header">
@@ -49,19 +52,12 @@ class Apps extends Component {
         <div className="container">
           <div className="block block-apps">
             <ul className="list list-apps">
-              {apps && _.map(apps, (app, key) => {
-                const filterValue = this.state.appFilterValue;
-                // case insentitive filter is more user friendly
-                const showFilteredApp = filterValue && _.includes(`${app.name} ${app.tagline}`.toLowerCase(), filterValue.toLowerCase());
-                if (showFilteredApp || !filterValue) {
-                  return (<li key={app.name} className="list-element pam">
-                    <img src={`https://img.busy.org/@${key}`} className="list-image mrs" />
-                    <b className="list-title">{app.name}</b>
-                    <span className="list-description pls">{app.tagline}</span>
-                    <Link to={`/apps/@${key}`} className="list-link"><i className="icon icon-md material-icons list-icon">keyboard_arrow_right</i></Link>
-                  </li>);
-                }
-              })
+              {_.map(appList, app => (<li key={app.id} className="list-element pam">
+                <img src={`https://img.busy.org/@${app.app}`} alt={app.app} className="list-image mrs" />
+                <b className="list-title">{app.name}</b>
+                <span className="list-description pls">{app.tagline}</span>
+                <Link to={`/apps/@${app.app}`} className="list-link"><i className="icon icon-md material-icons list-icon">keyboard_arrow_right</i></Link>
+              </li>))
               }
             </ul>
           </div>
@@ -71,4 +67,12 @@ class Apps extends Component {
   }
 }
 
-export default Apps;
+Apps.propTypes = {
+  apps: PropTypes.shape({ appList: PropTypes.array }),
+  getAppList: PropTypes.func,
+};
+
+const mapStateToProps = state => ({ auth: state.auth, apps: state.apps });
+const mapDispatchToProps = dispatch => bindActionCreators({ getAppList }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Apps);

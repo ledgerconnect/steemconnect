@@ -5,7 +5,7 @@ const steemAuth = require('steemauth');
 const jwt = require('jsonwebtoken');
 const { verifyAuth } = require('./middleware');
 const { decryptMessage, encryptMessage } = require('../lib/utils');
-const { addPermissionToDB, upsertApp, getApp, deleteApp } = require('../db/utils');
+const { addPermissionToDB, upsertApp, getApp, deleteApp, getAppList } = require('../db/utils');
 const debug = require('debug')('steemconnect:route:auth');
 
 const router = new express.Router();
@@ -45,15 +45,15 @@ router.post('/auth/signup', (req, res) => {
   const active = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.active, 1]] };
   const posting = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.posting, 1]] };
   steem.broadcast.accountCreate(process.env.SIGNUP_OWNER_WIF, process.env.SIGNUP_FEES,
-      process.env.SIGNUP_CREATOR, username, owner, active, posting, publicKeys.memo, '',
-      (err, result) => {
-        if (result === null) {
-          res.send({ success: true });
-        } else {
-          debug('Error while creating account', err, result);
-          res.status(500).send({ error: 'Could not signup. Please try later' });
-        }
-      });
+    process.env.SIGNUP_CREATOR, username, owner, active, posting, publicKeys.memo, '',
+    (err, result) => {
+      if (result === null) {
+        res.send({ success: true });
+      } else {
+        debug('Error while creating account', err, result);
+        res.status(500).send({ error: 'Could not signup. Please try later' });
+      }
+    });
 });
 
 router.get('/auth/authorize', verifyAuth, (req, res) => {
@@ -107,5 +107,12 @@ router.delete('/auth/app', verifyAuth, (req, res) => {
     });
 });
 
+
+router.get('/auth/apps', verifyAuth, (req, res) => {
+  getAppList(req.query.filter).then(result => res.send(result))
+    .catch((err) => {
+      res.status(500).send({ error: err.message });
+    });
+});
 
 module.exports = router;

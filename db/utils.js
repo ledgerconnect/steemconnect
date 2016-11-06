@@ -63,7 +63,7 @@ function upsertApp(appData) {
 }
 
 function getApp(username) {
-  debug('finding app', username);
+  debug('finding app for user', username);
   if (!username) { return Promise.reject({ error: new Error('Please specify username') }); }
 
   return db.select('*').from('apps')
@@ -78,7 +78,7 @@ function getApp(username) {
 }
 
 function deleteApp(username) {
-  debug('deleting app', username);
+  debug('deleting app by user', username);
   if (!username) { return Promise.reject({ error: new Error('Please specify username') }); }
 
   return db('apps')
@@ -86,10 +86,22 @@ function deleteApp(username) {
     .del();
 }
 
+function getAppList(filter = '', page = 0) {
+  debug('finding app', filter);
+
+  return db.select('app', 'author', 'name', 'id').from('apps')
+    .where('app', 'like', `%${filter}%`)
+    .limit(10)
+    .offset(page * 10)
+    .then((result = []) => result);
+}
+
+
 module.exports = {
   addPermissionToDB,
   getPermissionFromDB,
   upsertApp,
   getApp,
   deleteApp,
+  getAppList,
 };
