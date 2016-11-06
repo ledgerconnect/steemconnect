@@ -20,7 +20,7 @@ module.exports = (
       <Route path="/activity" component={Activity} />
       <Route path="/payments" component={Payments} />
       <Route path="/apps" component={Apps} />
-      <Route path="/apps/:app" component={App} />
+      <Route path="/apps/@:app" component={App} />
       <Route path="/profile" component={Profile} />
       <Route path="/developers" component={Developer} />
     </Route>

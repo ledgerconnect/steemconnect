@@ -89,7 +89,7 @@ function deleteApp(username) {
 function getAppList(filter = '', page = 0) {
   debug('finding app', filter);
 
-  return db.select('app', 'author', 'name', 'id').from('apps')
+  return db.select('app', 'author', 'name', 'id', 'tagline', 'description', 'origins').from('apps')
     .where('app', 'like', `%${filter}%`)
     .limit(10)
     .offset(page * 10)
