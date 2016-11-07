@@ -96,6 +96,15 @@ function getAppList(filter = '', page = 0) {
     .then((result = []) => result);
 }
 
+function getUserApps(username) {
+  debug('getting user apps', username);
+
+  return db.select('apps.app', 'apps.author', 'apps.name', 'apps.id', 'apps.tagline', 'apps.description', 'apps.origins')
+    .from('authorizedApps')
+    .innerJoin('apps', 'apps.app', 'authorizedApps.app')
+    .where('authorizedApps.username', username)
+    .then((result = []) => result);
+}
 
 module.exports = {
   addPermissionToDB,
@@ -104,4 +113,5 @@ module.exports = {
   getApp,
   deleteApp,
   getAppList,
+  getUserApps,
 };

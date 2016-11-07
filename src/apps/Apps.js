@@ -3,12 +3,17 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import _ from 'lodash';
-import { getAppList } from './actions';
+import { getAppList, getMyAppList } from './actions';
 
 class Apps extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { showMyApp: false };
+  }
 
   componentWillMount() {
     this.props.getAppList();
+    this.props.getMyAppList();
     this.getAppList = _.debounce(this.props.getAppList, 250);
   }
 
@@ -16,8 +21,11 @@ class Apps extends Component {
     this.getAppList(e.target.value);
   }
 
+  updateShowMyApp = (showMyApp = false) => this.setState({ showMyApp });
+
   render() {
-    const { appList } = this.props.apps;
+    const appList = this.state.showMyApp ? this.props.apps.myAppList : this.props.apps.appList;
+
     return (
       <div>
         <section className="align-center profile-header">
@@ -31,19 +39,19 @@ class Apps extends Component {
         </section>
         <ul className="secondary-nav mbl">
           <li>
-            <a href="#">
+            <a href="#" onClick={() => this.updateShowMyApp(false)}>
               <i className="icon icon-md material-icons">star</i>
               <span className="hidden-xs"> Featured</span>
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="#" onClick={() => this.updateShowMyApp(false)}>
               <i className="icon icon-md material-icons">search</i>
               <span className="hidden-xs"> Browse</span>
             </a>
           </li>
           <li>
-            <a href="#">
+            <a href="#" onClick={() => this.updateShowMyApp(true)}>
               <i className="icon icon-md material-icons">check</i>
               <span className="hidden-xs"> My Apps</span>
             </a>
@@ -68,11 +76,12 @@ class Apps extends Component {
 }
 
 Apps.propTypes = {
-  apps: PropTypes.shape({ appList: PropTypes.array }),
+  apps: PropTypes.shape({ myAppList: PropTypes.array, appList: PropTypes.array }),
   getAppList: PropTypes.func,
+  getMyAppList: PropTypes.func,
 };
 
 const mapStateToProps = state => ({ auth: state.auth, apps: state.apps });
-const mapDispatchToProps = dispatch => bindActionCreators({ getAppList }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ getAppList, getMyAppList }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Apps);
