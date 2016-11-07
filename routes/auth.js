@@ -5,7 +5,8 @@ const steemAuth = require('steemauth');
 const jwt = require('jsonwebtoken');
 const { verifyAuth } = require('./middleware');
 const { decryptMessage, encryptMessage } = require('../lib/utils');
-const { addPermissionToDB, upsertApp, getApp, deleteApp, getAppList, getUserApps } = require('../db/utils');
+const { addPermissionToDB, upsertApp, getApp, deleteApp,
+  getAppList, getUserApps, unAuthorizeApp } = require('../db/utils');
 const debug = require('debug')('steemconnect:route:auth');
 
 const router = new express.Router();
@@ -118,6 +119,16 @@ router.get('/auth/apps', verifyAuth, (req, res) => {
 router.get('/auth/myapps', verifyAuth, (req, res) => {
   const username = req.username;
   getUserApps(username).then(result => res.send(result))
+    .catch((err) => {
+      res.status(500).send({ error: err.message });
+    });
+});
+
+router.delete('/auth/myapps', verifyAuth, (req, res) => {
+  const username = req.username;
+  unAuthorizeApp(req.query.app, username).then(result => res.send({
+    removed: result === 1 ? req.query.app : false,
+  }))
     .catch((err) => {
       res.status(500).send({ error: err.message });
     });

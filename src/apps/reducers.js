@@ -12,24 +12,20 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case types.GET_APPLIST_REQUEST:
     case types.GET_MYAPPLIST_REQUEST:
-      return {
+    case types.DISCONNECT_APP_REQUEST:
+      return Object.assign({}, state, {
         isFetching: true,
         errorMessage: '',
-        appList: [],
-      };
+      });
     case types.GET_APPLIST_FAILURE:
     case types.GET_MYAPPLIST_FAILURE:
-      return {
+    case types.DISCONNECT_APP_FAILURE:
+      return Object.assign({}, state, {
         isFetching: false,
         errorMessage: action.errorMessage,
-        appList: _.chain(action.appList)
-                    .concat(state.appList)
-                    .uniqBy('id')
-                    .sortBy('id')
-                    .value(),
-      };
+      });
     case types.GET_APPLIST_SUCCESS:
-      return {
+      return Object.assign({}, state, {
         isFetching: false,
         errorMessage: '',
         appList: _.chain(action.appList)
@@ -37,9 +33,9 @@ export default (state = initialState, action) => {
                     .uniqBy('id')
                     .sortBy('id')
                     .value(),
-      };
+      });
     case types.GET_MYAPPLIST_SUCCESS:
-      return {
+      return Object.assign({}, state, {
         isFetching: false,
         errorMessage: '',
         appList: _.chain(action.appList)
@@ -48,7 +44,13 @@ export default (state = initialState, action) => {
                     .sortBy('id')
                     .value(),
         myAppList: _.sortBy(action.appList, 'id'),
-      };
+      });
+    case types.DISCONNECT_APP_SUCCESS:
+      return Object.assign({}, state, {
+        isFetching: false,
+        errorMessage: '',
+        myAppList: _.filter(state.myAppList, appDetails => appDetails.app !== action.removed),
+      });
     default:
       return state;
   }

@@ -106,6 +106,13 @@ function getUserApps(username) {
     .then((result = []) => result);
 }
 
+function unAuthorizeApp(app, username) {
+  return db('authorizedApps')
+    .where('app', username)
+    .andWhere('username', username)
+    .del();
+}
+
 module.exports = {
   addPermissionToDB,
   getPermissionFromDB,
@@ -114,4 +121,5 @@ module.exports = {
   deleteApp,
   getAppList,
   getUserApps,
+  unAuthorizeApp,
 };
