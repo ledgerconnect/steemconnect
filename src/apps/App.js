@@ -18,8 +18,9 @@ class AppDetails extends Component {
 
   render() {
     const { apps: { appList = [], myAppList = [], isFetching } = {}, params: { app } } = this.props;
-    const currentApp = _.find(appList, { app }) || {};
     const isMyApp = _.find(myAppList, { app });
+    const currentApp = isMyApp || (_.find(appList, { app }) || {});
+
     currentApp.origins = _.isArray(currentApp.origins) && currentApp.origins.length ? currentApp.origins : ['#'];
     return (
       <div>

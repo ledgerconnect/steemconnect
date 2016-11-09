@@ -55,7 +55,7 @@ export function getMyAppList() {
     })
       .then(handleErrors)
       .then(response => response.json())
-      .then(appList => dispatch({ type: GET_MYAPPLIST_SUCCESS, appList }))
+      .then(myAppList => dispatch({ type: GET_MYAPPLIST_SUCCESS, myAppList }))
       .catch((err) => {
         const errorMessage = err.toString();
         dispatch({

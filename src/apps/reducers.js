@@ -38,12 +38,7 @@ export default (state = initialState, action) => {
       return Object.assign({}, state, {
         isFetching: false,
         errorMessage: '',
-        appList: _.chain(action.appList)
-                    .concat(state.appList)
-                    .uniqBy('id')
-                    .sortBy('id')
-                    .value(),
-        myAppList: _.sortBy(action.appList, 'id'),
+        myAppList: _.sortBy(action.myAppList, 'id'),
       });
     case types.DISCONNECT_APP_SUCCESS:
       return Object.assign({}, state, {
