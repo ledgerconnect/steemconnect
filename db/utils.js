@@ -91,6 +91,7 @@ function getAppList(filter = '', page = 0) {
 
   return db.select('app', 'author', 'name', 'id', 'tagline', 'description', 'origins').from('apps')
     .where('app', 'like', `%${filter}%`)
+    .andWhere('env', 'prod')
     .limit(10)
     .offset(page * 10)
     .then((result = []) => result);
