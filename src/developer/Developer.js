@@ -75,6 +75,10 @@ class Developer extends Component {
         this.formData.permissions = _.chain(v).map((v1, k1) => v1.checked && k1).filter().value();
       } else if (k === 'origins' || k === 'redirect_urls') {
         this.formData[k] = v.value.trim().split('\n');
+      } else if (k === 'envDev' || k === 'envProd') {
+        if (v.checked) {
+          this.formData.env = v.value;
+        }
       } else if (v.value) {
         this.formData[k] = v.value.trim();
       } else if (k !== 'tagline' && k !== 'description') {
@@ -94,7 +98,7 @@ class Developer extends Component {
 
   render() {
     const permissionList = _.map(PermissionList, (v, k) => ({ ...v, api: k }));
-    const { app: { name, author, tagline, description,
+    const { app: { name, author, tagline, description, env = 'dev',
       permissions = [] }, isFetching } = this.props.developer;
     let { app: { origins = [], redirect_urls = [] } } = this.props.developer;
 
@@ -111,42 +115,49 @@ class Developer extends Component {
         <div className="container">
           {isFetching && <Loading />}
           {!isFetching && showApp &&
-          <div className="block block-developer mvl">
-            <form className="form form-developer">
-              <div className="pam">
-                <label htmlFor="name">App Name</label>
-                <FieldSet name={'name'} defaultValue={name} error={this.state.error} validate={this.validate} formFields={this.formFields} />
-                <label htmlFor="author">Author</label>
-                <FieldSet name={'author'} defaultValue={author} error={this.state.error} validate={this.validate} formFields={this.formFields} />
-                <label htmlFor="tagline">Tagline</label>
-                <FieldSet name={'tagline'} defaultValue={tagline} error={this.state.error} validate={this.validate} formFields={this.formFields} />
-                <label htmlFor="description">Description</label>
-                <FieldSet name={'description'} defaultValue={description} error={this.state.error} validate={this.validate} formFields={this.formFields} />
-                <fieldset className="form-group">
-                  <label htmlFor="origins">Requested permissions</label>
-                  {permissionList.map(({ name: permissionName, api }) => <div key={api}>
-                    <input type="checkbox" className="form-check-input mls" ref={c => (this.formFields.permissions[api] = c)} defaultChecked={permissions.indexOf(api) >= 0} value={api} />
-                    {permissionName}
-                  </div>
-                  )}
+            <div className="block block-developer mvl">
+              <form className="form form-developer">
+                <div className="pam">
+                  <label htmlFor="name">App Name</label>
+                  <FieldSet name={'name'} defaultValue={name} error={this.state.error} validate={this.validate} formFields={this.formFields} />
+                  <label htmlFor="author">Author</label>
+                  <FieldSet name={'author'} defaultValue={author} error={this.state.error} validate={this.validate} formFields={this.formFields} />
+                  <label htmlFor="tagline">Tagline</label>
+                  <FieldSet name={'tagline'} defaultValue={tagline} error={this.state.error} validate={this.validate} formFields={this.formFields} />
+                  <label htmlFor="description">Description</label>
+                  <FieldSet name={'description'} defaultValue={description} error={this.state.error} validate={this.validate} formFields={this.formFields} />
+                  <fieldset className="form-group">
+                    <label htmlFor="origins">Requested permissions</label>
+                    {permissionList.map(({ name: permissionName, api }) => <div key={api}>
+                      <input type="checkbox" className="form-check-input mls" ref={c => (this.formFields.permissions[api] = c)} defaultChecked={permissions.indexOf(api) >= 0} value={api} />
+                      {permissionName}
+                    </div>
+                    )}
+                  </fieldset>
+                  <fieldset className="form-group">
+                    <label htmlFor="origins">Allowed Origins</label>
+                    <textarea className="form-control form-control-lg" defaultValue={origins} onBlur={() => this.validate('origins')} placeholder="each origins in new line" rows="3" ref={c => (this.formFields.origins = c)} />
+                    <div className="form-control-feedback">{this.state.error.origins}</div>
+                  </fieldset>
+                  <fieldset className="form-group">
+                    <h3>Allowed Redirect Urls</h3>
+                    <textarea className="form-control form-control-lg" defaultValue={redirect_urls} onBlur={() => this.validate('redirect_urls')} placeholder="each redirect_urls in new line" rows="3" ref={c => (this.formFields.redirect_urls = c)} />
+                    <div className="form-control-feedback">{this.state.error.redirect_urls}</div>
+                  </fieldset>
+                  <fieldset className="form-group">
+                    <h3>Environment</h3>
+                    <input ref={c => (this.formFields.envDev = c)} type="radio" name="env" value="dev" defaultChecked={env === 'dev'} />
+                    <label htmlFor="envDev" className="radio-label"> Development</label>
+                    <input ref={c => (this.formFields.envProd = c)} type="radio" name="env" value="prod" defaultChecked={env === 'prod'} />
+                    <label htmlFor="envProd" className="radio-label">Production</label>
+                  </fieldset>
+                </div>
+                <fieldset className="form-group man">
+                  <div className="form-control-feedback man phm">{this.state.error.save}</div>
+                  <button className="btn btn-primary form-submit" onClick={this.save}>Save</button>
                 </fieldset>
-                <fieldset className="form-group">
-                  <label htmlFor="origins">Allowed Origins</label>
-                  <textarea className="form-control form-control-lg" defaultValue={origins} onBlur={() => this.validate('origins')} placeholder="each origins in new line" rows="3" ref={c => (this.formFields.origins = c)} />
-                  <div className="form-control-feedback">{this.state.error.origins}</div>
-                </fieldset>
-                <fieldset className="form-group">
-                  <h3>Allowed Redirect Urls</h3>
-                  <textarea className="form-control form-control-lg" defaultValue={redirect_urls} onBlur={() => this.validate('redirect_urls')} placeholder="each redirect_urls in new line" rows="3" ref={c => (this.formFields.redirect_urls = c)} />
-                  <div className="form-control-feedback">{this.state.error.redirect_urls}</div>
-                </fieldset>
-              </div>
-              <fieldset className="form-group man">
-                <div className="form-control-feedback man phm">{this.state.error.save}</div>
-                <button className="btn btn-primary form-submit" onClick={this.save}>Save</button>
-              </fieldset>
-            </form>
-          </div>}
+              </form>
+            </div>}
           {!isFetching && appExist && <p className="pas"><a href="#" onClick={this.props.deleteApp}>Delete App</a></p>}
           {!isFetching && !showApp && <p className="pas"><a href="#" onClick={this.createApp}>Create App</a></p>}
         </div>
