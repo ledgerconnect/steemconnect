@@ -74,7 +74,7 @@ apiRouter.get('/reblog', (req, res) => {
   const { permlink, account, author } = req.query;
   const requiredAuths = [];
   const requiredPostingAuths = [req.username];
-  const id = 'reblog';
+  const id = 'follow';
   const json = JSON.stringify(['reblog', { account, author, permlink }]);
   steem.broadcast.customJson(req.wif, requiredAuths, requiredPostingAuths, id, json,
     (err, result) => sendResponse({ err, result }, res));
@@ -94,8 +94,8 @@ apiRouter.get('/unfollow', (req, res) => {
   const { unfollower, unfollowing } = req.query;
   const requiredAuths = [];
   const requiredPostingAuths = [req.username];
-  const id = 'unfollow';
-  const json = JSON.stringify(['unfollow', { unfollower, unfollowing, what: ['blog'] }]);
+  const id = 'follow';
+  const json = JSON.stringify(['follow', { follower: unfollower, following: unfollowing, what: [] }]);
   steem.broadcast.customJson(req.wif, requiredAuths, requiredPostingAuths, id, json,
     (err, result) => sendResponse({ err, result }, res));
 });

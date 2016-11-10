@@ -6,4 +6,7 @@ export DEBUG="steemconnect:*"
 # export JWT_SECRET="super-secret"
 # export TEST_USERNAME="yourusernamefortests"
 # export TEST_WIF="yourwiffortests"
+export SIGNUP_OWNER_WIF="ownerWif"
+export SIGNUP_CREATOR="username"
+export SIGNUP_FEES="10.000 STEEM"
 export DEV_DATABASE_URL=postgres://localhost/steemconnect
