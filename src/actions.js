@@ -87,7 +87,7 @@ export function setAvatar(passwordOrWif, file, type) {
     body.append('file', file);
     let uploadUrl = `https://img.busy.org/@${user.name}`;
     if (type === 'cover_image') {
-      uploadUrl += '/cover.sass';
+      uploadUrl += '/cover';
     }
     fetch(uploadUrl, { method: 'POST', body, origin: true })
       .then(response => response.json())
