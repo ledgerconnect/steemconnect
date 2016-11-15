@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 
 const FieldSet = props =>
-  (<fieldset className={"form-group"}>
+  (<fieldset className={'form-group'}>
     <input
       type="text" placeholder={props.name}
       defaultValue={props.defaultValue}

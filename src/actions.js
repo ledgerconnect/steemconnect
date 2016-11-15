@@ -23,12 +23,12 @@ export function login() {
           if (!result || !result[0]) {
             throw new Error('user not found');
           }
-          const { memo_key, reputation, balance, name } = result[0];
+          const { memo_key, reputation, balance, name, sbd_balance } = result[0];
           let { json_metadata } = result[0];
           json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
           dispatch({
             type: authTypes.LOGIN_SUCCESS,
-            user: { name, json_metadata, memo_key, reputation, balance },
+            user: { name, json_metadata, memo_key, reputation, balance, sbd_balance },
           });
         });
       })
