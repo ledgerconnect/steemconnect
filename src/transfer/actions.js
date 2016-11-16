@@ -2,9 +2,9 @@ import steem from 'steem';
 import steemAuth from 'steemauth';
 import { updateProfile } from '../actions';
 
-export const TRANSFER_STEEM_REQUEST = '@payments/TRANSFER_STEEM_REQUEST';
-export const TRANSFER_STEEM_SUCCESS = '@payments/TRANSFER_STEEM_SUCCESS';
-export const TRANSFER_STEEM_FAILURE = '@payments/TRANSFER_STEEM_FAILURE';
+export const TRANSFER_STEEM_REQUEST = '@transfer/TRANSFER_STEEM_REQUEST';
+export const TRANSFER_STEEM_SUCCESS = '@transfer/TRANSFER_STEEM_SUCCESS';
+export const TRANSFER_STEEM_FAILURE = '@transfer/TRANSFER_STEEM_FAILURE';
 
 export function transfer(transferDetails) {
   return (dispatch) => {

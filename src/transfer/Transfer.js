@@ -106,39 +106,24 @@ class Payments extends Component {
     const { auth: { user }, payments: { isFetching, errorMessage } } = this.props;
     const currentBalance = this.state.transferType === 'STEEM' ? user.balance : user.sbd_balance;
     return (
-      <div className="container">
-        <div className="block block-profile mtl mbs">
-          <h1 className="mvl">Payments</h1>
-          <form className="form form-payments">
-            <div className="pam">
-              <fieldset className="form-group">
-                <label htmlFor="transferType">Transfer Steem/Steem Dollar</label>
-                <select className="form-control form-control-lg" value={this.state.transferType} onChange={this.changeTransferType}>
-                  <option>STEEM</option>
-                  <option>SBD</option>
-                </select>
-              </fieldset>
-              <fieldset className="form-group">
-                <label htmlFor="transferTo">Transfer to</label>
-                <input className="form-control form-control-lg" placeholder="Send to account" onBlur={() => this.validate('transferTo')} ref={c => (this.formFields.transferTo = c)} />
-                <div className="form-control-feedback">{this.state.error.transferTo}</div>
-              </fieldset>
-              <fieldset className="form-group">
-                <label htmlFor="steem-dollar">Current balance {currentBalance}</label>
-                <input className="form-control form-control-lg" placeholder="How many SteemDollar to send?" onBlur={() => this.validate('amount')} ref={c => (this.formFields.amount = c)} />
-                <div className="form-control-feedback">{this.state.error.amount}</div>
-              </fieldset>
-              <fieldset className="form-group">
-                <label htmlFor="memo">Memo</label>
-                <input className="form-control form-control-lg" placeholder="add a note to transaction." ref={c => (this.formFields.memo = c)} />
-              </fieldset>
-            </div>
-            <fieldset className="form-group man">
-              <div className="form-control-feedback man phm">{this.state.error.transfer}</div>
-              <button className="btn btn-primary form-submit" onClick={this.transfer}>Transfer</button>
-            </fieldset>
-          </form>
-        </div>
+      <div className="block block-login">
+        <h1 className="mvl">Transfer</h1>
+        <form className="form form-payments">
+          <div className="pam">
+            <input className="form-control form-control-lg" placeholder="To" defaultValue={this.props.params.to} onBlur={() => this.validate('transferTo')} ref={c => (this.formFields.transferTo = c)} />
+            <div className="form-control-feedback">{this.state.error.transferTo}</div>
+            <input className="form-control form-control-lg" placeholder="0.000" defaultValue={this.props.params.amount} onBlur={() => this.validate('amount')} ref={c => (this.formFields.amount = c)} />
+            <div className="form-control-feedback">{this.state.error.amount}</div>
+            <select className="form-control form-control-lg" defaultValue={this.props.params.currency} onChange={this.changeTransferType}>
+              <option>STEEM</option>
+              <option>SBD</option>
+            </select>
+            <input className="form-control form-control-lg" placeholder="Memo" defaultValue={this.props.params.memo} ref={c => (this.formFields.memo = c)} />
+            <p>Current balance {currentBalance}</p>
+          </div>
+            <div className="form-control-feedback man phm">{this.state.error.transfer}</div>
+            <button className="btn btn-primary form-submit" onClick={this.transfer}>Transfer</button>
+        </form>
         {this.state.showPasswordDialog &&
           <PasswordDialog
             isUpdating={isFetching}

@@ -8,7 +8,7 @@ import Developer from './developer/Developer';
 import Summary from './summary/Summary';
 import Apps from './apps/Apps';
 import App from './apps/App';
-import Payments from './payments/Payments';
+import Transfer from './transfer/Transfer';
 import SignUp from './auth/Signup';
 
 module.exports = (
@@ -16,7 +16,6 @@ module.exports = (
     <Route path="/signup" component={SignUp} />
     <Route component={Wrapper}>
       <IndexRoute component={Summary} />
-      <Route path="/payments" component={Payments} />
       <Route path="/apps" component={Apps} />
       <Route path="/apps/@:app" component={App} />
       <Route path="/profile" component={Profile} />
@@ -24,6 +23,7 @@ module.exports = (
     </Route>
 
     <Route component={ModelWrapper}>
+      <Route path="/transfer(/@:to)(/:amount)(/:currency)(/:memo)" component={Transfer} />
       <Route path="/authorize/@:app" component={Authorize} />
     </Route>
   </Route>
