@@ -16,13 +16,11 @@ export default (state = initialState, action) => {
       return {
         isFetching: false,
         errorMessage: action.errorMessage,
-        app: action.app,
       };
     case types.TRANSFER_STEEM_SUCCESS:
       return {
         isFetching: false,
-        errorMessage: '',
-        app: action.app,
+        errorMessage: false,
       };
     default:
       return state;

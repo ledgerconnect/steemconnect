@@ -10,15 +10,13 @@ export function transfer(transferDetails) {
     const { passwordOrWif, from, memo = '', to, balance } = transferDetails;
     const isWif = steemAuth.isWif(passwordOrWif);
     const ownerKey = (isWif) ? passwordOrWif : steemAuth.toWif(from, passwordOrWif, 'owner');
-    console.log(transferDetails);
     dispatch({ type: TRANSFER_STEEM_REQUEST });
     steem.broadcast.transfer(ownerKey, from, to, balance, memo, (result) => {
       if (result) {
-        dispatch({ type: TRANSFER_STEEM_FAILURE });
+        dispatch({ type: TRANSFER_STEEM_FAILURE, errorMessage: 'Could not transfer' });
       } else {
         dispatch({ type: TRANSFER_STEEM_SUCCESS });
       }
-      console.log(result);
     });
   };
 }

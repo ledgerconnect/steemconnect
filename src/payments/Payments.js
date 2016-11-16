@@ -79,7 +79,6 @@ class Payments extends Component {
         error: this.state.error,
         showPasswordDialog: true,
         passwordCallback: (passwordOrWif) => {
-          console.log('Transfering steem');
           this.props.transfer({
             passwordOrWif,
             from: user.name,
@@ -104,7 +103,7 @@ class Payments extends Component {
   }
 
   render() {
-    const { auth: { user } } = this.props;
+    const { auth: { user }, payments: { isFetching, errorMessage } } = this.props;
     const currentBalance = this.state.transferType === 'STEEM' ? user.balance : user.sbd_balance;
     return (
       <div className="container">
@@ -142,8 +141,8 @@ class Payments extends Component {
         </div>
         {this.state.showPasswordDialog &&
           <PasswordDialog
-            isUpdating={user.isUpdatingProfile}
-            error={user.isUpdatingProfileError}
+            isUpdating={isFetching}
+            error={errorMessage}
             onClose={this.closePasswordDialog}
             onSave={this.savePassword}
           />}
