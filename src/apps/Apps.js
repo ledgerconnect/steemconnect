@@ -40,12 +40,6 @@ class Apps extends Component {
         <ul className="secondary-nav mbl">
           <li>
             <a href="#" onClick={() => this.updateShowMyApp(false)}>
-              <i className="icon icon-md material-icons">star</i>
-              <span className="hidden-xs"> Featured</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" onClick={() => this.updateShowMyApp(false)}>
               <i className="icon icon-md material-icons">search</i>
               <span className="hidden-xs"> Browse</span>
             </a>
