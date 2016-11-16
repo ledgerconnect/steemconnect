@@ -9,7 +9,6 @@ import Summary from './summary/Summary';
 import Apps from './apps/Apps';
 import App from './apps/App';
 import Payments from './payments/Payments';
-import Activity from './activity/Activity';
 import SignUp from './auth/Signup';
 
 module.exports = (
@@ -17,7 +16,6 @@ module.exports = (
     <Route path="/signup" component={SignUp} />
     <Route component={Wrapper}>
       <IndexRoute component={Summary} />
-      <Route path="/activity" component={Activity} />
       <Route path="/payments" component={Payments} />
       <Route path="/apps" component={Apps} />
       <Route path="/apps/@:app" component={App} />
