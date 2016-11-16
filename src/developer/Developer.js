@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import validator from 'validator';
-import FieldSet from './FieldSet';
+import FieldSet from '../widgets/FieldSet';
 import { createApp, getApp, deleteApp } from './actions';
 import PermissionList from '../../lib/permissions';
 import Loading from '../widgets/Loading';

@@ -11,6 +11,7 @@ class PasswordDialog extends Component {
       this.props.onSave(this.passwordOrWif.value);
     }
   }
+
   render() {
     const { isUpdating, error } = this.props;
     let saveText = isUpdating === true ? 'Confirming' : 'Confirm';
@@ -28,6 +29,8 @@ class PasswordDialog extends Component {
       saveText = 'Close';
     } else if (error === true) {
       message = <div>Incorrect Password</div>;
+    } else {
+      message = <div>{error}</div>;
     }
     return (
       <div className="dialog dialog-password">
@@ -46,8 +49,11 @@ class PasswordDialog extends Component {
                 <div className="form">
                   <div className="input-group input-group-lg">
                     <span className="input-group-addon"><i className="icon icon-md material-icons">lock_outline</i></span>
-                    <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control" ref={(c) => { this.passwordOrWif = c; }} />
+                    <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control" ref={(c) => { this.passwordOrWif = c; } } />
                   </div>
+                  {error && <ul className="errorMessages pam">
+                    <li>{message}</li>
+                  </ul>}
                   <fieldset className="form-group man">
                     <button disabled={isUpdating} className="btn btn-success form-submit" onClick={this.savePassword}>{saveText}</button>
                   </fieldset>
@@ -63,11 +69,12 @@ class PasswordDialog extends Component {
     );
   }
 }
+
 PasswordDialog.propTypes = {
   onSave: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
   isUpdating: PropTypes.bool,
-  error: PropTypes.bool,
+  error: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   auth: PropTypes.shape({
     user: PropTypes.shape({
       name: PropTypes.string,
