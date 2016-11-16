@@ -4,6 +4,23 @@ const steemAuth = require('steemauth');
 const steem = require('steem');
 const cookie = require('../lib/cookie');
 
+export function updateProfile(username) {
+  return (dispatch) => {
+    steem.api.getAccounts([username], (err, result) => {
+      if (!result || !result[0]) {
+        throw new Error('user not found');
+      }
+      const { memo_key, reputation, balance, name, sbd_balance } = result[0];
+      let { json_metadata } = result[0];
+      json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
+      dispatch({
+        type: authTypes.LOGIN_SUCCESS,
+        user: { name, json_metadata, memo_key, reputation, balance, sbd_balance },
+      });
+    });
+  };
+}
+
 export function login() {
   return (dispatch) => {
     const auth = cookie.get('auth');
@@ -19,18 +36,7 @@ export function login() {
         if (!isAuthenticated) {
           throw new Error('Not authenticated');
         }
-        steem.api.getAccounts([username], (err, result) => {
-          if (!result || !result[0]) {
-            throw new Error('user not found');
-          }
-          const { memo_key, reputation, balance, name, sbd_balance } = result[0];
-          let { json_metadata } = result[0];
-          json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
-          dispatch({
-            type: authTypes.LOGIN_SUCCESS,
-            user: { name, json_metadata, memo_key, reputation, balance, sbd_balance },
-          });
-        });
+        return dispatch(updateProfile(username));
       })
       .catch((err) => {
         const errorMessage = typeof err !== 'string' ? ((err.data && err.data.error) || err.statusText) : err;

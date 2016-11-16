@@ -1,5 +1,6 @@
 import steem from 'steem';
 import steemAuth from 'steemauth';
+import { updateProfile } from '../actions';
 
 export const TRANSFER_STEEM_REQUEST = '@payments/TRANSFER_STEEM_REQUEST';
 export const TRANSFER_STEEM_SUCCESS = '@payments/TRANSFER_STEEM_SUCCESS';
@@ -16,6 +17,7 @@ export function transfer(transferDetails) {
         dispatch({ type: TRANSFER_STEEM_FAILURE, errorMessage: 'Could not transfer' });
       } else {
         dispatch({ type: TRANSFER_STEEM_SUCCESS });
+        dispatch(updateProfile(from));
       }
     });
   };
