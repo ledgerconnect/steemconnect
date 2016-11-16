@@ -23,7 +23,7 @@ if (process.env.NODE_ENV !== 'production') {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-app.use(helmet());
+app.use(helmet({ frameguard: false }));
 app.use(cookieParser());
 
 if (process.env.NODE_ENV !== 'test') {
