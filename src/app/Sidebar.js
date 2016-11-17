@@ -33,9 +33,6 @@ class Sidebar extends Component {
               <Link to="/profile"><i className="icon icon-md material-icons">perm_identity</i> Profile</Link>
             </li>
             <li className="title">
-              <Link to="/apps"><i className="icon icon-md material-icons">apps</i> App Store</Link>
-            </li>
-            <li className="title">
               <Link to="/developers"><i className="icon icon-md material-icons">code</i> Developers</Link>
             </li>
             <li className="title">
