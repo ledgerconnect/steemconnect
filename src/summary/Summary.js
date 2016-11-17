@@ -11,7 +11,7 @@ module.exports = React.createClass({
           <div className="col col-md-4">
             <i className="icon icon-xl material-icons">perm_identity</i>
             <h2><Link to="/profile">Profile</Link></h2>
-            <p>Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. </p>
+            <p>Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis.</p>
           </div>
           <div className="col col-md-4">
             <i className="icon icon-xl material-icons">credit_card</i>

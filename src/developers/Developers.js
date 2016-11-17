@@ -94,7 +94,7 @@ class Developer extends Component {
     }
   };
 
-  createApp = () => this.setState({ creatingNewApp: true })
+  createApp = () => this.setState({ creatingNewApp: true });
 
   render() {
     const permissionList = _.map(PermissionList, (v, k) => ({ ...v, api: k }));
@@ -158,8 +158,38 @@ class Developer extends Component {
                 </fieldset>
               </form>
             </div>}
-          {!isFetching && appExist && <p className="pas"><a href="#" onClick={this.props.deleteApp}>Delete App</a></p>}
-          {!isFetching && !showApp && <p className="pas"><a href="#" onClick={this.createApp}>Create App</a></p>}
+          {!isFetching && appExist &&
+            <a href="#" onClick={this.props.deleteApp}>Delete App</a>
+          }
+          {!isFetching && !showApp &&
+            <div className="pbxl">
+              <div className="pvxl">
+                <h1>Build your apps on Steem blockchain</h1>
+                <h3>Integrate identity architecture early,
+                  saving critical time and ensuring security.</h3>
+              </div>
+              <div className="row pvl thin text-lg-left">
+                <div className="pvl">
+                  <h3>Tutorial</h3>
+                  <p>Get started using Steem Connect.
+                    Implement Steem authentication for any kind of application in minutes.</p>
+                  <a href="#" className="btn btn-primary">Read the tutorial</a>
+                </div>
+                <div className="pvl">
+                  <h3>Download Steem Connect JavaScript SDK</h3>
+                  <p>Curabitur tortor. Pellentesque nibh. Aenean quam.
+                    In scelerisque sem at dolor. Maecenas mattis.</p>
+                  <a href="#" className="btn btn-primary">Download</a>
+                </div>
+                <div className="pvl">
+                  <h3>Create an app for @{this.props.auth.user.name}</h3>
+                  <p>Curabitur tortor. Pellentesque nibh. Aenean quam.
+                    In scelerisque sem at dolor. Maecenas mattis.</p>
+                  <button type="button" className="btn btn-primary" onClick={this.createApp}>Setup @{this.props.auth.user.name} app</button>
+                </div>
+              </div>
+            </div>
+          }
         </div>
       </div>
     );

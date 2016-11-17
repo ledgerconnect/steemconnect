@@ -1,12 +1,12 @@
-export const CREATE_APP_REQUEST = '@developer/CREATE_APP_REQUEST';
-export const CREATE_APP_SUCCESS = '@developer/CREATE_APP_SUCCESS';
-export const CREATE_APP_FAILURE = '@developer/CREATE_APP_FAILURE';
-export const GET_APP_REQUEST = '@developer/GET_APP_REQUEST';
-export const GET_APP_SUCCESS = '@developer/GET_APP_SUCCESS';
-export const GET_APP_FAILURE = '@developer/GET_APP_FAILURE';
-export const DELETE_APP_REQUEST = '@developer/DELETE_APP_REQUEST';
-export const DELETE_APP_SUCCESS = '@developer/DELETE_APP_SUCCESS';
-export const DELETE_APP_FAILURE = '@developer/DELETE_APP_FAILURE';
+export const CREATE_APP_REQUEST = '@developers/CREATE_APP_REQUEST';
+export const CREATE_APP_SUCCESS = '@developers/CREATE_APP_SUCCESS';
+export const CREATE_APP_FAILURE = '@developers/CREATE_APP_FAILURE';
+export const GET_APP_REQUEST = '@developers/GET_APP_REQUEST';
+export const GET_APP_SUCCESS = '@developers/GET_APP_SUCCESS';
+export const GET_APP_FAILURE = '@developers/GET_APP_FAILURE';
+export const DELETE_APP_REQUEST = '@developers/DELETE_APP_REQUEST';
+export const DELETE_APP_SUCCESS = '@developers/DELETE_APP_SUCCESS';
+export const DELETE_APP_FAILURE = '@developers/DELETE_APP_FAILURE';
 
 function handleErrors(response) {
   if (!response.ok) {

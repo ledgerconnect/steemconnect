@@ -4,7 +4,7 @@ import appReducers from './app/appReducers';
 import appsReducers from './apps/reducers';
 import paymentsReducers from './transfer/reducers';
 import authReducers from './auth/authReducers';
-import devReducers from './developer/reducers';
+import devReducers from './developers/reducers';
 
 const reducers = combineReducers({
   app: appReducers,

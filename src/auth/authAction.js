@@ -128,7 +128,7 @@ export function getAppDetails(appUserName, redirectUrl) {
         v => Object.assign(PermissionList[v], { api: v }));
       app.redirect_urls = app.redirect_urls || [];
 
-      // If there is list of redirect_url that developer must specify
+      // If there is list of redirect_url that developers must specify
       // if there is only one that it will be selected automatically
       if (app.redirect_urls.length > 1 && app.redirect_urls.indexOf(redirectUrl) === -1) {
         dispatch(setAppDetails(appUserName, { error: 'RedirectUrl Mismatch' }));

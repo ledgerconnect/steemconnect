@@ -4,7 +4,7 @@ import Wrapper from './wrapper';
 import ModelWrapper from './ModelWrapper';
 import Profile from './profile/Profile';
 import Authorize from './auth/Authorize';
-import Developer from './developer/Developer';
+import Developer from './developers/Developers';
 import Summary from './summary/Summary';
 import Apps from './apps/Apps';
 import App from './apps/App';
