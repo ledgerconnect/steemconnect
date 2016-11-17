@@ -101,62 +101,67 @@ class Settings extends Component {
     }
     return (
       <div>
-        <AvatarUpdate username={user.name} onDrop={this.onDrop} />
-        <div className="container">
-          <div className="block block-profile mtl mbs">
-            <form className="form form-profile">
-              <div className="pam">
-                <fieldset className={"form-group"}>
-                  <label htmlFor="name">Name</label>
-                  <input autoFocus type="text" defaultValue={profile.name} placeholder="Name" className="form-control" ref="name" />
-                </fieldset>
-                <fieldset className={"form-group"}>
-                  <label htmlFor="first_name">First Name</label>
-                  <input type="text" placeholder="First Name" defaultValue={profile.first_name} className="form-control" ref="first_name" />
-                </fieldset>
-                <fieldset className={"form-group"}>
-                  <label htmlFor="last_name">Last Name</label>
-                  <input type="text" placeholder="Last Name" defaultValue={profile.last_name} className="form-control" ref="last_name" />
-                </fieldset>
-                <fieldset className={`form-group ${(this.state.error.email ? 'has-danger' : '')}`}>
-                  <label htmlFor="email">Email</label>
-                  <input type="email" defaultValue={profile.email} placeholder="Email" className="form-control" ref="email" onBlur={() => this.validate('email')} />
-                  <div className="form-control-feedback">{this.state.error.email}</div>
-                </fieldset>
-                <fieldset className="form-group man">
-                  <label htmlFor="gender">Gender</label>
-                </fieldset>
-                <fieldset className="form-group">
-                  <label className="custom-control custom-radio">
-                    <input name="radio" type="radio" value="female" className="custom-control-input" ref="gender_female" defaultChecked={profile.gender === 'female'} />
-                    <span className="custom-control-indicator" />
-                    <span className="custom-control-description">Female</span>
-                  </label>
-                  <label className="custom-control custom-radio">
-                    <input name="radio" type="radio" value="male" className="custom-control-input" ref="gender_male" defaultChecked={profile.gender === 'male'} />
-                    <span className="custom-control-indicator" />
-                    <span className="custom-control-description">Male</span>
-                  </label>
-                </fieldset>
-                <fieldset className={"form-group"}>
-                  <label htmlFor="about">About</label>
-                  <textarea className="form-control" defaultValue={profile.about} placeholder="About" rows="3" ref="about" />
-                </fieldset>
-                <fieldset className={`form-group ${(this.state.error.website ? 'has-danger' : '')}`}>
-                  <label htmlFor="website">Website</label>
-                  <input type="text" defaultValue={profile.website} placeholder="Website" className="form-control" ref="website" onBlur={() => this.validate('website')} />
-                  <div className="form-control-feedback">{this.state.error.website}</div>
-                </fieldset>
-                <fieldset className={"form-group"}>
-                  <label htmlFor="location">Location</label>
-                  <input type="text" placeholder="Location" defaultValue={profile.location} className="form-control" ref="location" />
-                </fieldset>
-              </div>
-              <fieldset className="form-group man"><button className="btn btn-primary form-submit" onClick={this.save}>Save</button></fieldset>
-            </form>
+        <div className="pbxl">
+          <div className="pvxl">
+            <h1>Control your public identity</h1>
+            <h3>Integrate identity architecture early,
+              saving critical time and ensuring security.</h3>
           </div>
-          <p className="pas"><a href="#" onClick={this.clearProfile}>Clear Profile</a></p>
-          {passwordDialog}
+          <AvatarUpdate username={user.name} onDrop={this.onDrop} />
+          <div className="thin">
+              <form className="form form-profile">
+                <div className="pam">
+                  <fieldset className={"form-group"}>
+                    <label htmlFor="name">Name</label>
+                    <input autoFocus type="text" defaultValue={profile.name} placeholder="Name" className="form-control" ref="name" />
+                  </fieldset>
+                  <fieldset className={"form-group"}>
+                    <label htmlFor="first_name">First Name</label>
+                    <input type="text" placeholder="First Name" defaultValue={profile.first_name} className="form-control" ref="first_name" />
+                  </fieldset>
+                  <fieldset className={"form-group"}>
+                    <label htmlFor="last_name">Last Name</label>
+                    <input type="text" placeholder="Last Name" defaultValue={profile.last_name} className="form-control" ref="last_name" />
+                  </fieldset>
+                  <fieldset className={`form-group ${(this.state.error.email ? 'has-danger' : '')}`}>
+                    <label htmlFor="email">Email</label>
+                    <input type="email" defaultValue={profile.email} placeholder="Email" className="form-control" ref="email" onBlur={() => this.validate('email')} />
+                    <div className="form-control-feedback">{this.state.error.email}</div>
+                  </fieldset>
+                  <fieldset className="form-group man">
+                    <label htmlFor="gender">Gender</label>
+                  </fieldset>
+                  <fieldset className="form-group">
+                    <label className="custom-control custom-radio">
+                      <input name="radio" type="radio" value="female" className="custom-control-input" ref="gender_female" defaultChecked={profile.gender === 'female'} />
+                      <span className="custom-control-indicator" />
+                      <span className="custom-control-description">Female</span>
+                    </label>
+                    <label className="custom-control custom-radio">
+                      <input name="radio" type="radio" value="male" className="custom-control-input" ref="gender_male" defaultChecked={profile.gender === 'male'} />
+                      <span className="custom-control-indicator" />
+                      <span className="custom-control-description">Male</span>
+                    </label>
+                  </fieldset>
+                  <fieldset className={"form-group"}>
+                    <label htmlFor="about">About</label>
+                    <textarea className="form-control" defaultValue={profile.about} placeholder="About" rows="3" ref="about" />
+                  </fieldset>
+                  <fieldset className={`form-group ${(this.state.error.website ? 'has-danger' : '')}`}>
+                    <label htmlFor="website">Website</label>
+                    <input type="text" defaultValue={profile.website} placeholder="Website" className="form-control" ref="website" onBlur={() => this.validate('website')} />
+                    <div className="form-control-feedback">{this.state.error.website}</div>
+                  </fieldset>
+                  <fieldset className={"form-group"}>
+                    <label htmlFor="location">Location</label>
+                    <input type="text" placeholder="Location" defaultValue={profile.location} className="form-control" ref="location" />
+                  </fieldset>
+                </div>
+                <fieldset className="form-group man"><button className="btn btn-primary form-submit" onClick={this.save}>Save</button></fieldset>
+              </form>
+            </div>
+            <a href="#" className="btn btn-danger" onClick={this.clearProfile}>Clear Profile</a>
+            {passwordDialog}
         </div>
       </div>
     );

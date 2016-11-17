@@ -113,7 +113,7 @@ class Developer extends Component {
     return (
       <div>
         <div className="container">
-          {isFetching && <Loading />}
+          {isFetching && <div className="mvl"><Loading /></div>}
           {!isFetching && showApp &&
             <div className="block block-developer mvl">
               <form className="form form-developer">
@@ -170,16 +170,16 @@ class Developer extends Component {
               </div>
               <div className="row pvl thin text-lg-left">
                 <div className="pvl">
-                  <h3>Tutorial</h3>
+                  <h3>Tutorials</h3>
                   <p>Get started using Steem Connect.
                     Implement Steem authentication for any kind of application in minutes.</p>
-                  <a href="#" className="btn btn-primary">Read the tutorial</a>
+                  <a href="#" className="btn btn-primary">Read the tutorials</a>
                 </div>
                 <div className="pvl">
                   <h3>Download Steem Connect JavaScript SDK</h3>
                   <p>Curabitur tortor. Pellentesque nibh. Aenean quam.
                     In scelerisque sem at dolor. Maecenas mattis.</p>
-                  <a href="#" className="btn btn-primary">Download</a>
+                  <a href="https://raw.githubusercontent.com/adcpm/steemconnect/dev/dist/steemconnect.min.js" className="btn btn-primary">Download</a>
                 </div>
                 <div className="pvl">
                   <h3>Create an app for @{this.props.auth.user.name}</h3>
