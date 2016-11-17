@@ -6,17 +6,7 @@ class AccountCard extends Component {
   render() {
     return (<div className="account-card">
       <Avatar xl username={this.props.username} />
-      <h2 className="mts">
-        @{this.props.username} <a
-        title="Remove Account"
-        className="hide icon icon-sm material-icons"
-        onClick={(event) => {
-          event.preventDefault();
-          cookie.deleteUser(this.props.username);
-          return false;
-        }}
-      >remove</a>
-      </h2>
+      <h2 className="mts">@{this.props.username}</h2>
     </div>);
   }
 }
