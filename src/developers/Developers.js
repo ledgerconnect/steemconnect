@@ -1,6 +1,7 @@
-import { bindActionCreators } from 'redux';
 import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import _ from 'lodash';
 import validator from 'validator';
 import FieldSet from '../widgets/FieldSet';
@@ -173,7 +174,7 @@ class Developer extends Component {
                   <h3>Tutorials</h3>
                   <p>Get started using Steem Connect.
                     Implement Steem authentication for any kind of application in minutes.</p>
-                  <a href="#" className="btn btn-primary">Read the tutorials</a>
+                  <Link to="developers/tutorials/simple-app" className="btn btn-primary">Read the tutorials</Link>
                 </div>
                 <div className="pvl">
                   <h3>Download Steem Connect JavaScript SDK</h3>
