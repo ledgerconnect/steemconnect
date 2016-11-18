@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import * as authTypes from './auth/authAction';
 
 const steemAuth = require('steemauth');
@@ -128,8 +129,17 @@ export function clearUpdatingResult() {
 }
 
 export function logout() {
-  cookie.remove('auth');
-  window.location = '/';
+  return (dispatch, getState) => {
+    const { auth: { user: { name } } } = getState();
 
-  return { type: authTypes.LOGOUT_SUCCESS };
+    let lastUser = cookie.get('lastUsers');
+    if (!_.isArray(lastUser)) { lastUser = []; }
+
+    lastUser = [name].concat(lastUser);
+    lastUser = _.uniq(lastUser);
+
+    cookie.save(lastUser, 'lastUsers');
+    cookie.remove('auth');
+    dispatch({ type: authTypes.LOGOUT_SUCCESS });
+  };
 }
