@@ -27,9 +27,6 @@ class Sidebar extends Component {
         <div className="sidebar-content">
           <ul>
             <li className="title">
-              <Link to="/"><i className="icon icon-md material-icons">done</i> Quickstart</Link>
-            </li>
-            <li className="title">
               <Link to="/profile"><i className="icon icon-md material-icons">perm_identity</i> Profile</Link>
             </li>
             <li className="title">
