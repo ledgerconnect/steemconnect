@@ -27,14 +27,11 @@ class Settings extends Component {
     const profileData = {};
     const refs = this.refs;
     each(refs, (item, refKeys) => {
-      if (refKeys !== 'gender_female' && refKeys !== 'gender_male') {
-        if (typeof item.value === 'string' && item.value.length && !this.state.error[refKeys]) {
-          profileData[refKeys] = validator.trim(item.value);
-        }
+      if (typeof item.value === 'string' && item.value.length && !this.state.error[refKeys]) {
+        profileData[refKeys] = validator.trim(item.value);
       }
     });
 
-    profileData.gender = refs.gender_female.checked ? 'female' : 'male';
     const json_metadata = user.json_metadata || {};
     json_metadata.profile = profileData;
     this.setState({
@@ -47,15 +44,6 @@ class Settings extends Component {
     const refs = this.refs;
     const value = refs[refKeys] && refs[refKeys].value;
     switch (refKeys) {
-      case 'email':
-        if (value.length && !validator.isEmail(value)) {
-          this.state.error[refKeys] = `${refKeys} is not valid`;
-          this.setState({ error: this.state.error });
-        } else {
-          this.state.error[refKeys] = undefined;
-          this.setState({ error: this.state.error });
-        }
-        break;
       case 'website':
         if (value.length && !validator.isURL(value, { require_protocol: true, protocols: ['http', 'https'] })) {
           this.state.error[refKeys] = `${refKeys} is not valid`;
@@ -77,7 +65,8 @@ class Settings extends Component {
     this.state.passwordCallback(passwordOrWif);
   }
 
-  clearProfile = () => {
+  clearProfile = (event) => {
+    event.preventDefault();
     const user = this.props.auth.user;
     const json_metadata = user.json_metadata || {};
     json_metadata.profile = {};
