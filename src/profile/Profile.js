@@ -100,31 +100,34 @@ class Settings extends Component {
       />);
     }
     return (
-      <div className="pbxl">
+      <div className="pbl">
         <div className="pvxl">
           <h1>Control your public identity</h1>
           <h3>Integrate identity architecture early,
             saving critical time and ensuring security.</h3>
         </div>
         <AvatarUpdate username={user.name} onDrop={this.onDrop} />
-        <form className="thin ptl">
-          <fieldset className="form-group">
-            <label htmlFor="first_name">Name</label>
-            <input type="text" defaultValue={profile.name} placeholder="Add a nickname" className="form-control form-control-lg" ref="name" />
-          </fieldset>
-          <fieldset className="form-group">
-            <label htmlFor="about">About</label>
-            <textarea className="form-control form-control-lg" defaultValue={profile.about} placeholder="Write few words about yourself" rows="3" ref="about" />
-          </fieldset>
-          <fieldset className={`form-group ${(this.state.error.website ? 'has-danger' : '')}`}>
-            <label htmlFor="website">Website</label>
-            <input type="text" defaultValue={profile.website} placeholder="Website address" className="form-control form-control-lg" ref="website" onBlur={() => this.validate('website')} />
-            <div className="form-control-feedback">{this.state.error.website}</div>
-          </fieldset>
-          <fieldset className="form-group">
-            <label htmlFor="location">Location</label>
-            <input type="text" placeholder="Current location" defaultValue={profile.location} className="form-control form-control-lg" ref="location" />
-          </fieldset>
+        <form>
+          <div className="thin pvl">
+            <fieldset className="form-group">
+              <label htmlFor="first_name">Name</label>
+              <input type="text" defaultValue={profile.name} placeholder="Add a nickname" className="form-control form-control-lg" ref="name" />
+            </fieldset>
+            <fieldset className="form-group">
+              <label htmlFor="about">About</label>
+              <textarea className="form-control form-control-lg" defaultValue={profile.about} placeholder="Write few words about yourself" rows="3" ref="about" />
+            </fieldset>
+            <fieldset className={`form-group ${(this.state.error.website ? 'has-danger' : '')}`}>
+              <label htmlFor="website">Website</label>
+              <input type="text" defaultValue={profile.website} placeholder="Website address" className="form-control form-control-lg" ref="website" onBlur={() => this.validate('website')} />
+              <div className="form-control-feedback">{this.state.error.website}</div>
+            </fieldset>
+            <fieldset className="form-group">
+              <label htmlFor="location">Location</label>
+              <input type="text" placeholder="Current location" defaultValue={profile.location} className="form-control form-control-lg" ref="location" />
+            </fieldset>
+          </div>
+          <hr />
           <fieldset className="form-group text-lg-center ptl">
             <button className="btn btn-success" onClick={this.save}>Save Changes</button><span className="spacer">or</span>
             <button className="btn btn-outline-danger" onClick={this.clearProfile}>Clear Profile</button>
