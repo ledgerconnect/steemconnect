@@ -47,11 +47,20 @@ function checkOrigin(req, res, next) {
   } else if (isDifferentHost) {
     return getApp(appUserName)
       .then((app) => {
+        const inDevMode = app.env === 'dev';
         if (!app.origins) { throw new Error('App does not have origins defined'); }
 
         // Remove trailing slash from app.origins
         const acceptedOrigins = app.origins.map(acceptedOrigin => acceptedOrigin.replace(/\/$/, ''));
-        if (acceptedOrigins.indexOf(origin) >= 0) {
+        let allowUrl = acceptedOrigins.indexOf(origin) >= 0;
+        if (inDevMode === true && !allowUrl) {
+          allowUrl =
+            origin === 'null' || // for file protocol
+            origin.indexOf('http://localhost') === 0 ||
+            origin.indexOf('http://127.0.0.1') === 0;
+        }
+
+        if (allowUrl) {
           next();
         } else {
           throw new Error('Origin does not match from list of allowed origin');
