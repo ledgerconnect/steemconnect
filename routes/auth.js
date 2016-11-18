@@ -12,8 +12,9 @@ const debug = require('debug')('steemconnect:route:auth');
 const router = new express.Router();
 
 router.get('/logout', (req, res) => {
+  const { logout_url } = req.query;
   res.clearCookie('auth');
-  res.redirect('back');
+  res.redirect(logout_url || 'back');
 });
 
 router.post('/auth/login', (req, res) => {
