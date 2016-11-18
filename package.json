@@ -70,7 +70,7 @@
     "serve-favicon": "^2.3.0",
     "socket.io": "^1.4.5",
     "steem": "^0.3.30",
-    "steemauth": "0.0.16",
+    "steemauth": "0.0.17",
     "style-loader": "^0.13.1",
     "validator": "^5.6.0",
     "webpack": "^1.13.2"
