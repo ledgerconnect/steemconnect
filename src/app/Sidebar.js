@@ -33,6 +33,9 @@ class Sidebar extends Component {
               <Link to="/developers"><i className="icon icon-md material-icons">code</i> Developers</Link>
             </li>
             <li className="title">
+              <Link to="/about"><i className="icon icon-md material-icons">info_outline</i> About</Link>
+            </li>
+            <li className="title">
               <a href="/logout"><i className="icon icon-md material-icons">lock_open</i> Log Out</a>
             </li>
           </ul>
