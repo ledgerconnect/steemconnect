@@ -12,7 +12,7 @@ import { ShowLastUserList, login, demoLogin } from './authAction';
 class Login extends Component {
   constructor(props) {
     super(props);
-    let lastUserList = cookie.get('last_users');
+    let lastUserList = cookie.get('lastUsers');
     if (!_.isArray(lastUserList)) {
       lastUserList = [];
     }
@@ -60,7 +60,7 @@ class Login extends Component {
             </div>}
         </div>
         <div className="mvl">
-          {selectedUser && <p><a href="https://steemit.com/recover_account_step_1" target="_blank">Forgot password?</a></p>}
+          {selectedUser && <p><a href="https://steemit.com/recover_account_step_1" target="_blank" rel="noopener noreferrer">Forgot password?</a></p>}
           {!selectedUser &&
             <p>New to Steem?&nbsp;
               <a href="https://steemit.com/create_account" target="_blank" rel="noopener noreferrer">Sign up now</a>

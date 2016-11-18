@@ -13,8 +13,27 @@ const router = new express.Router();
 
 router.get('/logout', (req, res) => {
   const { logout_url } = req.query;
-  res.clearCookie('auth');
-  res.redirect(logout_url || 'back');
+  try {
+    jwt.verify(req.cookies.auth, process.env.JWT_SECRET, (err, jwtData) => {
+      const username = jwtData.username;
+      let lastUser = req.cookies.lastUsers || [];
+      if (typeof lastUser === 'string') { try { lastUser = JSON.parse(lastUser); } catch (e) { lastUser = []; } }
+      if (!_.isArray(lastUser)) { lastUser = []; }
+
+      lastUser = [username].concat(lastUser);
+      lastUser = _.uniq(lastUser);
+
+      res.cookie('lastUsers',
+        JSON.stringify(lastUser),
+        { path: '/', secure: req.hostname !== 'localhost', maxAge: 365 * 24 * 60 * 60 * 1000 }); // expire in 1 year
+
+      res.clearCookie('auth');
+      res.redirect(logout_url || 'back');
+    });
+  } catch (e) {
+    res.clearCookie('auth');
+    res.redirect(logout_url || 'back');
+  }
 });
 
 router.post('/auth/login', (req, res) => {
