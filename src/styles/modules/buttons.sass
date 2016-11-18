@@ -26,3 +26,51 @@
   color: #cfcfcf
   box-shadow: inset 0 0 0 2px #dcdcdc !important
   background: none !important
+
+
+
+.app-wrapper
+  .btn
+    border: none !important
+    font-family: $font-primary
+    font-weight: bold
+    text-transform: uppercase
+    font-size: 15px
+    border-radius: 28px
+    height: 50px
+    line-height: 50px
+    padding: 0 20px !important
+
+  .btn-primary
+    background-color: #1a5099
+    &:hover
+      background-color: darken(#1a5099, 10%)
+
+  .btn-success
+    background-color: #02d895
+    &:hover
+      background-color: darken(#02d895, 10%)
+
+  .btn-outline-primary
+    color: #1a5099 !important
+    box-shadow: inset 0 0 0 2px #1a5099
+    i
+      color: #1a5099
+    &:hover
+      color: #ffffff
+      background-color: darken(#1a5099, 10%)
+      box-shadow: none
+      i
+        color: #ffffff
+
+  .btn-outline-danger
+    color: #d8345e !important
+    box-shadow: inset 0 0 0 2px #d8345e
+    i
+      color: #d8345e
+    &:hover
+      color: #ffffff !important
+      background-color: darken(#d8345e, 10%)
+      box-shadow: none
+      i
+        color: #ffffff
