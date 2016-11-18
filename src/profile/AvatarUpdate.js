@@ -11,14 +11,14 @@ const AvatarUpdate = (props) => {
       <img alt="Profile" className="profile-image mtl mbm" src={`https://img.steemconnect.com/@${props.username}?${cacheBuster}`} />
       <div className="pbl">
         <Dropzone className="dropzone" onDrop={files => props.onDrop(files, 'profile_image')} accept="image/*">
-          <a className="btn btn-secondary">
+          <button className="btn btn-outline-primary">
             <i className="icon icon-md material-icons">file_upload</i> Upload profile image
-          </a>
-        </Dropzone>{ ' ' }
+          </button>
+        </Dropzone><span className="spacer"></span>
         <Dropzone className="dropzone" onDrop={files => props.onDrop(files, 'cover_image')} accept="image/*">
-          <a className="btn btn-secondary">
+          <button className="btn btn-outline-primary">
             <i className="icon icon-md material-icons">file_upload</i> Upload cover image
-          </a>
+          </button>
         </Dropzone>
       </div>
     </div>
