@@ -61,6 +61,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         lastUserList: action.lastUserList,
+        errorMessage: '',
       };
     case authTypes.LOGOUT_SUCCESS:
       return {
@@ -82,6 +83,7 @@ export default (state = initialState, action) => {
         isFetching: true,
         success: false,
         isAuthenticated: false,
+        errorMessage: '',
       };
     case authTypes.SIGNUP_SUCCESS:
       return {
@@ -89,6 +91,7 @@ export default (state = initialState, action) => {
         user: {},
         isFetching: false,
         success: true,
+        errorMessage: '',
       };
     case authTypes.SIGNUP_FAILURE:
       return {
