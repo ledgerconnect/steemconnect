@@ -3,7 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import validator from 'validator';
-import FieldSet from '../widgets/FieldSet';
+import FieldsetInput from '../widgets/Form/FieldsetInput';
+import FieldSetTextarea from '../widgets/Form/FieldsetTextarea';
 import { createApp, getApp, deleteApp } from './actions';
 import PermissionList from '../../lib/permissions';
 import Loading from '../widgets/Loading';
@@ -27,7 +28,7 @@ class AppSetup extends Component {
       case 'name':
       case 'author':
         if (validator.trim(value).length === 0) {
-          this.state.error[refs] = `${refs} cannot be empty`;
+          this.state.error[refs] = 'This field cannot be empty';
           this.setState({ error: this.state.error });
         } else {
           this.formData[refs] = value.trim();
@@ -40,7 +41,7 @@ class AppSetup extends Component {
         let valid = true;
         const urls = value.split('\n');
         if (urls.length === 0) {
-          this.state.error[refs] = `${refs} cannot be empty`;
+          this.state.error[refs] = 'This field cannot be empty';
           this.setState({ error: this.state.error });
           break;
         }
@@ -100,83 +101,57 @@ class AppSetup extends Component {
     const permissionList = _.map(PermissionList, (v, k) => ({ ...v, api: k }));
     const { app: { name, author, tagline, description, env = 'dev',
       permissions = [] }, isFetching } = this.props.developer;
-    let { app: { origins = [], redirect_urls = [] } } = this.props.developer;
+    let { app: { origins = [], redirectUrls = [] } } = this.props.developer;
 
     origins = typeof origins === 'string' ? JSON.parse(origins) : origins;
-    redirect_urls = typeof redirect_urls === 'string' ? JSON.parse(redirect_urls) : redirect_urls;
+    redirectUrls = typeof redirectUrls === 'string' ? JSON.parse(redirectUrls) : redirectUrls;
     origins = origins.length ? origins.join('\n') : origins;
-    redirect_urls = redirect_urls.length ? redirect_urls.join('\n') : redirect_urls;
+    redirectUrls = redirectUrls.length ? redirectUrls.join('\n') : redirectUrls;
 
     const appExist = !_.isEmpty(this.props.developer.app);
-    const showApp = appExist || this.state.creatingNewApp;
 
     return (
-      <div>
-        <div className="container">
-          {isFetching && <div className="mvl"><Loading /></div>}
-          {!isFetching && showApp &&
-            <div className="block block-developer mvl">
-              <form className="form form-developer">
-                <div className="pam">
-                  <label htmlFor="name">App Name</label>
-                  <FieldSet name={'name'} defaultValue={name} error={this.state.error} validate={this.validate} formFields={this.formFields} />
-                  <label htmlFor="author">Author</label>
-                  <FieldSet name={'author'} defaultValue={author} error={this.state.error} validate={this.validate} formFields={this.formFields} />
-                  <label htmlFor="tagline">Tagline</label>
-                  <FieldSet name={'tagline'} defaultValue={tagline} error={this.state.error} validate={this.validate} formFields={this.formFields} />
-                  <label htmlFor="description">Description</label>
-                  <FieldSet name={'description'} defaultValue={description} error={this.state.error} validate={this.validate} formFields={this.formFields} />
-                  <fieldset className="form-group">
-                    <label htmlFor="origins">Requested permissions</label>
-                    {permissionList.map(({ name: permissionName, api }) => <div key={api}>
-                      <input type="checkbox" className="form-check-input mls" ref={c => (this.formFields.permissions[api] = c)} defaultChecked={permissions.indexOf(api) >= 0} value={api} />
-                      {permissionName}
-                    </div>
-                    )}
-                  </fieldset>
-                  <fieldset className="form-group">
-                    <label htmlFor="origins">Allowed Origins</label>
-                    <textarea className="form-control form-control-lg" defaultValue={origins} onBlur={() => this.validate('origins')} placeholder="each origins in new line" rows="3" ref={c => (this.formFields.origins = c)} />
-                    <div className="form-control-feedback">{this.state.error.origins}</div>
-                  </fieldset>
-                  <fieldset className="form-group">
-                    <h3>Allowed Redirect Urls</h3>
-                    <textarea className="form-control form-control-lg" defaultValue={redirect_urls} onBlur={() => this.validate('redirect_urls')} placeholder="each redirect_urls in new line" rows="3" ref={c => (this.formFields.redirect_urls = c)} />
-                    <div className="form-control-feedback">{this.state.error.redirect_urls}</div>
-                  </fieldset>
-                  <fieldset className="form-group">
-                    <h3>Environment</h3>
-                    <input ref={c => (this.formFields.envDev = c)} type="radio" name="env" value="dev" defaultChecked={env === 'dev'} />
-                    <label htmlFor="envDev" className="radio-label"> Development</label>
-                    <input ref={c => (this.formFields.envProd = c)} type="radio" name="env" value="prod" defaultChecked={env === 'prod'} />
-                    <label htmlFor="envProd" className="radio-label">Production</label>
-                  </fieldset>
+      <div className="pbl">
+        {isFetching && <div className="mvl"><Loading /></div>}
+        {!isFetching &&
+          <form className="form">
+            <div className="thin pvl">
+              <FieldsetInput name="name" label="Name" placeholder="Add a name for your app" defaultValue={name} error={this.state.error} validate={this.validate} formFields={this.formFields} />
+              <FieldsetInput name="author" label="Author" placeholder="Add the author username" defaultValue={author} error={this.state.error} validate={this.validate} formFields={this.formFields} />
+              <FieldsetInput name="tagline" label="Tagline" placeholder="Tagline" defaultValue={tagline} error={this.state.error} validate={this.validate} formFields={this.formFields} />
+              <FieldsetInput name="description" label="Description" placeholder="Description" defaultValue={tagline} error={this.state.error} validate={this.validate} formFields={this.formFields} />
+              <fieldset className="form-group">
+                <label htmlFor="origins">Requested permissions</label>
+                {permissionList.map(({ name: permissionName, api }) => <div key={api}>
+                  <input type="checkbox" className="form-check-input mls" ref={c => (this.formFields.permissions[api] = c)} defaultChecked={permissions.indexOf(api) >= 0} value={api} />
+                  {permissionName}
                 </div>
-                <fieldset className="form-group man">
-                  <div className="form-control-feedback man phm">{this.state.error.save}</div>
-                  <button className="btn btn-primary form-submit" onClick={this.save}>Save</button>
-                </fieldset>
-              </form>
-            </div>}
-          {!isFetching && appExist &&
-            <a href="#" onClick={this.props.deleteApp}>Delete App</a>
-          }
-          {!isFetching && !showApp &&
-            <div className="pbxl">
-              <div className="pvxl">
-                <h1>Build your apps on Steem blockchain</h1>
-                <h3>Integrate identity architecture early,
-                  saving critical time and ensuring security.</h3>
-              </div>
-              <div className="pvl">
-                <h3>Create an app for @{this.props.auth.user.name}</h3>
-                <p>Curabitur tortor. Pellentesque nibh. Aenean quam.
-                  In scelerisque sem at dolor. Maecenas mattis.</p>
-                <button type="button" className="btn btn-primary" onClick={this.createApp}>Setup @{this.props.auth.user.name} app</button>
-              </div>
+                )}
+              </fieldset>
+              <FieldSetTextarea name="origins" label="Allowed origins" placeholder="Enter a list of origin URLs separated by new line" defaultValue={origins} error={this.state.error} validate={this.validate} formFields={this.formFields} />
+              <FieldSetTextarea name="redirect_urls" label="Allowed redirect urls" placeholder="Enter a list of redirect URLs separated by new line" defaultValue={redirectUrls} error={this.state.error} validate={this.validate} formFields={this.formFields} />
+              <fieldset className="form-group">
+                <div className="btn-group">
+                  <label className="btn btn-secondary">
+                    <input ref={c => (this.formFields.envDev = c)} type="radio" name="env" id="dev" defaultChecked={env === 'dev'} /> Development
+                  </label>
+                  <label className="btn btn-secondary">
+                    <input ref={c => (this.formFields.envProd = c)} type="radio" name="env" id="prod" defaultChecked={env === 'prod'} /> Production
+                  </label>
+                </div>
+              </fieldset>
             </div>
-          }
-        </div>
+            <hr />
+            <fieldset className="form-group text-lg-center ptl">
+              <div className="form-control-danger man phm">{this.state.error.save}</div>
+              <button className="btn btn-success" onClick={this.save}>Save Changes</button>
+              {appExist && <span>
+                <span className="spacer">or</span>
+                <button className="btn btn-outline-danger" onClick={this.props.deleteApp}>Delete App</button>
+              </span>}
+            </fieldset>
+          </form>
+        }
       </div>
     );
   }
