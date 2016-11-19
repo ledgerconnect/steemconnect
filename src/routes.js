@@ -4,7 +4,8 @@ import Wrapper from './wrapper';
 import ModelWrapper from './ModelWrapper';
 import Profile from './profile/Profile';
 import Authorize from './auth/Authorize';
-import Developer from './developers/Developers';
+import Developers from './developers/Developers';
+import AppSetup from './apps/AppSetup';
 import About from './statics/About';
 import TutorialsSimpleApp from './developers/Tutorials/TutorialsSimpleApp';
 import Summary from './summary/Summary';
@@ -20,8 +21,9 @@ module.exports = (
       <IndexRoute component={Summary} />
       <Route path="/apps" component={Apps} />
       <Route path="/apps/@:app" component={App} />
+      <Route path="/apps/setup" component={AppSetup} />
       <Route path="/profile" component={Profile} />
-      <Route path="/developers" component={Developer} />
+      <Route path="/developers" component={Developers} />
       <Route path="/developers/tutorials/simple-app" component={TutorialsSimpleApp} />
       <Route path="/about" component={About} />
     </Route>
