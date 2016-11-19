@@ -55,7 +55,6 @@ function checkOrigin(req, res, next) {
         let allowUrl = acceptedOrigins.indexOf(origin) >= 0;
         if (inDevMode === true && !allowUrl) {
           allowUrl =
-            origin === 'null' || // for file protocol
             origin.indexOf('http://localhost') === 0 ||
             origin.indexOf('http://127.0.0.1') === 0;
         }

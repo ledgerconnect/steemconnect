@@ -85,7 +85,8 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
       if (_.indexOf(app.redirect_urls, redirect_url) === -1) { throw new Error('Redirect URL mismatch'); }
       if (!permissions) { throw new Error('No permissions specified'); }
 
-      return addPermissionToDB(req.username, appUserName, permissions).then(() => res.redirect(`${redirect_url}`));
+      return addPermissionToDB(req.username, appUserName, permissions)
+        .then(() => res.redirect(redirect_url));
     }).catch((err) => {
       if (typeof err === 'string') {
         res.status(500).send({ error: err });
