@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import steem from 'steem';
 import PermissionList from '../../lib/permissions';
 
 const steemAuth = require('steemauth');
@@ -12,6 +13,8 @@ export const LOGIN_FAILURE = '@auth/LOGIN_FAILURE';
 export const SIGNUP_SUCCESS = '@auth/SIGNUP_SUCCESS';
 export const SIGNUP_FAILURE = '@auth/SIGNUP_FAILURE';
 export const SIGNUP_REQUEST = '@auth/SIGNUP_REQUEST';
+export const USERNAME_FAILURE = '@auth/USERNAME_FAILURE';
+export const USERNAME_REQUEST = '@auth/USERNAME_REQUEST';
 export const LOGIN_NO_COOKIE = '@auth/LOGIN_NO_COOKIE';
 export const UPDATE_PROFILE = '@auth/UPDATE_PROFILE';
 export const UPDATE_LAST_USER_LIST = '@auth/UPDATE_LAST_USER_LIST';
@@ -27,7 +30,16 @@ function encryptData(object) {
 }
 
 export function selectLoginWithUserName(selected) {
-  return { type: UPDATE_LAST_USER_LIST, lastUserList: { selected, show: false } };
+  return (dispatch) => {
+    dispatch({ type: USERNAME_REQUEST });
+    steem.api.getAccounts([selected], (err, result) => {
+      if (result.length) {
+        dispatch({ type: UPDATE_LAST_USER_LIST, lastUserList: { selected, show: false } });
+      } else {
+        dispatch({ type: USERNAME_FAILURE, errorMessage: 'Incorrect username' });
+      }
+    });
+  };
 }
 
 export function ShowLastUserList() {

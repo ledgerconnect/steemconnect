@@ -60,6 +60,7 @@ export default (state = initialState, action) => {
     case authTypes.UPDATE_LAST_USER_LIST:
       return {
         ...state,
+        isFetching: false,
         lastUserList: action.lastUserList,
         errorMessage: '',
       };
@@ -99,6 +100,18 @@ export default (state = initialState, action) => {
         user: {},
         isFetching: false,
         success: false,
+        errorMessage: action.errorMessage,
+      };
+    case authTypes.USERNAME_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        errorMessage: '',
+      };
+    case authTypes.USERNAME_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
         errorMessage: action.errorMessage,
       };
     default:

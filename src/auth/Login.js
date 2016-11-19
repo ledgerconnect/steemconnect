@@ -43,10 +43,10 @@ class Login extends Component {
               </span>
               {selectedUser && <AccountCard username={selectedUser} />}
               <form className="form" onSubmit={this.handleSubmit}>
-                <input type="hidden" placeholder="Username" defaultValue={selectedUser} ref={(c) => { this.username = c; }} />
+                <input type="hidden" placeholder="Username" defaultValue={selectedUser} ref={(c) => { this.username = c; } } />
                 <div className="input-group input-group-lg">
                   <span className="input-group-addon"><i className="icon icon-md material-icons">lock_outline</i></span>
-                  <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control" ref={(c) => { this.passwordOrWif = c; }} />
+                  <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control" ref={(c) => { this.passwordOrWif = c; } } />
                 </div>
                 {this.props.auth.errorMessage &&
                   <ul className="errorMessages pam">
