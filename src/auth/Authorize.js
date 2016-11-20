@@ -13,14 +13,13 @@ class Authorize extends React.Component {
   }
 
   componentWillMount() {
-    const { redirect_url } = this.props.location.query;
     const appName = this.props.params.app;
-    this.props.getAppDetails(appName, redirect_url)
-      .then((({ acceptedPermission = [], permissions = [] } = {}) => {
+    this.props.getAppDetails(appName, this.props.location.query.redirect_url)
+      .then((({ redirect_url, acceptedPermission = [], permissions = [] } = {}) => {
         const permissionsValues = _.chain(permissions).map(v1 => v1.api).filter().value();
         if (_.isEqual(permissionsValues, acceptedPermission) && redirect_url) {
           this.setState({ isRedirecting: true }, () => {
-            window.location = `/auth/authorize?redirect_url=${redirect_url}&appUserName=${appName}&permissions=${permissionsValues}`;
+            window.location = redirect_url;
           });
         }
       }));

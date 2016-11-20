@@ -123,7 +123,7 @@ export function setAppDetails(appName, appDetails) {
   return { type: SET_APP_DETAILS, appName, appDetails };
 }
 
-export function getAppDetails(appUserName, redirectUrl) {
+export function getAppDetails(appUserName, redirectUrl = '') {
   return dispatch => fetch(`/auth/app/@${appUserName}`, {
     method: 'GET',
     credentials: 'include',
@@ -139,13 +139,14 @@ export function getAppDetails(appUserName, redirectUrl) {
       app.permissions = _.map(app.permissions,
         v => Object.assign(PermissionList[v], { api: v }));
       app.redirect_urls = app.redirect_urls || [];
-
+      const redirectUrlExist = redirectUrl.indexOf('http') === 0;
       // If there is list of redirect_url that developers must specify
       // if there is only one that it will be selected automatically
-      if (app.redirect_urls.length > 1 && app.redirect_urls.indexOf(redirectUrl) === -1) {
+      if (redirectUrlExist && app.redirect_urls.length >= 1 &&
+        app.redirect_urls.indexOf(redirectUrl) === -1) {
         dispatch(setAppDetails(appUserName, { error: 'RedirectUrl Mismatch' }));
       } else {
-        app.redirect_url = redirectUrl || app.redirect_urls[0];
+        app.redirect_url = redirectUrlExist ? redirectUrl : app.redirect_urls[0];
         dispatch(setAppDetails(appUserName, app));
       }
       return app;
