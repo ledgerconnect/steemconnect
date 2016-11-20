@@ -106,7 +106,7 @@ router.get('/auth/app/@:appUserName', verifyAuth, (req, res) => {
   debug('getting app ', appUserName);
   return Promise.all([
     getApp(appUserName),
-    getAcceptedPermission(username, appUserName),
+    getAcceptedPermission(appUserName, username),
   ]).then(([app, acceptedPermission]) => {
     res.send(_.extend(app, { acceptedPermission }));
   }).catch((err) => {
