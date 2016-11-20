@@ -5,7 +5,7 @@ import _ from 'lodash';
 import validator from 'validator';
 import FieldsetInput from '../widgets/Form/FieldsetInput';
 import FieldSetTextarea from '../widgets/Form/FieldsetTextarea';
-import { createApp, getApp, deleteApp } from './actions';
+import { createApp, getApp, deleteApp } from '../developers/actions';
 import PermissionList from '../../lib/permissions';
 import Loading from '../widgets/Loading';
 
@@ -103,10 +103,10 @@ class AppSetup extends Component {
       permissions = [] }, isFetching } = this.props.developer;
     let { app: { origins = [], redirectUrls = [] } } = this.props.developer;
 
-    origins = typeof origins === 'string' ? JSON.parse(origins) : origins;
-    redirectUrls = typeof redirectUrls === 'string' ? JSON.parse(redirectUrls) : redirectUrls;
-    origins = origins.length ? origins.join('\n') : origins;
-    redirectUrls = redirectUrls.length ? redirectUrls.join('\n') : redirectUrls;
+    origins = _.isString(origins) ? JSON.parse(origins) : origins;
+    redirectUrls = _.isString(redirectUrls) ? JSON.parse(redirectUrls) : redirectUrls;
+    origins = _.isArray(origins) ? origins.join('\n') : origins;
+    redirectUrls = _.isArray(redirectUrls) ? redirectUrls.join('\n') : redirectUrls;
 
     const appExist = !_.isEmpty(this.props.developer.app);
 
