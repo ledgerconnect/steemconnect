@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const { verifyAuth } = require('./middleware');
 const { decryptMessage, encryptMessage } = require('../lib/utils');
 const { addPermissionToDB, upsertApp, getApp, deleteApp,
-  getAppList, getUserApps, unAuthorizeApp } = require('../db/utils');
+  getAppList, getUserApps, unAuthorizeApp, getAcceptedPermission } = require('../db/utils');
 const debug = require('debug')('steemconnect:route:auth');
 
 const router = new express.Router();
@@ -102,12 +102,16 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
 
 router.get('/auth/app/@:appUserName', verifyAuth, (req, res) => {
   const { appUserName } = req.params;
+  const username = req.username;
   debug('getting app ', appUserName);
-  return getApp(appUserName)
-    .then(result => res.send(result))
-    .catch((err) => {
-      res.status(500).send({ error: err.message });
-    });
+  return Promise.all([
+    getApp(appUserName),
+    getAcceptedPermission(username, appUserName),
+  ]).then(([app, acceptedPermission]) => {
+    res.send(_.extend(app, { acceptedPermission }));
+  }).catch((err) => {
+    res.status(500).send({ error: err.message });
+  });
 });
 
 router.post('/auth/app', verifyAuth, (req, res) => {

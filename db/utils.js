@@ -77,6 +77,19 @@ function getApp(username) {
     });
 }
 
+function getAcceptedPermission(app, username) {
+  return db.select('permissions').from('authorizedApps')
+    .where('app', app)
+    .andWhere('username', username)
+    .limit(1)
+    .then((result) => {
+      if (result.length) {
+        return result[0].permissions.split(',');
+      }
+      return [];
+    });
+}
+
 function deleteApp(username) {
   debug('deleting app by user', username);
   if (!username) { return Promise.reject({ error: new Error('Please specify username') }); }
@@ -109,12 +122,13 @@ function getUserApps(username) {
 
 function unAuthorizeApp(app, username) {
   return db('authorizedApps')
-    .where('app', username)
+    .where('app', app)
     .andWhere('username', username)
     .del();
 }
 
 module.exports = {
+  getAcceptedPermission,
   addPermissionToDB,
   getPermissionFromDB,
   upsertApp,
