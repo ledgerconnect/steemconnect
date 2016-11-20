@@ -5,15 +5,21 @@ import Sidebar from './app/Sidebar';
 import Login from './auth/Login';
 import Loading from './widgets/Loading';
 import Header from './app/Header';
+import PasswordDialog from './passwordDialog/PasswordDialog';
 
 class Wrapper extends Component {
   componentWillMount() {
     this.props.login();
   }
-  render() {
-    const className = (!this.props.app.sidebarIsVisible) ? 'app-wrapper full-width' : 'app-wrapper';
 
-    if (this.props.auth.isReadingCookies) {
+  render() {
+    const {
+      auth: { isAuthenticated, isReadingCookies },
+      app: { sidebarIsVisible },
+      passwordDialog: { showDialog: showPasswordDialog },
+    } = this.props;
+
+    if (isReadingCookies) {
       return (<div className="login-section">
         <div className="login-center">
           <Loading />
@@ -21,26 +27,23 @@ class Wrapper extends Component {
       </div>);
     }
 
-    return (
-      !this.props.auth.isAuthenticated ? <Login {...this.props} /> : <div className={className}>
+    return (!isAuthenticated ?
+      <Login {...this.props} /> :
+      <div className={sidebarIsVisible ? 'app-wrapper' : 'app-wrapper full-width'}>
+        {showPasswordDialog && <PasswordDialog />}
         <Sidebar />
         <div className="main-panel">
           <Header />
           {this.props.children}
         </div>
-      </div>
-    );
+      </div>);
   }
 }
 
 Wrapper.propTypes = {
-  auth: PropTypes.shape({
-    isAuthenticated: PropTypes.bool.isRequired,
-    isReadingCookies: PropTypes.bool.isRequired,
-  }),
-  app: PropTypes.shape({
-    sidebarIsVisible: PropTypes.bool,
-  }),
+  auth: PropTypes.shape({}),
+  app: PropTypes.shape({}),
+  passwordDialog: PropTypes.shape({}),
   children: PropTypes.element,
   login: PropTypes.func.isRequired,
 };
@@ -48,6 +51,7 @@ Wrapper.propTypes = {
 const mapStateToProps = state => ({
   auth: state.auth,
   app: state.app,
+  passwordDialog: state.passwordDialog,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -12,13 +12,23 @@ export function transfer(transferDetails) {
     const isWif = steemAuth.isWif(passwordOrWif);
     const ownerKey = (isWif) ? passwordOrWif : steemAuth.toWif(from, passwordOrWif, 'owner');
     dispatch({ type: TRANSFER_STEEM_REQUEST });
-    steem.broadcast.transfer(ownerKey, from, to, balance, memo, (result) => {
-      if (result) {
-        dispatch({ type: TRANSFER_STEEM_FAILURE, errorMessage: 'Could not transfer' });
-      } else {
-        dispatch({ type: TRANSFER_STEEM_SUCCESS });
-        dispatch(updateProfile(from));
-      }
+    return new Promise((resolve, reject) => {
+      steem.broadcast.transfer(ownerKey, from, to, balance, memo, (result) => {
+        if (result) {
+          dispatch({ type: TRANSFER_STEEM_FAILURE, errorMessage: 'Could not transfer' })
+          let message;
+
+          if (result.toString().search('does not have sufficient funds') >= 0) {
+            message = 'Insufficient funds';
+          } else if (result.toString().search('missing required active') >= 0) {
+            message = 'Incorrect Password';
+          }
+          reject({ message });
+        } else {
+          dispatch(updateProfile(from));
+          resolve(dispatch({ type: TRANSFER_STEEM_SUCCESS }));
+        }
+      });
     });
   };
 }

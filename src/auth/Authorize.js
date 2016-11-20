@@ -9,7 +9,7 @@ class Authorize extends React.Component {
   constructor(props) {
     super(props);
     this.permissions = {};
-    this.state = { error: {}, showPasswordDialog: false, isRedirecting: false };
+    this.state = { error: {}, isRedirecting: false };
   }
 
   componentWillMount() {

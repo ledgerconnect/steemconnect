@@ -1,33 +1,29 @@
 import React, { Component, PropTypes } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import Avatar from '../widgets/Avatar';
+import { hidePasswordDialog } from './actions';
 
 class PasswordDialog extends Component {
-  savePassword = () => {
-    const { isUpdating, error } = this.props;
-    if (isUpdating === false && error === false) {
-      this.props.onClose();
-    } else {
-      this.props.onSave(this.passwordOrWif.value);
+  onEnter = (event) => {
+    event.preventDefault();
+    if (this.props.passwordDialog.isSuccess) {
+      this.cancel();
+    } else if (this.props.passwordDialog.onEnter) {
+      this.props.passwordDialog.onEnter(this.passwordOrWif.value);
     }
   }
 
+  cancel = () => {
+    this.props.hidePasswordDialog();
+    if (this.props.passwordDialog.onCancel) this.props.passwordDialog.onCancel();
+  }
+
   render() {
-    const { isUpdating, error } = this.props;
-    let saveText = isUpdating === true ? 'Confirming' : 'Confirm';
-    let message;
-    let showSuccess;
+    const { passwordDialog: { btnName, inProgress, isSuccess, isError, message } } = this.props;
     const { name: username } = this.props.auth.user;
-    if (isUpdating === false && error === false) {
-      message = <div>Success</div>;
-      showSuccess = true;
-      saveText = 'Close';
-    } else if (error === true) {
-      message = <div>Incorrect Password</div>;
-    } else {
-      message = <div>{error}</div>;
-    }
+
     return (
       <div className="dialog dialog-password">
         <div className="login-section">
@@ -35,21 +31,22 @@ class PasswordDialog extends Component {
             <Link to="/"><img alt="Steem Connect" className="dialog-logo mbm" src="/img/logo.svg" /></Link>
             <div className="block block-login">
               <div className="dialog">
-                <i className="icon icon-md material-icons dialog-close" onClick={this.props.onClose}>close</i>
+                <i className="icon icon-md material-icons dialog-close" onClick={this.cancel}>close</i>
                 <div className="account-card">
                   <Avatar xl username={username} />
                   <h2 className="mts">@{username}</h2>
                 </div>
                 <div className="form">
-                  <div className="input-group input-group-lg">
+                  {!isSuccess && <div className="input-group input-group-lg">
                     <span className="input-group-addon"><i className="icon icon-md material-icons">lock_outline</i></span>
                     <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control" ref={(c) => { this.passwordOrWif = c; } } />
-                  </div>
-                  {error && <ul className="errorMessages pam">
+                  </div>}
+                  {isSuccess && message && <div style={{ height: 50, color: 'green' }}>{message}</div>}
+                  {isError && message && <ul className="errorMessages pam">
                     <li>{message}</li>
                   </ul>}
                   <fieldset className="form-group man">
-                    <button disabled={isUpdating} className="btn btn-success form-submit" onClick={this.savePassword}>{saveText}</button>
+                    <button disabled={inProgress} className="btn btn-success form-submit" onClick={this.onEnter}>{btnName}</button>
                   </fieldset>
                 </div>
               </div>
@@ -65,10 +62,12 @@ class PasswordDialog extends Component {
 }
 
 PasswordDialog.propTypes = {
-  onSave: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
-  isUpdating: PropTypes.bool,
-  error: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+  hidePasswordDialog: PropTypes.func,
+  passwordDialog: PropTypes.shape({
+    isSuccess: PropTypes.bool,
+    onCancel: PropTypes.func,
+    onEnter: PropTypes.func,
+  }),
   auth: PropTypes.shape({
     user: PropTypes.shape({
       name: PropTypes.string,
@@ -79,6 +78,9 @@ PasswordDialog.propTypes = {
 
 const mapStateToProps = state => ({
   auth: state.auth,
+  passwordDialog: state.passwordDialog,
 });
 
-export default connect(mapStateToProps)(PasswordDialog);
+const mapDispatchToProps = dispatch => (bindActionCreators({ hidePasswordDialog }, dispatch));
+
+export default connect(mapStateToProps, mapDispatchToProps)(PasswordDialog);

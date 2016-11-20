@@ -4,21 +4,42 @@ import validator from 'validator';
 import { bindActionCreators } from 'redux';
 import { each } from 'lodash';
 import AvatarUpdate from './AvatarUpdate';
-import { setAvatar, accountUpdate, clearUpdatingResult } from '../actions';
-import PasswordDialog from '../widgets/PasswordDialog';
+import { setAvatar, accountUpdate } from '../actions';
+import { showPasswordDialog, updatePasswordDialog } from '../passwordDialog/actions';
 
 class Settings extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { error: {}, showPasswordDialog: false };
+    this.state = { error: {} };
   }
 
   onDrop = (files, type) => {
-    this.setState({
-      showPasswordDialog: true,
-      passwordCallback: passwordOrWif => this.props.setAvatar(passwordOrWif, files[0], type),
+    this.props.showPasswordDialog({
+      btnName: 'Update Avatar',
+      onEnter: (passwordOrWif) => {
+        this.props.updatePasswordDialog({ btnName: 'Updating', inProgress: true });
+        this.props.setAvatar(passwordOrWif, files[0], type)
+          .then(() => {
+            this.props.updatePasswordDialog({ btnName: 'Close', isSuccess: true, message: 'Your avatar is updated' });
+          })
+          .catch(() => {
+            this.props.updatePasswordDialog({ btnName: 'Retry', isError: true, message: 'Incorrect Password' });
+          });
+      },
     });
+  }
+
+  updateProfile = (passwordOrWif, json_metadata) => {
+    const user = this.props.auth.user;
+    this.props.updatePasswordDialog({ btnName: 'Updating', inProgress: true });
+    this.props.accountUpdate(user.name, passwordOrWif, user.memo_key, json_metadata)
+      .then(() => {
+        this.props.updatePasswordDialog({ btnName: 'Close', isSuccess: true, message: 'Your profile is updated' });
+      })
+      .catch(() => {
+        this.props.updatePasswordDialog({ btnName: 'Retry', isError: true, message: 'Incorrect Password' });
+      });
   }
 
   save = (event) => {
@@ -34,10 +55,9 @@ class Settings extends Component {
 
     const json_metadata = user.json_metadata || {};
     json_metadata.profile = profileData;
-    this.setState({
-      showPasswordDialog: true,
-      passwordCallback: passwordOrWif =>
-        this.props.accountUpdate(user.name, passwordOrWif, user.memo_key, json_metadata),
+    this.props.showPasswordDialog({
+      btnName: 'Update Profile',
+      onEnter: passwordOrWif => this.updateProfile(passwordOrWif, json_metadata),
     });
   }
   validate = (refKeys) => {
@@ -57,37 +77,19 @@ class Settings extends Component {
     }
   }
 
-  closePasswordDialog = () => {
-    this.setState({ showPasswordDialog: false, passwordCallback: undefined });
-    this.props.clearUpdatingResult();
-  }
-  savePassword = (passwordOrWif) => {
-    this.state.passwordCallback(passwordOrWif);
-  }
-
   clearProfile = (event) => {
     event.preventDefault();
     const user = this.props.auth.user;
     const json_metadata = user.json_metadata || {};
     json_metadata.profile = {};
-    this.setState({
-      showPasswordDialog: true,
-      passwordCallback: passwordOrWif =>
-        this.props.accountUpdate(user.name, passwordOrWif, user.memo_key, json_metadata),
+    this.props.showPasswordDialog({
+      btnName: 'Clear Profile',
+      onEnter: passwordOrWif => this.updateProfile(passwordOrWif, json_metadata),
     });
   }
   render() {
     const user = this.props.auth.user;
     const profile = typeof user.json_metadata.profile === 'object' ? user.json_metadata.profile : {};
-    let passwordDialog;
-    if (this.state.showPasswordDialog) {
-      passwordDialog = (<PasswordDialog
-        isUpdating={user.isUpdatingProfile}
-        error={user.isUpdatingProfileError}
-        onClose={this.closePasswordDialog}
-        onSave={this.savePassword}
-      />);
-    }
     return (
       <div className="pbl">
         <div className="pvxl">
@@ -122,16 +124,16 @@ class Settings extends Component {
             <button className="btn btn-outline-danger" onClick={this.clearProfile}>Clear Profile</button>
           </fieldset>
         </form>
-        {passwordDialog}
       </div>
     );
   }
 }
 
 Settings.propTypes = {
-  clearUpdatingResult: PropTypes.func,
   accountUpdate: PropTypes.func,
   setAvatar: PropTypes.func,
+  showPasswordDialog: PropTypes.func,
+  updatePasswordDialog: PropTypes.func,
   auth: PropTypes.shape({
     user: PropTypes.shape({}),
   }),
@@ -142,6 +144,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch =>
-  (bindActionCreators({ setAvatar, accountUpdate, clearUpdatingResult }, dispatch));
+  (bindActionCreators({
+    setAvatar,
+    accountUpdate,
+    showPasswordDialog,
+    updatePasswordDialog,
+  }, dispatch));
 
 module.exports = connect(mapStateToProps, mapDispatchToProps)(Settings);

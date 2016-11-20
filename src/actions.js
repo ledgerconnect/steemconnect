@@ -96,13 +96,14 @@ export function setAvatar(passwordOrWif, file, type) {
     if (type === 'cover_image') {
       uploadUrl += '/cover';
     }
-    fetch(uploadUrl, { method: 'POST', body, origin: true })
+    return fetch(uploadUrl, { method: 'POST', body, origin: true })
       .then(response => response.json())
       .then(({ url }) => {
         profileData[type] = url || uploadUrl;
-        dispatch(accountUpdate(user.name, passwordOrWif, user.memo_key, user.json_metadata));
+        return dispatch(accountUpdate(user.name, passwordOrWif, user.memo_key, user.json_metadata));
       }).catch((err) => {
         console.error('Error While Setting Avatar', err);
+        throw err;
       });
   };
 }

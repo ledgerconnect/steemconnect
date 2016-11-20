@@ -4,12 +4,12 @@ import { connect } from 'react-redux';
 import validator from 'validator';
 import _ from 'lodash';
 import { transfer } from './actions';
-import PasswordDialog from '../widgets/PasswordDialog';
+import { showPasswordDialog, updatePasswordDialog } from '../passwordDialog/actions';
 
 class Payments extends Component {
   constructor(props) {
     super(props);
-    this.state = { error: {}, showPasswordDialog: false, transferType: 'STEEM' };
+    this.state = { error: {}, transferType: 'STEEM' };
     this.formFields = {};
     this.formData = {};
   }
@@ -73,29 +73,27 @@ class Payments extends Component {
     } else {
       const { auth: { user } } = this.props;
       const balance = this.state.transferType === 'STEEM' ? `${this.formData.amount} STEEM` : `${this.formData.amount} SBD`;
-
       this.state.error.transfer = undefined;
-      this.setState({
-        error: this.state.error,
-        showPasswordDialog: true,
-        passwordCallback: (passwordOrWif) => {
+      this.props.showPasswordDialog({
+        btnName: 'Confirm transfer',
+        onEnter: (passwordOrWif) => {
+          this.props.updatePasswordDialog({ btnName: 'Transfering', inProgress: true });
           this.props.transfer({
             passwordOrWif,
             from: user.name,
             balance,
             to: this.formData.transferTo,
             memo: this.formData.memo,
+          }).then(() => {
+            this.props.updatePasswordDialog({ btnName: 'Close', isSuccess: true, message: 'Transfer Done' });
+          }).catch(({ message }) => {
+            this.props.updatePasswordDialog({ btnName: 'Retry', isError: true, message });
           });
         },
       });
-    }
-  }
 
-  closePasswordDialog = () => {
-    this.setState({ showPasswordDialog: false, passwordCallback: undefined });
-  }
-  savePassword = (passwordOrWif) => {
-    this.state.passwordCallback(passwordOrWif);
+      this.setState({ error: this.state.error });
+    }
   }
 
   changeTransferType = (event) => {
@@ -103,7 +101,7 @@ class Payments extends Component {
   }
 
   render() {
-    const { auth: { user }, payments: { isFetching, errorMessage } } = this.props;
+    const { auth: { user } } = this.props;
     const currentBalance = this.state.transferType === 'STEEM' ? user.balance : user.sbd_balance;
     return (
       <div className="block block-login">
@@ -121,16 +119,9 @@ class Payments extends Component {
             <input className="form-control form-control-lg" placeholder="Memo" defaultValue={this.props.params.memo} ref={c => (this.formFields.memo = c)} />
             <p>Current balance {currentBalance}</p>
           </div>
-            <div className="form-control-feedback man phm">{this.state.error.transfer}</div>
-            <button className="btn btn-primary form-submit" onClick={this.transfer}>Transfer</button>
+          <div className="form-control-feedback man phm">{this.state.error.transfer}</div>
+          <button className="btn btn-primary form-submit" onClick={this.transfer}>Transfer</button>
         </form>
-        {this.state.showPasswordDialog &&
-          <PasswordDialog
-            isUpdating={isFetching}
-            error={errorMessage}
-            onClose={this.closePasswordDialog}
-            onSave={this.savePassword}
-          />}
       </div>
     );
   }
@@ -142,12 +133,14 @@ Payments.propTypes = {
   payments: PropTypes.shape({
     // isFetching: PropTypes.bool,
   }),
+  showPasswordDialog: PropTypes.func,
+  updatePasswordDialog: PropTypes.func,
   transfer: PropTypes.func,
 };
 
 const mapStateToProps = state => ({ auth: state.auth, payments: state.payments });
 const mapDispatchToProps = dispatch => (bindActionCreators({
-  transfer,
+  transfer, showPasswordDialog, updatePasswordDialog,
 }, dispatch));
 
 export default connect(mapStateToProps, mapDispatchToProps)(Payments);
