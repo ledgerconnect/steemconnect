@@ -133,10 +133,10 @@ class AppSetup extends Component {
               <fieldset className="form-group">
                 <div className="btn-group">
                   <label className="btn btn-secondary">
-                    <input ref={c => (this.formFields.envDev = c)} type="radio" name="env" id="dev" defaultChecked={env === 'dev'} /> Development
+                    <input ref={c => (this.formFields.envDev = c)} type="radio" name="env" id="dev" value="dev" defaultChecked={env === 'dev'} /> Development
                   </label>
                   <label className="btn btn-secondary">
-                    <input ref={c => (this.formFields.envProd = c)} type="radio" name="env" id="prod" defaultChecked={env === 'prod'} /> Production
+                    <input ref={c => (this.formFields.envProd = c)} type="radio" name="env" id="prod" value="prod" defaultChecked={env === 'prod'} /> Production
                   </label>
                 </div>
               </fieldset>
