@@ -1,14 +1,21 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { Link } from 'react-router';
 
-module.exports = React.createClass({
+export default class Summary extends Component {
   render() {
     return (
-      <div className="pbl">
+      <div>
         <div className="pvxl">
-          <h1>Welcome</h1>
-          <h3>Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem.</h3>
+          <h1><Link to="/profile">Control your public identity</Link></h1>
+          <h3>Integrate identity architecture early,
+            saving critical time and ensuring security.</h3>
+        </div>
+        <div className="pvxl">
+          <h1><Link to="/developers">Build your apps on Steem blockchain</Link></h1>
+          <h3>Integrate identity architecture early,
+            saving critical time and ensuring security.</h3>
         </div>
       </div>
     );
   }
-});
+}

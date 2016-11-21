@@ -92,11 +92,6 @@ class Settings extends Component {
     const profile = typeof user.json_metadata.profile === 'object' ? user.json_metadata.profile : {};
     return (
       <div className="pbl">
-        <div className="pvxl">
-          <h1>Control your public identity</h1>
-          <h3>Integrate identity architecture early,
-            saving critical time and ensuring security.</h3>
-        </div>
         <AvatarUpdate username={user.name} onDrop={this.onDrop} />
         <form>
           <div className="thin pvl">

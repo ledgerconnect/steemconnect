@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 
-class Developers extends Component {
+export default class Developers extends Component {
   render() {
     return (
       <div className="pbxl">
-        <div className="pvxl">
-          <h1>Build your apps on Steem blockchain</h1>
-          <h3>Integrate identity architecture early,
-            saving critical time and ensuring security.</h3>
-        </div>
         <div className="row pvl thin text-lg-left">
           <div className="pvl">
             <h3>Setup your app</h3>
@@ -34,5 +29,3 @@ class Developers extends Component {
     );
   }
 }
-
-export default Developers;
