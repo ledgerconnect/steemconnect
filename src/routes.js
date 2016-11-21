@@ -6,8 +6,6 @@ import Profile from './profile/Profile';
 import Authorize from './auth/Authorize';
 import Developers from './developers/Developers';
 import AppSetup from './apps/AppSetup';
-import About from './statics/About';
-import TutorialsSimpleApp from './developers/Tutorials/TutorialsSimpleApp';
 import Summary from './summary/Summary';
 import Apps from './apps/Apps';
 import App from './apps/App';
@@ -24,8 +22,6 @@ module.exports = (
       <Route path="/apps/setup" component={AppSetup} />
       <Route path="/profile" component={Profile} />
       <Route path="/developers" component={Developers} />
-      <Route path="/developers/tutorials/simple-app" component={TutorialsSimpleApp} />
-      <Route path="/about" component={About} />
     </Route>
 
     <Route component={ModelWrapper}>
