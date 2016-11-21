@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import Avatar from '../widgets/Avatar';
+
+import AccountCard from '../auth/AccountCard';
 import { hidePasswordDialog } from './actions';
 
 class PasswordDialog extends Component {
@@ -32,10 +33,7 @@ class PasswordDialog extends Component {
             <div className="block block-login">
               <div className="dialog">
                 <i className="icon icon-md material-icons dialog-close" onClick={this.cancel}>close</i>
-                <div className="account-card">
-                  <Avatar xl username={username} />
-                  <h2 className="mts">@{username}</h2>
-                </div>
+                <AccountCard username={username} />
                 <div className="form">
                   {!isSuccess && <div className="input-group input-group-lg">
                     <span className="input-group-addon"><i className="icon icon-md material-icons">lock_outline</i></span>
