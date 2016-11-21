@@ -49,7 +49,7 @@ class LastUserSelector extends Component {
       ))}
       {_.isEmpty(lastUserList) && <h2 className="mal">Log in with your Steem account</h2>}
       {!_.isEmpty(lastUserList) && <h2 className="mal">Add new Steem account</h2>}
-      <form className="form form-login" onSubmit={this.handleSubmit}>
+      <form className="form" onSubmit={this.handleSubmit}>
         <div className="input-group input-group-lg">
           <span className="input-group-addon"><i className="icon icon-md material-icons">perm_identity</i></span>
           <input autoFocus type="text" placeholder="Enter your username" className="form-control" ref={(c) => { this.username = c; }} />
