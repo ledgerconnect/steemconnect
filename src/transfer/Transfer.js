@@ -104,7 +104,7 @@ class Payments extends Component {
     const { auth: { user } } = this.props;
     const currentBalance = this.state.transferType === 'STEEM' ? user.balance : user.sbd_balance;
     return (
-      <div className="block block-login">
+      <div className="dialog">
         <h1 className="mvl">Transfer</h1>
         <form className="form form-payments">
           <div className="pam">

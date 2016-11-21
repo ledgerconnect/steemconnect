@@ -33,11 +33,11 @@ class Login extends Component {
     const selectedUser = this.props.auth.lastUserList.selected || lastUserList[0];
     return (<div className="login-section">
       <div className="login-center">
-        <Link to="/"><img alt="Steem Connect" className="dialog-logo mbm" src="/img/logo.svg" /></Link>
-        <div className="block block-login">
+        <Link to="/"><img alt="Steem Connect" className="modal-logo mbm" src="/img/logo.svg" /></Link>
+        <div className="dialog">
           {(typeof selectedUser !== 'string' || this.props.auth.lastUserList.show === true) ?
             <LastUserSelector /> :
-            <div className="dialog">
+            <div>
               <span className="change-user">
                 <a onClick={this.props.showUserList}>Not you?</a>
               </span>

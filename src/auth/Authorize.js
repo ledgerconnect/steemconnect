@@ -46,7 +46,7 @@ class Authorize extends React.Component {
     }
 
     return (
-      <div className="block block-login">
+      <div className="dialog">
         <div className="mvl"><img alt="app-logo" src={`https://img.steemconnect.com/@${appName}`} width="70" /></div>
         {errorOrLoading}
         {(!errorOrLoading) && (<div className="mtl">
@@ -57,13 +57,11 @@ class Authorize extends React.Component {
               {name}
             </div>)}
           </ul>
-          <div className="dialog">
-            <form className="form" onSubmit={this.handleSubmit}>
-              <fieldset className="form-group man">
-                <button onClick={event => this.authorizeUser(event, redirect_url, appName)} className="btn btn-success form-submit">Continue as @{user.name}</button>
-              </fieldset>
-            </form>
-          </div>
+          <form className="form" onSubmit={this.handleSubmit}>
+            <fieldset className="form-group man">
+              <button onClick={event => this.authorizeUser(event, redirect_url, appName)} className="btn btn-success form-submit">Continue as @{user.name}</button>
+            </fieldset>
+          </form>
         </div>)}
       </div>
     );

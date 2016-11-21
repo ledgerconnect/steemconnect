@@ -1,32 +1,25 @@
 .dialog
   text-align: center
+  position: relative
+  width: 360px
+  overflow: hidden
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1)
+  border: 1px solid rgba(0, 0, 0, 0.15)
+  border-radius: 14px
+  background-color: white
+  margin: 0 auto
+
+  .change-user
+    position: absolute
+    right: 20px
+    top: 20px
+    z-index: 1
+
+  @media (max-width: 560px)
+    width: 100%
 
   .input-group
     border-top: 1px solid rgba(0, 0, 0, 0.1)
 
-  .dialog-close
-    position: absolute
-    right: 5px
-    top: 5px
-    cursor: pointer
-    color: #FFF
-    z-index: 999
-
-.dialog-logo
-  height: 64px
-  background-color: transparent
-
-.dialog-password
-  width: 100%
-  height: 100%
-  background-color: rgba(0, 0, 0, 0.7)
-  position: fixed
-  z-index: 999
-  top: 0
-  left: 0
-  right: 0
-  bottom: 0
-  display: flex
-  align-items: center
-  justify-content: center
-  color: #FFF
+  .btn
+    width: 100%

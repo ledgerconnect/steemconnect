@@ -28,36 +28,34 @@ class SignUp extends Component {
 
     return (<div className="login-section">
       <div className="login-center">
-        <Link to="/"><img alt="Steem Connect" className="dialog-logo mbm" src="/img/logo.svg" /></Link>
-        <div className="block block-login">
+        <Link to="/"><img alt="Steem Connect" className="modal-logo mbm" src="/img/logo.svg" /></Link>
+        <div className="dialog">
           <h2 className="mal">Sign Up for Steem</h2>
-          <div className="dialog">
-            <form className="form" onSubmit={this.handleSubmit}>
-              <div className="input-group input-group-lg">
-                <span className="input-group-addon"><i className="icon icon-md material-icons">perm_identity</i></span>
-                <input type="text" placeholder="Username" className="form-control" ref={(c) => { this.username = c; } } />
-              </div>
-              <div className="input-group input-group-lg">
-                <span className="input-group-addon"><i className="icon icon-md material-icons">lock_outline</i></span>
-                <input autoFocus type="password" placeholder="Password" className="form-control" ref={(c) => { this.passwordOrWif = c; } } />
-              </div>
-              {errorMessage &&
-                <ul className="errorMessages pam">
-                  <li>{errorMessage}</li>
-                </ul>}
-              {success &&
-                <ul className="pam">
-                  <li>Signup successful</li>
-                </ul>
-              }
-              <fieldset className="form-group man">
-                {!success && <button className="btn btn-success form-submit" onClick={this.signUp}>
-                  {isFetching ? <Loading color="white" /> : 'Sign Up'}</button>}
-                {success && <button className="btn btn-success form-submit" onClick={this.login}>
-                  {isFetching ? <Loading color="white" /> : 'Login'}</button>}
-              </fieldset>
-            </form>
-          </div>
+          <form className="form" onSubmit={this.handleSubmit}>
+            <div className="input-group input-group-lg">
+              <span className="input-group-addon"><i className="icon icon-md material-icons">perm_identity</i></span>
+              <input type="text" placeholder="Username" className="form-control" ref={(c) => { this.username = c; } } />
+            </div>
+            <div className="input-group input-group-lg">
+              <span className="input-group-addon"><i className="icon icon-md material-icons">lock_outline</i></span>
+              <input autoFocus type="password" placeholder="Password" className="form-control" ref={(c) => { this.passwordOrWif = c; } } />
+            </div>
+            {errorMessage &&
+              <ul className="errorMessages pam">
+                <li>{errorMessage}</li>
+              </ul>}
+            {success &&
+              <ul className="pam">
+                <li>Signup successful</li>
+              </ul>
+            }
+            <fieldset className="form-group man">
+              {!success && <button className="btn btn-success form-submit" onClick={this.signUp}>
+                {isFetching ? <Loading color="white" /> : 'Sign Up'}</button>}
+              {success && <button className="btn btn-success form-submit" onClick={this.login}>
+                {isFetching ? <Loading color="white" /> : 'Login'}</button>}
+            </fieldset>
+          </form>
         </div>
         <div className="mvl">
           <p>Have an account? <Link to="/">Log in</Link></p>
