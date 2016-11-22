@@ -50,27 +50,27 @@ class Authorize extends React.Component {
 
     return (
       <Modal>
-        <div className="dialog">
-          <AccountCard username={appName} />
-          {errorOrLoading}
-          {(!errorOrLoading) && (
+        {errorOrLoading}
+        {(!errorOrLoading) && (
+          <div className="dialog">
+            <AccountCard username={appName} />
             <div>
               <div className="mx-2 my-2">
-              <p>The app <b>@{appName}</b> is requesting permission to do the following: </p>
-              <ul>
-                {permissionList.map(({ name, api }) => <div key={api}>
-                  <input type="checkbox" className="form-check-input" ref={c => (this.permissions[api] = c)} defaultChecked="true" value={api} />
-                  {name}
-                </div>)}
-              </ul>
+                <p>The app <b>@{appName}</b> is requesting permission to do the following: </p>
+                <ul>
+                  {permissionList.map(({ name, api }) => <div key={api}>
+                    <input type="checkbox" className="form-check-input" ref={c => (this.permissions[api] = c)} defaultChecked="true" value={api} />
+                    {name}
+                  </div>)}
+                </ul>
               </div>
               <form className="form" onSubmit={this.handleSubmit}>
                 <fieldset className="form-group man">
                   <button onClick={event => this.authorizeUser(event, redirect_url, appName)} className="btn btn-success form-submit">Continue as @{user.name}</button>
                 </fieldset>
               </form>
-            </div>)}
-        </div>
+            </div>
+          </div>)}
       </Modal>
     );
   }
