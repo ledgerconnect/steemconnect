@@ -28,7 +28,6 @@ class PasswordDialog extends Component {
 
     return (
       <Modal overlay>
-        <Link to="/"><img alt="Steem Connect" className="modal-logo mbm" src="/img/logo.svg" /></Link>
         <div className="dialog">
           <i className="icon icon-md material-icons dialog-close" onClick={this.cancel}>close</i>
           <AccountCard username={username} />

@@ -35,7 +35,6 @@ class Login extends Component {
     const selectedUser = this.props.auth.lastUserList.selected || lastUserList[0];
     return (
       <Modal>
-        <Link to="/"><img alt="Steem Connect" className="modal-logo mbm" src="/img/logo.svg" /></Link>
         <div className="dialog">
           {(typeof selectedUser !== 'string' || this.props.auth.lastUserList.show === true) ?
             <LastUserSelector /> :

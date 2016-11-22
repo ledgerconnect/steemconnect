@@ -2,7 +2,9 @@ import { bindActionCreators } from 'redux';
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
-import Loading from './../widgets/Loading';
+
+import Loading from '../widgets/Loading';
+import Modal from '../widgets/Modal';
 import { signup, login } from './authAction';
 
 class SignUp extends Component {
@@ -28,7 +30,6 @@ class SignUp extends Component {
 
     return (
       <Modal>
-        <Link to="/"><img alt="Steem Connect" className="modal-logo mbm" src="/img/logo.svg" /></Link>
         <div className="dialog">
           <h2 className="mal">Sign Up for Steem</h2>
           <form className="form" onSubmit={this.handleSubmit}>
