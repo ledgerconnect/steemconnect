@@ -4,7 +4,8 @@ import { Link } from 'react-router';
 export default class Developers extends Component {
   render() {
     return (
-      <div className="pbxl">
+      <div className="ptxl">
+        <h1 className="pbxl">Developers</h1>
         <div className="row pvl thin text-lg-left">
           <div className="pvl">
             <h3>Setup your app</h3>
