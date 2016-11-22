@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+
 import { login } from './actions';
 import Sidebar from './app/Sidebar';
 import Login from './auth/Login';
 import Loading from './widgets/Loading';
+import Modal from './widgets/Modal';
 import Header from './app/Header';
 import PasswordDialog from './passwordDialog/PasswordDialog';
 
@@ -20,11 +22,11 @@ class Wrapper extends Component {
     } = this.props;
 
     if (isReadingCookies) {
-      return (<div className="login-section">
-        <div className="login-center">
+      return (
+        <Modal>
           <Loading />
-        </div>
-      </div>);
+        </Modal>
+      );
     }
 
     return (!isAuthenticated ?

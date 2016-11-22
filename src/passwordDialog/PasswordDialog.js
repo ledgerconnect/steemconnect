@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 
 import AccountCard from '../auth/AccountCard';
 import { hidePasswordDialog } from './actions';
+import Modal from '../widgets/Modal';
 
 class PasswordDialog extends Component {
   onEnter = (event) => {
@@ -26,33 +27,29 @@ class PasswordDialog extends Component {
     const { name: username } = this.props.auth.user;
 
     return (
-      <div className="modal">
-        <div className="login-section">
-          <div className="login-center">
-            <Link to="/"><img alt="Steem Connect" className="modal-logo mbm" src="/img/logo.svg" /></Link>
-            <div className="dialog">
-              <i className="icon icon-md material-icons dialog-close" onClick={this.cancel}>close</i>
-              <AccountCard username={username} />
-              <div className="form">
-                {!isSuccess && <div className="input-group input-group-lg">
-                  <span className="input-group-addon"><i className="icon icon-md material-icons">lock_outline</i></span>
-                  <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control" ref={(c) => { this.passwordOrWif = c; } } />
-                </div>}
-                {isSuccess && message && <div style={{ height: 50, color: 'green' }}>{message}</div>}
-                {isError && message && <ul className="errorMessages pam">
-                  <li>{message}</li>
-                </ul>}
-                <fieldset className="form-group man">
-                  <button disabled={inProgress} className="btn btn-success form-submit" onClick={this.onEnter}>{btnName}</button>
-                </fieldset>
-              </div>
-            </div>
-            <div className="mtl phl">
-              Your password or owner WIF are never saved by Steem Connect.
-            </div>
+      <Modal overlay>
+        <Link to="/"><img alt="Steem Connect" className="modal-logo mbm" src="/img/logo.svg" /></Link>
+        <div className="dialog">
+          <i className="icon icon-md material-icons dialog-close" onClick={this.cancel}>close</i>
+          <AccountCard username={username} />
+          <div className="form">
+            {!isSuccess && <div className="input-group input-group-lg">
+              <span className="input-group-addon"><i className="icon icon-md material-icons">lock_outline</i></span>
+              <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control" ref={(c) => { this.passwordOrWif = c; } } />
+            </div>}
+            {isSuccess && message && <div style={{ height: 50, color: 'green' }}>{message}</div>}
+            {isError && message && <ul className="errorMessages pam">
+              <li>{message}</li>
+            </ul>}
+            <fieldset className="form-group man">
+              <button disabled={inProgress} className="btn btn-success form-submit" onClick={this.onEnter}>{btnName}</button>
+            </fieldset>
           </div>
         </div>
-      </div>
+        <div className="mtl phl">
+          Your password or owner WIF are never saved by Steem Connect.
+        </div>
+      </Modal>
     );
   }
 }

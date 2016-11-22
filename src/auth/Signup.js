@@ -26,8 +26,8 @@ class SignUp extends Component {
   render() {
     const { isFetching, errorMessage, success } = this.props.auth;
 
-    return (<div className="login-section">
-      <div className="login-center">
+    return (
+      <Modal>
         <Link to="/"><img alt="Steem Connect" className="modal-logo mbm" src="/img/logo.svg" /></Link>
         <div className="dialog">
           <h2 className="mal">Sign Up for Steem</h2>
@@ -60,8 +60,7 @@ class SignUp extends Component {
         <div className="mvl">
           <p>Have an account? <Link to="/">Log in</Link></p>
         </div>
-      </div>
-    </div>
+      </Modal>
     );
   }
 }

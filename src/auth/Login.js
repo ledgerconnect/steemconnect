@@ -3,8 +3,10 @@ import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+
 import AccountCard from '../auth/AccountCard';
-import Loading from './../widgets/Loading';
+import Loading from '../widgets/Loading';
+import Modal from '../widgets/Modal';
 import cookie from '../../lib/cookie';
 import LastUserSelector from './AccountSelector';
 import { ShowLastUserList, login, demoLogin } from './authAction';
@@ -31,8 +33,8 @@ class Login extends Component {
   render() {
     const { lastUserList } = this.state;
     const selectedUser = this.props.auth.lastUserList.selected || lastUserList[0];
-    return (<div className="login-section">
-      <div className="login-center">
+    return (
+      <Modal>
         <Link to="/"><img alt="Steem Connect" className="modal-logo mbm" src="/img/logo.svg" /></Link>
         <div className="dialog">
           {(typeof selectedUser !== 'string' || this.props.auth.lastUserList.show === true) ?
@@ -68,8 +70,7 @@ class Login extends Component {
           {!selectedUser &&
             <p>Try Steem Connect with a <a onClick={this.demo}>demo account</a></p>}
         </div>
-      </div>
-    </div>
+      </Modal>
     );
   }
 }
