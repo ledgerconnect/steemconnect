@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import Wrapper from './wrapper';
-import ModelWrapper from './ModelWrapper';
+import ModalWrapper from './ModalWrapper';
 import Profile from './profile/Profile';
 import Authorize from './auth/Authorize';
 import Developers from './developers/Developers';
@@ -24,7 +24,7 @@ module.exports = (
       <Route path="/developers" component={Developers} />
     </Route>
 
-    <Route component={ModelWrapper}>
+    <Route component={ModalWrapper}>
       <Route path="/transfer(/@:to)(/:amount)(/:currency)(/:memo)" component={Transfer} />
       <Route path="/authorize/@:app" component={Authorize} />
     </Route>
