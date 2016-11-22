@@ -2,8 +2,11 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import React, { PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
+
 import { getAppDetails } from './authAction';
-import Loading from './../widgets/Loading';
+import AccountCard from '../auth/AccountCard';
+import Loading from '../widgets/Loading';
+import Modal from '../widgets/Modal';
 
 class Authorize extends React.Component {
   constructor(props) {
@@ -46,24 +49,29 @@ class Authorize extends React.Component {
     }
 
     return (
-      <div className="dialog">
-        <div className="mvl"><img alt="app-logo" src={`https://img.steemconnect.com/@${appName}`} width="70" /></div>
-        {errorOrLoading}
-        {(!errorOrLoading) && (<div className="mtl">
-          <p>The app <b>@{appName}</b> is requesting permission to do the following: </p>
-          <ul className="mbm">
-            {permissionList.map(({ name, api }) => <div key={api}>
-              <input type="checkbox" className="form-check-input" ref={c => (this.permissions[api] = c)} defaultChecked="true" value={api} />
-              {name}
+      <Modal>
+        <div className="dialog">
+          <AccountCard username={appName} />
+          {errorOrLoading}
+          {(!errorOrLoading) && (
+            <div>
+              <div className="mx-2 my-2">
+              <p>The app <b>@{appName}</b> is requesting permission to do the following: </p>
+              <ul>
+                {permissionList.map(({ name, api }) => <div key={api}>
+                  <input type="checkbox" className="form-check-input" ref={c => (this.permissions[api] = c)} defaultChecked="true" value={api} />
+                  {name}
+                </div>)}
+              </ul>
+              </div>
+              <form className="form" onSubmit={this.handleSubmit}>
+                <fieldset className="form-group man">
+                  <button onClick={event => this.authorizeUser(event, redirect_url, appName)} className="btn btn-success form-submit">Continue as @{user.name}</button>
+                </fieldset>
+              </form>
             </div>)}
-          </ul>
-          <form className="form" onSubmit={this.handleSubmit}>
-            <fieldset className="form-group man">
-              <button onClick={event => this.authorizeUser(event, redirect_url, appName)} className="btn btn-success form-submit">Continue as @{user.name}</button>
-            </fieldset>
-          </form>
-        </div>)}
-      </div>
+        </div>
+      </Modal>
     );
   }
 }
