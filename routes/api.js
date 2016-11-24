@@ -43,20 +43,6 @@ apiRouter.get('/vote', (req, res) => {
     (err, result) => sendResponse({ err, result }, res));
 });
 
-apiRouter.get('/upvote', (req, res) => {
-  const { voter, author, permlink } = req.query;
-  const weight = 10000;
-  steem.broadcast.vote(req.wif, voter, author, permlink, weight,
-    (err, result) => sendResponse({ err, result }, res));
-});
-
-apiRouter.get('/downvote', (req, res) => {
-  const { voter, author, permlink } = req.query;
-  const weight = 0;
-  steem.broadcast.vote(req.wif, voter, author, permlink, weight,
-    (err, result) => sendResponse({ err, result }, res));
-});
-
 apiRouter.get('/comment', (req, res) => {
   const { parentAuthor, parentPermlink, author, permlink, title, body, jsonMetadata } = req.query;
   steem.broadcast.comment(req.wif, parentAuthor, parentPermlink,
