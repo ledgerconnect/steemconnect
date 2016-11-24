@@ -11,6 +11,11 @@ const csurf = require('csurf');
 const steem = require('steem');
 const debug = require('debug')('steemconnect:main');
 
+const index = require('./routes/index');
+const api = require('./routes/api');
+const auth = require('./routes/auth');
+const embed = require('./routes/embed');
+
 http.globalAgent.maxSockets = 100;
 https.globalAgent.maxSockets = 100;
 
@@ -43,25 +48,10 @@ app.use(express.static(path.join(__dirname, 'node_modules')));
 
 app.use(cors({ credentials: true, origin: true }));
 
-app.use((req, res, next) => {
-  debug('Passing through to API');
-  next();
-});
-
-app.use(require('./routes/api'));
-
-app.use((req, res, next) => {
-  debug('Passing through to Auth');
-  next();
-});
-
-app.use(require('./routes/auth'));
-
-app.use((req, res, next) => {
-  debug('Passing through to User');
-  next();
-});
-app.use(require('./routes/index'));
+app.use('/embed', embed);
+app.use(api);
+app.use(auth);
+app.use(index);
 
 app.use((req, res, next) => {
   const err = new Error('Not Found');
