@@ -25,7 +25,6 @@ class AppSetup extends Component {
   validate = (refs) => {
     const value = this.formFields[refs] && this.formFields[refs].value;
     switch (refs) {
-      case 'name':
       case 'author':
         if (validator.trim(value).length === 0) {
           this.state.error[refs] = 'This field cannot be empty';
@@ -82,7 +81,7 @@ class AppSetup extends Component {
         }
       } else if (v.value) {
         this.formData[k] = v.value.trim();
-      } else if (k !== 'tagline' && k !== 'description') {
+      } else if (k !== 'author') {
         missingData = true;
       }
     });
@@ -99,15 +98,14 @@ class AppSetup extends Component {
 
   render() {
     const permissionList = _.map(PermissionList, (v, k) => ({ ...v, api: k }));
-    const { app: { name, author, tagline, description, env = 'dev',
+    const { app: { author, env = 'dev',
       permissions = [] }, isFetching } = this.props.developer;
-    let { app: { origins = [], redirectUrls = [] } } = this.props.developer;
+    let { app: { origins = [], redirect_urls: redirectUrls = [] } } = this.props.developer;
 
     origins = _.isString(origins) ? JSON.parse(origins) : origins;
     redirectUrls = _.isString(redirectUrls) ? JSON.parse(redirectUrls) : redirectUrls;
     origins = _.isArray(origins) ? origins.join('\n') : origins;
     redirectUrls = _.isArray(redirectUrls) ? redirectUrls.join('\n') : redirectUrls;
-
     const appExist = !_.isEmpty(this.props.developer.app);
 
     return (
@@ -116,10 +114,7 @@ class AppSetup extends Component {
         {!isFetching &&
           <form className="form">
             <div className="thin pvl">
-              <FieldsetInput name="name" label="Name" placeholder="Add a name for your app" defaultValue={name} error={this.state.error} validate={this.validate} formFields={this.formFields} />
               <FieldsetInput name="author" label="Author" placeholder="Add the author username" defaultValue={author} error={this.state.error} validate={this.validate} formFields={this.formFields} />
-              <FieldsetInput name="tagline" label="Tagline" placeholder="Tagline" defaultValue={tagline} error={this.state.error} validate={this.validate} formFields={this.formFields} />
-              <FieldsetInput name="description" label="Description" placeholder="Description" defaultValue={tagline} error={this.state.error} validate={this.validate} formFields={this.formFields} />
               <fieldset className="form-group">
                 <label htmlFor="origins">Requested permissions</label>
                 {permissionList.map(({ name: permissionName, api }) => <div key={api}>
@@ -156,6 +151,19 @@ class AppSetup extends Component {
     );
   }
 }
+
+AppSetup.propTypes = {
+  deleteApp: PropTypes.func,
+  createApp: PropTypes.func,
+  getApp: PropTypes.func,
+  developer: PropTypes.shape({
+    app: PropTypes.shape({}),
+    isFetching: PropTypes.bool,
+  }),
+  auth: PropTypes.shape({
+    user: PropTypes.shape({}),
+  }),
+};
 
 const mapStateToProps = state => ({
   auth: state.auth,
