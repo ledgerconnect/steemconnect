@@ -1,12 +1,72 @@
+<script src="//cdn.steemjs.com/lib/latest/steemconnect.min.js"></script>
+<script>
+  var username = '',
+    author = '{{author}}',
+    permlink = '{{permlink}}';
+
+  steemconnect.init({
+    app: 'simple-app',
+    baseURL: 'https://dev.steemconnect.com',
+    callbackURL: 'http://localhost:3000/embed/vote?author={{author}}&permlink={{permlink}}&size=small'
+  });
+
+  var loginURL = steemconnect.getLoginURL();
+
+  steemconnect.isAuthenticated(function(err, result) {
+    username = !err && result.username;
+  });
+
+  function vote() {
+    if (username) {
+      alert(username);
+    } else {
+      window.location = loginURL;
+    }
+  }
+</script>
+
+<div>
+  <a href="javascript:;" onClick="vote();" class="btn-vote">
+    <img class="logo" src="/img/steem.svg" align="absmiddle" />
+    <span class="label">Vote</span>
+  </a>
+  <span class="count">{{content.net_votes}}</span>
+</div>
+
 <style type="text/css">
   * {
     margin: 0;
     padding: 0;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 12px;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .btn-vote {
+    font-weight: bold;
+    display: inline-block;
+    padding: 0 6px;
+    border-radius: 3px;
+    background-color: #1a5099;
+    height: 20px;
+    line-height: 1em;
+    color: #ffffff;
+  }
+
+  .btn-vote .logo {
+    display: inline-block;
+    margin: 3px 0;
+    height: 14px;
+  }
+
+  .btn-vote .label {
+    display: inline-block;
+  }
+
+  .btn-vote .logo img {
+    height: 16px;
   }
 </style>
-
-<div>
-  <span class="btn-vote">Steem</span>
-  <span class="count">{{content.net_votes}}</span>
-</div>
