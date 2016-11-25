@@ -5,12 +5,12 @@ import { connect } from 'react-redux';
 import Loading from './../widgets/Loading';
 import AccountCard from './AccountCard';
 import cookie from '../../lib/cookie';
-import { selectLoginWithUserName, demoLogin } from './authAction';
+import { selectLoginWithUserName, setSelectedUser, demoLogin } from './authAction';
 
 class LastUserSelector extends Component {
   constructor(props) {
     super(props);
-    let lastUserList = cookie.get('last_users');
+    let lastUserList = cookie.get('lastUsers');
     if (!_.isArray(lastUserList)) {
       lastUserList = [];
     }
@@ -21,7 +21,7 @@ class LastUserSelector extends Component {
     const { lastUserList } = this.state;
     const index = lastUserList.indexOf(username);
     if (index >= 0) {
-      this.props.selectLoginWithUserName(username);
+      this.props.setSelectedUser(username);
     }
   };
 
@@ -39,6 +39,7 @@ class LastUserSelector extends Component {
 
   render() {
     const { lastUserList } = this.state;
+
     return (<div>
       {lastUserList.map((username, index) => (
         <AccountCard
@@ -74,13 +75,12 @@ LastUserSelector.propTypes = {
   }),
   location: PropTypes.shape({}),
   selectLoginWithUserName: PropTypes.func,
+  setSelectedUser: PropTypes.func,
   demoLogin: PropTypes.func,
 };
 
 const mapStateToProps = state => ({ auth: state.auth });
-const mapDispatchToProps = dispatch => ({
-  selectLoginWithUserName: bindActionCreators(selectLoginWithUserName, dispatch),
-  demoLogin: bindActionCreators(demoLogin, dispatch),
-});
+const mapDispatchToProps = dispatch =>
+  (bindActionCreators({ selectLoginWithUserName, demoLogin, setSelectedUser }, dispatch));
 
 export default connect(mapStateToProps, mapDispatchToProps)(LastUserSelector);

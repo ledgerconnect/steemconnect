@@ -1,6 +1,5 @@
 import { bindActionCreators } from 'redux';
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
@@ -40,7 +39,7 @@ class Login extends Component {
             <LastUserSelector /> :
             <div>
               <span className="change-user">
-                <a onClick={this.props.showUserList}>Not you?</a>
+                <a onClick={this.props.ShowLastUserList}>Not you?</a>
               </span>
               {selectedUser && <AccountCard username={selectedUser} />}
               <form className="form" onSubmit={this.handleSubmit}>
@@ -66,7 +65,7 @@ class Login extends Component {
             <p>New to Steem?&nbsp;
               <a href="https://steemit.com/create_account" target="_blank" rel="noopener noreferrer">Sign up now</a>
             </p>}
-          {!selectedUser &&
+          {(typeof selectedUser !== 'string' || this.props.auth.lastUserList.show === true) &&
             <p>Try Steem Connect with a <a onClick={this.demo}>demo account</a></p>}
         </div>
       </Modal>
@@ -81,16 +80,13 @@ Login.propTypes = {
     lastUserList: PropTypes.object,
   }),
   login: PropTypes.func,
-  showUserList: PropTypes.func,
+  ShowLastUserList: PropTypes.func,
   demoLogin: PropTypes.func,
   location: PropTypes.shape({}),
 };
 
 const mapStateToProps = state => ({ auth: state.auth });
-const mapDispatchToProps = dispatch => ({
-  login: bindActionCreators(login, dispatch),
-  demoLogin: bindActionCreators(demoLogin, dispatch),
-  showUserList: bindActionCreators(ShowLastUserList, dispatch),
-});
+const mapDispatchToProps = dispatch =>
+  (bindActionCreators({ login, demoLogin, ShowLastUserList }, dispatch));
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

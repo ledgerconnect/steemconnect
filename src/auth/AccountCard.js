@@ -1,17 +1,15 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import Avatar from '../widgets/Avatar';
 
-class AccountCard extends Component {
-  render() {
-    return (<div className="my-2">
-      <Avatar xl username={this.props.username} />
-      <h2 className="mts">@{this.props.username}</h2>
-    </div>);
-  }
-}
+const AccountCard = props =>
+  (<div className="my-2" onClick={props.onClick}>
+    <Avatar xl username={props.username} />
+    <h2 className="mts">@{props.username}</h2>
+  </div>);
 
 AccountCard.propTypes = {
-  username: PropTypes.string.isRequired
+  username: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
 };
 
 export default AccountCard;

@@ -29,12 +29,16 @@ function encryptData(object) {
   return crypto.AES.encrypt(crypto.enc.Utf8.parse(object), cookie.get('_csrf')).toString();
 }
 
+export function setSelectedUser(username) {
+  return { type: UPDATE_LAST_USER_LIST, lastUserList: { selected: username, show: false } };
+}
+
 export function selectLoginWithUserName(selected) {
   return (dispatch) => {
     dispatch({ type: USERNAME_REQUEST });
     steem.api.getAccounts([selected], (err, result) => {
       if (result.length) {
-        dispatch({ type: UPDATE_LAST_USER_LIST, lastUserList: { selected, show: false } });
+        dispatch(setSelectedUser(selected));
       } else {
         dispatch({ type: USERNAME_FAILURE, errorMessage: 'Incorrect username' });
       }
