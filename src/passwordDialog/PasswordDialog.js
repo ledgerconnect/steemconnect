@@ -29,7 +29,7 @@ class PasswordDialog extends Component {
     return (
       <Modal overlay>
         <div className="dialog">
-          <i className="icon icon-md material-icons dialog-close" onClick={this.cancel}>close</i>
+          <i className="icon icon-md material-icons modal-close" onClick={this.cancel}>close</i>
           <AccountCard username={username} />
           <div className="form">
             {!isSuccess && <div className="input-group input-group-lg">
@@ -44,9 +44,6 @@ class PasswordDialog extends Component {
               <button disabled={inProgress} className="btn btn-success form-submit" onClick={this.onEnter}>{btnName}</button>
             </fieldset>
           </div>
-        </div>
-        <div className="mtl phl">
-          Your password or owner WIF are never saved by Steem Connect.
         </div>
       </Modal>
     );
