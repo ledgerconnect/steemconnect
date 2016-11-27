@@ -3,14 +3,14 @@
   var username = '',
     author = '{{author}}',
     permlink = '{{permlink}}';
-
+  var domain = 'http://localhost:3000';
   steemconnect.init({
-    app: 'simple-app',
-    baseURL: 'https://dev.steemconnect.com',
-    callbackURL: 'http://localhost:3000/embed/vote?author={{author}}&permlink={{permlink}}&size=small'
+    app: 'steemconnect',
+    baseURL: domain,
+    callbackURL: domain+'/embed/vote?author={{author}}&permlink={{permlink}}&size=small'
   });
 
-  var loginURL = steemconnect.getLoginURL();
+  var loginURL = domain + '/login?redirect_url='+ encodeURIComponent(window.location.href);
 
   steemconnect.isAuthenticated(function(err, result) {
     username = !err && result.username;
@@ -18,7 +18,11 @@
 
   function vote() {
     if (username) {
-      alert(username);
+      steemconnect.vote(username,author,permlink,10000,function(err,result){
+        console.log('err',err,result);
+      })
+      console.log('username',username);
+      //alert(username);
     } else {
       window.location = loginURL;
     }
@@ -40,11 +44,11 @@
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 12px;
   }
-
+  
   a {
     text-decoration: none;
   }
-
+  
   .btn-vote {
     font-weight: bold;
     display: inline-block;
@@ -55,17 +59,17 @@
     line-height: 1em;
     color: #ffffff;
   }
-
+  
   .btn-vote .logo {
     display: inline-block;
     margin: 3px 0;
     height: 14px;
   }
-
+  
   .btn-vote .label {
     display: inline-block;
   }
-
+  
   .btn-vote .logo img {
     height: 16px;
   }
