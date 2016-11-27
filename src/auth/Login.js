@@ -2,7 +2,6 @@ import { bindActionCreators } from 'redux';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-
 import AccountCard from '../auth/AccountCard';
 import Loading from '../widgets/Loading';
 import Modal from '../widgets/Modal';
@@ -18,6 +17,15 @@ class Login extends Component {
       lastUserList = [];
     }
     this.state = { lastUserList };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const location = this.props.location;
+    const isLogin = location.pathname === '/login';
+    const redirectTo = this.props.location.query.redirect_url || '/';
+    if (nextProps.auth.isAuthenticated && isLogin) {
+      window.location = redirectTo;
+    }
   }
 
   login = (event) => {
@@ -82,7 +90,11 @@ Login.propTypes = {
   login: PropTypes.func,
   ShowLastUserList: PropTypes.func,
   demoLogin: PropTypes.func,
-  location: PropTypes.shape({}),
+  location: PropTypes.shape({
+    query: PropTypes.shape({
+      redirect_url: PropTypes.string,
+    }),
+  }),
 };
 
 const mapStateToProps = state => ({ auth: state.auth });

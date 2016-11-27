@@ -59,7 +59,7 @@ class SignUp extends Component {
           </form>
         </div>
         <div className="mvl">
-          <p>Have an account? <Link to="/">Log in</Link></p>
+          <p>Have an account? <Link to="/login">Log in</Link></p>
         </div>
       </Modal>
     );
