@@ -1,9 +1,8 @@
 /* eslint-disable no-param-reassign,consistent-return */
 const _ = require('lodash');
-const url = require('url');
 const jwt = require('jsonwebtoken');
 const debug = require('debug')('steemconnect:middleware');
-const { decryptMessage } = require('../lib/utils');
+const { decryptMessage, isDifferentHost } = require('../lib/utils');
 const PermissionList = require('../lib/permissions');
 const { getPermissionFromDB, getApp } = require('../db/utils');
 
@@ -37,14 +36,10 @@ function verifyAuth(req, res, next) {
 function checkOrigin(req, res, next) {
   const { appUserName } = req.params || {};
   const origin = req.get('origin');
-  let hostname = 'localhost';
-  if (origin) {
-    hostname = url.parse(origin).hostname;
-  }
-  const isDifferentHost = (hostname !== 'localhost' && hostname !== 'steemconnect.com' && hostname !== 'dev.steemconnect.com');
+
   if (!appUserName) {
     res.status(500).send('Invalid AppUserName send requests as /api/appName');
-  } else if (isDifferentHost) {
+  } else if (isDifferentHost(origin)) {
     return getApp(appUserName)
       .then((app) => {
         const inDevMode = app.env === 'dev';
@@ -82,6 +77,7 @@ function checkOrigin(req, res, next) {
 
 function checkPermission(req, res, next) {
   const { appUserName } = req.params || {};
+  const reqFromSteemConnect = !isDifferentHost(req.get('origin'));
 
   const username = req.username;
   getPermissionFromDB(username, appUserName).then((permissions) => {
@@ -91,12 +87,12 @@ function checkPermission(req, res, next) {
       return next();
     }
 
-    if (!permissions) {
+    if (!permissions && !reqFromSteemConnect) {
       throw new Error('Unauthorized');
     }
     permissions = _.map((permissions || []), v => PermissionList[v]);
     const selectedQuery = _.find(permissions, p => (p.paths.indexOf(requestPath) >= 0));
-    if (selectedQuery) {
+    if (selectedQuery || reqFromSteemConnect) {
       next();
     } else {
       return res.status(401).json({ error: 'Not permitted', acceptedPermissions: req.permissions || [] });
