@@ -11,7 +11,7 @@ router.get('/vote', (req, res) => {
       layout: 'embed',
       author,
       permlink,
-      content: result,
+      content: JSON.stringify(result),
     });
   });
 });
