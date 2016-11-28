@@ -4,7 +4,7 @@ import Avatar from '../widgets/Avatar';
 const AccountCard = props =>
   (<div className="my-2" onClick={props.onClick}>
     <Avatar xl username={props.username} />
-    <h2 className="mts">@{props.username}</h2>
+    <h3 className="mts">@{props.username}</h3>
   </div>);
 
 AccountCard.propTypes = {
