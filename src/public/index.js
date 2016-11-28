@@ -7,7 +7,7 @@ export default () => <div className="splash">
       <img src="/img/logo.svg" height="60" />
     </div>
   </div>
-  <div className="splash__body thin my-3 py-3">
+  <div className="splash__body my-3 py-3">
     <div className="container">
       <h1>Identity management for Steem</h1>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
