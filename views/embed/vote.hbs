@@ -75,6 +75,7 @@
     weight = '{{weight}}',
     content = {{{json}}},
     domain = 'http://localhost:3000',
+    referer = '{{referer}}',
     vote = d.getElementById('vote');
 
   steemconnect.init({
@@ -83,25 +84,42 @@
     callbackURL: domain+'/embed/vote?author={{author}}&permlink={{permlink}}&size=small'
   });
 
-  var loginURL = domain + '/login?redirect_url='+ encodeURIComponent(window.location.href);
+  var loginURL = domain + '/login?redirect_url='+ referer;
 
   steemconnect.isAuthenticated(function(err, result) {
     username = !err && result.username;
+    if (hasVote()) {
+      vote.setAttribute('class', 'btn-vote active');
+    } else {
+      vote.setAttribute('class', 'btn-vote');
+    }
   });
 
-  vote.onclick = function vote() {
+  vote.onclick = toggleVote;
+
+  function toggleVote() {
     if (username) {
-      this.setAttribute('class', 'btn-vote active');
-      /*
       steemconnect.vote(username, author, permlink, weight, function(err, result){
-        console.log(err, result);
+        if (!err) {
+          vote.setAttribute('class', 'btn-vote active');
+        }
       });
-      */
     } else {
       window.location = loginURL;
     }
-  };
+  }
 
+  function hasVote() {
+    var hasVote = false;
+    if (username && content.active_votes) {
+      content.active_votes.forEach(function(activeVote, key) {
+        if (activeVote.voter === username) {
+          hasVote = true;
+        }
+      });
+    }
+    return hasVote;
+  }
 
 }(document));
 </script>
