@@ -31,7 +31,7 @@ class SignUp extends Component {
     return (
       <Modal>
         <div className="dialog">
-          <h2 className="mal">Sign Up for Steem</h2>
+          <h3 className="mal">Sign Up</h3>
           <form className="form" onSubmit={this.handleSubmit}>
             <div className="input-group input-group-lg">
               <span className="input-group-addon"><i className="icon icon-md material-icons">perm_identity</i></span>

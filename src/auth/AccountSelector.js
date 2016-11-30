@@ -48,8 +48,8 @@ class LastUserSelector extends Component {
           username={username} onDelete={this.onDelete}
         />
       ))}
-      {_.isEmpty(lastUserList) && <h2 className="mal">Log in with your Steem account</h2>}
-      {!_.isEmpty(lastUserList) && <h2 className="mal">Add new Steem account</h2>}
+      {_.isEmpty(lastUserList) && <h3 className="mal">Log in with your Steem account</h3>}
+      {!_.isEmpty(lastUserList) && <h3 className="mal">Add new Steem account</h3>}
       <form className="form" onSubmit={this.handleSubmit}>
         <div className="input-group input-group-lg">
           <span className="input-group-addon"><i className="icon icon-md material-icons">perm_identity</i></span>
