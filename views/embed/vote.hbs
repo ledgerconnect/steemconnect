@@ -61,7 +61,7 @@
   <a id="vote" href="javascript:" class="btn-vote">
     <svg enable-background="new 0 0 33 33" version="1.1" viewBox="0 0 33 33" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="Chevron_Up_Circle"><circle cx="16" cy="16" r="15" stroke="#121313" fill="none"></circle><path d="M16.699,11.293c-0.384-0.38-1.044-0.381-1.429,0l-6.999,6.899c-0.394,0.391-0.394,1.024,0,1.414 c0.395,0.391,1.034,0.391,1.429,0l6.285-6.195l6.285,6.196c0.394,0.391,1.034,0.391,1.429,0c0.394-0.391,0.394-1.024,0-1.414 L16.699,11.293z" fill="#121313"></path></g></svg>
   </a>
-  <span class="count">{{content.net_votes}}</span>
+  <span class="count" id="counter">{{content.net_votes}}</span>
 </div>
 
 <script src="//cdn.steemjs.com/lib/latest/steemconnect.min.js"></script>
@@ -70,13 +70,33 @@
 (function(d) {
 
   var username = '',
+    voted = false,
+    content = {{{json}}},
     author = '{{author}}',
     permlink = '{{permlink}}',
     weight = '{{weight}}',
-    content = {{{json}}},
     domain = 'http://localhost:3000',
     referer = '{{referer}}',
-    vote = d.getElementById('vote');
+    vote = d.getElementById('vote'),
+    counter = d.getElementById('counter');
+
+  function initVote() {
+    steem.api.getContent(author, permlink, function(err, result) {
+      content = result;
+      updateContent();
+    });
+  }
+
+  function updateContent() {
+    counter.innerHTML = content.net_votes;
+    if (hasVote()) {
+      voted = true;
+      vote.setAttribute('class', 'btn-vote active');
+    } else {
+      voted = false;
+      vote.setAttribute('class', 'btn-vote');
+    }
+  }
 
   steemconnect.init({
     app: 'steemconnect',
@@ -88,22 +108,26 @@
 
   steemconnect.isAuthenticated(function(err, result) {
     username = !err && result.username;
-    if (hasVote()) {
-      vote.setAttribute('class', 'btn-vote active');
-    } else {
-      vote.setAttribute('class', 'btn-vote');
-    }
+    updateContent();
   });
 
   vote.onclick = toggleVote;
 
   function toggleVote() {
     if (username) {
-      steemconnect.vote(username, author, permlink, weight, function(err, result){
-        if (!err) {
-          vote.setAttribute('class', 'btn-vote active');
-        }
-      });
+      if (voted == true) {
+        vote.setAttribute('class', 'btn-vote');
+        counter.innerHTML = content.net_votes - 1;
+        steemconnect.vote(username, author, permlink, 0, function(err, result){
+          initVote();
+        });
+      } else {
+        vote.setAttribute('class', 'btn-vote active');
+        counter.innerHTML = content.net_votes + 1;
+        steemconnect.vote(username, author, permlink, weight, function(err, result){
+          initVote();
+        });
+      }
     } else {
       window.location = loginURL;
     }
@@ -113,7 +137,8 @@
     var hasVote = false;
     if (username && content.active_votes) {
       content.active_votes.forEach(function(activeVote, key) {
-        if (activeVote.voter === username) {
+        if (activeVote.voter === username
+          && activeVote.percent > 0) {
           hasVote = true;
         }
       });
