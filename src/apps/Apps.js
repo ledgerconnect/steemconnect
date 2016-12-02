@@ -55,7 +55,7 @@ class Apps extends Component {
           <div className="block block-apps">
             <ul className="list list-apps">
               {_.map(appList, app => (<li key={app.id} className="list-element pam">
-                <img src={`https://img.steemconnect.com/@${app.app}`} alt={app.app} className="list-image mrs" />
+                <img src={`https://img.steemconnect.com/${app.app}`} alt={app.app} className="list-image mrs" />
                 <b className="list-title">{app.name}</b>
                 <span className="list-description pls">{app.tagline}</span>
                 <Link to={`/apps/@${app.app}`} className="list-link"><i className="icon icon-md material-icons list-icon">keyboard_arrow_right</i></Link>

@@ -27,7 +27,7 @@ class AppDetails extends Component {
         <div className="container">
           <div className="apps apps-details ptl">
             <div className="apps-photo">
-              <img src={`https://img.steemconnect.com/@${currentApp.app}`} height="175px" alt={currentApp.name} width="100%" className="mbm" />
+              <img src={`https://img.steemconnect.com/${currentApp.app}`} height="175px" alt={currentApp.name} width="100%" className="mbm" />
               {!isMyApp && <a href={currentApp.origins[0]}><button className="btn btn-lg btn-success">Connect</button></a>}
               {isMyApp && <button className="btn btn-lg btn-danger" disabled={isFetching} onClick={this.disconnectApp}>Disconnect</button>}
             </div>

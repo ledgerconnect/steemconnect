@@ -92,7 +92,7 @@ export function setAvatar(passwordOrWif, file, type) {
     const profileData = user.json_metadata.profile;
     const body = new FormData();
     body.append('file', file);
-    let uploadUrl = `https://img.steemconnect.com/@${user.name}`;
+    let uploadUrl = `https://img.steemconnect.com/${user.name}`;
     if (type === 'cover_image') {
       uploadUrl += '/cover';
     }
