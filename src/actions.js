@@ -90,21 +90,26 @@ export function setAvatar(passwordOrWif, file, type) {
     user.json_metadata = user.json_metadata || {};
     user.json_metadata.profile = user.json_metadata.profile || {};
     const profileData = user.json_metadata.profile;
-    const body = new FormData();
-    body.append('file', file);
-    let uploadUrl = `https://img.steemconnect.com/${user.name}`;
+    let uploadUrl = `https://img.steemconnect.com/@${user.name}`;
     if (type === 'cover_image') {
       uploadUrl += '/cover';
     }
-    return fetch(uploadUrl, { method: 'POST', body, origin: true })
-      .then(response => response.json())
-      .then(({ url }) => {
-        profileData[type] = url || uploadUrl;
-        return dispatch(accountUpdate(user.name, passwordOrWif, user.memo_key, user.json_metadata));
-      }).catch((err) => {
-        console.error('Error While Setting Avatar', err);
-        throw err;
-      });
+    return new Promise((resolve, reject) => {
+      const request = new XMLHttpRequest();
+      request.open('POST', uploadUrl, true);
+      // Send the proper header information along with the request
+      request.setRequestHeader('Content-Type', file.type);
+      request.onreadystatechange = () => {
+        if (request.readyState === 4 && request.status === 201) {
+          try { profileData[type] = JSON.parse(request.response).url; } catch (e) { }
+          return resolve(dispatch(accountUpdate(user.name,
+            passwordOrWif, user.memo_key, user.json_metadata)));
+        } else if (request.status >= 400) {
+          return reject(new Error('Could not set upload image'));
+        }
+      };
+      request.send(file);
+    });
   };
 }
 
