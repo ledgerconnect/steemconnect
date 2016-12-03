@@ -10,8 +10,10 @@ export default () => <div className="splash">
   <div className="splash__body my-3 py-3">
     <div className="container">
       <h1>Identity management for Steem</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Nulla sed porta metus, eu efficitur sapien.</p>
+      <p>This simple identity layer built on top of the Steem
+        blockchain accounts allows Apps to verify your identity
+        based on the authentication performed by Steem Connect
+        without storing your password.</p>
       <Link to="/login" className="btn btn-primary">Login</Link>
     </div>
   </div>
@@ -26,8 +28,9 @@ export default () => <div className="splash">
           </div>
           <div className="col col-md-10">
             <h3>Zero-friction authentication and authorization</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Nulla sed porta metus, eu efficitur sapien.</p>
+            <p>Access to authorized Website and applications with your
+              Steem account credentials using mechanisms for robust
+              signing and encryption without giving your password.</p>
           </div>
         </div>
       </div>
@@ -38,9 +41,9 @@ export default () => <div className="splash">
               <i className="icon icon-xl material-icons">apps</i>
             </div>
             <div className="col col-md-10">
-              <h3>Zero-friction authentication and authorization</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Nulla sed porta metus, eu efficitur sapien.</p>
+              <h3>Steem App Store</h3>
+              <p>Access to authorized website and application with
+                Steem Connect using your Steem credentials with confidence.</p>
             </div>
           </div>
         </div>
@@ -52,9 +55,9 @@ export default () => <div className="splash">
               <i className="icon icon-xl material-icons">code</i>
             </div>
             <div className="col col-md-10">
-              <h3>Zero-friction authentication and authorization</h3>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Nulla sed porta metus, eu efficitur sapien.</p>
+              <h3>Light Wallet, Activity & Profile Manager</h3>
+              <p>Manage your wallet, check your activity on Steem
+                and edit your global Profile data.</p>
             </div>
           </div>
         </div>
@@ -63,6 +66,7 @@ export default () => <div className="splash">
   </div>
   <hr className="my-0" />
   <div className="container py-2">
-    by <a href="https://busy.org/">@busy.org</a> for Steem
+    by <a href="https://busy.org/" target="_blank">@busy.org</a>{ ' ' }
+    for <a href="https://steem.io/" target="_blank">Steem</a>
   </div>
 </div>;
