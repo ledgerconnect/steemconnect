@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 
 import AccountCard from '../auth/AccountCard';
-import { hidePasswordDialog } from './actions';
+import { hidePasswordDialog, updatePasswordDialog } from './actions';
 import Modal from '../widgets/Modal';
 
 class PasswordDialog extends Component {
@@ -13,7 +12,12 @@ class PasswordDialog extends Component {
     if (this.props.passwordDialog.isSuccess) {
       this.cancel();
     } else if (this.props.passwordDialog.onEnter) {
-      this.props.passwordDialog.onEnter(this.passwordOrWif.value);
+      if (this.passwordOrWif.value.trim() === '') {
+        const { passwordDialog: { btnName, inProgress, isSuccess } } = this.props;
+        this.props.updatePasswordDialog({ btnName, inProgress, isSuccess, isError: true, message: 'Please enter the password' });
+      } else {
+        this.props.passwordDialog.onEnter(this.passwordOrWif.value);
+      }
     }
   }
 
@@ -25,7 +29,6 @@ class PasswordDialog extends Component {
   render() {
     const { passwordDialog: { btnName, inProgress, isSuccess, isError, message } } = this.props;
     const { name: username } = this.props.auth.user;
-
     return (
       <Modal overlay>
         <div className="dialog">
@@ -52,6 +55,7 @@ class PasswordDialog extends Component {
 
 PasswordDialog.propTypes = {
   hidePasswordDialog: PropTypes.func,
+  updatePasswordDialog: PropTypes.func,
   passwordDialog: PropTypes.shape({
     isSuccess: PropTypes.bool,
     onCancel: PropTypes.func,
@@ -70,6 +74,7 @@ const mapStateToProps = state => ({
   passwordDialog: state.passwordDialog,
 });
 
-const mapDispatchToProps = dispatch => (bindActionCreators({ hidePasswordDialog }, dispatch));
+const mapDispatchToProps = dispatch =>
+  (bindActionCreators({ updatePasswordDialog, hidePasswordDialog }, dispatch));
 
 export default connect(mapStateToProps, mapDispatchToProps)(PasswordDialog);
