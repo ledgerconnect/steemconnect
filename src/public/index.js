@@ -10,7 +10,7 @@ export default () => <div className="splash">
   <div className="splash__body my-3 py-3">
     <div className="container">
       <h1>Identity, authentication, authorization for Steem blockchain’s apps</h1>
-      <p>SteemConnect is a simple identity layer built on top of the Steem blockchain accounts that allows you to connect to authorized apps is a secure and convenient way.
+      <p>SteemConnect is a simple identity layer built on top of the Steem blockchain that allows you to connect to authorized apps is a secure and convenient way.
 </p>
       <Link to="/login" className="btn btn-primary">Login</Link>
     </div>
@@ -53,7 +53,7 @@ export default () => <div className="splash">
             <div className="col col-md-10">
               <h3>Light Wallet, Activity & Profile Manager</h3>
               <p>Manage your wallet, check your activity on Steem
-                and edit your global Steem Profile</p>
+                and edit your Public Steem Profile</p>
             </div>
           </div>
         </div>
