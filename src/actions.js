@@ -30,7 +30,7 @@ export function login() {
       return;
     }
     dispatch({ type: authTypes.LOGIN_REQUEST });
-    fetch('/api/verify', {
+    fetch('/api/@steemconnect/verify', {
       credentials: 'include',
     }).then(response => response.json())
       .then(({ isAuthenticated, username }) => {

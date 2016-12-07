@@ -31,9 +31,6 @@ router.get('/api/verifyToken', (req, res) => {
 
 router.use('/api', verifyAuth);
 
-// For steemconnect
-router.get('/api/verify', ({ username }, res) => res.json({ isAuthenticated: !!username, username }));
-
 router.use('/api/@:appUserName', checkOrigin, checkPermission, apiRouter);
 
 apiRouter.get('/verify', (req, res) => {
