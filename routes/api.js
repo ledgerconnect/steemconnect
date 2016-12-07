@@ -1,6 +1,7 @@
 const express = require('express');
 const steem = require('steem');
 const querystring = require('querystring');
+const jwt = require('jsonwebtoken');
 const { verifyAuth, checkOrigin, checkPermission } = require('./middleware');
 
 const router = new express.Router();
@@ -17,18 +18,36 @@ router.get('/api/authorize', (req, res) => {
   res.redirect(302, `/authorize?${querystring.stringify(req.query)}`);
 });
 
+router.get('/api/verifyToken', (req, res) => {
+  const { token } = req.query;
+  jwt.verify(token, process.env.JWT_SECRET, (err, result) => {
+    const username = (result && result.username) ? result.username : undefined;
+    res.json({
+      isValid: (!err),
+      username,
+    });
+  });
+});
+
 router.use('/api', verifyAuth);
 
 // For steemconnect
 router.get('/api/verify', ({ username }, res) => res.json({ isAuthenticated: !!username, username }));
 
 router.use('/api/@:appUserName', checkOrigin, checkPermission, apiRouter);
+
 apiRouter.get('/verify', (req, res) => {
+  const token = jwt.sign({
+    username: req.username,
+  }, process.env.JWT_SECRET, {
+    expiresIn: '1 day',
+  });
   if (req.username) {
     return res.json({
       isAuthenticated: true,
       username: req.username,
       permissions: req.permissions,
+      token,
     });
   }
   return res.json({
