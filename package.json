@@ -71,6 +71,7 @@
     "socket.io": "^1.4.5",
     "steem": "adcpm/steem#dev",
     "steemauth": "adcpm/steemauth#dev",
+    "steemconnect": "adcpm/steemconnect#dev",
     "style-loader": "^0.13.1",
     "validator": "^5.6.0",
     "webpack": "^1.13.2"
