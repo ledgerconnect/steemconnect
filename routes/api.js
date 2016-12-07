@@ -20,14 +20,11 @@ router.get('/api/authorize', (req, res) => {
 
 router.get('/api/verifyToken', (req, res) => {
   const { token } = req.query;
-  let isValid = false;
-  try {
-    jwt.verify(token, process.env.JWT_SECRET);
-    isValid = true;
-  } catch (e) { }
-  return res.json({
-    isValid,
-  });
+  jwt.verify(token, process.env.JWT_SECRET, {}, err =>
+    res.json({
+      isValid: (!err),
+    })
+  );
 });
 
 router.use('/api', verifyAuth);
