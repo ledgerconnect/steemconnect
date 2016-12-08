@@ -75,7 +75,7 @@
     author = '{{author}}',
     permlink = '{{permlink}}',
     weight = '{{weight}}',
-    domain = 'https://dev.steemconnect.com',
+    domain = 'https://steemconnect.com',
     referer = '{{referer}}',
     vote = d.getElementById('vote'),
     counter = d.getElementById('counter');
@@ -101,7 +101,7 @@
   steemconnect.init({
     app: 'steemconnect',
     baseURL: domain,
-    callbackURL: domain+'/embed/vote?author={{author}}&permlink={{permlink}}&size=small'
+    callbackURL: domain + '/embed/vote?author={{author}}&permlink={{permlink}}&size=small'
   });
 
   var loginURL = domain + '/login?redirect_url='+ referer;
