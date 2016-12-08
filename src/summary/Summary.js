@@ -9,8 +9,7 @@ export default class Summary extends Component {
         <div className="row pvl thin text-lg-left">
           <div className="pvl">
             <h3>Control your public identity</h3>
-            <p>Curabitur tortor. Pellentesque nibh. Aenean quam.
-              In scelerisque sem at dolor. Maecenas mattis.</p>
+            <p>Update your public profile on Steem blockchain.</p>
             <Link to="/profile" className="btn btn-primary mt-2">
               Update your profile
             </Link>
