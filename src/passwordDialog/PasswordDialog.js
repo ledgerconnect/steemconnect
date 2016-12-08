@@ -37,7 +37,7 @@ class PasswordDialog extends Component {
           <div className="form">
             {!isSuccess && <div className="input-group input-group-lg">
               <span className="input-group-addon"><i className="icon icon-md material-icons">lock_outline</i></span>
-              <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control" ref={(c) => { this.passwordOrWif = c; } } />
+              <input autoFocus type="password" placeholder="Password or active WIF" className="form-control" ref={(c) => { this.passwordOrWif = c; } } />
             </div>}
             {isSuccess && message && <div style={{ height: 50, color: 'green' }}>{message}</div>}
             {isError && message && <ul className="errorMessages pam">

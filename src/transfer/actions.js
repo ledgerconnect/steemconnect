@@ -10,12 +10,12 @@ export function transfer(transferDetails) {
   return (dispatch) => {
     const { passwordOrWif, from, memo = '', to, balance } = transferDetails;
     const isWif = steemAuth.isWif(passwordOrWif);
-    const ownerKey = (isWif) ? passwordOrWif : steemAuth.toWif(from, passwordOrWif, 'owner');
+    const activeKey = (isWif) ? passwordOrWif : steemAuth.toWif(from, passwordOrWif, 'active');
     dispatch({ type: TRANSFER_STEEM_REQUEST });
     return new Promise((resolve, reject) => {
-      steem.broadcast.transfer(ownerKey, from, to, balance, memo, (result) => {
+      steem.broadcast.transfer(activeKey, from, to, balance, memo, (result) => {
         if (result) {
-          dispatch({ type: TRANSFER_STEEM_FAILURE, errorMessage: 'Could not transfer' })
+          dispatch({ type: TRANSFER_STEEM_FAILURE, errorMessage: 'Could not transfer' });
           let message;
 
           if (result.toString().search('does not have sufficient funds') >= 0) {
