@@ -41,15 +41,15 @@ class LastUserSelector extends Component {
     const { lastUserList } = this.state;
 
     return (<div>
-      {lastUserList.map((username, index) => (
+      {/* lastUserList.map((username, index) => (
         <AccountCard
           key={index}
           onClick={() => { this.selectUser(username); }}
           username={username} onDelete={this.onDelete}
         />
-      ))}
+      )) */}
       {_.isEmpty(lastUserList) && <h3 className="mal">Log in with your Steem account</h3>}
-      {!_.isEmpty(lastUserList) && <h3 className="mal">Add new Steem account</h3>}
+      {!_.isEmpty(lastUserList) && <h3 className="mal">Add a Steem account</h3>}
       <form className="form" onSubmit={this.handleSubmit}>
         <div className="input-group input-group-lg">
           <span className="input-group-addon"><i className="icon icon-md material-icons">perm_identity</i></span>
