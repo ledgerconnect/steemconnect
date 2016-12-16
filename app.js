@@ -44,7 +44,7 @@ app.use(cors());
 app.locals.env = process.env;
 
 app.get('/*', function (req, res, next) {
-  res.render('user', { title: 'Steem.js' });
+  res.render('index', { title: 'Steem.js' });
 });
 
 // catch 404 and forward to error handler
