@@ -1,0 +1,167 @@
+/* --------------------------------
+ * Primary style
+ *-------------------------------- */
+
+body {
+  background-color: white;
+  font-family: $font-primary;
+  font-size: 15px;
+  color: $text-color;
+}
+
+a {
+  cursor: pointer;
+  color: $primary-color;
+  text-decoration: none !important;
+  outline: 0 !important;
+
+  &:hover {
+    color: #005dd9;
+  }
+}
+
+img {
+  max-width: 100%;
+}
+
+.align-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+:focus {
+  outline: 0;
+}
+
+.no-gutter [class*="col-"] {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* --------------------------------
+ *3. Main components
+ *-------------------------------- */
+
+html, body {
+  height: 100%;
+  text-align: left;
+}
+
+ul, li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.app-wrapper {
+  margin: 0 auto;
+  height: auto !important;
+  min-height: 100% !important;
+  overflow: hidden;
+}
+
+@media (max-width: 992px) {
+  .main-panel {
+    width: 100% !important;
+  }
+}
+
+#app {
+  height: 100%;
+}
+
+.main-panel {
+  padding-top: 56px;
+  min-height: 100%;
+  position: relative;
+  z-index: 3;
+  float: right;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 260px);
+}
+
+@media (max-width: 992px) {
+  .hidden-xs {
+    display: none !important;
+  }
+}
+
+.visible-xs {
+  display: none;
+}
+
+@media (max-width: 992px) {
+  .visible-xs {
+    display: inherit !important;
+  }
+
+  img {
+    max-height: 400px;
+    background-color: white;
+  }
+}
+
+.app-wrapper.full-width {
+  .main-panel {
+    width: 100% !important;
+  }
+}
+
+.bg-green {
+  color: white;
+  background-color: #434f66;
+
+  h1, h2, h3, i {
+    color: white;
+  }
+}
+
+.pull-right {
+  float: right !important;
+}
+
+.pull-left {
+  float: left !important;
+}
+
+.hide {
+  display: none !important;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  word-wrap: break-word;
+}
+
+.container-small {
+  max-width: 420px;
+}
+
+.tag {
+  font-family: $font-primary;
+}
+
+.page {
+  display: flex;
+  overflow-y: auto;
+  flex-direction: column;
+}
+
+.anim, header, .main-panel, .CommentForm {
+  transition: all 0.3s ease;
+}
+
+.see-more {
+  color: $primary-color !important;
+}
+
+a.btn-primary {
+  &:visited {
+    color: white !important;
+  }
+}

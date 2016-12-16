@@ -1,0 +1,29 @@
+.btn {
+  border-radius: 1.5em;
+  font-family: $font-primary;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 18px;
+}
+
+.btn-success {
+  color: #fff;
+  background-color: #2ED8B1;
+  border: none;
+
+  &:hover, &:focus, &:active {
+    background-color: #2ED8B1 !important;
+  }
+}
+
+.btn-outline-success {
+  color: #2ED8B1 !important;
+  background-color: transparent;
+  border: none;
+  box-shadow: inset 0 0 0 3px #2ED8B1;
+
+  &:hover, &:focus, &:active {
+    color: #fff !important;
+    background-color: #2ED8B1 !important;
+  }
+}
