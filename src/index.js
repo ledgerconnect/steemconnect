@@ -12,9 +12,6 @@ if (process.env.SENTRY_PUBLIC_DSN) {
     .install();
 }
 
-// load the stylesheet
-require('./styles/base.scss');
-
 ReactDOM.render(
   <Provider store={store}>
     <Router

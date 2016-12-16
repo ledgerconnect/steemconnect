@@ -1,5 +1,3 @@
-@import "../styles/colors.scss";
-
 .icon {
   vertical-align: middle;
   color: #AAA;
@@ -32,33 +30,4 @@
   min-width: 28px;
   width: 28px;
   overflow: hidden;
-}
-
-.main-panel {
-  a:hover {
-    .icon {
-      color: $primary-color;
-    }
-  }
-}
-
-.flag {
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  line-height: 1em;
-  vertical-align: middle;
-}
-
-.flag-lg {
-  width: 48px;
-  height: 48px;
-}
-
-.cell.cell-bottom {
-  a.active {
-    i {
-      color: $primary-color;
-    }
-  }
 }

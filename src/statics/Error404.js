@@ -1,13 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import Header from '../app/Header';
 import Icon from '../widgets/Icon';
 
 const Error404 = () => {
   return (
     <div className="main-panel">
-      <Header />
       <div className="container">
         <div className="ptl text-xs-center">
           <Icon name="info" xl />

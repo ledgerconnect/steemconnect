@@ -1,5 +1,4 @@
 import React from 'react';
-import { formatter } from 'steem';
 
 import './Avatar.scss';
 
@@ -28,11 +27,6 @@ const Avatar = ({
   size += ` ${className}`;
   return (
     <span className={`Avatar ${size}`}>
-      {reputation > 0 &&
-        <span className="Avatar__reputation">
-          {formatter.reputation(reputation)}
-        </span>
-      }
       <img className="Avatar__img" src={`${process.env.STEEMCONNECT_IMG_HOST}/@${username}?s=${s}`} />
     </span>
   );

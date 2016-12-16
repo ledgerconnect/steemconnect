@@ -10,7 +10,7 @@ https.globalAgent.maxSockets = Infinity;
 
 const app = express();
 const server = http.Server(app);
-const io = require('socket.io')(server);
+//const io = require('socket.io')(server);
 
 const cors = require('cors');
 
@@ -24,10 +24,12 @@ app.set('view engine', 'hbs');
 
 app.enable('trust proxy');
 
+/*
 app.use((req, res, next) => {
   res.io = io;
   next();
 });
+*/
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -42,7 +44,7 @@ app.use(cors());
 app.locals.env = process.env;
 
 app.get('/*', function (req, res, next) {
-  res.render('user/dashboard', { layout: 'user', title: 'Steem.js' });
+  res.render('user', { title: 'Steem.js' });
 });
 
 // catch 404 and forward to error handler

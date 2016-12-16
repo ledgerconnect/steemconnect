@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {{>head}}
+  <title>{{title}}</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="{{description}}">
+  <meta id="viewport" name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css" type="text/css" media="all"/>
+  <link rel="stylesheet" href="/css/base.css" type="text/css" media="all"/>
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 <body>
-    {{{body}}}
-    <script type="text/javascript" src="/js/app.min.js"></script>
+  <div id="app"></div>
+  <script type="text/javascript" src="/js/app.min.js"></script>
 </body>
 </html>
