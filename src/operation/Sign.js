@@ -3,7 +3,7 @@ import steem from 'steem';
 
 import { getOperation, isValid } from '../helpers/operationHelpers';
 
-import './Operation.scss';
+import './Sign.scss';
 
 export default class Header extends Component {
   constructor(props) {
@@ -23,20 +23,24 @@ export default class Header extends Component {
     const op = getOperation(type);
     const username = this.state.username.value;
     const password = this.state.password.value;
+
+    /* Get wif */
     const wif = steem.auth.isWif(password)
       ? password
       : steem.auth.toWif(username, password, op['roles'][0]);
-    //console.log(username, password, wif, op['roles'][0]);
+    console.log(username, password, wif, op['roles'][0]);
 
-    let query = this.props.location.query;
-    query.wif = wif;
+    /* Parse params */
+    const query = this.props.location.query;
+    const params = {};
+    for (const key in query) {
+      params[key] = isNaN(query[key])
+        ? query[key]
+        : parseInt(query[key]);
+    }
 
-    console.log(steem.broadcast.vote);
-    console.log(steem.broadcast.voteWith);
-    console.log(steem.broadcast.voteAsync);
-    console.log(steem.broadcast.voteWithAsync);
-
-    steem.broadcast[`${type}With`](query, (err, result) => {
+    /* Broadcast */
+    steem.broadcast[`${type}With`](wif, params, (err, result) => {
       console.log(err, result);
     });
   };
@@ -48,7 +52,7 @@ export default class Header extends Component {
     const opIsValid = isValid(op, query);
 
     return (
-      <div className="Signer container my-3">
+      <div className="Sign container my-3">
         { op
           ? <h2>{type}</h2>
           : <h4>The operation <b>"{type}"</b> is not available.</h4>
@@ -76,7 +80,7 @@ export default class Header extends Component {
         }
 
         { op && opIsValid &&
-          <form className="Signer__form" onSubmit={this.handleSubmit}>
+          <form className="Sign__form" onSubmit={this.handleSubmit}>
             <p>This operation require a password or WIF</p>
             <div className="form-group">
               <input

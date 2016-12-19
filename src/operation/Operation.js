@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import { getOperation, isValid } from '../helpers/operationHelpers';
 
-import './Operation.scss';
+import './Sign.scss';
 
 export default class Operation extends Component {
   constructor(props) {

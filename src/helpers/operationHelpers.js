@@ -1,4 +1,4 @@
-import operations from './operations.json';
+import operations from 'steem/lib/broadcast/operations.json';
 import decamelize from 'decamelize';
 
 export const getOperation = type => {
