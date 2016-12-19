@@ -22,19 +22,9 @@ function makePlugins(options) {
           ? JSON.stringify('development')
           : JSON.stringify('production'),
         ENABLE_LOGGER: JSON.stringify(process.env.ENABLE_LOGGER),
-        BUSYWS_HOST: JSON.stringify(process.env.BUSYWS_HOST || 'https://ws.busy.org'),
-        STEEMCONNECT_IMG_HOST: JSON.stringify(process.env.STEEMCONNECT_IMG_HOST || 'https://img.steemconnect.com'),
         SENTRY_PUBLIC_DSN: isDevelopment
           ? null
           : JSON.stringify(process.env.SENTRY_PUBLIC_DSN),
-        STEEMCONNECT_HOST: JSON.stringify(
-          process.env.STEEMCONNECT_HOST ||
-            'https://dev.steemconnect.com'
-        ),
-        STEEMCONNECT_REDIRECT_URL: JSON.stringify(
-          process.env.STEEMCONNECT_REDIRECT_URL ||
-          'http://localhost:3000'
-        ),
         WS: JSON.stringify(
           process.env.WS ||
           'wss://steemit.com/wspa'

@@ -12,8 +12,6 @@ const app = express();
 const server = http.Server(app);
 //const io = require('socket.io')(server);
 
-const cors = require('cors');
-
 if (process.env.NODE_ENV !== 'production')
   require('./webpack')(app);
 
@@ -37,9 +35,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
-
-app.use(cors());
-
 
 app.locals.env = process.env;
 

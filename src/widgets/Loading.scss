@@ -1,5 +1,3 @@
-@import "../styles/fonts.scss";
-
 @keyframes blink {
   0% {
     opacity: 0.2;
@@ -19,7 +17,7 @@
 }
 
 .loading-white span {
-  font-family: $font-primary;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   text-align: center;
   color: white;
   padding-right: 2px;
@@ -40,7 +38,7 @@
 }
 
 .loading span {
-  font-family: $font-primary;
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
   text-align: center;
   color: #3756a0;
   padding-right: 2px;
