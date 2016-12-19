@@ -56,7 +56,7 @@
     "redux-thunk": "^2.1.0",
     "sass-loader": "^4.1.0",
     "serve-favicon": "~2.3.0",
-    "steem": "github:adcpm/steem#2a1f32d3eddd415f7cea58a7473857dace45eba8",
+    "steem": "github:adcpm/steem#fcb5552be296034ac7d7ea12cb70ab2fe7194d34",
     "store": "^1.3.20",
     "style-loader": "^0.13.1",
     "superagent": "^2.2.0",
