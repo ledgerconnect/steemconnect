@@ -80,29 +80,33 @@ export default class Header extends Component {
         }
 
         { op && opIsValid &&
-          <form className="Sign__form" onSubmit={this.handleSubmit}>
-            <p>This operation require a password or WIF</p>
-            <div className="form-group">
-              <input
-                ref={(c) => { this.state.username = c; }}
-                placeholder="Username"
-                type="text"
-                className="form-control"
-              />
-            </div>
-            <div className="form-group">
-              <input
-                ref={(c) => { this.state.password = c; }}
-                name="password"
-                placeholder={`Password or WIF`}
-                type="password"
-                className="form-control"
-              />
-            </div>
-            <div className="form-group">
-              <button type="submit" className="btn btn-success">Confirm</button>
-            </div>
-          </form>
+          <div>
+            <p>
+              This operation require a password or WIF ({ op.roles.join(', ') })
+            </p>
+            <form className="Sign__form" onSubmit={this.handleSubmit}>
+              <div className="form-group">
+                <input
+                  ref={(c) => { this.state.username = c; }}
+                  placeholder="Username"
+                  type="text"
+                  className="form-control"
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  ref={(c) => { this.state.password = c; }}
+                  name="password"
+                  placeholder={`Password or WIF`}
+                  type="password"
+                  className="form-control"
+                />
+              </div>
+              <div className="form-group">
+                <button type="submit" className="btn btn-success">Confirm</button>
+              </div>
+            </form>
+          </div>
         }
       </div>
     );

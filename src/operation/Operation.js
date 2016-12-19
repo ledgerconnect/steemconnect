@@ -18,9 +18,7 @@ export default class Operation extends Component {
 
   render() {
     const { type } = this.props.params;
-    const query = this.props.location.query;
     const op = getOperation(type);
-    const opIsValid = isValid(op, query);
 
     return (
       <div className="container my-3">
@@ -29,9 +27,6 @@ export default class Operation extends Component {
           : <h4>The operation <b>"{type}"</b> is not available.</h4>
         }
 
-        { op && !opIsValid &&
-          <p>Some operation parameters are missing.</p>
-        }
 
         { op &&
           <pre>
@@ -39,10 +34,7 @@ export default class Operation extends Component {
               op.params.map((param, key) => {
                 return <span key={key}>
                   <b>{param}: </b>
-                  { query[param] === undefined
-                    ? <span className="alert-danger">?</span>
-                    : query[param]
-                  }
+                  <span className="alert-danger">?</span>
                   <br/>
                 </span>;
               })
