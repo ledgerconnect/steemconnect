@@ -1,9 +1,9 @@
 import operations from 'steem/lib/broadcast/operations.json';
-import decamelize from 'decamelize';
+import changeCase from 'change-case';
 
 export const getOperation = type => {
   const ops = operations.filter(op =>
-    op.operation === decamelize(type)
+    op.operation === changeCase.snakeCase(type)
   );
   return ops[0] ? ops[0] : '';
 };

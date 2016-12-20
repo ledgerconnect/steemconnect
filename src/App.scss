@@ -1,0 +1,75 @@
+html, body, #app {
+  height: 100%;
+}
+
+#app {
+  color: lighten(black, 60%);
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+}
+
+h1, h2, h3 {
+  color: black;
+  font-family: "Circular-Bold", Helvetica, Arial, sans-serif;
+  margin-bottom: 0.5em;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+@font-face {
+  font-family: "Circular-Bold";
+  src: url("/fonts/lineto-circular-bold.eot");
+  src: url("/fonts/lineto-circular-bold.eot?#iefix") format("embedded-opentype"), url("/fonts/lineto-circular-bold.woff") format("woff"), url("/fonts/lineto-circular-bold.ttf") format("truetype"), url("/fonts/lineto-circular-bold.svg#LLCircularWeb-Bold") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+blockquote {
+  display: inline-block;
+  border-left: 6px solid lighten(black, 60%);
+  color: lighten(black, 60%);
+  padding-left: 1em;
+  font-size: 1.25em;
+  font-style: italic;
+}
+
+b {
+  color: black;
+}
+
+.btn {
+  font-size: 1em;
+  font-weight: bold;
+  padding: 0.75em 1.5em;
+  border: none !important;
+}
+
+.btn-success {
+  border-radius: 28px;
+  background-color: #02d895;
+
+  &:hover, &:focus, &:active {
+    background-color: #02a572 !important;
+  }
+}
+
+.btn-outline-success {
+  color: #02d895 !important;
+  border-radius: 28px;
+  box-shadow: inset 0 0 0 2px #02d895;
+
+  &:hover, &:focus, &:active {
+    color: #ffffff !important;
+    background-color: #02a572;
+    box-shadow: none;
+  }
+}
+
+.form-control {
+  font-size: 16px;
+  padding: 0.75em;
+  border-radius: 28px;
+}
+
+.input-group-addon {
+  border-radius: 28px;
+}

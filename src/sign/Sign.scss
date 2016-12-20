@@ -1,0 +1,28 @@
+.Sign {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.Sign__content {
+  text-align: center;
+  margin: 0 auto;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+}
+
+.Sign__placeholder {
+  margin: 0 auto;
+  text-align: left;
+  border: 1px solid lighten(black, 90%);
+  padding: 1em;
+  border-radius: 14px;
+}
+
+.Sign__form {
+  margin: 0 auto;
+  max-width: 300px;
+}
