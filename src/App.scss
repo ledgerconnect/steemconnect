@@ -9,19 +9,13 @@ html, body, #app {
 
 h1, h2, h3 {
   color: black;
-  font-family: "Circular-Bold", Helvetica, Arial, sans-serif;
+  font-family: "Roboto", Helvetica, Arial, sans-serif;
   margin-bottom: 0.5em;
+  font-weight: 700;
 }
 
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
-
-@font-face {
-  font-family: "Circular-Bold";
-  src: url("/fonts/lineto-circular-bold.eot");
-  src: url("/fonts/lineto-circular-bold.eot?#iefix") format("embedded-opentype"), url("/fonts/lineto-circular-bold.woff") format("woff"), url("/fonts/lineto-circular-bold.ttf") format("truetype"), url("/fonts/lineto-circular-bold.svg#LLCircularWeb-Bold") format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
 
 blockquote {
   display: inline-block;
@@ -37,10 +31,13 @@ b {
 }
 
 .btn {
+  outline: 0 !important;
   font-size: 1em;
-  font-weight: bold;
+  font-weight: 700;
+  letter-spacing: 1px;
   padding: 0.75em 1.5em;
   border: none !important;
+  font-family: "Roboto", Helvetica, Arial, sans-serif;
 }
 
 .btn-success {

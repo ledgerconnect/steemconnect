@@ -6,17 +6,16 @@ const SignPlaceholderDefault = ({
   params,
 }) => {
   return (
-    <div>
+    <ul className="list-group text-xs-left">
       {
         params.map((param, key) =>
-          <h5 key={key}>
-            <small>{ changeCase.titleCase(param) }: </small>
-            <br/>
-            <b>{ query[param] }</b>
-          </h5>
+          <li className="list-group-item" key={key}>
+            { changeCase.titleCase(param) }:
+            <b> { query[param] }</b>
+          </li>
         )
       }
-    </div>
+    </ul>
   );
 };
 

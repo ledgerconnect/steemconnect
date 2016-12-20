@@ -96,13 +96,11 @@ export default class Header extends Component {
               <h1>
                 { changeCase.titleCase(type) }
               </h1>
-              <div className="Sign__placeholder">
-                <SignPlaceholderDefault
-                  type={type}
-                  query={query}
-                  params={op.params}
-                />
-              </div>
+              <SignPlaceholderDefault
+                type={type}
+                query={query}
+                params={op.params}
+              />
               <div className="form-group my-2">
                 <button onClick={() => this.approve()} className="btn btn-success">Continue</button>
               </div>
