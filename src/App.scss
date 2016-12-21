@@ -65,6 +65,10 @@ b {
   font-size: 16px;
   padding: 0.75em;
   border-radius: 28px;
+
+  &:hover, &:focus, &:active {
+    box-shadow: none !important;
+  }
 }
 
 .input-group-addon {
