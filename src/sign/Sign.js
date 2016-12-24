@@ -92,36 +92,25 @@ export default class Sign extends Component {
           {
             step === 3 && success &&
               <div>
-                <h1>
-                  <Icon name="done" lg/>
-                  { ' ' }
-                  Success!
-                </h1>
-                <ul className="list-group text-xs-left">
-                  <li className="list-group-item">
-                    Ref Block Num:<b> { success.ref_block_num }</b>
-                  </li>
-                  <li className="list-group-item">
-                    Ref Block Prefix:<b> { success.ref_block_prefix }</b>
-                  </li>
-                </ul>
+                <h1 className="text-success">Success!</h1>
+                <p>The operation has been successfully broadcasted</p>
+                <p>
+                  Ref Block Num:<b> { success.ref_block_num }</b>
+                  , Ref Block Prefix:<b> { success.ref_block_prefix }</b>
+                </p>
               </div>
           }
 
           {
             step === 3 && error &&
               <div>
-                <h3>
-                  <Icon name="info" lg/>
-                  { ' ' }
+                <h3 className="text-danger">
                   Oops, something goes wrong!
                 </h3>
-
-                <div className="alert alert-danger">
+                <h5>
                   <strong>Error code: { error.code }</strong> { error.data.message }
-                </div>
-
-                <a href="#" onClick={this.resetForm}>Try Again</a>
+                </h5>
+                <p>Do you want to <a href="#" onClick={this.resetForm}>try again</a>?</p>
               </div>
           }
         </div>
