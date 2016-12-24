@@ -39,6 +39,18 @@ export default class SignForm extends Component {
     }
   };
 
+  onChangePassword = () => {
+    const { password } = this;
+    setTimeout(() => {
+      if (
+        this.state.usernameIsValid
+        && password.value !== this.state.lastPassword
+      ) {
+        this.validatePassword();
+      }
+    }, 1000);
+  };
+
   validatePassword = () => {
     const { username, password } = this;
     const { account } = this.state;
@@ -60,6 +72,7 @@ export default class SignForm extends Component {
     const passwordIsValid = password.value ? wifIsValid : '';
 
     this.setState({
+      lastPassword: password.value,
       wif,
       wifIsValid,
       passwordIsValid,
@@ -108,7 +121,7 @@ export default class SignForm extends Component {
               </span>
               <input
                 ref={(i) => { this.password = i; }}
-                onBlur={() => this.validatePassword()}
+                onChange={() => this.onChangePassword()}
                 placeholder={`Password or WIF`}
                 type="password"
                 className="form-control"
@@ -119,9 +132,8 @@ export default class SignForm extends Component {
             roles[0] == 'posting' && !roles[1] &&
               <div className="form-check">
                 <label className="form-check-label">
-                  <input type="checkbox" className="form-check-input" />
-                  { ' ' }
-                  Remember my credentials
+                  <input type="checkbox" className="form-check-input mr-1" />
+                  Remember me
                 </label>
               </div>
           }
