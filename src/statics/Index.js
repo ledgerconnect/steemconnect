@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
-
 import methods from 'steem/lib/methods.json';
-import operations from '../helpers/operations.json';
+import operations from 'steem/lib/broadcast/operations.json';
 
 const Index = () => {
   return (

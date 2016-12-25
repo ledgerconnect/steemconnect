@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import steem from 'steem';
-
 import Icon from '../widgets/Icon';
-
 import './Sign.scss';
 
 export default class SignForm extends Component {

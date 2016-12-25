@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import steem from 'steem';
-
 import SignForm from './SignForm';
 import { getOperation } from '../helpers/operationHelpers';
 import SignPlaceholderDefault from './Placeholder/SignPlaceholderDefault';
 import Loading from '../widgets/Loading';
-import Icon from '../widgets/Icon';
 
 import './Sign.scss';
 
@@ -92,8 +90,8 @@ export default class Sign extends Component {
           {
             step === 3 && success &&
               <div>
-                <h1 className="text-success">Success!</h1>
-                <p>The operation has been successfully broadcasted</p>
+                <h1 className="text-success">Success</h1>
+                <p>The operation has been successfully broadcasted.</p>
                 <p>
                   Ref Block Num:<b> { success.ref_block_num }</b>
                   , Ref Block Prefix:<b> { success.ref_block_prefix }</b>
