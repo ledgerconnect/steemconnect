@@ -1,4 +1,5 @@
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import reducer from './reducer';
 
 const reducers = combineReducers({
@@ -13,6 +14,7 @@ if (process.env.ENABLE_LOGGER &&
 const store = createStore(
   reducers,
   window.devToolsExtension && window.devToolsExtension(),
+  applyMiddleware(thunk),
 );
 
 export default store;
