@@ -7,6 +7,7 @@ export default class SignForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      username: '',
       wif: '',
       role: '',
       account: {},
@@ -17,14 +18,15 @@ export default class SignForm extends Component {
 
   onSubmit = (event) => {
     event.preventDefault();
-    const { wif, role } = this.state;
-    this.props.sign({ wif, role });
+    const { username, wif, role } = this.state;
+    this.props.sign({ username, wif, role });
   };
 
   validateUsername = () => {
-    const { username } = this;
-    if (username.value && username.value.length > 2) {
-      steem.api.getAccounts([username.value], (err, result) => {
+    const username = this.username.value;
+    this.setState({ username });
+    if (username && username.length > 2) {
+      steem.api.getAccounts([username], (err, result) => {
           const usernameIsValid = (!err && result[0]);
           this.setState({
             account: result[0],
@@ -120,6 +122,7 @@ export default class SignForm extends Component {
               <input
                 ref={(i) => { this.password = i; }}
                 onChange={() => this.onChangePassword()}
+                onBlur={() => this.onChangePassword()}
                 placeholder={`Password or WIF`}
                 type="password"
                 className="form-control"
@@ -137,7 +140,6 @@ export default class SignForm extends Component {
           }
           <div className="form-group">
             <button
-              disabled={!(usernameIsValid && passwordIsValid)}
               type="submit"
               className="btn btn-success"
             >

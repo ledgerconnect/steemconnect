@@ -4,7 +4,6 @@ import SignForm from './SignForm';
 import { getOperation } from '../helpers/operationHelpers';
 import SignPlaceholderDefault from './Placeholder/SignPlaceholderDefault';
 import Loading from '../widgets/Loading';
-
 import './Sign.scss';
 
 export default class Sign extends Component {
@@ -27,7 +26,6 @@ export default class Sign extends Component {
 
   sign = (auth) => {
     const { type } = this.props.params;
-    console.log(auth);
 
     /* Parse params */
     const query = this.props.location.query;
@@ -52,13 +50,8 @@ export default class Sign extends Component {
   };
 
   render() {
-    const {
-      step,
-      success,
-      error,
-    } = this.state;
-    const { type } = this.props.params;
-    const query = this.props.location.query;
+    const { step, success, error } = this.state;
+    const { params: { type }, location: { query } } = this.props;
     const op = getOperation(type);
 
     return (
