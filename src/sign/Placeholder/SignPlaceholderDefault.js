@@ -13,8 +13,10 @@ const SignPlaceholderDefault = ({
         {
           params.map((param, key) =>
             <li className="list-group-item" key={key}>
-              { changeCase.titleCase(param) }:
-              <b> { query[param] }</b>
+              <span className="mr-2">
+                { changeCase.titleCase(param) }:
+              </span>
+              <b>{ query[param] }</b>
             </li>
           )
         }
