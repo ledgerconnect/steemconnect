@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import steem from 'steem';
 import SignForm from './SignForm';
-import { getOperation } from '../helpers/operationHelpers';
+import { getOperation, parseQuery } from '../helpers/operationHelpers';
 import SignPlaceholderDefault from './Placeholder/SignPlaceholderDefault';
+import SignPlaceholderComment from './Placeholder/SignPlaceholderComment';
 import Loading from '../widgets/Loading';
 import './Sign.scss';
 
@@ -10,6 +11,8 @@ export default class Sign extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      type: this.props.params.type,
+      query: this.props.location.query,
       step: 0,
       success: false,
       error: false,
@@ -25,13 +28,14 @@ export default class Sign extends Component {
   };
 
   sign = (auth) => {
-    const { type } = this.props.params;
+    const { type, query } = this.state;
+    const parsedQuery = parseQuery(type, query, auth.username);
+    console.log(parsedQuery);
 
     /* Parse params */
-    const query = this.props.location.query;
     const params = {};
     for (const key in query) {
-      params[key] = isNaN(query[key])
+      params[key] = isNaN(query[key]) || query[key] == ''
         ? query[key]
         : parseInt(query[key]);
     }
@@ -50,22 +54,22 @@ export default class Sign extends Component {
   };
 
   render() {
-    const { step, success, error } = this.state;
-    const { params: { type }, location: { query } } = this.props;
+    const { step, success, error, query, type } = this.state;
     const op = getOperation(type);
-
+    let Placeholder = SignPlaceholderDefault;
+    Placeholder = (type === 'comment') ? SignPlaceholderComment : Placeholder;
     return (
       <div className="Sign">
         <div className="Sign__content container my-2">
 
           { step === 0 &&
             <div>
-              <SignPlaceholderDefault
+              <Placeholder
                 type={type}
                 query={query}
                 params={op.params}
               />
-              <div className="form-group my-2">
+              <div className="form-group my-4">
                 <button onClick={() => this.setState({ step: 1 })} className="btn btn-success">Continue</button>
               </div>
             </div>
