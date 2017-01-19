@@ -70,7 +70,7 @@ export default class Sign extends Component {
             <div>
               <h1>Authorize</h1>
               <p>Do you want to authorize the Steem account <b>@{ username }</b> to use your <b>posting</b> role?</p>
-              <div className="form-group my-2">
+              <div className="form-group my-4">
                 <button type="submit" onClick={() => this.setState({ step: 1 })} className="btn btn-success">Continue</button>
               </div>
             </div>
