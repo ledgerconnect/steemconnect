@@ -129,7 +129,7 @@ export default class SignForm extends Component {
               />
             </div>
           </div>
-          {
+          {/*
             roles[0] == 'posting' && !roles[1] &&
               <div className="form-check">
                 <label className="form-check-label">
@@ -137,7 +137,7 @@ export default class SignForm extends Component {
                   Remember me
                 </label>
               </div>
-          }
+          */}
           <div className="form-group">
             <button
               type="submit"
