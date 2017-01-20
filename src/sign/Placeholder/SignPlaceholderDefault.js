@@ -8,7 +8,7 @@ const SignPlaceholderDefault = ({
 }) => {
   return (
     <div>
-      <h1>{ changeCase.titleCase(type) }</h1>
+      <h2>{ changeCase.titleCase(type) }</h2>
       <ul className="list-group text-xs-left">
         {
           params.map((param, key) =>

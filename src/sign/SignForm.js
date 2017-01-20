@@ -97,7 +97,7 @@ export default class SignForm extends Component {
 
     return (
       <div>
-        <h1><Icon name="gesture" lg /> Sign</h1>
+        <h2><Icon name="gesture" lg /> Sign</h2>
         <p>This operation require a password or WIF ({ roles.join(', ') }).</p>
         <form
           className="Sign__form"

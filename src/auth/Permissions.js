@@ -31,7 +31,7 @@ export default class Permissions extends Component {
     return (
       <div className="Sign">
         <div className="Sign__content container my-2">
-          <h1>Permissions</h1>
+          <h2>Permissions</h2>
           {isLoading && <Loading/>}
           {account.posting &&
             <div>

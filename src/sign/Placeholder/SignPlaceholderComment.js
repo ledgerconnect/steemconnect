@@ -10,7 +10,7 @@ const SignPlaceholderComment = ({
   catch (e) { jsonMetadata = {}; }
   return (
     <div>
-      <h1>{ changeCase.titleCase(type) }</h1>
+      <h2>{ changeCase.titleCase(type) }</h2>
       {query.parent_author && query.parent_permlink
         ? <p>Do you want to reply on <b>@{query.parent_author}</b>'s post?</p>
         : <p>Do you want to add new post?</p>
