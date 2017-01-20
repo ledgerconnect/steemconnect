@@ -18,7 +18,7 @@ const SignPlaceholderComment = ({
       <ul className="list-group">
         {query.title &&
           <li className="list-group-item">
-            <span className="mr-2">Title:</span>
+            <span className="mr-1">Title:</span>
             <b>{query.title}</b>
           </li>
         }
