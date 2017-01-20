@@ -15,7 +15,7 @@ const SignPlaceholderComment = ({
         ? <p>Do you want to reply on <b>@{query.parent_author}</b>'s post?</p>
         : <p>Do you want to add new post?</p>
       }
-      <ul className="list-group text-xs-left">
+      <ul className="list-group">
         {query.title &&
           <li className="list-group-item">
             <span className="mr-2">Title:</span>
@@ -28,7 +28,7 @@ const SignPlaceholderComment = ({
           </li>
         }
         {query.json_metadata &&
-          <li className="list-group-item text-left">
+          <li className="list-group-item">
             <div>
               <p>Metadata: </p>
               <pre>{JSON.stringify(jsonMetadata, null, 2)}</pre>
