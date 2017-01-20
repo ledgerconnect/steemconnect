@@ -49,6 +49,11 @@ b {
   }
 }
 
+.btn:disabled,
+.btn:disabled:hover {
+  background-color: #8c8c8c !important;
+}
+
 .btn-outline-success {
   color: #02d895 !important;
   border-radius: 28px;
