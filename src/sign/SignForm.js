@@ -142,6 +142,7 @@ export default class SignForm extends Component {
             <button
               type="submit"
               className="btn btn-success"
+              disabled={usernameIsValid && passwordIsValid ? '' : 'disabled'}
             >
               Confirm
             </button>
