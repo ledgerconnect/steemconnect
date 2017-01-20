@@ -32,6 +32,7 @@ export default class SignForm extends Component {
             account: result[0],
             usernameIsValid ,
           });
+          this.onChangePassword();
         }
       );
     } else {
