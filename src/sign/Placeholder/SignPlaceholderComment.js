@@ -5,6 +5,7 @@ const SignPlaceholderComment = ({
   type,
   query,
 }) => {
+  const jsonMetadata = JSON.stringify(JSON.parse(query.json_metadata), null, 2) || {};
   return (
     <div>
       <h1>{ changeCase.titleCase(type) }</h1>
@@ -22,6 +23,14 @@ const SignPlaceholderComment = ({
         {query.body &&
           <li className="list-group-item">
             <b>{query.body}</b>
+          </li>
+        }
+        {query.json_metadata &&
+          <li className="list-group-item text-left">
+            <div>
+              <p>Metadata: </p>
+              <pre>{jsonMetadata}</pre>
+            </div>
           </li>
         }
       </ul>
