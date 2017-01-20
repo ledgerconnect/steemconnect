@@ -9,18 +9,21 @@ const SignPlaceholderDefault = ({
   return (
     <div>
       <h2>{ changeCase.titleCase(type) }</h2>
-      <ul className="list-group text-xs-left">
-        {
-          params.map((param, key) =>
-            <li className="list-group-item" key={key}>
-              <span className="mr-1">
-                { changeCase.titleCase(param) }:
-              </span>
-              <b>{ query[param] }</b>
-            </li>
-          )
-        }
-      </ul>
+      <table className="table text-left">
+        <tbody>
+        {params.map((param, key) =>
+          query[param] &&
+            <tr key={key}>
+              <td className="label">
+                <b>{changeCase.titleCase(param)}</b>
+              </td>
+              <td>
+                {query[param]}
+              </td>
+            </tr>
+        )}
+        </tbody>
+      </table>
     </div>
   );
 };

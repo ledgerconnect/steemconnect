@@ -36,8 +36,8 @@ html, body, #app {
 h1, h2, h3 {
   color: black;
   font-family: $font-alt;
-  margin-bottom: 0.5em;
   font-weight: 700;
+  margin-bottom: 1em;
 }
 
 blockquote {
@@ -111,7 +111,11 @@ a, button {
   cursor: pointer;
 }
 
-li {
-  text-align: left;
-  word-break: break-all;
+pre {
+  font-size: 18px;
+  font-family: $font-primary;
+}
+
+.label {
+  width: 140px;
 }

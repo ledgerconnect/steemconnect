@@ -15,27 +15,30 @@ const SignPlaceholderComment = ({
         ? <p>Do you want to reply on <b>@{query.parent_author}</b>'s post?</p>
         : <p>Do you want to add new post?</p>
       }
-      <ul className="list-group">
-        {query.title &&
-          <li className="list-group-item">
-            <span className="mr-1">Title:</span>
-            <b>{query.title}</b>
-          </li>
-        }
-        {query.body &&
-          <li className="list-group-item">
-            <b>{query.body}</b>
-          </li>
-        }
-        {query.json_metadata &&
-          <li className="list-group-item">
-            <div>
-              <p>Metadata: </p>
-              <pre>{JSON.stringify(jsonMetadata, null, 2)}</pre>
-            </div>
-          </li>
-        }
-      </ul>
+      <table className="table text-left">
+        <tbody>
+          {query.title &&
+            <tr>
+              <td className="label"><b>Title</b></td>
+              <td>{query.title}</td>
+            </tr>
+          }
+          {query.body &&
+            <tr>
+              <td className="label"><b>Body</b></td>
+              <td>{query.body}</td>
+            </tr>
+          }
+          {query.json_metadata &&
+            <tr>
+              <td className="label"><b>Json Metadata</b></td>
+              <td>
+                <pre>{JSON.stringify(jsonMetadata, null, 2)}</pre>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
     </div>
   );
 };
