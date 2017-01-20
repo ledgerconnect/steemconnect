@@ -58,11 +58,12 @@ export default class SignForm extends Component {
     const { roles } = this.props;
 
     const wif = steem.auth.isWif(password.value)
-      ? password
+      ? password.value
       : steem.auth.toWif(username.value, password.value, roles[0]);
 
     let wifIsValid = false;
     const publicWif = steem.auth.wifToPublic(wif);
+
     roles.map(role => {
       if (account[role].key_auths[0][0] === publicWif) {
         this.setState({ role: role });
