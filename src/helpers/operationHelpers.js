@@ -43,8 +43,10 @@ export const parseVote = (query, username) => {
 
 export const parseComment = (query, username) => {
   query.author = query.author || username;
+  query.parent_author = query.parent_author || '';
+  query.parent_permlink =  query.parent_permlink || '';
+  query.title = query.title || '';
   if (query.parent_author && query.parent_permlink) {
-    query.title = query.title || '';
     query.permlink = query.permlink
       || formatter.commentPermlink(query.parent_author, query.parent_permlink).toLowerCase()
   } else {
