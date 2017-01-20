@@ -1,21 +1,44 @@
+$font-primary: Whitney,"Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+$font-alt: WhitneyMedium,"Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+
+@font-face {
+  font-family: Whitney;
+  font-style: normal;
+  font-weight: 500;
+  src: url(/fonts/Whitney.woff) format('woff')
+}
+
+@font-face {
+  font-family: Whitney;
+  font-style: medium;
+  font-weight: 600;
+  src: url(/fonts//WhitneyMedium.woff) format('woff')
+}
+
+@font-face {
+  font-family: WhitneyMedium;
+  font-style: medium;
+  font-weight: 600;
+  src: url(/fonts//WhitneyBold.woff) format('woff')
+}
+
+
 html, body, #app {
   height: 100%;
+  font-size: 18px;
 }
 
 #app {
   color: lighten(black, 60%);
-  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+  font-family: $font-primary;
 }
 
 h1, h2, h3 {
   color: black;
-  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-family: $font-alt;
   margin-bottom: 0.5em;
   font-weight: 700;
 }
-
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
-@import url('https://fonts.googleapis.com/css?family=Roboto:400,700');
 
 blockquote {
   display: inline-block;
@@ -37,7 +60,7 @@ b {
   letter-spacing: 1px;
   padding: 0.75em 1.5em;
   border: none !important;
-  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-family: $font-alt;
 }
 
 .btn-success {
@@ -67,7 +90,7 @@ b {
 }
 
 .form-control {
-  font-size: 16px;
+  font-size: 18px;
   padding: 0.75em;
   border-radius: 28px;
 
@@ -81,9 +104,14 @@ b {
 }
 
 input {
-  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+  font-family: $font-primary;
 }
 
 a, button {
   cursor: pointer;
+}
+
+li {
+  text-align: left;
+  word-break: break-all;
 }
