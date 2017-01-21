@@ -30,6 +30,8 @@ export const parseQuery = (type, query, username) => {
       return parseVote(query, username);
     case 'comment':
       return parseComment(query, username);
+    case 'transfer':
+      return parseTransfer(query, username);
     default:
       return query;
   }
@@ -55,5 +57,11 @@ export const parseComment = (query, username) => {
       || changeCase.paramCase(diacritics.remove(query.title)).slice(0, 255)
   }
   query.json_metadata = query.json_metadata || '';
+  return query;
+};
+
+export const parseTransfer = (query, username) => {
+  query.from = query.from || username;
+  query.memo = query.memo || '';
   return query;
 };
