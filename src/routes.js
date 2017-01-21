@@ -5,6 +5,7 @@ import Index from './statics/Index';
 import Sign from './sign/Sign';
 import Permissions from './auth/Permissions'
 import Authorize from './auth/Authorize';
+import Revoke from './auth/Revoke';
 
 export default (
   <Route path="/" component={Wrapper}>
@@ -12,5 +13,6 @@ export default (
     <Route path="/sign/:type" component={Sign} />
     <Route path="/@:username/permissions" component={Permissions} />
     <Route path="/authorize/@:username" component={Authorize} />
+    <Route path="/revoke/@:username" component={Revoke} />
   </Route>
 );
