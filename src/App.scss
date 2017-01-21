@@ -33,7 +33,7 @@ html, body, #app {
   font-family: $font-primary;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4, h5 {
   color: black;
   font-family: $font-alt;
   font-weight: 700;
@@ -89,6 +89,19 @@ b {
   }
 }
 
+.btn-sm {
+  font-size: 15px;
+  padding: 0.5em 1em;
+  border: none !important;
+  font-family: $font-alt;
+  border-radius: 2em;
+}
+
+.btn-secondary {
+  background-color: #f3f3f3;
+  color: rgba(0, 0, 0, 0.3);
+}
+
 .form-control {
   font-size: 18px;
   padding: 0.75em;
@@ -118,4 +131,8 @@ pre {
 
 .label {
   width: 140px;
+}
+
+li {
+  word-break: break-all;
 }
