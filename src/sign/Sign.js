@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import steem from 'steem';
 import SignForm from './SignForm';
+import SignSuccess from '../sign/SignSuccess';
+import SignError from '../sign/SignError';
 import { getOperation, parseQuery } from '../helpers/operationHelpers';
 import SignPlaceholderDefault from './Placeholder/SignPlaceholderDefault';
 import SignPlaceholderComment from './Placeholder/SignPlaceholderComment';
@@ -61,53 +63,23 @@ export default class Sign extends Component {
     return (
       <div className="Sign">
         <div className="Sign__content container my-2">
-
-          { step === 0 &&
+          {step === 0 &&
             <div>
-              <Placeholder
-                type={type}
-                query={query}
-                params={op.params}
-              />
+              <Placeholder type={type} query={query} params={op.params} />
               <div className="form-group my-4">
-                <button onClick={() => this.setState({ step: 1 })} className="btn btn-success">Continue</button>
+                <button
+                  onClick={() => this.setState({ step: 1 })}
+                  className="btn btn-success"
+                >
+                  Continue
+                </button>
               </div>
             </div>
           }
-
-          { step === 1 &&
-            <SignForm
-              roles={op.roles}
-              sign={this.sign}
-            />
-          }
-
-          { step === 2 && <Loading /> }
-
-          {
-            step === 3 && success &&
-              <div>
-                <h1 className="text-success">Success</h1>
-                <p>The operation has been successfully broadcasted.</p>
-                <p>
-                  Ref Block Num:<b> { success.ref_block_num }</b>
-                  , Ref Block Prefix:<b> { success.ref_block_prefix }</b>
-                </p>
-              </div>
-          }
-
-          {
-            step === 3 && error &&
-              <div>
-                <h3 className="text-danger">
-                  Oops, something goes wrong!
-                </h3>
-                <h5>
-                  <strong>Error code: { error.code }</strong> { error.data.message }
-                </h5>
-                <p>Do you want to <a href="#" onClick={this.resetForm}>try again</a>?</p>
-              </div>
-          }
+          {step === 1 && <SignForm roles={op.roles} sign={this.sign} />}
+          {step === 2 && <Loading />}
+          {step === 3 && success && <SignSuccess result={success} />}
+          {step === 3 && error && <SignError error={error} resetForm={this.resetForm} />}
         </div>
       </div>
     );
