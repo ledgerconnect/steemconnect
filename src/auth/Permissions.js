@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import steem from 'steem';
+import numeral from 'numeral';
 import changeCase from 'change-case';
 import Loading from '../widgets/Loading';
 
@@ -44,6 +45,9 @@ export default class Permissions extends Component {
                     {account[role].account_auths.map((auth, idx) =>
                       <li key={idx} className="list-group-item">
                         <b>@{auth[0]}</b>
+                        <span className="ml-1">
+                          {numeral(100 / account[role].weight_threshold * auth[1] / 100).format('0%')}
+                        </span>
                         {role === 'posting' &&
                           <Link
                             to={`/revoke/@${auth[0]}`}
