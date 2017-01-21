@@ -25,6 +25,7 @@ export default class Authorize extends Component {
 
   authorize = (auth) => {
     const { username } = this.props.params;
+    const weight = this.props.location.query.weight || 1;
     this.setState({ step: 2 });
 
     steem.api.getAccounts([auth.username], (err, result) => {
@@ -37,7 +38,7 @@ export default class Authorize extends Component {
           hasAuth = true;
         }
       });
-      !hasAuth && postingNew.account_auths.push([username, 1]);
+      !hasAuth && postingNew.account_auths.push([username, parseInt(weight)]);
 
       steem.broadcast.accountUpdate(
         auth.wif,
@@ -65,13 +66,19 @@ export default class Authorize extends Component {
   render() {
     const { step, success, error } = this.state;
     const { params: { username } } = this.props;
+    const weight = this.props.location.query.weight;
     return (
       <div className="Sign">
         <div className="Sign__content container my-2">
           {step === 0 &&
             <div>
               <h2>Authorize</h2>
-              <p>Do you want to authorize the Steem account <b>@{ username }</b> to use your <b>posting</b> role?</p>
+              <p>
+                Do you want to authorize the Steem account
+                <b> @{ username }</b> to use your <b>posting</b> role
+                {weight && <span> with a weight of <b>{weight}</b></span>}
+                ?
+              </p>
               <div className="form-group my-4">
                 <button
                   type="submit"
