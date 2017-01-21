@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import steem from 'steem';
 import changeCase from 'change-case';
 import Loading from '../widgets/Loading';
@@ -29,8 +30,8 @@ export default class Permissions extends Component {
   render() {
     const { account, isLoading } = this.state;
     return (
-      <div className="Sign">
-        <div className="Sign__content container my-2">
+      <div className="">
+        <div className="Sign__content container py-5">
           <h2>Permissions</h2>
           {isLoading && <Loading/>}
           {account.posting &&
@@ -43,6 +44,14 @@ export default class Permissions extends Component {
                     {account[role].account_auths.map((auth, idx) =>
                       <li key={idx} className="list-group-item">
                         <b>@{auth[0]}</b>
+                        {role === 'posting' &&
+                          <Link
+                            to={`/revoke/@${auth[0]}`}
+                            className="float-right btn btn-secondary btn-sm ml-1"
+                          >
+                            Revoke
+                          </Link>
+                        }
                       </li>
                     )}
                     {account[role].key_auths.map((auth, idx) =>
