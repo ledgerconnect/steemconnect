@@ -56,7 +56,10 @@ export const parseComment = (query, username) => {
     query.permlink = query.permlink
       || changeCase.paramCase(diacritics.remove(query.title)).slice(0, 255)
   }
-  query.json_metadata = query.json_metadata || '';
+  let jsonMetadata = {};
+  try { jsonMetadata = JSON.parse(query.json_metadata); }
+  catch (e) { jsonMetadata = {}; }
+  query.json_metadata = jsonMetadata;
   return query;
 };
 
