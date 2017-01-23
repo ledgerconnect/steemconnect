@@ -57,7 +57,7 @@ export const parseComment = (query, username) => {
       || changeCase.paramCase(diacritics.remove(query.title)).slice(0, 255)
   }
   let jsonMetadata = {};
-  try { jsonMetadata = JSON.parse(query.json_metadata); }
+  try { jsonMetadata = JSON.parse(decodeURIComponent(query.json_metadata)); }
   catch (e) { jsonMetadata = {}; }
   query.json_metadata = jsonMetadata;
   return query;
