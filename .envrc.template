@@ -10,3 +10,5 @@ export SIGNUP_OWNER_WIF="ownerWif"
 export SIGNUP_CREATOR="username"
 export SIGNUP_FEES="10.000 STEEM"
 export DEV_DATABASE_URL=postgres://localhost/steemconnect
+export NEW_RELIC_NO_CONFIG_FILE="true"
+export NEW_RELIC_APP_NAME="steemconnect"

@@ -38,7 +38,7 @@ function checkOrigin(req, res, next) {
   const origin = req.get('origin');
 
   if (!appUserName) {
-    res.status(500).send('Invalid AppUserName send requests as /api/appName');
+    res.status(400).send('Invalid AppUserName send requests as /api/appName');
   } else if (isDifferentHost(origin)) {
     return getApp(appUserName)
       .then((app) => {
@@ -64,9 +64,9 @@ function checkOrigin(req, res, next) {
       }).catch((err) => {
         debug(err);
         if (err.message === 'User not found') {
-          res.status(500).send('AppName not found');
+          res.status(404).send('AppName not found');
         } else {
-          res.status(500).send(err && err.toString());
+          res.status(400).send(err && err.toString());
         }
       });
   } else {
@@ -99,7 +99,7 @@ function checkPermission(req, res, next) {
     }
   }).catch((err) => {
     debug(err);
-    res.status(500).send(err && err.toString());
+    res.status(400).send(err && err.toString());
   });
 }
 

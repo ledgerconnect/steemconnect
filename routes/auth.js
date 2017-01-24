@@ -43,7 +43,7 @@ router.post('/auth/login', (req, res) => {
   const { username, wif } = JSON.parse(data);
   steem.api.getAccounts([username], (err, result) => {
     if (err) {
-      res.status(500).send({ error: JSON.stringify(err) });
+      res.status(400).send({ error: JSON.stringify(err) });
     } else if (result.length === 0) {
       res.status(401).send({ error: 'Incorrect Username' });
     } else if (result[0] && steemAuth.wifIsValid(wif, result[0].posting.key_auths[0][0])) {

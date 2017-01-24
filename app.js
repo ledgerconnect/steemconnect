@@ -8,6 +8,7 @@ const https = require('https');
 const cors = require('cors');
 const helmet = require('helmet');
 const csurf = require('csurf');
+const Raven = require('raven');
 const steem = require('steem');
 const debug = require('debug')('steemconnect:main');
 
@@ -21,6 +22,11 @@ https.globalAgent.maxSockets = 100;
 
 const app = express();
 
+if (process.env.SENTRY_DSN) {
+  Raven.config(process.env.SENTRY_DSN).install();
+  app.use(Raven.requestHandler());
+}
+
 if (process.env.NODE_ENV !== 'production') {
   require('./webpack')(app); // eslint-disable-line
 }
@@ -30,6 +36,10 @@ app.set('view engine', 'hbs');
 
 app.use(helmet({ frameguard: false }));
 app.use(cookieParser());
+
+app.get('/loaderio-09d794fb07ae242522b107c6eb88734a.txt', (req, res) => {
+  res.send('loaderio-09d794fb07ae242522b107c6eb88734a');
+});
 
 if (process.env.NODE_ENV !== 'test') {
   app.use(logger(
@@ -60,6 +70,7 @@ app.use((req, res, next) => {
 });
 
 if (app.get('env') !== 'production') {
+  if (process.env.SENTRY_DSN) app.use(Raven.errorHandler());
   app.use((err, req, res, next) => {
     console.log(err.stack);
     next(err);

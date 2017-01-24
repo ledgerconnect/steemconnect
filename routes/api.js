@@ -9,7 +9,7 @@ const apiRouter = new express.Router();
 
 function sendResponse({ err: error, result }, res) {
   if (error) {
-    return res.status(500).send({ error });
+    return res.status(400).send({ error });
   }
   return res.json({ result });
 }
