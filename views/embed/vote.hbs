@@ -58,69 +58,93 @@
 </style>
 
 <div class="vote">
-  <a id="vote" href="javascript:" class="btn-vote{{#if hasVote}} active{{/if}}">
+  <a id="vote" href="javascript:" class="btn-vote">
     <svg enable-background="new 0 0 33 33" version="1.1" viewBox="0 0 33 33" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="Chevron_Up_Circle"><circle cx="16" cy="16" r="15" stroke="#121313" fill="none"></circle><path d="M16.699,11.293c-0.384-0.38-1.044-0.381-1.429,0l-6.999,6.899c-0.394,0.391-0.394,1.024,0,1.414 c0.395,0.391,1.034,0.391,1.429,0l6.285-6.195l6.285,6.196c0.394,0.391,1.034,0.391,1.429,0c0.394-0.391,0.394-1.024,0-1.414 L16.699,11.293z" fill="#121313"></path></g></svg>
   </a>
-  <span class="count" id="counter">{{content.net_votes}}</span>
+  <span class="count" id="counter"></span>
 </div>
 
-<script>!function(e){function t(n){if(r[n])return r[n].exports;var o=r[n]={exports:{},id:n,loaded:!1};return e[n].call(o.exports,o,o.exports,t),o.loaded=!0,o.exports}var r={};return t.m=e,t.c=r,t.p="",t(0)}([function(e,t,r){(function(n){"use strict";var o=r(1);"undefined"!=typeof window&&(window.steemconnect=o),"undefined"!=typeof n&&(n.steemconnect=o),t=e.exports=o}).call(t,function(){return this}())},function(e,t,r){"use strict";var n=r(2),o=r(4),s=r(7)("steemconnect"),i={baseURL:"https://steemconnect.com",app:"",callbackURL:""};i.init=function(e){e.baseURL&&i.setBaseURL(e.baseURL),e.app&&i.setApp(e.app),e.callbackURL&&i.setCallbackURL(e.callbackURL)},i.setBaseURL=function(e){i.baseURL=e},i.setApp=function(e){i.app=e},i.setCallbackURL=function(e){i.callbackURL=e},i.getLoginURL=function(e){return e?i.baseURL+"/authorize/@"+i.app+"?redirect_url="+e:i.baseURL+"/authorize/@"+i.app+"?redirect_url="+i.callbackURL},i.send=function(e,t,r){var a=i.baseURL+"/api/@"+i.app+"/"+e,c=n(a+"?"+o.stringify(t),{credentials:"include"}).then(function(e){if(s("GET "+e.status+" "+a),e.status>=400){var t=new Error("Steem Connect API call failed with "+e.status);throw t.res=e,t}return e.json()});return r?c.then(function(e){r(null,e)},function(e){r(e)}):c},i.isAuthenticated=function(e){return i.send("verify",{},e)},i.vote=function(e,t,r,n,o){var s={voter:e,author:t,permlink:r,weight:n};return i.send("vote",s,o)},i.follow=function(e,t,r){var n={follower:e,following:t};return i.send("follow",n,r)},i.unfollow=function(e,t,r){var n={follower:e,following:t};return i.send("unfollow",n,r)},i.ignore=function(e,t,r){var n={follower:e,following:t};return i.send("ignore",n,r)},i.reblog=function(e,t,r,n){var o={account:e,author:t,permlink:r};return i.send("reblog",o,n)},i.comment=function(e,t,r,n,o,s,a,c){var u={parentAuthor:e,parentPermlink:t,author:r,permlink:n,title:o,body:s,jsonMetadata:a};return i.send("comment",u,c)},i.deleteComment=function(e,t,r){var n={author:e,permlink:t};return i.send("deleteComment",n,r)},i.post=function(e,t,r,n,o,s){var a={author:e,permlink:t,title:r,body:n,jsonMetadata:o};return i.send("post",a,s)},i.escrowTransfer=function(e,t,r,n,o,s,a,c,u,l){var f={from:e,to:t,amount:r,memo:n,escrow_id:o,agent:s,fee:a,json_meta:c,expiration:u};return i.send("escrowTransfer",f,l)},i.escrowDispute=function(e,t,r,n,o){var s={from:e,to:t,escrow_id:r,who:n};return i.send("escrowDispute",s,o)},i.escrowRelease=function(e,t,r,n,o,s){var a={from:e,to:t,escrow_id:r,who:n,amount:o};return i.send("escrowRelease",a,s)},t=e.exports=i},function(e,t,r){r(3),e.exports=self.fetch.bind(self)},function(e,t){!function(e){"use strict";function t(e){if("string"!=typeof e&&(e=String(e)),/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(e))throw new TypeError("Invalid character in header field name");return e.toLowerCase()}function r(e){return"string"!=typeof e&&(e=String(e)),e}function n(e){var t={next:function(){var t=e.shift();return{done:void 0===t,value:t}}};return y.iterable&&(t[Symbol.iterator]=function(){return t}),t}function o(e){this.map={},e instanceof o?e.forEach(function(e,t){this.append(t,e)},this):e&&Object.getOwnPropertyNames(e).forEach(function(t){this.append(t,e[t])},this)}function s(e){return e.bodyUsed?Promise.reject(new TypeError("Already read")):void(e.bodyUsed=!0)}function i(e){return new Promise(function(t,r){e.onload=function(){t(e.result)},e.onerror=function(){r(e.error)}})}function a(e){var t=new FileReader;return t.readAsArrayBuffer(e),i(t)}function c(e){var t=new FileReader;return t.readAsText(e),i(t)}function u(){return this.bodyUsed=!1,this._initBody=function(e){if(this._bodyInit=e,"string"==typeof e)this._bodyText=e;else if(y.blob&&Blob.prototype.isPrototypeOf(e))this._bodyBlob=e;else if(y.formData&&FormData.prototype.isPrototypeOf(e))this._bodyFormData=e;else if(y.searchParams&&URLSearchParams.prototype.isPrototypeOf(e))this._bodyText=e.toString();else if(e){if(!y.arrayBuffer||!ArrayBuffer.prototype.isPrototypeOf(e))throw new Error("unsupported BodyInit type")}else this._bodyText="";this.headers.get("content-type")||("string"==typeof e?this.headers.set("content-type","text/plain;charset=UTF-8"):this._bodyBlob&&this._bodyBlob.type?this.headers.set("content-type",this._bodyBlob.type):y.searchParams&&URLSearchParams.prototype.isPrototypeOf(e)&&this.headers.set("content-type","application/x-www-form-urlencoded;charset=UTF-8"))},y.blob?(this.blob=function(){var e=s(this);if(e)return e;if(this._bodyBlob)return Promise.resolve(this._bodyBlob);if(this._bodyFormData)throw new Error("could not read FormData body as blob");return Promise.resolve(new Blob([this._bodyText]))},this.arrayBuffer=function(){return this.blob().then(a)},this.text=function(){var e=s(this);if(e)return e;if(this._bodyBlob)return c(this._bodyBlob);if(this._bodyFormData)throw new Error("could not read FormData body as text");return Promise.resolve(this._bodyText)}):this.text=function(){var e=s(this);return e?e:Promise.resolve(this._bodyText)},y.formData&&(this.formData=function(){return this.text().then(p)}),this.json=function(){return this.text().then(JSON.parse)},this}function l(e){var t=e.toUpperCase();return m.indexOf(t)>-1?t:e}function f(e,t){t=t||{};var r=t.body;if(f.prototype.isPrototypeOf(e)){if(e.bodyUsed)throw new TypeError("Already read");this.url=e.url,this.credentials=e.credentials,t.headers||(this.headers=new o(e.headers)),this.method=e.method,this.mode=e.mode,r||(r=e._bodyInit,e.bodyUsed=!0)}else this.url=e;if(this.credentials=t.credentials||this.credentials||"omit",!t.headers&&this.headers||(this.headers=new o(t.headers)),this.method=l(t.method||this.method||"GET"),this.mode=t.mode||this.mode||null,this.referrer=null,("GET"===this.method||"HEAD"===this.method)&&r)throw new TypeError("Body not allowed for GET or HEAD requests");this._initBody(r)}function p(e){var t=new FormData;return e.trim().split("&").forEach(function(e){if(e){var r=e.split("="),n=r.shift().replace(/\+/g," "),o=r.join("=").replace(/\+/g," ");t.append(decodeURIComponent(n),decodeURIComponent(o))}}),t}function d(e){var t=new o,r=(e.getAllResponseHeaders()||"").trim().split("\n");return r.forEach(function(e){var r=e.trim().split(":"),n=r.shift().trim(),o=r.join(":").trim();t.append(n,o)}),t}function h(e,t){t||(t={}),this.type="default",this.status=t.status,this.ok=this.status>=200&&this.status<300,this.statusText=t.statusText,this.headers=t.headers instanceof o?t.headers:new o(t.headers),this.url=t.url||"",this._initBody(e)}if(!e.fetch){var y={searchParams:"URLSearchParams"in e,iterable:"Symbol"in e&&"iterator"in Symbol,blob:"FileReader"in e&&"Blob"in e&&function(){try{return new Blob,!0}catch(e){return!1}}(),formData:"FormData"in e,arrayBuffer:"ArrayBuffer"in e};o.prototype.append=function(e,n){e=t(e),n=r(n);var o=this.map[e];o||(o=[],this.map[e]=o),o.push(n)},o.prototype.delete=function(e){delete this.map[t(e)]},o.prototype.get=function(e){var r=this.map[t(e)];return r?r[0]:null},o.prototype.getAll=function(e){return this.map[t(e)]||[]},o.prototype.has=function(e){return this.map.hasOwnProperty(t(e))},o.prototype.set=function(e,n){this.map[t(e)]=[r(n)]},o.prototype.forEach=function(e,t){Object.getOwnPropertyNames(this.map).forEach(function(r){this.map[r].forEach(function(n){e.call(t,n,r,this)},this)},this)},o.prototype.keys=function(){var e=[];return this.forEach(function(t,r){e.push(r)}),n(e)},o.prototype.values=function(){var e=[];return this.forEach(function(t){e.push(t)}),n(e)},o.prototype.entries=function(){var e=[];return this.forEach(function(t,r){e.push([r,t])}),n(e)},y.iterable&&(o.prototype[Symbol.iterator]=o.prototype.entries);var m=["DELETE","GET","HEAD","OPTIONS","POST","PUT"];f.prototype.clone=function(){return new f(this)},u.call(f.prototype),u.call(h.prototype),h.prototype.clone=function(){return new h(this._bodyInit,{status:this.status,statusText:this.statusText,headers:new o(this.headers),url:this.url})},h.error=function(){var e=new h(null,{status:0,statusText:""});return e.type="error",e};var b=[301,302,303,307,308];h.redirect=function(e,t){if(b.indexOf(t)===-1)throw new RangeError("Invalid status code");return new h(null,{status:t,headers:{location:e}})},e.Headers=o,e.Request=f,e.Response=h,e.fetch=function(e,t){return new Promise(function(r,n){function o(){return"responseURL"in i?i.responseURL:/^X-Request-URL:/m.test(i.getAllResponseHeaders())?i.getResponseHeader("X-Request-URL"):void 0}var s;s=f.prototype.isPrototypeOf(e)&&!t?e:new f(e,t);var i=new XMLHttpRequest;i.onload=function(){var e={status:i.status,statusText:i.statusText,headers:d(i),url:o()},t="response"in i?i.response:i.responseText;r(new h(t,e))},i.onerror=function(){n(new TypeError("Network request failed"))},i.ontimeout=function(){n(new TypeError("Network request failed"))},i.open(s.method,s.url,!0),"include"===s.credentials&&(i.withCredentials=!0),"responseType"in i&&y.blob&&(i.responseType="blob"),s.headers.forEach(function(e,t){i.setRequestHeader(t,e)}),i.send("undefined"==typeof s._bodyInit?null:s._bodyInit)})},e.fetch.polyfill=!0}}("undefined"!=typeof self?self:this)},function(e,t,r){"use strict";t.decode=t.parse=r(5),t.encode=t.stringify=r(6)},function(e,t){"use strict";function r(e,t){return Object.prototype.hasOwnProperty.call(e,t)}e.exports=function(e,t,n,o){t=t||"&",n=n||"=";var s={};if("string"!=typeof e||0===e.length)return s;var i=/\+/g;e=e.split(t);var a=1e3;o&&"number"==typeof o.maxKeys&&(a=o.maxKeys);var c=e.length;a>0&&c>a&&(c=a);for(var u=0;u<c;++u){var l,f,p,d,h=e[u].replace(i,"%20"),y=h.indexOf(n);y>=0?(l=h.substr(0,y),f=h.substr(y+1)):(l=h,f=""),p=decodeURIComponent(l),d=decodeURIComponent(f),r(s,p)?Array.isArray(s[p])?s[p].push(d):s[p]=[s[p],d]:s[p]=d}return s}},function(e,t){"use strict";var r=function(e){switch(typeof e){case"string":return e;case"boolean":return e?"true":"false";case"number":return isFinite(e)?e:"";default:return""}};e.exports=function(e,t,n,o){return t=t||"&",n=n||"=",null===e&&(e=void 0),"object"==typeof e?Object.keys(e).map(function(o){var s=encodeURIComponent(r(o))+n;return Array.isArray(e[o])?e[o].map(function(e){return s+encodeURIComponent(r(e))}).join(t):s+encodeURIComponent(r(e[o]))}).join(t):o?encodeURIComponent(r(o))+n+encodeURIComponent(r(e)):""}},function(e,t,r){function n(){return"WebkitAppearance"in document.documentElement.style||window.console&&(console.firebug||console.exception&&console.table)||navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/)&&parseInt(RegExp.$1,10)>=31}function o(){var e=arguments,r=this.useColors;if(e[0]=(r?"%c":"")+this.namespace+(r?" %c":" ")+e[0]+(r?"%c ":" ")+"+"+t.humanize(this.diff),!r)return e;var n="color: "+this.color;e=[e[0],n,"color: inherit"].concat(Array.prototype.slice.call(e,1));var o=0,s=0;return e[0].replace(/%[a-z%]/g,function(e){"%%"!==e&&(o++,"%c"===e&&(s=o))}),e.splice(s,0,n),e}function s(){return"object"==typeof console&&console.log&&Function.prototype.apply.call(console.log,console,arguments)}function i(e){try{null==e?t.storage.removeItem("debug"):t.storage.debug=e}catch(e){}}function a(){var e;try{e=t.storage.debug}catch(e){}return e}function c(){try{return window.localStorage}catch(e){}}t=e.exports=r(8),t.log=s,t.formatArgs=o,t.save=i,t.load=a,t.useColors=n,t.storage="undefined"!=typeof chrome&&"undefined"!=typeof chrome.storage?chrome.storage.local:c(),t.colors=["lightseagreen","forestgreen","goldenrod","dodgerblue","darkorchid","crimson"],t.formatters.j=function(e){return JSON.stringify(e)},t.enable(a())},function(e,t,r){function n(){return t.colors[l++%t.colors.length]}function o(e){function r(){}function o(){var e=o,r=+new Date,s=r-(u||r);e.diff=s,e.prev=u,e.curr=r,u=r,null==e.useColors&&(e.useColors=t.useColors()),null==e.color&&e.useColors&&(e.color=n());var i=Array.prototype.slice.call(arguments);i[0]=t.coerce(i[0]),"string"!=typeof i[0]&&(i=["%o"].concat(i));var a=0;i[0]=i[0].replace(/%([a-z%])/g,function(r,n){if("%%"===r)return r;a++;var o=t.formatters[n];if("function"==typeof o){var s=i[a];r=o.call(e,s),i.splice(a,1),a--}return r}),"function"==typeof t.formatArgs&&(i=t.formatArgs.apply(e,i));var c=o.log||t.log||console.log.bind(console);c.apply(e,i)}r.enabled=!1,o.enabled=!0;var s=t.enabled(e)?o:r;return s.namespace=e,s}function s(e){t.save(e);for(var r=(e||"").split(/[\s,]+/),n=r.length,o=0;o<n;o++)r[o]&&(e=r[o].replace(/\*/g,".*?"),"-"===e[0]?t.skips.push(new RegExp("^"+e.substr(1)+"$")):t.names.push(new RegExp("^"+e+"$")))}function i(){t.enable("")}function a(e){var r,n;for(r=0,n=t.skips.length;r<n;r++)if(t.skips[r].test(e))return!1;for(r=0,n=t.names.length;r<n;r++)if(t.names[r].test(e))return!0;return!1}function c(e){return e instanceof Error?e.stack||e.message:e}t=e.exports=o,t.coerce=c,t.disable=i,t.enable=s,t.enabled=a,t.humanize=r(9),t.names=[],t.skips=[],t.formatters={};var u,l=0},function(e,t){function r(e){if(e=""+e,!(e.length>1e4)){var t=/^((?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$/i.exec(e);if(t){var r=parseFloat(t[1]),n=(t[2]||"ms").toLowerCase();switch(n){case"years":case"year":case"yrs":case"yr":case"y":return r*l;case"days":case"day":case"d":return r*u;case"hours":case"hour":case"hrs":case"hr":case"h":return r*c;case"minutes":case"minute":case"mins":case"min":case"m":return r*a;case"seconds":case"second":case"secs":case"sec":case"s":return r*i;case"milliseconds":case"millisecond":case"msecs":case"msec":case"ms":return r}}}}function n(e){return e>=u?Math.round(e/u)+"d":e>=c?Math.round(e/c)+"h":e>=a?Math.round(e/a)+"m":e>=i?Math.round(e/i)+"s":e+"ms"}function o(e){return s(e,u,"day")||s(e,c,"hour")||s(e,a,"minute")||s(e,i,"second")||e+" ms"}function s(e,t,r){if(!(e<t))return e<1.5*t?Math.floor(e/t)+" "+r:Math.ceil(e/t)+" "+r+"s"}var i=1e3,a=60*i,c=60*a,u=24*c,l=365.25*u;e.exports=function(e,t){return t=t||{},"string"==typeof e?r(e):t.long?o(e):n(e)}}]);</script>
-
+<script src="//cdn.steemjs.com/lib/latest/steemconnect.min.js"></script>
+<script src="//cdn.steemjs.com/lib/latest/steem.min.js"></script>
 <script>
-(function(d) {
+  (function(d) {
 
-  var username = '{{username}}',
-    isAuth = {{#if isAuth}}true{{else}}false{{/if}},
-    hasVote = {{#if hasVote}}true{{else}}false{{/if}},
-    author = '{{author}}',
-    permlink = '{{permlink}}',
-    weight = '{{weight}}',
-    referer = '{{referer}}',
-    vote = d.getElementById('vote'),
-    counter = d.getElementById('counter');
+    var username = '',
+      voted = false,
+      content = {},
+      author = '{{author}}',
+      permlink = '{{permlink}}',
+      weight = '{{weight}}',
+      domain = 'https://steemconnect.com',
+      referer = '{{referer}}',
+      vote = d.getElementById('vote'),
+      counter = d.getElementById('counter');
 
-  steemconnect.init({
-    app: 'steemconnect',
-    baseURL: '{{domain}}',
-  });
-
-  vote.onclick = isAuth ? toggleVote : login;
-
-  function login() {
-    window.top.location.href = '/login?redirect_url=' + referer;
-  }
-
-  function toggleVote() {
-    if (hasVote === false) {
-      addVote();
-      steemconnect.vote(username, author, permlink, weight, function (err, result) {
-        if (!err) {
-          hasVote = true;
-        } else {
-          removeVote();
-        }
-      });
-    } else {
-      removeVote();
-      steemconnect.vote(username, author, permlink, 0, function (err, result) {
-        if (!err) {
-          hasVote = false;
-        } else {
-          addVote();
-        }
+    function initVote() {
+      steem.api.getContent(author, permlink, function(err, result) {
+        content = result;
+        updateContent();
       });
     }
-  }
 
-  function addVote() {
-    vote.setAttribute('class', 'btn-vote active');
-    counter.innerHTML = parseInt(counter.innerHTML) + 1;
-  }
+    function updateContent() {
+      counter.innerHTML = content.net_votes;
+      if (hasVote()) {
+        voted = true;
+        vote.setAttribute('class', 'btn-vote active');
+      } else {
+        voted = false;
+        vote.setAttribute('class', 'btn-vote');
+      }
+    }
 
-  function removeVote() {
-    vote.setAttribute('class', 'btn-vote');
-    counter.innerHTML = parseInt(counter.innerHTML) - 1;
-  }
+    steemconnect.init({
+      app: 'steemconnect',
+      baseURL: domain,
+      callbackURL: domain + '/embed/vote?author={{author}}&permlink={{permlink}}&size=small'
+    });
 
-}(document));
+    var loginURL = domain + '/login?redirect_url='+ referer;
+
+    steemconnect.isAuthenticated(function(err, result) {
+      username = !err && result.username;
+      initVote();
+    });
+
+    vote.onclick = toggleVote;
+
+    function toggleVote() {
+      if (username) {
+        if (voted == true) {
+          vote.setAttribute('class', 'btn-vote');
+          counter.innerHTML = content.net_votes - 1;
+          steemconnect.vote(username, author, permlink, 0, function(err, result){
+            initVote();
+          });
+        } else {
+          vote.setAttribute('class', 'btn-vote active');
+          counter.innerHTML = content.net_votes + 1;
+          steemconnect.vote(username, author, permlink, weight, function(err, result){
+            initVote();
+          });
+        }
+      } else {
+        window.top.location.href = loginURL;
+      }
+    }
+
+    function hasVote() {
+      var hasVote = false;
+      if (username && content.active_votes) {
+        content.active_votes.forEach(function(activeVote, key) {
+          if (activeVote.voter === username
+            && activeVote.percent > 0) {
+            hasVote = true;
+          }
+        });
+      }
+      return hasVote;
+    }
+
+  }(document));
 </script>
