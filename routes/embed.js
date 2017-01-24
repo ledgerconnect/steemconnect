@@ -1,6 +1,4 @@
 const express = require('express');
-const steem = require('steem');
-const jwt = require('jsonwebtoken');
 
 const router = new express.Router();
 
@@ -10,36 +8,13 @@ router.get('/vote', (req, res) => {
   const weight = req.query.weight || 10000;
   const domain = getDomain(req);
   const referer = req.get('Referer') || domain;
-  let { isAuth, hasVote } = false;
-  let username;
-
-  steem.api.getContent(author, permlink, (err, content) => {
-    if (req.cookies.auth) {
-      const data = jwt.verify(req.cookies.auth, process.env.JWT_SECRET);
-      isAuth = true;
-      username = data.username;
-      if (content.active_votes) {
-        content.active_votes.forEach((activeVote) => {
-          if (activeVote.voter === username
-            && activeVote.percent > 0) {
-            hasVote = true;
-          }
-        });
-      }
-    }
-
-    res.render('embed/vote', {
-      layout: 'embed',
-      author,
-      permlink,
-      weight,
-      referer,
-      content,
-      isAuth,
-      hasVote,
-      username,
-      domain,
-    });
+  res.render('embed/vote', {
+    layout: 'embed',
+    author,
+    permlink,
+    weight,
+    referer,
+    domain,
   });
 });
 
