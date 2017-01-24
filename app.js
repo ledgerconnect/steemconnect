@@ -37,6 +37,10 @@ app.set('view engine', 'hbs');
 app.use(helmet({ frameguard: false }));
 app.use(cookieParser());
 
+app.get('/loaderio-09d794fb07ae242522b107c6eb88734a.txt', (req, res) => {
+  res.send('loaderio-09d794fb07ae242522b107c6eb88734a');
+});
+
 if (process.env.NODE_ENV !== 'test') {
   app.use(logger(
     process.env.NODE_ENV === 'production'
