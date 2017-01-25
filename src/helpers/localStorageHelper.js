@@ -31,3 +31,7 @@ export const getAuth = () => {
 export const setLastUsername = (username) => {
   ls.set('_last', username);
 };
+
+export const clear = () => {
+  ls.clear();
+};

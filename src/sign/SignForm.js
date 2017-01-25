@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import steem from 'steem';
-import { hasAuth, getAuth, addAuth, setLastUsername } from '../helpers/localStorageHelper';
+import { clear, hasAuth, getAuth, addAuth, setLastUsername } from '../helpers/localStorageHelper';
 import Icon from '../widgets/Icon';
 import './Sign.scss';
 
@@ -104,6 +104,7 @@ export default class SignForm extends Component {
   };
 
   resetAuth = () => {
+    clear();
     this.setState({
       isAuth: false,
       username: '',
