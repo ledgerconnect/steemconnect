@@ -21,7 +21,7 @@ class Sidebar extends Component {
             <Link to="profile">
               <Avatar sm username={user.name} reputation={user.reputation} />
             </Link>
-            <span style={{ clear: 'both', display: 'block' }}> @{user.name}</span>
+            <span style={{ clear: 'both', display: 'block' }}> {user.name}</span>
           </div>
         </div>
         <div className="sidebar-content">
