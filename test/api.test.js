@@ -32,10 +32,10 @@ describe('/api', function () {
       .endAsync();
   });
 
-  describe('GET /api/upvote', function () {
+  describe('GET /api/vote', function () {
     it('requires authentication', function () {
       return this.api
-        .get('/api/upvote')
+        .get('/api/vote')
         .expect(401)
         .endAsync();
     });
@@ -136,10 +136,11 @@ describe('/api', function () {
         const voter = process.env.TEST_USERNAME;
         const author = 'fabien';
         const permlink = 'steem-script-an-open-json-standard-for-trusted-workflows-proposal';
+        const weight = 10000;
         this.agent = supertest.agent(app);
         return this.agent
-          .get('/api/upvote')
-          .query({ voter, author, permlink })
+          .get('/api/vote')
+          .query({ voter, author, permlink, weight })
           .set('cookie', `_csrf=${this.csrfCookie};auth=${this.authCookie};`)
           .set('x-steemconnect-token', this.jwtToken)
           .set('origin', origins[0])
