@@ -67,7 +67,7 @@ class Login extends Component {
               </form>
             </div>}
         </div>
-        <div className="mvl">
+        <div className="my-4">
           {selectedUser && <p><a href="https://steemit.com/recover_account_step_1" target="_blank" rel="noopener noreferrer">Forgot password?</a></p>}
           {!selectedUser &&
             <p>New to Steem?&nbsp;

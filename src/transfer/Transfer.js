@@ -105,7 +105,7 @@ class Payments extends Component {
     const currentBalance = this.state.transferType === 'STEEM' ? user.balance : user.sbd_balance;
     return (
       <div className="dialog">
-        <h1 className="mvl">Transfer</h1>
+        <h1 className="my-4">Transfer</h1>
         <form className="form form-payments">
           <div className="pam">
             <input className="form-control form-control-lg" placeholder="To" defaultValue={this.props.params.to} onBlur={() => this.validate('transferTo')} ref={c => (this.formFields.transferTo = c)} />
@@ -119,7 +119,7 @@ class Payments extends Component {
             <input className="form-control form-control-lg" placeholder="Memo" defaultValue={this.props.params.memo} ref={c => (this.formFields.memo = c)} />
             <p>Current balance {currentBalance}</p>
           </div>
-          <div className="form-control-feedback man phm">{this.state.error.transfer}</div>
+          <div className="form-control-feedback man px-3">{this.state.error.transfer}</div>
           <button className="btn btn-primary form-submit" onClick={this.transfer}>Transfer</button>
         </form>
       </div>

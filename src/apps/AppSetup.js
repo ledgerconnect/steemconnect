@@ -110,10 +110,10 @@ class AppSetup extends Component {
 
     return (
       <div className="pbl">
-        {isFetching && <div className="mvl"><Loading /></div>}
+        {isFetching && <div className="my-4"><Loading /></div>}
         {!isFetching &&
           <form className="form">
-            <div className="thin pvl">
+            <div className="thin py-4">
               <FieldsetInput name="author" label="Author" placeholder="Add the author username" defaultValue={author} error={this.state.error} validate={this.validate} formFields={this.formFields} />
               <fieldset className="form-group">
                 <label htmlFor="origins">Requested permissions</label>
@@ -138,7 +138,7 @@ class AppSetup extends Component {
             </div>
             <hr />
             <fieldset className="form-group text-lg-center ptl">
-              <div className="form-control-danger man phm">{this.state.error.save}</div>
+              <div className="form-control-danger man px-3">{this.state.error.save}</div>
               <button className="btn btn-success" onClick={this.save}>Save Changes</button>
               {appExist && <span>
                 <span className="spacer">or</span>

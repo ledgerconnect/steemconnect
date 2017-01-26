@@ -94,7 +94,7 @@ class Settings extends Component {
       <div className="pbl">
         <AvatarUpdate username={user.name} onDrop={this.onDrop} />
         <form>
-          <div className="thin pvl">
+          <div className="thin py-4">
             <fieldset className="form-group">
               <label htmlFor="first_name">Name</label>
               <input type="text" defaultValue={profile.name} placeholder="Add a nickname" className="form-control form-control-lg" ref="name" />

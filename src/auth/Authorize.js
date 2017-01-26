@@ -45,7 +45,7 @@ class Authorize extends React.Component {
     if (isLoading) {
       errorOrLoading = <Loading />;
     } else if (error) {
-      errorOrLoading = <div className="mvl">{error}</div>;
+      errorOrLoading = <div className="my-4">{error}</div>;
     }
 
     return (

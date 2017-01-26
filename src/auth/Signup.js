@@ -58,7 +58,7 @@ class SignUp extends Component {
             </fieldset>
           </form>
         </div>
-        <div className="mvl">
+        <div className="my-4">
           <p>Have an account? <Link to="/login">Log in</Link></p>
         </div>
       </Modal>
