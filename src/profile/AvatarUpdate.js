@@ -8,8 +8,8 @@ const AvatarUpdate = (props) => {
   };
   return (
     <div className="profile-header" onClick={props.onClick} style={userBackground}>
-      <img alt="Profile" className="profile-image mtl mbm" src={`https://img.steemconnect.com/@${props.username}?${cacheBuster}`} />
-      <div className="pbl">
+      <img alt="Profile" className="profile-image mt-5 mb-4" src={`https://img.steemconnect.com/@${props.username}?${cacheBuster}`} />
+      <div className="pb-5">
         <Dropzone className="dropzone" onDrop={files => props.onDrop(files, 'profile_image')} accept="image/*">
           <button className="btn btn-primary">
             <i className="icon icon-md material-icons">file_upload</i> Upload profile image

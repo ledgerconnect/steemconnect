@@ -91,10 +91,10 @@ class Settings extends Component {
     const user = this.props.auth.user;
     const profile = typeof user.json_metadata.profile === 'object' ? user.json_metadata.profile : {};
     return (
-      <div className="pbl">
+      <div className="mb-5">
         <AvatarUpdate username={user.name} onDrop={this.onDrop} />
         <form>
-          <div className="thin py-4">
+          <div className="thin py-5">
             <fieldset className="form-group">
               <label htmlFor="first_name">Name</label>
               <input type="text" defaultValue={profile.name} placeholder="Add a nickname" className="form-control form-control-lg" ref="name" />
@@ -114,7 +114,7 @@ class Settings extends Component {
             </fieldset>
           </div>
           <hr />
-          <fieldset className="form-group text-lg-center ptl">
+          <fieldset className="form-group text-lg-center pt-4">
             <button className="btn btn-success" onClick={this.save}>Save Changes</button><span className="spacer">or</span>
             <button className="btn btn-outline-danger" onClick={this.clearProfile}>Clear Profile</button>
           </fieldset>

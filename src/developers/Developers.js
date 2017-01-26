@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 
 export default
-  () => <div className="my-3">
+  () => <div className="my-5">
     <h1 className="mb-3">Developers</h1>
     <div className="row py-4 thin text-lg-left">
       <div className="py-4">

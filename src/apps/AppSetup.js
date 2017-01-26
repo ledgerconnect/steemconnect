@@ -109,11 +109,12 @@ class AppSetup extends Component {
     const appExist = !_.isEmpty(this.props.developer.app);
 
     return (
-      <div className="pbl">
+      <div className="my-5">
         {isFetching && <div className="my-4"><Loading /></div>}
         {!isFetching &&
           <form className="form">
-            <div className="thin py-4">
+            <h1>Setup App @{this.props.auth.user.name}</h1>
+            <div className="thin py-5">
               <FieldsetInput name="author" label="Author" placeholder="Add the author username" defaultValue={author} error={this.state.error} validate={this.validate} formFields={this.formFields} />
               <fieldset className="form-group">
                 <label htmlFor="origins">Requested permissions</label>
@@ -137,7 +138,7 @@ class AppSetup extends Component {
               </fieldset>
             </div>
             <hr />
-            <fieldset className="form-group text-lg-center ptl">
+            <fieldset className="form-group text-lg-center pt-4">
               <div className="form-control-danger m-0 px-3">{this.state.error.save}</div>
               <button className="btn btn-success" onClick={this.save}>Save Changes</button>
               {appExist && <span>

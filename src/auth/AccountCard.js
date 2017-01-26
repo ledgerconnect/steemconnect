@@ -2,9 +2,9 @@ import React, { PropTypes } from 'react';
 import Avatar from '../widgets/Avatar';
 
 const AccountCard = props =>
-  (<div className="my-2" onClick={props.onClick}>
+  (<div className="my-4" onClick={props.onClick}>
     <Avatar xl username={props.username} />
-    <h3 className="mts">@{props.username}</h3>
+    <h3>@{props.username}</h3>
   </div>);
 
 AccountCard.propTypes = {
