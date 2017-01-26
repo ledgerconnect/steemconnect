@@ -1,5 +1,5 @@
-$font-primary: 'Karla', sans-serif
-$font-alt: 'Circular-Bold', 'Helvetica Neue', sans-serif
+$font-primary: Whitney,"Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif
+$font-alt: WhitneyMedium,"Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif
 $primary-color: #4275F4
 $background-color: #2d343c
 $text-color: #6a6969
@@ -7,11 +7,22 @@ $green: #09b28b
 $red: #F92B61
 
 @font-face
-  font-family: "Circular-Bold"
-  src: url("/fonts/lineto-circular-bold.eot")
-  src: url("/fonts/lineto-circular-bold.eot?#iefix") format("embedded-opentype"),url("/fonts/lineto-circular-bold.woff") format("woff"),url("/fonts/lineto-circular-bold.ttf") format("truetype"),url("/fonts/lineto-circular-bold.svg#LLCircularWeb-Bold") format("svg")
-  font-weight: normal
+  font-family: Whitney
   font-style: normal
+  font-weight: 500
+  src: url('/fonts/Whitney.woff') format('woff')
+
+@font-face
+  font-family: Whitney
+  font-style: medium
+  font-weight: 600
+  src: url('/fonts//WhitneyMedium.woff') format('woff')
+
+@font-face
+  font-family: WhitneyMedium
+  font-style: medium
+  font-weight: 600
+  src: url('/fonts//WhitneyBold.woff') format('woff')
 
 @import "modules/base"
 @import "modules/sidebar"
