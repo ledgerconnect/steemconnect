@@ -65,7 +65,7 @@ class Authorize extends React.Component {
                 </ul>
               </div>
               <form className="form" onSubmit={this.handleSubmit}>
-                <fieldset className="form-group man">
+                <fieldset className="form-group m-0">
                   <button onClick={event => this.authorizeUser(event, redirect_url, appName)} className="btn btn-success form-submit">Continue as @{user.name}</button>
                 </fieldset>
               </form>

@@ -57,10 +57,10 @@ class Login extends Component {
                   <input autoFocus type="password" placeholder="Password or posting WIF" className="form-control" ref={(c) => { this.passwordOrWif = c; } } />
                 </div>
                 {this.props.auth.errorMessage &&
-                  <ul className="errorMessages pam">
+                  <ul className="errorMessages p-3">
                     <li>{this.props.auth.errorMessage}</li>
                   </ul>}
-                <fieldset className="form-group man">
+                <fieldset className="form-group m-0">
                   <button className="btn btn-success form-submit" onClick={this.login}>
                     {this.props.auth.isFetching ? <Loading color="white" /> : 'Log In'}</button>
                 </fieldset>

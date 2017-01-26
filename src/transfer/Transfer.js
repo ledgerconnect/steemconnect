@@ -107,7 +107,7 @@ class Payments extends Component {
       <div className="dialog">
         <h1 className="my-4">Transfer</h1>
         <form className="form form-payments">
-          <div className="pam">
+          <div className="p-3">
             <input className="form-control form-control-lg" placeholder="To" defaultValue={this.props.params.to} onBlur={() => this.validate('transferTo')} ref={c => (this.formFields.transferTo = c)} />
             <div className="form-control-feedback">{this.state.error.transferTo}</div>
             <input className="form-control form-control-lg" placeholder="0.000" defaultValue={this.props.params.amount} onBlur={() => this.validate('amount')} ref={c => (this.formFields.amount = c)} />
@@ -119,7 +119,7 @@ class Payments extends Component {
             <input className="form-control form-control-lg" placeholder="Memo" defaultValue={this.props.params.memo} ref={c => (this.formFields.memo = c)} />
             <p>Current balance {currentBalance}</p>
           </div>
-          <div className="form-control-feedback man px-3">{this.state.error.transfer}</div>
+          <div className="form-control-feedback m-0 px-3">{this.state.error.transfer}</div>
           <button className="btn btn-primary form-submit" onClick={this.transfer}>Transfer</button>
         </form>
       </div>

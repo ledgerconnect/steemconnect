@@ -40,10 +40,10 @@ class PasswordDialog extends Component {
               <input autoFocus type="password" placeholder="Password or active WIF" className="form-control" ref={(c) => { this.passwordOrWif = c; } } />
             </div>}
             {isSuccess && message && <div style={{ height: 50, color: 'green' }}>{message}</div>}
-            {isError && message && <ul className="errorMessages pam">
+            {isError && message && <ul className="errorMessages p-3">
               <li>{message}</li>
             </ul>}
-            <fieldset className="form-group man">
+            <fieldset className="form-group m-0">
               <button disabled={inProgress} className="btn btn-success form-submit" onClick={this.onEnter}>{btnName}</button>
             </fieldset>
           </div>

@@ -31,7 +31,7 @@ class SignUp extends Component {
     return (
       <Modal>
         <div className="dialog">
-          <h3 className="mal">Sign Up</h3>
+          <h3 className="m-4">Sign Up</h3>
           <form className="form" onSubmit={this.handleSubmit}>
             <div className="input-group input-group-lg">
               <span className="input-group-addon"><i className="icon icon-md material-icons">perm_identity</i></span>
@@ -42,15 +42,15 @@ class SignUp extends Component {
               <input autoFocus type="password" placeholder="Password" className="form-control" ref={(c) => { this.passwordOrWif = c; } } />
             </div>
             {errorMessage &&
-              <ul className="errorMessages pam">
+              <ul className="errorMessages p-3">
                 <li>{errorMessage}</li>
               </ul>}
             {success &&
-              <ul className="pam">
+              <ul className="p-3">
                 <li>Signup successful</li>
               </ul>
             }
-            <fieldset className="form-group man">
+            <fieldset className="form-group m-0">
               {!success && <button className="btn btn-success form-submit" onClick={this.signUp}>
                 {isFetching ? <Loading color="white" /> : 'Sign Up'}</button>}
               {success && <button className="btn btn-success form-submit" onClick={this.login}>

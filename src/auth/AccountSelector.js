@@ -48,18 +48,18 @@ class LastUserSelector extends Component {
           username={username} onDelete={this.onDelete}
         />
       )) */}
-      {_.isEmpty(lastUserList) && <h3 className="mal">Log in with your Steem account</h3>}
-      {!_.isEmpty(lastUserList) && <h3 className="mal">Add a Steem account</h3>}
+      {_.isEmpty(lastUserList) && <h3 className="m-4">Log in with your Steem account</h3>}
+      {!_.isEmpty(lastUserList) && <h3 className="m-4">Add a Steem account</h3>}
       <form className="form" onSubmit={this.handleSubmit}>
         <div className="input-group input-group-lg">
           <span className="input-group-addon"><i className="icon icon-md material-icons">perm_identity</i></span>
           <input autoFocus type="text" placeholder="Enter your username" className="form-control" ref={(c) => { this.username = c; }} />
         </div>
         {this.props.auth.errorMessage &&
-          <ul className="errorMessages pam">
+          <ul className="errorMessages p-3">
             <li>{this.props.auth.errorMessage}</li>
           </ul>}
-        <fieldset className="form-group man">
+        <fieldset className="form-group m-0">
           <button className="btn btn-primary form-submit" onClick={this.addUser}>
             {this.props.auth.isFetching ? <Loading color="white" /> : 'Next'}</button>
         </fieldset>
