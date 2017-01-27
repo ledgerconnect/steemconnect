@@ -112,33 +112,6 @@ apiRouter.get('/ignore', (req, res) => {
     (err, result) => sendResponse({ err, result }, res));
 });
 
-apiRouter.get('/escrowTransfer', (req, res) => {
-  const { from, to, amount, memo, escrow_id: escrowId, agent, fee,
-    json_meta: jsonMeta, expiration } = req.query;
-  steem.broadcast.escrowTransfer(req.wif, from, to, amount,
-    memo, escrowId, agent, fee, jsonMeta, expiration,
-    (err, result) => sendResponse({ err, result }, res));
-});
-
-apiRouter.get('/escrowDispute', (req, res) => {
-  const { from, to, escrow_id: escrowId, who } = req.query;
-  steem.broadcast.escrowDispute(req.wif, from, to, escrowId, who,
-    (err, result) => sendResponse({ err, result }, res));
-});
-apiRouter.get('/escrowRelease', (req, res) => {
-  const { from, to, escrow_id: escrowId, who, amount } = req.query;
-  steem.broadcast.escrowRelease(req.wif, from, to, escrowId, who, amount,
-    (err, result) => sendResponse({ err, result }, res));
-});
-
-
-apiRouter.get('/accountCreate', (req, res) => {
-  const { fee, creator, newAccountName, owner, active, posting, memoKey, jsonMetadata } = req.query;
-  steem.broadcast.accountCreate(req.wif, fee, creator, newAccountName,
-    owner, active, posting, memoKey, jsonMetadata,
-    (err, result) => sendResponse({ err, result }, res));
-});
-
 apiRouter.get('/customJson', (req, res) => {
   const { id, json, requiredPostingAuths, requiredAuths } = req.query;
   steem.broadcast.customJson(req.wif, requiredAuths, requiredPostingAuths, id, json,
