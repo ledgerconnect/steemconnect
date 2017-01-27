@@ -1,11 +1,10 @@
 import _ from 'lodash';
+import steemAuth from 'steemauth';
 import steem from 'steem';
+import crypto from 'crypto-js';
 import PermissionList from '../../lib/permissions';
-
-const steemAuth = require('steemauth');
-const crypto = require('crypto-js');
-
-const cookie = require('../../lib/cookie');
+import cookie from '../../lib/cookie';
+import utils from '../../lib/utils';
 
 export const LOGIN_REQUEST = '@auth/LOGIN_REQUEST';
 export const LOGIN_SUCCESS = '@auth/LOGIN_SUCCESS';
@@ -73,7 +72,7 @@ export function login(username, passwordOrWif) {
         } else if (userAccount) {
           const { memo_key, reputation, balance } = userAccount;
           let { json_metadata } = userAccount;
-          json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
+          json_metadata = utils.parseJson(json_metadata);
           dispatch({
             type: LOGIN_SUCCESS,
             user: { name: username, json_metadata, memo_key, reputation, balance },

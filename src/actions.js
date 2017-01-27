@@ -1,9 +1,9 @@
 import _ from 'lodash';
+import steemAuth from 'steemauth';
+import steem from 'steem';
 import * as authTypes from './auth/authAction';
-
-const steemAuth = require('steemauth');
-const steem = require('steem');
-const cookie = require('../lib/cookie');
+import utils from '../lib/utils';
+import cookie from '../lib/cookie';
 
 export function updateProfile(username) {
   return (dispatch) => {
@@ -13,7 +13,7 @@ export function updateProfile(username) {
       }
       const { memo_key, reputation, balance, name, sbd_balance } = result[0];
       let { json_metadata } = result[0];
-      json_metadata = json_metadata.length ? JSON.parse(json_metadata) : {};
+      json_metadata = utils.parseJson(json_metadata);
       dispatch({
         type: authTypes.LOGIN_SUCCESS,
         user: { name, json_metadata, memo_key, reputation, balance, sbd_balance },
