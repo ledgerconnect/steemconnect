@@ -90,13 +90,13 @@ router.get('/auth/authorize', verifyAuth, (req, res) => {
         .then(() => res.redirect(redirect_url));
     }).catch((err) => {
       if (typeof err === 'string') {
-        res.status(500).send({ error: err });
+        res.status(400).send({ error: err });
       } else {
         let message = err.message;
         if (err.message.search('json_metadata') >= 0 || err.message === 'User not found') {
           message = 'App not found';
         }
-        res.status(500).send({ error: message });
+        res.status(400).send({ error: message });
       }
     });
 });
@@ -111,7 +111,7 @@ router.get('/auth/app/@:appUserName', verifyAuth, (req, res) => {
   ]).then(([app, acceptedPermission]) => {
     res.send(_.extend(app, { acceptedPermission }));
   }).catch((err) => {
-    res.status(500).send({ error: err.message });
+    res.status(400).send({ error: err.message });
   });
 });
 
@@ -121,7 +121,7 @@ router.post('/auth/app', verifyAuth, (req, res) => {
 
   upsertApp(appData).then(() => res.send(appData))
     .catch((err) => {
-      res.status(500).send({ error: err.message });
+      res.status(400).send({ error: err.message });
     });
 });
 
@@ -130,7 +130,7 @@ router.delete('/auth/app', verifyAuth, (req, res) => {
   debug('delete app ', username);
   deleteApp(username).then(() => res.send({ deleted: true }))
     .catch((err) => {
-      res.status(500).send({ error: err.message });
+      res.status(400).send({ error: err.message });
     });
 });
 
@@ -138,7 +138,7 @@ router.delete('/auth/app', verifyAuth, (req, res) => {
 router.get('/auth/apps', verifyAuth, (req, res) => {
   getAppList(req.query.filter).then(result => res.send(result))
     .catch((err) => {
-      res.status(500).send({ error: err.message });
+      res.status(400).send({ error: err.message });
     });
 });
 
@@ -146,7 +146,7 @@ router.get('/auth/myapps', verifyAuth, (req, res) => {
   const username = req.username;
   getUserApps(username).then(result => res.send(result))
     .catch((err) => {
-      res.status(500).send({ error: err.message });
+      res.status(400).send({ error: err.message });
     });
 });
 
@@ -156,7 +156,7 @@ router.delete('/auth/myapps', verifyAuth, (req, res) => {
     removed: result === 1 ? req.query.app : false,
   }))
     .catch((err) => {
-      res.status(500).send({ error: err.message });
+      res.status(400).send({ error: err.message });
     });
 });
 
