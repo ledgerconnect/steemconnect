@@ -53,7 +53,7 @@ class Settings extends Component {
       }
     });
 
-    const json_metadata = user.json_metadata || {};
+    const json_metadata = typeof user.json_metadata === 'object' ? user.json_metadata : {};
     json_metadata.profile = Object.assign({}, json_metadata.profile, profileData);
     this.props.showPasswordDialog({
       btnName: 'Update Profile',
@@ -80,7 +80,7 @@ class Settings extends Component {
   clearProfile = (event) => {
     event.preventDefault();
     const user = this.props.auth.user;
-    const json_metadata = user.json_metadata || {};
+    const json_metadata = typeof user.json_metadata === 'object' ? user.json_metadata : {};
     json_metadata.profile = {};
     this.props.showPasswordDialog({
       btnName: 'Clear Profile',

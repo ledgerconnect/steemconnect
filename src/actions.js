@@ -87,9 +87,10 @@ export function setAvatar(passwordOrWif, file, type) {
   return (dispatch, getState) => {
     const state = getState();
     const user = state.auth.user;
-    user.json_metadata = user.json_metadata || {};
-    user.json_metadata.profile = user.json_metadata.profile || {};
-    const profileData = user.json_metadata.profile;
+    const json_metadata = typeof user.json_metadata === 'object' ? user.json_metadata : {};
+    user.json_metadata = json_metadata;
+    json_metadata.profile = json_metadata.profile || {};
+    const profileData = json_metadata.profile;
     let uploadUrl = `https://img.steemconnect.com/@${user.name}`;
     if (type === 'cover_image') {
       uploadUrl += '/cover';
@@ -103,7 +104,7 @@ export function setAvatar(passwordOrWif, file, type) {
         if (request.readyState === 4 && request.status === 201) {
           try { profileData[type] = JSON.parse(request.response).url; } catch (e) { }
           return resolve(dispatch(accountUpdate(user.name,
-            passwordOrWif, user.memo_key, user.json_metadata)));
+            passwordOrWif, user.memo_key, json_metadata)));
         } else if (request.status >= 400) {
           return reject(new Error('Could not set upload image'));
         }
