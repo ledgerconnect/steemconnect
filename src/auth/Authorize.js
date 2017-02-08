@@ -92,7 +92,7 @@ export default class Authorize extends Component {
           }
           {step === 1 && <SignForm roles={['owner', 'active']} sign={this.authorize} />}
           {step === 2 && <Loading />}
-          {step === 3 && success && <SignSuccess result={success} />}
+          {step === 3 && success && <SignSuccess result={success} cb={this.props.location.query.cb} />}
           {step === 3 && error && <SignError error={error} resetForm={this.resetForm} />}
         </div>
       </div>
