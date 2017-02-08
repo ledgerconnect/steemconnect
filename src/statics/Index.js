@@ -1,6 +1,6 @@
 import React from 'react';
 import changeCase from 'change-case';
-import methods from 'steem/lib/methods.json';
+import methods from 'steem/lib/api/methods.json';
 import operations from 'steem/lib/broadcast/operations.json';
 
 const Method = ({ method }) => {
