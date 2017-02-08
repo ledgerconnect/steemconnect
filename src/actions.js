@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import steemAuth from 'steemauth';
 import steem from 'steem';
 import * as authTypes from './auth/authAction';
 import utils from '../lib/utils';
@@ -56,8 +55,8 @@ export function accountUpdate(username, passwordOrWif, memo_key, jsonMetadata) {
       type: authTypes.UPDATE_PROFILE,
       user: { isUpdatingProfile: true, isUpdatingProfileError: undefined },
     });
-    const isWif = steemAuth.isWif(passwordOrWif);
-    const activeKey = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'active');
+    const isWif = steem.auth.isWif(passwordOrWif);
+    const activeKey = (isWif) ? passwordOrWif : steem.auth.toWif(username, passwordOrWif, 'active');
     return new Promise((resolve, reject) => {
       steem.broadcast.accountUpdate(activeKey, username, undefined, undefined, undefined,
         memo_key, jsonMetadata, (err) => {

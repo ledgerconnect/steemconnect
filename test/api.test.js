@@ -9,7 +9,6 @@ const Promise = require('bluebird');
 const assert = require('assert');
 const url = require('url');
 const crypto = require('crypto-js');
-const steemauth = require('steemauth');
 const steem = require('steem');
 const supertest = require('supertest');
 
@@ -60,7 +59,7 @@ describe('/api', function () {
       it('authenticates with a cookie header', function () {
         const encryptData = crypto.AES.encrypt(crypto.enc.Utf8.parse(JSON.stringify({
           username: process.env.TEST_USERNAME,
-          wif: steemauth.toWif(process.env.TEST_USERNAME, process.env.TEST_WIF, 'posting'),
+          wif: steem.auth.toWif(process.env.TEST_USERNAME, process.env.TEST_WIF, 'posting'),
         })), this.csrfCookie).toString();
 
         this.agent = supertest.agent(app);
@@ -91,7 +90,7 @@ describe('/api', function () {
         };
         this.user.json_metadata = jsonMetadata;
         return new Promise((resolve, reject) => {
-          steem.broadcast.accountUpdate(steemauth.toWif(process.env.TEST_USERNAME, process.env.TEST_WIF, 'owner'),
+          steem.broadcast.accountUpdate(steem.auth.toWif(process.env.TEST_USERNAME, process.env.TEST_WIF, 'owner'),
             process.env.TEST_USERNAME, undefined, undefined, undefined,
             this.user.memo_key, jsonMetadata, (err) => {
               if (err) {
@@ -109,7 +108,7 @@ describe('/api', function () {
         jsonMetadata.apps = jsonMetadata.apps || {};
         jsonMetadata.apps[appName] = { permissions };
         return new Promise((resolve, reject) => {
-          steem.broadcast.accountUpdate(steemauth.toWif(process.env.TEST_USERNAME, process.env.TEST_WIF, 'owner'),
+          steem.broadcast.accountUpdate(steem.auth.toWif(process.env.TEST_USERNAME, process.env.TEST_WIF, 'owner'),
             process.env.TEST_USERNAME, undefined, undefined, undefined,
             this.user.memo_key, jsonMetadata, (err) => {
               if (err) {

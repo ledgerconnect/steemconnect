@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import steemAuth from 'steemauth';
 import steem from 'steem';
 import crypto from 'crypto-js';
 import PermissionList from '../../lib/permissions';
@@ -51,8 +50,8 @@ export function ShowLastUserList() {
 
 export function login(username, passwordOrWif) {
   return (dispatch) => {
-    const isWif = steemAuth.isWif(passwordOrWif);
-    const wif = (isWif) ? passwordOrWif : steemAuth.toWif(username, passwordOrWif, 'posting');
+    const isWif = steem.auth.isWif(passwordOrWif);
+    const wif = (isWif) ? passwordOrWif : steem.auth.toWif(username, passwordOrWif, 'posting');
     dispatch({ type: LOGIN_REQUEST });
 
     return fetch('/auth/login', {

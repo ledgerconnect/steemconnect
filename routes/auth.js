@@ -1,7 +1,6 @@
 const express = require('express');
 const _ = require('lodash');
 const steem = require('steem');
-const steemAuth = require('steemauth');
 const jwt = require('jsonwebtoken');
 const { verifyAuth } = require('./middleware');
 const { decryptMessage, encryptMessage } = require('../lib/utils');
@@ -46,7 +45,7 @@ router.post('/auth/login', (req, res) => {
       res.status(400).send({ error: JSON.stringify(err) });
     } else if (result.length === 0) {
       res.status(401).send({ error: 'Incorrect Username' });
-    } else if (result[0] && steemAuth.wifIsValid(wif, result[0].posting.key_auths[0][0])) {
+    } else if (result[0] && steem.auth.wifIsValid(wif, result[0].posting.key_auths[0][0])) {
       const secret = encryptMessage(JSON.stringify({ username, wif }), process.env.JWT_SECRET);
       const expiresIn = 60 * 60 * 24 * 30;
       const auth = jwt.sign({ username, secret }, process.env.JWT_SECRET, { expiresIn });
@@ -62,7 +61,7 @@ router.post('/auth/signup', (req, res) => {
   const { encryptedData } = req.body;
   const data = decryptMessage(encryptedData, req.cookies._csrf); // eslint-disable-line
   const { username, password } = JSON.parse(data);
-  const publicKeys = steemAuth.generateKeys(username, password, ['owner', 'active', 'posting', 'memo']);
+  const publicKeys = steem.auth.generateKeys(username, password, ['owner', 'active', 'posting', 'memo']);
   const owner = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.owner, 1]] };
   const active = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.active, 1]] };
   const posting = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.posting, 1]] };
