@@ -78,7 +78,7 @@ export default class Sign extends Component {
           }
           {step === 1 && <SignForm roles={op.roles} sign={this.sign} />}
           {step === 2 && <Loading />}
-          {step === 3 && success && <SignSuccess result={success} />}
+          {step === 3 && success && <SignSuccess result={success} cb={query.cb} />}
           {step === 3 && error && <SignError error={error} resetForm={this.resetForm} />}
         </div>
       </div>
