@@ -1,5 +1,4 @@
 import steem from 'steem';
-import steemAuth from 'steemauth';
 import { updateProfile } from '../actions';
 
 export const TRANSFER_STEEM_REQUEST = '@transfer/TRANSFER_STEEM_REQUEST';
@@ -9,8 +8,8 @@ export const TRANSFER_STEEM_FAILURE = '@transfer/TRANSFER_STEEM_FAILURE';
 export function transfer(transferDetails) {
   return (dispatch) => {
     const { passwordOrWif, from, memo = '', to, balance } = transferDetails;
-    const isWif = steemAuth.isWif(passwordOrWif);
-    const activeKey = (isWif) ? passwordOrWif : steemAuth.toWif(from, passwordOrWif, 'active');
+    const isWif = steem.auth.isWif(passwordOrWif);
+    const activeKey = (isWif) ? passwordOrWif : steem.auth.toWif(from, passwordOrWif, 'active');
     dispatch({ type: TRANSFER_STEEM_REQUEST });
     return new Promise((resolve, reject) => {
       steem.broadcast.transfer(activeKey, from, to, balance, memo, (result) => {
