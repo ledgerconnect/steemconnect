@@ -10,7 +10,6 @@ import Summary from './summary/Summary';
 import PublicPage from './public';
 import Apps from './apps/Apps';
 import App from './apps/App';
-import Transfer from './transfer/Transfer';
 import SignUp from './auth/Signup';
 import Login from './auth/Login';
 import cookie from '../lib/cookie';
@@ -28,9 +27,7 @@ module.exports = (
       <Route path="/profile" component={Profile} />
       <Route path="/developers" component={Developers} />
     </Route>
-
     <Route component={ModalWrapper}>
-      <Route path="/transfer(/@:to)(/:amount)(/:currency)(/:memo)" component={Transfer} />
       <Route path="/authorize/@:app" component={Authorize} />
     </Route>
   </Route>
