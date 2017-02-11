@@ -62,7 +62,7 @@
     "redux-thunk": "^2.1.0",
     "sass-loader": "^4.1.0",
     "serve-favicon": "~2.3.0",
-    "steem": "steemit/steem-js#dev",
+    "steem": "^0.4.7",
     "store": "^1.3.20",
     "style-loader": "^0.13.1",
     "superagent": "^2.2.0",
