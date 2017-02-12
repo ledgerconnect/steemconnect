@@ -52,9 +52,17 @@ export function login(username, passwordOrWif) {
   return (dispatch) => {
     const isWif = steem.auth.isWif(passwordOrWif);
     const wif = (isWif) ? passwordOrWif : steem.auth.toWif(username, passwordOrWif, 'posting');
+    const publicWif = steem.auth.wifToPublic(wif);
     dispatch({ type: LOGIN_REQUEST });
 
-    return fetch('/auth/login', {
+    const checkWif = isWif ? steem.api.getAccountsAsync([username])
+      .then((result) => {
+        if (!result || !result[0]) { throw new Error('user not found'); }
+        const { posting: { key_auths: [[postingKey]] } } = result[0];
+        if (isWif && postingKey !== publicWif) { throw new Error('Enter only Posting Wif'); }
+      }) : Promise.resolve();
+
+    return checkWif.then(() => fetch('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ encryptedData: encryptData(JSON.stringify({ username, wif })) }),
       credentials: 'include',
@@ -79,7 +87,7 @@ export function login(username, passwordOrWif) {
         } else {
           throw new Error('Malformed request');
         }
-      }).catch((err) => {
+      })).catch((err) => {
         const errorMessage = typeof err !== 'string' ? err.message : err;
         dispatch({
           type: LOGIN_FAILURE,
