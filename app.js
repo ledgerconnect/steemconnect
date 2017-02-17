@@ -95,6 +95,6 @@ app.use((err, req, res) => {
   });
 });
 
-// steem.api.setWebSocket('wss://steem.yt');
+steem.api.setWebSocket('wss://steemd.steemit.com');
 
 module.exports = app;
