@@ -1,0 +1,36 @@
+{
+  "name": "",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "babel-preset-kyt-react": "0.1.1",
+    "compression": "^1.6.2",
+    "express": "^4.14.0",
+    "kyt": "0.4.0",
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0",
+    "react-router": "^2.6.1"
+  },
+  "devDependencies": {
+    "@kadira/storybook": "^2.35.3",
+    "enzyme": "^2.4.1",
+    "react-addons-test-utils": "^15.3.0"
+  },
+  "scripts": {
+    "dev": "kyt dev",
+    "build": "kyt build",
+    "start": "node build/server/main.js",
+    "proto": "kyt proto",
+    "test": "kyt test",
+    "test-watch": "kyt test -- --watch",
+    "test-coverage": "kyt test -- --coverage",
+    "lint": "npm run lint-script && npm run lint-style",
+    "lint-script": "kyt lint-script",
+    "lint-style": "kyt lint-style",
+    "kyt:help": "kyt --help",
+    "storybook": "start-storybook -p 9001 -c storybook"
+  }
+}
