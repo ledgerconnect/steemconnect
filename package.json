@@ -6,13 +6,28 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "babel-preset-kyt-react": "0.1.1",
+    "babel-preset-kyt-react": "^0.1.1",
     "compression": "^1.6.2",
-    "express": "^4.14.0",
+    "express": "^4.14.1",
     "kyt": "0.4.0",
-    "react": "^15.3.0",
-    "react-dom": "^15.3.0",
-    "react-router": "^2.6.1"
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-router": "^3.0.2",
+    "babel-plugin-transform-class-properties": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.22.0",
+    "babel-plugin-transform-react-inline-elements": "^6.22.0",
+    "enzyme": "^2.7.1",
+    "isomorphic-fetch": "^2.2.1",
+    "path": "^0.12.7",
+    "postcss-cssnext": "^2.9.0",
+    "react-addons-test-utils": "^15.4.2",
+    "react-redux": "^5.0.2",
+    "react-router-redux": "^4.0.6",
+    "redux": "^3.6.0",
+    "redux-devtools": "^3.3.2",
+    "redux-devtools-dock-monitor": "^1.1.1",
+    "redux-devtools-log-monitor": "^1.2.0",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "@kadira/storybook": "^2.35.3",
@@ -31,6 +46,16 @@
     "lint-script": "kyt lint-script",
     "lint-style": "kyt lint-style",
     "kyt:help": "kyt --help",
-    "storybook": "start-storybook -p 9001 -c storybook"
+    "storybook": "start-storybook -p 9001 -c storybook",
+    "kyt:dev": "kyt dev",
+    "kyt:build": "kyt build",
+    "kyt:start": "node build/server/main.js",
+    "kyt:proto": "kyt proto",
+    "kyt:test": "kyt test",
+    "kyt:test-watch": "kyt test -- --watch",
+    "kyt:test-coverage": "kyt test -- --coverage",
+    "kyt:lint": "npm run lint-script && npm run lint-style",
+    "kyt:lint-script": "kyt lint-script",
+    "kyt:lint-style": "kyt lint-style"
   }
 }
