@@ -27,7 +27,7 @@ function makePlugins(options) {
           : JSON.stringify(process.env.SENTRY_PUBLIC_DSN),
         WS: JSON.stringify(
           process.env.WS ||
-          'wss://steemit.com/wspa'
+          'wss://steemd.steemit.com'
         ),
         IS_BROWSER: JSON.stringify(true),
       },
