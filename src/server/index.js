@@ -18,6 +18,7 @@ import routes from '../routes';
 const clientAssets = require(KYT.ASSETS_MANIFEST); // eslint-disable-line import/no-dynamic-require
 const app = express();
 
+
 // Remove annoying Express header addition.
 app.disable('x-powered-by');
 
