@@ -9,7 +9,6 @@ import { syncHistoryWithStore } from 'react-router-redux';
 
 import configureStore from '../redux/store';
 import DevTools from '../redux/containers/DevTools';
-import Startup from '../components/App/Startup';
 
 const root = document.querySelector('#root');
 
@@ -30,7 +29,6 @@ const mount = () => {
         <div>
           <Router routes={routes} history={history} />
           <DevTools />
-          <Startup />
         </div>
       </Provider>
     </AppContainer>,

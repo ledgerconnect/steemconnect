@@ -9,7 +9,7 @@ module.exports = {
     // let's turn off css modules
     for (const r of baseConfig.module.rules) {
       if (r.loader) {
-        r.loader = r.loader.replace('modules&','');
+        r.loader = r.loader.replace('modules&', '');
       }
       if (r.use) {
         for (const u of r.use) {

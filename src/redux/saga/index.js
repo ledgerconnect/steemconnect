@@ -1,5 +1,5 @@
-import UserSaga from './UserSaga'
+import user from './user'
 
 export default sagaMiddleware => {
-  UserSaga(sagaMiddleware);
+  user(sagaMiddleware);
 }

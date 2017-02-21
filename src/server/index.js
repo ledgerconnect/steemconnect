@@ -15,6 +15,8 @@ import configureStore from '../redux/store';
 import template from './template';
 import routes from '../routes';
 
+process.env.BROWSER = false;
+
 const clientAssets = require(KYT.ASSETS_MANIFEST); // eslint-disable-line import/no-dynamic-require
 const app = express();
 
