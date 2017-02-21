@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 
 import configureStore from '../redux/store';
+import Startup from '../components/App/Startup';
 
 const root = document.querySelector('#root');
 
@@ -27,6 +28,7 @@ const mount = () => {
       <Provider store={store} >
         <div>
           <Router routes={routes} history={history} />
+          <Startup />
         </div>
       </Provider>
     </AppContainer>,
@@ -35,4 +37,3 @@ const mount = () => {
 };
 
 mount();
-
