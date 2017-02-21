@@ -1,6 +1,6 @@
 module.exports = {
   "extends": [
-    // "eslint-config-kyt"
+    "eslint-config-kyt"
   ],
   "parserOptions": {
     "ecmaVersion": 7,
@@ -26,5 +26,13 @@ module.exports = {
     "no-unreachable": ["warn"],
     "no-shadow": ["warn"],
     "no-constant-condition": ["warn"],
+    "global-require": ["warn"],
+    "max-len": ["warn", { "ignoreComments": true }],
+
+    "react/jsx-indent": "warn",
+
+    "object-curly-spacing": "off",
+    "no-console": "off",
+    "semi": "off",
   },
 }

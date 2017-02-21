@@ -1,5 +1,5 @@
-import createSagaMiddleware from 'redux-saga';
+import UserSaga from './UserSaga'
 
-export default createSagaMiddleware(
-  //...
-);
+export default sagaMiddleware => {
+  UserSaga(sagaMiddleware);
+}
