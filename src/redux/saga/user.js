@@ -1,10 +1,11 @@
+import {inBrowser} from 'utils';
 import {takeLatest, put, call, select, take, fork} from 'redux-saga/effects';
 import {fromJS} from 'immutable';
 import {auth, api} from 'steem';
 import crypto from 'crypto';
 
 export default sagaMiddleware => {
-  if(process.env.BROWSER) {
+  if (inBrowser()) {
     sagaMiddleware.run(loadLocalStorage);
     sagaMiddleware.run(fork(saveLocalStorage2));
     // sagaMiddleware.run(function* () {
@@ -40,12 +41,12 @@ function* loadLocalStorage() {
 // }
 
 function* saveLocalStorage2() {
-  while(true) { // eslint-disable-line no-constant-condition
+  while (true) { // eslint-disable-line no-constant-condition
     const lsBefore = yield select(state => state.user.get('localStorage'))
     yield take({type: 'user/update'})
     const lsAfter = yield select(state => state.user.get('localStorage'))
     console.log('saveLocalStorage2');
-    if(lsBefore !== lsAfter) {
+    if (lsBefore !== lsAfter) {
       const json = JSON.stringify(lsAfter, null, 0)
       console.log('new localStorage', json)
       localStorage.user = json
@@ -80,8 +81,8 @@ function* login({payload: {username, password}}) {
 
   const activeOrPosting = privateKeys.active != null || privateKeys.posting != null
 
-  if(privateKeys.owner != null) {
-    if(isWif || !activeOrPosting) {
+  if (privateKeys.owner != null) {
+    if (isWif || !activeOrPosting) {
       yield put(userLogin({error: 'Please do not use your owner key here'}))
       return
     }
@@ -89,7 +90,7 @@ function* login({payload: {username, password}}) {
     delete privateKeys.owner;
   }
 
-  if(!activeOrPosting) {
+  if (!activeOrPosting) {
     yield put(userLogin({error: 'Incorrect password'}))
     return
   }
@@ -101,7 +102,7 @@ function* getAccountPrivateKeys(account, username, password) {
   const privateKeys = {}
   const isWif = auth.isWif(password)
   // This WIF may appear in one or more key authorities
-  for(const role of ['owner', 'active', 'posting', 'memo']) {
+  for (const role of ['owner', 'active', 'posting', 'memo']) {
     const accountRole = account[role]
     const wif = isWif ? password : auth.toWif(username, password, role)
     const pubkey = yield wifToPublicCache(wif) // optimization
@@ -109,10 +110,10 @@ function* getAccountPrivateKeys(account, username, password) {
       accountRole.key_auths.find(k => k[1] === pubkey) != null :
       account.memo_key === pubkey
 
-    if(match) {
+    if (match) {
       privateKeys[role] = wif
       privateKeys[`${role}Pubkey`] = pubkey
-      if(accountRole) {
+      if (accountRole) {
         privateKeys[`${role}Threshold`] = accountRole.weight_threshold
         const keyWeight = accountRole.key_auths.find(k => k[1] === pubkey)[0]
         privateKeys[`${role}KeyWeight`] = keyWeight
@@ -125,7 +126,7 @@ function* getAccountPrivateKeys(account, username, password) {
 function* wifToPublicCache(wif) {
   const key = crypto.createHash('sha256').update(wif).digest().toString('base64')
   const pubkeyCache = yield select(state => state.user.getIn(['localStorage', 'wifToPublicCache', key]))
-  if(pubkeyCache)
+  if (pubkeyCache)
     return pubkeyCache
 
   const pubkey = auth.wifToPublic(wif) // S L O W
