@@ -1,4 +1,4 @@
-
+var path = require('path');
 // Base kyt config.
 // Edit these properties to make changes.
 
@@ -6,6 +6,7 @@ module.exports = {
   reactHotLoader: true,
   debug: false,
   modifyWebpackConfig: (baseConfig, options) => {
+    baseConfig.resolve.modules = [path.resolve(__dirname, "src")].concat(baseConfig.resolve.modules);
     // let's turn off css modules
     for (const r of baseConfig.module.rules) {
       if (r.loader) {
