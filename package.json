@@ -17,6 +17,7 @@
     "immutable": "^3.8.1",
     "isomorphic-fetch": "^2.2.1",
     "kyt": "0.4.0",
+    "node-oauth2-server": "^2.4.0",
     "path": "^0.12.7",
     "postcss-cssnext": "^2.9.0",
     "react": "^15.4.2",
@@ -31,6 +32,7 @@
     "redux-devtools-dock-monitor": "^1.1.1",
     "redux-devtools-log-monitor": "^1.2.0",
     "redux-saga": "^0.14.3",
+    "redux-thunk": "^2.2.0",
     "steem": "^0.4.8"
   },
   "devDependencies": {

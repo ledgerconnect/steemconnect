@@ -1,8 +1,8 @@
-
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
-
 import express from 'express';
+import oauthServer from 'express-oauth-server';
+import memorystore from './oauth/memorystore';
 import compression from 'compression';
 import path from 'path';
 import React from 'react';
@@ -20,6 +20,9 @@ process.env.BROWSER = false;
 const clientAssets = require(KYT.ASSETS_MANIFEST); // eslint-disable-line import/no-dynamic-require
 const app = express();
 
+
+const oauth = new oauthServer({debug: true, model: memorystore});
+app.use(oauth.authenticate());
 
 // Remove annoying Express header addition.
 app.disable('x-powered-by');
