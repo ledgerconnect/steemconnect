@@ -90,7 +90,7 @@ function* getAccountPrivateKeys(account, username, password) {
   for (const role of ['owner', 'active', 'posting', 'memo']) {
     const accountRole = account[role]
     const wif = isWif ? password : auth.toWif(username, password, role)
-    const pubkey = yield wifToPublicCache(wif) // optimization
+    const pubkey = yield pubkeyCache(wif) // optimization
     const match = accountRole ?
       accountRole.key_auths.find(k => k[0] === pubkey) != null :
       account.memo_key === pubkey
@@ -108,13 +108,13 @@ function* getAccountPrivateKeys(account, username, password) {
   return {privateKeys, isWif}
 }
 
-function* wifToPublicCache(wif) {
+function* pubkeyCache(wif) {
   const key = crypto.createHash('sha256').update(wif).digest().toString('base64')
-  const pubkeyCache = yield select(state => state.user.getIn(['localStorage', 'wifToPublicCache', key]))
+  const pubkeyCache = yield select(state => state.user.getIn(['localStorage', 'pubkeyCache', key]))
   if (pubkeyCache)
     return pubkeyCache
 
   const pubkey = auth.wifToPublic(wif) // S L O W
-  yield put(updateAction('user', ['localStorage', 'wifToPublicCache', key], pubkey))
+  yield put(updateAction('user', ['localStorage', 'pubkeyCache', key], pubkey))
   return pubkey
 }
