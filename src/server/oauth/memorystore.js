@@ -13,7 +13,7 @@ function InMemoryCache() {
  * Dump the cache.
  */
 
-InMemoryCache.prototype.dump = function() {
+InMemoryCache.dump = function() {
   console.log('clients', this.clients);
   console.log('tokens', this.tokens);
   console.log('users', this.users);
@@ -23,7 +23,7 @@ InMemoryCache.prototype.dump = function() {
  * Get access token.
  */
 
-InMemoryCache.prototype.getAccessToken = function(bearerToken) {
+InMemoryCache.getAccessToken = function(bearerToken) {
   var tokens = this.tokens.filter(function(token) {
     return token.accessToken === bearerToken;
   });
@@ -35,7 +35,7 @@ InMemoryCache.prototype.getAccessToken = function(bearerToken) {
  * Get refresh token.
  */
 
-InMemoryCache.prototype.getRefreshToken = function(bearerToken) {
+InMemoryCache.getRefreshToken = function(bearerToken) {
   var tokens = this.tokens.filter(function(token) {
     return token.refreshToken === bearerToken;
   });
@@ -47,7 +47,7 @@ InMemoryCache.prototype.getRefreshToken = function(bearerToken) {
  * Get client.
  */
 
-InMemoryCache.prototype.getClient = function(clientId, clientSecret) {
+InMemoryCache.getClient = function(clientId, clientSecret) {
   var clients = this.clients.filter(function(client) {
     return client.clientId === clientId && client.clientSecret === clientSecret;
   });
@@ -59,7 +59,7 @@ InMemoryCache.prototype.getClient = function(clientId, clientSecret) {
  * Save token.
  */
 
-InMemoryCache.prototype.saveToken = function(token, client, user) {
+InMemoryCache.saveToken = function(token, client, user) {
   this.tokens.push({
     accessToken: token.accessToken,
     accessTokenExpiresAt: token.accessTokenExpiresAt,
@@ -74,7 +74,7 @@ InMemoryCache.prototype.saveToken = function(token, client, user) {
  * Get user.
  */
 
-InMemoryCache.prototype.getUser = function(username, password) {
+InMemoryCache.getUser = function(username, password) {
   var users = this.users.filter(function(user) {
     return user.username === username && user.password === password;
   });
