@@ -21,8 +21,8 @@ const clientAssets = require(KYT.ASSETS_MANIFEST); // eslint-disable-line import
 const app = express();
 
 
-const oauth = new oauthServer({debug: true, model: memorystore});
-app.use(oauth.authenticate());
+// const oauth = new oauthServer({debug: true, model: memorystore});
+// app.use(oauth.authenticate());
 
 // Remove annoying Express header addition.
 app.disable('x-powered-by');
