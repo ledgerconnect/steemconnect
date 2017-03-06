@@ -1,5 +1,5 @@
 // import {fromJS} from 'immutable';
-import {updateIn} from './functions';
+import {updateIn} from '../actions/update';
 
 export default function reducer(state = {}, action = {}) {
   const {type, payload} = action
