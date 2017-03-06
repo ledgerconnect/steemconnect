@@ -18,5 +18,5 @@ export function updateIn(state, {key, value, notSetValue, updater}) {
     updater = (...args) => fromJS(updaterParam(...args))
   }
   // console.log('state.updateIn', keyPath, notSetValue, updater);
-  return state.updateIn(keyPath, notSetValue, updater)
+  return state.updateIn(keyPath, fromJS(notSetValue), updater)
 }
