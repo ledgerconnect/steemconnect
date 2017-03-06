@@ -14,6 +14,7 @@
     "compression": "^1.6.2",
     "enzyme": "^2.7.1",
     "express": "^4.14.1",
+    "express-oauth-server": "^2.0.0-b1",
     "immutable": "^3.8.1",
     "isomorphic-fetch": "^2.2.1",
     "kyt": "0.4.0",
