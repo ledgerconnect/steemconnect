@@ -21,7 +21,7 @@ function addPermissionToDB(username, app, permissions) {
 }
 
 function getPermissionFromDB(username, app) {
-  if (!username || !app) { return Promise.resolve([]); }
+  if (!username || !app) { return Promise.resolve(null); }
 
   return db.select('*').from('authorizedApps').where('username', username)
     .andWhere('app', app)
@@ -29,9 +29,9 @@ function getPermissionFromDB(username, app) {
     .then((result) => {
       if (result.length) {
         const permissions = result[0].permissions || '';
-        return permissions.split(',');
+        return permissions.length ? permissions.split(',') : [];
       }
-      return [];
+      return null;
     });
 }
 
