@@ -39,7 +39,7 @@ apiRouter.get('/verify', (req, res) => {
   }, process.env.JWT_SECRET, {
     expiresIn: '1 day',
   });
-  if (req.username) {
+  if (req.username && req.permissions && req.permissions.length) {
     return res.json({
       isAuthenticated: true,
       username: req.username,
