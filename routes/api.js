@@ -40,7 +40,7 @@ apiRouter.get('/verify', (req, res) => {
     expiresIn: '1 day',
   });
 
-  if (req.username && req.permissions !== null) {
+  if (req.username && (req.permissions !== null || req.baseUrl === '/api/@steemconnect')) {
     return res.json({
       isAuthenticated: true,
       username: req.username,
