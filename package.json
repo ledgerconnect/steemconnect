@@ -1,6 +1,9 @@
 {
   "name": "steemjs",
   "version": "0.0.1",
+  "engines": {
+    "node": "7.7.1"
+  },
   "bin": "./bin/www",
   "main": "./bin/www",
   "private": true,
