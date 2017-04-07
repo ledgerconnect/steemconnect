@@ -7,10 +7,14 @@ const http = require('http');
 const https = require('https');
 http.globalAgent.maxSockets = Infinity;
 https.globalAgent.maxSockets = Infinity;
+const cors = require('cors');
+const steem = require('steem');
+
+const api = require('./routes/api');
+const front = require('./routes/front');
 
 const app = express();
 const server = http.Server(app);
-//const io = require('socket.io')(server);
 
 if (process.env.NODE_ENV !== 'production')
   require('./webpack')(app);
@@ -22,25 +26,22 @@ app.set('view engine', 'hbs');
 
 app.enable('trust proxy');
 
-/*
 app.use((req, res, next) => {
-  res.io = io;
+  res.steem = steem;
   next();
 });
-*/
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(cors());
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
-app.locals.env = process.env;
-
-app.get('/*', function (req, res, next) {
-  res.render('index', { title: 'Steem.js' });
-});
+app.use('/api/v1', api);
+app.use('/', front);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -49,29 +50,15 @@ app.use((req, res, next) => {
   next(err);
 });
 
-// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-  app.use((err, req, res, next) => {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
-  });
-}
-
-// production error handler
-// no stacktraces leaked to user
+// error handler
 app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
-});
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : err;
 
+  // render the error page
+  res.status(err.status || 500);
+  res.json(err);
+});
 
 module.exports = { app, server };

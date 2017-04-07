@@ -1,6 +1,9 @@
 {
   "name": "steemjs",
   "version": "0.0.1",
+  "engines": {
+    "node": "7.7.1"
+  },
   "bin": "./bin/www",
   "main": "./bin/www",
   "private": true,
@@ -29,6 +32,7 @@
     "body-parser": "~1.13.2",
     "bootstrap": "^4.0.0-alpha.2",
     "change-case": "^3.0.0",
+    "cors": "^2.8.3",
     "css-loader": "^0.24.0",
     "debug": "~2.2.0",
     "decamelize": "^1.2.0",
