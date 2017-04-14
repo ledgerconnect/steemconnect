@@ -65,8 +65,9 @@ export default class Authorize extends Component {
 
   render() {
     const { step, success, error } = this.state;
-    const { params: { username } } = this.props;
-    const weight = this.props.location.query.weight;
+    const { params: { username }, location: { query } } = this.props;
+    const weight = query.weight;
+    const redirectUri = query.cb || query.redirect_uri;
     return (
       <div className="Sign">
         <div className="Sign__content container my-2">
@@ -92,7 +93,7 @@ export default class Authorize extends Component {
           }
           {step === 1 && <SignForm roles={['owner', 'active']} sign={this.authorize} />}
           {step === 2 && <Loading />}
-          {step === 3 && success && <SignSuccess result={success} cb={this.props.location.query.cb} />}
+          {step === 3 && success && <SignSuccess result={success} cb={redirectUri} />}
           {step === 3 && error && <SignError error={error} resetForm={this.resetForm} />}
         </div>
       </div>
