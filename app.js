@@ -7,17 +7,19 @@ const http = require('http');
 const https = require('https');
 http.globalAgent.maxSockets = Infinity;
 https.globalAgent.maxSockets = Infinity;
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const steem = require('steem');
 
 const api = require('./routes/api');
+const oauth2 = require('./routes/oauth2');
 const front = require('./routes/front');
 
 const app = express();
 const server = http.Server(app);
 
 if (process.env.NODE_ENV !== 'production')
-  require('./webpack')(app);
+  require('./webpack/webpack')(app);
 
 const hbs = require('hbs');
 hbs.registerPartials(__dirname + '/views/partials');
@@ -34,13 +36,14 @@ app.use((req, res, next) => {
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
+app.use(cookieParser());
 app.use(cors());
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
 app.use('/api/v1', api);
+app.use('/oauth2', oauth2);
 app.use('/', front);
 
 // catch 404 and forward to error handler
