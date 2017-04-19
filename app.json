@@ -1,0 +1,29 @@
+{
+  "name": "sc2",
+  "scripts": {
+  },
+  "env": {
+    "BROADCASTER_POSTING_WIF": {
+      "required": true
+    },
+    "BROADCASTER_USERNAME": {
+      "required": true
+    },
+    "NODE_MODULES_CACHE": {
+      "required": true
+    },
+    "JWT_SECRET": {
+      "generator": "secret"
+    }
+  },
+  "formation": {
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
