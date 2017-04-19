@@ -31,7 +31,11 @@ export default class Login extends Component {
     this.setState({ step: 2 });
 
     const secret = crypto.randomBytes(32).toString('base64');
-    cookie.save('_secret', secret, { path: '/', maxAge: 5 });
+    cookie.save('_secret', secret, {
+      path: '/',
+      secure: global.location.hostname !== 'localhost',
+      maxAge: 5,
+    });
 
     const payload = { message: encryptMessage(auth.wif, secret) };
     fetch('/oauth2/login', {
