@@ -26,7 +26,11 @@ router.post('/login', async (req, res, next) => {
   }
 
   const token = issueUserToken(user);
-  res.cookie('_token', token, { httpOnly: true });
+  res.cookie('_token', token, {
+    path: '/',
+    secure: req.hostname !== 'localhost',
+  });
+
   res.json({
     success: true,
     username: user,
