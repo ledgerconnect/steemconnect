@@ -8,6 +8,7 @@ import Login from './auth/Login'
 import Permissions from './auth/Permissions';
 import Authorize from './auth/Authorize';
 import Revoke from './auth/Revoke';
+import Error404 from './statics/Error404';
 
 export default (
   <Route path="/" component={Wrapper}>
@@ -18,5 +19,6 @@ export default (
     <Route path="/@:username/permissions" component={Permissions} />
     <Route path="/authorize/@:username" component={Authorize} />
     <Route path="/revoke/@:username" component={Revoke} />
+    <Route path="/404" component={Error404} />
   </Route>
 );
