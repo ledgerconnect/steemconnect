@@ -1,4 +1,5 @@
 const express = require('express');
+const debug = require('debug')('sc2:server');
 const { authenticateApp, verifyPermissions } = require('../helpers/middleware');
 const router = express.Router();
 
@@ -28,6 +29,7 @@ router.post('/broadcast', authenticateApp, verifyPermissions, async (req, res, n
   if (!isAuthorized) {
     res.status(401).send('Unauthorized!');
   } else {
+    debug(`Broadcast transaction for @${req.user} from app @${req.app}`);
     res.steem.broadcast.send(
       { operations, extensions: [] },
       { posting: process.env.BROADCASTER_POSTING_WIF },
