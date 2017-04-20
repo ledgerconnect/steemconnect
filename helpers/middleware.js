@@ -55,6 +55,7 @@ const verifyOrigin = (req, res, next) => {
 
   const app = apps[clientId];
   if (!app) {
+    console.log(`The app @${clientId} has not been setup.`);
     return res.redirect('/404');
   }
 
@@ -63,6 +64,7 @@ const verifyOrigin = (req, res, next) => {
     (!referrer || app.allowed_origins.indexOf(url.origin) === -1)
     && (url.origin !== 'http://localhost:3000' && url.origin !== 'https://v2.steemconnect.com')
   ) {
+    console.log(`Origin URL is not authorized for app @${clientId}.`);
     return res.redirect('/404');
   }
   req.app = clientId;
