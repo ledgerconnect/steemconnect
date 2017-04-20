@@ -9,7 +9,7 @@ angular.module('app', [])
     if ($scope.accessToken) {
       $http({
         method: 'GET',
-        url: 'http://localhost:3000/api/v1/me?access_token=' + $scope.accessToken
+        url: '/api/v1/me?access_token=' + $scope.accessToken
       }).then(function (res) {
         $scope.user = res.data
       }, function (res) {
