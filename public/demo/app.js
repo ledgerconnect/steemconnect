@@ -20,7 +20,7 @@ angular.module('app', [])
     this.submit = function() {
       $http({
         method: 'POST',
-        url: 'http://localhost:3000/api/v1/broadcast?access_token=' + $scope.accessToken,
+        url: '/api/v1/broadcast?access_token=' + $scope.accessToken,
         data: JSON.stringify({
           operations: [
             [
