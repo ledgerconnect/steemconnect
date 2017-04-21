@@ -12,7 +12,7 @@ export default () => <div className="splash">
       <h1>Identity, authentication, authorization for Steem blockchain’s apps</h1>
       <p>
         SteemConnect is a simple identity layer built on top of the Steem blockchain
-        that allows you to connect to authorized apps is a secure and convenient way.
+        that allows you to connect to authorized apps in a secure and convenient way.
       </p>
       <Link to="/login" className="btn btn-primary">Login</Link>
     </div>
