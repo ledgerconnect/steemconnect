@@ -9,7 +9,7 @@ angular.module('app', [])
     if ($scope.accessToken) {
       $http({
         method: 'GET',
-        url: 'http://localhost:3000/api/v1/me?access_token=' + $scope.accessToken
+        url: '/api/v1/me?access_token=' + $scope.accessToken
       }).then(function (res) {
         $scope.user = res.data
       }, function (res) {
@@ -20,7 +20,7 @@ angular.module('app', [])
     this.submit = function() {
       $http({
         method: 'POST',
-        url: 'http://localhost:3000/api/v1/broadcast?access_token=' + $scope.accessToken,
+        url: '/api/v1/broadcast?access_token=' + $scope.accessToken,
         data: JSON.stringify({
           operations: [
             [
