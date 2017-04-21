@@ -21,8 +21,15 @@ router.get('/authorize', verifyOrigin, authenticateUser, verifyPermissions, asyn
 });
 
 router.post('/login', async (req, res, next) => {
-  const privateWif = decryptMessage(req.body.message, req.cookies._secret);
+  const secret = req.cookies._secret;
+  const message = req.body.message;
+  if (!secret || !message) {
+    return res.status(401).send('Unauthorized');
+  }
+
+  let privateWif = decryptMessage(message, secret);
   const publicWif = res.steem.auth.isWif(privateWif) ? res.steem.auth.wifToPublic(privateWif) : '';
+  privateWif = null;
   const keyReferences = await res.steem.api.getKeyReferencesAsync([publicWif]);
   const user = keyReferences[0][0];
   if (!user) {
