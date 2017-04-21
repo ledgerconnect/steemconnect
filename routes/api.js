@@ -22,8 +22,10 @@ router.get('/api/verifyToken', (req, res) => {
   const { token } = req.query;
   jwt.verify(token, process.env.JWT_SECRET, (err, result) => {
     const username = (result && result.username) ? result.username : undefined;
+    const userId = (result && result.userId) ? result.userId : undefined;
     res.json({
       isValid: (!err),
+      userId,
       username,
     });
   });
@@ -35,6 +37,7 @@ router.use('/api/@:appUserName', checkOrigin, checkPermission, apiRouter);
 
 apiRouter.get('/verify', (req, res) => {
   const token = jwt.sign({
+    userId: req.userId,
     username: req.username,
   }, process.env.JWT_SECRET, {
     expiresIn: '1 day',
@@ -42,6 +45,7 @@ apiRouter.get('/verify', (req, res) => {
 
   if (req.username && (req.permissions !== null || req.baseUrl === '/api/@steemconnect')) {
     return res.json({
+      userId: req.userId,
       isAuthenticated: true,
       username: req.username,
       permissions: req.permissions,
