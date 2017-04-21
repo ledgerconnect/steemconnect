@@ -4,6 +4,7 @@
     "proxy": "busy.app",
     "allowed_origins": [
       "http://localhost:3000",
+      "http://localhost:8000",
       "https://v2.steemconnect.com",
       "https://busy.org"
     ]
