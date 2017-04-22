@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const URL = require('url-parse');
 const apps = require('../helpers/apps.json');
 
 /**
@@ -47,11 +46,10 @@ const authenticateApp = (req, res, next) => {
 
 /**
  * Check if clientId is a valid app username
- * and if request origin is allowed by the app
+ * and if redirectUri is setup by the app
  */
-const verifyOrigin = (req, res, next) => {
-  const hostUrl = req.protocol + '://' + req.get('host');
-  const referrer = req.get('Referrer');
+const verifyApp = (req, res, next) => {
+  const redirectUri = req.query.redirect_uri;
   const clientId = req.query.client_id;
 
   const app = apps[clientId];
@@ -60,12 +58,9 @@ const verifyOrigin = (req, res, next) => {
     return res.redirect('/404');
   }
 
-  const url = new URL(referrer);
-  if (
-    (!referrer || app.allowed_origins.indexOf(url.origin) === -1)
-    && (url.origin !== hostUrl)
-  ) {
-    console.log(`Origin URL is not authorized for app @${clientId}.`);
+  if (!redirectUri || app.redirect_uris.indexOf(redirectUri) === -1)
+   {
+    console.log(`Redirect URI '${redirectUri}' is not authorized for app @${clientId}.`);
     return res.redirect('/404');
   }
   req.app = clientId;
@@ -98,6 +93,6 @@ const verifyPermissions = async (req, res, next) => {
 module.exports = {
   authenticateUser,
   authenticateApp,
-  verifyOrigin,
+  verifyApp,
   verifyPermissions,
 };

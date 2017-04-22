@@ -6,27 +6,28 @@
   <meta charset="UTF-8">
   <meta id="viewport" name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css" type="text/css" media="all"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+  <script src="https://rawgit.com/adcpm/sc2-sdk/master/dist/sc2.min.js"></script>
   <script src="app.js"></script>
 </head>
 <body>
-  <div class="container py-5" style="max-width: 600px;" ng-controller="Main as main">
-    <h3>Demo</h3>
-    <div ng-show="!user">
-      <p>You are not logged, click below to login</p>
-      <a
-        href="/oauth2/authorize?client_id=busy&redirect_uri=/demo/"
-        class="btn btn-primary"
-      >
-        Login with SteemConnect
-      </a>
-    </div>
-    <form ng-show="user" ng-submit="main.submit()">
-      <p>You are now logged with <b>@{{user.name}}</b> account.</p>
-      <button class="btn btn-primary" type="submit">Vote @snowflake/test 1%</button>
-    </form>
+<div class="container py-5" style="max-width: 600px;" ng-controller="Main as main">
+  <h3>Demo</h3>
+  <div ng-show="!user">
+    <p>You are not logged, click below to login</p>
+    <a
+      ng-href="{{loginURL}}"
+      class="btn btn-primary"
+    >
+      Login with SteemConnect
+    </a>
   </div>
+  <form ng-show="user" ng-submit="main.submit()">
+    <p>You are now logged with <b>@{{user.name}}</b> account.</p>
+    <button class="btn btn-primary" type="submit">Vote @siol/test 1%</button>
+  </form>
+</div>
 </body>
 </html>

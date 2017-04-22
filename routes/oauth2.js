@@ -2,12 +2,12 @@ const express = require('express');
 const qs = require('query-string');
 const debug = require('debug')('sc2:server');
 const config = require('../config.json');
-const { verifyOrigin, authenticateUser, verifyPermissions } = require('../helpers/middleware');
+const { verifyApp, authenticateUser, verifyPermissions } = require('../helpers/middleware');
 const { issueUserToken, issueAppToken } = require('../helpers/token');
 const { decryptMessage } = require('../helpers/hash');
 const router = express.Router();
 
-router.get('/authorize', verifyOrigin, authenticateUser, verifyPermissions, async (req, res, next) => {
+router.get('/authorize', verifyApp, authenticateUser, verifyPermissions, async (req, res, next) => {
   const redirectUri = req.query.redirect_uri;
 
   debug(`Issue token for app @${req.app}`);
