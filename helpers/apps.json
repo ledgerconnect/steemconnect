@@ -2,11 +2,11 @@
   "busy": {
     "app": "busy",
     "proxy": "busy.app",
-    "allowed_origins": [
-      "http://localhost:3000",
-      "http://localhost:8000",
-      "https://v2.steemconnect.com",
-      "https://busy.org"
+    "redirect_uris": [
+      "http://localhost:3000/demo",
+      "http://localhost:8000/demo",
+      "https://v2.steemconnect.com/demo",
+      "https://busy.org/callback"
     ]
   }
 }
