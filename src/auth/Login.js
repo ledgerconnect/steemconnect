@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import crypto from 'crypto';
-import cookie from 'react-cookie';
+import cookie from 'js-cookie';
 import fetch from 'isomorphic-fetch';
 import SignForm from '../sign/SignForm';
 import SignError from '../sign/SignError';
@@ -31,10 +31,10 @@ export default class Login extends Component {
     this.setState({ step: 2 });
 
     const secret = crypto.randomBytes(32).toString('base64');
-    cookie.save('_secret', secret, {
+    cookie.set('_secret', secret, {
       path: '/',
       secure: global.location.hostname !== 'localhost',
-      maxAge: 5,
+      expires: 10,
     });
 
     const payload = { message: encryptMessage(auth.wif, secret) };
