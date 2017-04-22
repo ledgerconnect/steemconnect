@@ -49,7 +49,7 @@ export default class Login extends Component {
     })
       .then(res => res.json())
       .then(data => {
-        window.location = next ? next : '/';
+        window.location = next ? next : '/app';
       });
   };
 
