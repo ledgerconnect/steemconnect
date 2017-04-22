@@ -1,8 +1,8 @@
 import { createAction } from 'redux-actions';
 
-export const SET_LOCALE = '@app/SET_LOCALE';
-export const setLocaleRequest = createAction(SET_LOCALE);
-export const setLocale = locale =>
+export const SET_USERNAME = '@app/SET_USERNAME';
+export const setUsernameRequest = createAction(SET_USERNAME);
+export const setUsername = username =>
   (dispatch) => {
-    dispatch(setLocaleRequest({ locale }));
+    dispatch(setUsernameRequest({ username }));
   };
