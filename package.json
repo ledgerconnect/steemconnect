@@ -50,8 +50,6 @@
     "nodemon": "^1.11.0",
     "numeral": "^1.5.3",
     "pg": "^6.1.2",
-    "raven": "^1.1.1",
-    "raven-js": "^3.9.1",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-dropzone": "^3.5.3",
@@ -61,7 +59,7 @@
     "redux-thunk": "^2.1.0",
     "sass-loader": "^4.0.2",
     "serve-favicon": "^2.3.0",
-    "steem": "^0.4.7",
+    "steem": "^0.5.5",
     "style-loader": "^0.13.1",
     "validator": "^5.6.0",
     "webpack": "^1.13.2"
