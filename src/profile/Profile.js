@@ -114,7 +114,7 @@ class Settings extends Component {
             </fieldset>
           </div>
           <hr />
-          <fieldset className="form-group text-lg-center pt-4">
+          <fieldset className="form-group text-center pt-4">
             <button className="btn btn-success" onClick={this.save}>Save Changes</button><span className="spacer">or</span>
             <button className="btn btn-outline-danger" onClick={this.clearProfile}>Clear Profile</button>
           </fieldset>

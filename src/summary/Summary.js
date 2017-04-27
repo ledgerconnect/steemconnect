@@ -6,7 +6,7 @@ export default class Summary extends Component {
     return (
       <div className="my-5">
         <h1 className="mb-3">Dashboard</h1>
-        <div className="row py-4 thin text-lg-left">
+        <div className="row py-4 thin text-left">
           <div className="py-4">
             <h3>Control your public identity</h3>
             <p>Update your public profile on Steem blockchain.</p>
