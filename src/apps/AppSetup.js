@@ -138,7 +138,7 @@ class AppSetup extends Component {
               </fieldset>
             </div>
             <hr />
-            <fieldset className="form-group text-lg-center pt-4">
+            <fieldset className="form-group text-center pt-4">
               <div className="form-control-danger m-0 px-3">{this.state.error.save}</div>
               <button className="btn btn-success" onClick={this.save}>Save Changes</button>
               {appExist && <span>

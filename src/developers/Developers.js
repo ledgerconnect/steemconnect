@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 export default
   () => <div className="my-5">
     <h1 className="mb-3">Developers</h1>
-    <div className="row py-4 thin text-lg-left">
+    <div className="row py-4 thin text-left">
       <div className="py-4">
         <h3>Setup your app</h3>
         <p>Building an app for Steem blockchain? Click below to get ready.</p>

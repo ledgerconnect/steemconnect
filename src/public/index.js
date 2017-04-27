@@ -21,7 +21,7 @@ export default () => <div className="splash">
   <div className="container py-4">
     <div className="thin">
       <h2 className="py-5">SteemConnect Use cases</h2>
-      <div className="my-5 text-md-left">
+      <div className="my-5 text-left">
         <div className="row">
           <div className="col col-md-2">
             <i className="icon icon-xl material-icons">perm_identity</i>
@@ -37,7 +37,7 @@ export default () => <div className="splash">
         </div>
       </div>
       <div className="my-5">
-        <div className="my-5 text-md-left">
+        <div className="my-5 text-left">
           <div className="row">
             <div className="col col-md-2">
               <i className="icon icon-xl material-icons">apps</i>
@@ -53,7 +53,7 @@ export default () => <div className="splash">
         </div>
       </div>
       <div className="my-5">
-        <div className="my-5 text-md-left">
+        <div className="my-5 text-left">
           <div className="row">
             <div className="col col-md-2">
               <i className="icon icon-xl material-icons">code</i>
