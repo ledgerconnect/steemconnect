@@ -8,7 +8,6 @@ const https = require('https');
 const cors = require('cors');
 const helmet = require('helmet');
 const csurf = require('csurf');
-const Raven = require('raven');
 const steem = require('steem');
 const debug = require('debug')('steemconnect:main');
 
@@ -21,11 +20,6 @@ http.globalAgent.maxSockets = 100;
 https.globalAgent.maxSockets = 100;
 
 const app = express();
-
-if (process.env.SENTRY_DSN) {
-  Raven.config(process.env.SENTRY_DSN).install();
-  app.use(Raven.requestHandler());
-}
 
 if (process.env.NODE_ENV !== 'production') {
   require('./webpack')(app); // eslint-disable-line
@@ -70,7 +64,6 @@ app.use((req, res, next) => {
 });
 
 if (app.get('env') !== 'production') {
-  if (process.env.SENTRY_DSN) app.use(Raven.errorHandler());
   app.use((err, req, res, next) => {
     console.log(err.stack);
     next(err);
@@ -95,6 +88,6 @@ app.use((err, req, res) => {
   });
 });
 
-steem.api.setWebSocket('wss://steemd.steemit.com');
+steem.config.set('websocket', 'wss://steemd.steemit.com');
 
 module.exports = app;
