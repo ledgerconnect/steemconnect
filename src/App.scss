@@ -65,10 +65,14 @@ b {
   padding: 0.75em 1.5em;
   border: none !important;
   font-family: $font-alt;
+  border-radius: 0.25em;
+
+  &:hover, &:focus, &:active {
+    box-shadow: none !important;
+  }
 }
 
 .btn-success {
-  border-radius: 28px;
   background-color: #02d895;
 
   &:hover, &:focus, &:active {
@@ -83,7 +87,6 @@ b {
 
 .btn-outline-success {
   color: #02d895 !important;
-  border-radius: 28px;
   box-shadow: inset 0 0 0 2px #02d895;
 
   &:hover, &:focus, &:active {
@@ -96,9 +99,6 @@ b {
 .btn-sm {
   font-size: 15px;
   padding: 0.5em 1em;
-  border: none !important;
-  font-family: $font-alt;
-  border-radius: 2em;
 }
 
 .btn-secondary {
@@ -109,7 +109,7 @@ b {
 .form-control {
   font-size: 18px;
   padding: 0.75em;
-  border-radius: 28px;
+  border-radius: 0.25em;
 
   &:hover, &:focus, &:active {
     box-shadow: none !important;
@@ -117,7 +117,7 @@ b {
 }
 
 .input-group-addon {
-  border-radius: 28px;
+  border-radius: 0.25em;
 }
 
 input {
