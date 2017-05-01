@@ -1,6 +1,6 @@
 sc2.init({
   baseURL: 'http://localhost:3000',
-  app: 'busy',
+  app: 'busy.app',
   callbackURL: 'http://localhost:3000/demo'
 });
 
