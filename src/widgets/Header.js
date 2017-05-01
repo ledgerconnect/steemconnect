@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import Avatar from '../widgets/Avatar';
+import Avatar from './Avatar';
 import './Header.scss';
 
 const Header = ({ username }) =>
@@ -8,7 +8,7 @@ const Header = ({ username }) =>
     <div className="container">
       <div className="Header__log">
         {username
-          ? <Link to="/app">
+          ? <Link to="/dashboard">
             <span className="mr-2">{username}</span>
             <div className="float-right"><Avatar username={username} /></div>
           </Link>
