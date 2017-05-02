@@ -28,6 +28,10 @@ html, body, #app {
   font-size: 18px;
 }
 
+body {
+  background-color: #fcfcfc;
+}
+
 #app {
   color: lighten(black, 60%);
   font-family: $font-primary;
@@ -140,4 +144,8 @@ li {
 
 .table {
   white-space: pre-line;
+}
+
+.container {
+  max-width: 600px;
 }

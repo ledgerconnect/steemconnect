@@ -1,15 +1,15 @@
 import * as types from './actions';
 
 const initialState = {
-  locale: 'en',
+  username: '',
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case types.SET_LOCALE:
+    case types.SET_USERNAME:
       return {
         ...state,
-        locale: action.payload.locale,
+        username: action.payload.username,
       };
     default:
       return state;

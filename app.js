@@ -10,7 +10,7 @@ https.globalAgent.maxSockets = Infinity;
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const steem = require('steem');
-
+const { init } = require('./helpers/middleware');
 const api = require('./routes/api');
 const oauth2 = require('./routes/oauth2');
 const front = require('./routes/front');
@@ -38,6 +38,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
+
+app.use(init);
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));

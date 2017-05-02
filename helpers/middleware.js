@@ -90,9 +90,25 @@ const verifyPermissions = async (req, res, next) => {
   next();
 };
 
+/**
+ * Add req.username if user is logged
+ */
+const init = (req, res, next) => {
+  const token = req.cookies._token;
+  let decoded;
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.username = (decoded.type === 'user')
+      ? decoded.user
+      : '';
+  } catch(err) {}
+  next();
+};
+
 module.exports = {
   authenticateUser,
   authenticateApp,
   verifyApp,
   verifyPermissions,
+  init,
 };
