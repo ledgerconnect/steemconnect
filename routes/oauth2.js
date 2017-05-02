@@ -1,53 +1,30 @@
 const express = require('express');
-const qs = require('query-string');
 const debug = require('debug')('sc2:server');
+const { issueAppToken } = require('../helpers/token');
+const { authenticate } = require('../helpers/middleware');
 const config = require('../config.json');
-const { verifyApp, authenticateUser, verifyPermissions } = require('../helpers/middleware');
-const { issueUserToken, issueAppToken } = require('../helpers/token');
-const { decryptMessage } = require('../helpers/hash');
 const router = express.Router();
 
-router.get('/authorize', verifyApp, authenticateUser, verifyPermissions, async (req, res, next) => {
+router.get('/oauth2/authorize', async (req, res, next) => {
   const redirectUri = req.query.redirect_uri;
-
-  debug(`Issue token for app @${req.app}`);
-  const accessToken = issueAppToken(req.app, req.user);
-
-  const tokenStr = qs.stringify({
-    access_token: accessToken,
-    expires_in: config.token_expiration,
-  });
-  res.redirect(`${redirectUri}?${tokenStr}`);
+  const clientId = req.query.client_id;
+  const query = 'SELECT * FROM apps WHERE client_id = ${clientId} AND ${redirectUri} = ANY(redirect_uris) LIMIT 1';
+  const apps = await req.db.query(query, { clientId, redirectUri });
+  if (!apps[0]) {
+    debug(`The app @${clientId} has not been setup.`);
+    return res.redirect('/404');
+  } else {
+    res.render('index', { title: 'SteemConnect' });
+  }
 });
 
-router.post('/login', async (req, res, next) => {
-  const secret = req.cookies._secret;
-  const message = req.body.message;
-  if (!secret || !message) {
-    return res.status(401).send('Unauthorized');
-  }
-
-  let privateWif = decryptMessage(message, secret);
-  const publicWif = res.steem.auth.isWif(privateWif) ? res.steem.auth.wifToPublic(privateWif) : '';
-  privateWif = null;
-  const keyReferences = await res.steem.api.getKeyReferencesAsync([publicWif]);
-  const user = keyReferences[0][0];
-  if (!user) {
-    return res.status(401).send('Unauthorized');
-  }
-
-  debug(`Issue token for user @${user}`);
-  const token = issueUserToken(user);
-
-  debug(`Save token on user cookies`);
-  res.cookie('_token', token, {
-    path: '/',
-    secure: req.hostname !== 'localhost',
-  });
-
+router.all('/api/oauth2/authorize', authenticate('user'), async (req, res, next) => {
+  const clientId = req.query.client_id;
+  debug(`Issue app token for user @${req.user} using @${clientId} proxy.`);
+  const accessToken = issueAppToken(clientId, req.user);
   res.json({
-    success: true,
-    username: user,
+    access_token: accessToken,
+    expires_in: config.token_expiration,
   });
 });
 

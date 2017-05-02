@@ -2,11 +2,11 @@ const jwt = require('jsonwebtoken');
 const config = require('../config.json');
 
 const issueUserToken = (user) =>
-  jwt.sign({ type: 'user', user }, process.env.JWT_SECRET);
+  jwt.sign({ role: 'user', user }, process.env.JWT_SECRET);
 
-const issueAppToken = (app, user) =>
+const issueAppToken = (proxy, user) =>
   jwt.sign(
-    { type: 'app', app, user },
+    { role: 'app', proxy, user },
     process.env.JWT_SECRET,
     { expiresIn: config.token_expiration }
   );

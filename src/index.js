@@ -5,13 +5,6 @@ import { Provider } from 'react-redux';
 import routes from './routes';
 import store from './store';
 
-if (process.env.SENTRY_PUBLIC_DSN) {
-  const Raven = require('raven-js');
-  Raven
-    .config(process.env.SENTRY_PUBLIC_DSN)
-    .install();
-}
-
 ReactDOM.render(
   <Provider store={store}>
     <Router

@@ -1,16 +1,40 @@
 const express = require('express');
 const debug = require('debug')('sc2:server');
-const { authenticateApp, verifyPermissions } = require('../helpers/middleware');
+const { authenticate, verifyPermissions } = require('../helpers/middleware');
+const { encode } = require('steem/lib/auth/memo');
+const { issueUserToken } = require('../helpers/token');
 const router = express.Router();
 
-/** Get user account details */
-router.all('/me', authenticateApp, verifyPermissions, async (req, res, next) => {
-  const accounts = await res.steem.api.getAccountsAsync([req.user]);
+router.all('/me', authenticate(), async (req, res, next) => {
+  const accounts = await req.steem.api.getAccountsAsync([req.user]);
   res.json(accounts[0]);
 });
 
+router.all('/apps', async (req, res, next) => {
+  const query = 'SELECT client_id FROM apps';
+  const apps = await req.db.query(query);
+  res.json(apps);
+});
+
+router.all('/apps/me', authenticate('user'), async (req, res, next) => {
+  const query = 'SELECT * FROM apps WHERE ${admin} = ANY(admins)';
+  const apps = await req.db.query(query, { admin: req.user });
+  res.json(apps);
+});
+
+router.all('/apps/:clientId', async (req, res, next) => {
+  const { clientId } = req.params;
+  const query = 'SELECT * FROM apps WHERE client_id = ${client_id} LIMIT 1';
+  const apps = await req.db.query(query, { client_id: clientId });
+  if (!apps[0]) next();
+  if (!req.user || !apps[0].admins || apps[0].admins.indexOf(req.username) === -1) {
+    delete apps[0].secret;
+  }
+  res.json(apps[0]);
+});
+
 /** Broadcast transactions */
-router.post('/broadcast', authenticateApp, verifyPermissions, async (req, res, next) => {
+router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, res, next) => {
   const allowedOperations = ['comment', 'comment_options', 'vote']; // custom_json
   const { operations } = req.body;
   let isAuthorized = true;
@@ -29,8 +53,8 @@ router.post('/broadcast', authenticateApp, verifyPermissions, async (req, res, n
   if (!isAuthorized) {
     res.status(401).send('Unauthorized!');
   } else {
-    debug(`Broadcast transaction for @${req.user} from app @${req.app}`);
-    res.steem.broadcast.send(
+    debug(`Broadcast transaction for @${req.user} from app @${req.proxy}`);
+    req.steem.broadcast.send(
       { operations, extensions: [] },
       { posting: process.env.BROADCASTER_POSTING_WIF },
       (err, result) => {
@@ -39,6 +63,19 @@ router.post('/broadcast', authenticateApp, verifyPermissions, async (req, res, n
       }
     );
   }
+});
+
+router.all('/login/challenge', async (req, res, next) => {
+  const username = req.query.username;
+  const role = req.query.role || 'posting';
+  const token = issueUserToken(username);
+  const accounts = await req.steem.api.getAccountsAsync([username]);
+  const publicWif = accounts[0][role].key_auths[0][0];
+  const code = encode(process.env.BROADCASTER_POSTING_WIF, publicWif, `#${token}`);
+  res.json({
+    username,
+    code,
+  });
 });
 
 module.exports = router;

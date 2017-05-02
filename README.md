@@ -10,6 +10,7 @@ Add config vars
 BROADCASTER_USERNAME = Main Steem account holding posting permissions e.g 'steemconnect'
 BROADCASTER_POSTING_WIF = Posting wif of the main account
 JWT_SECRET = Random string
+DATABASE_URL = PostgreSQL database URL
 DEBUG = sc2:*
 ```
 
@@ -26,12 +27,12 @@ Test demo app here: http://localhost:3000/demo
 
 ### Routes
 
-*/api/v1/me* - Get user profile (require app token)
+*/api/me* - Get user profile (require user or app token)
 
-*/api/v1/broadcast* - Broadcast posting operation for user (require app token)
+*/api/broadcast* - Broadcast posting operation for user (require app token)
 
 ## OAuth2
-*/oauth2/authorize* - Issue new app token (require user token)
+*/api/oauth2/authorize* - Issue new app token (require user token)
 
 ## Tokens
 Tokens are created with JWT, the payload is public. Here is how it look:
@@ -39,17 +40,17 @@ Tokens are created with JWT, the payload is public. Here is how it look:
 ### Token for user
 ```
 {
-  type: 'user',
+  role: 'user',
   user: 'guest'
 }
 ```
-The token hash is saved on user cookies once he login.
+The token hash is saved on user localStorage once he login.
 
 ### Token for application
 ```
 {
-  type: 'app',
-  app: 'example',
+  role: 'app',
+  proxy: 'example',
   user: 'guest'
 }
 ```

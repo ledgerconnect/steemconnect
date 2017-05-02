@@ -5,16 +5,13 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const http = require('http');
 const https = require('https');
-http.globalAgent.maxSockets = Infinity;
-https.globalAgent.maxSockets = Infinity;
-const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const steem = require('steem');
-const { init } = require('./helpers/middleware');
-const api = require('./routes/api');
-const oauth2 = require('./routes/oauth2');
-const front = require('./routes/front');
+const db = require('./helpers/db');
+const { strategy } = require('./helpers/middleware');
 
+http.globalAgent.maxSockets = Infinity;
+https.globalAgent.maxSockets = Infinity;
 const app = express();
 const server = http.Server(app);
 
@@ -29,24 +26,24 @@ app.set('view engine', 'hbs');
 app.enable('trust proxy');
 
 app.use((req, res, next) => {
-  res.steem = steem;
+  req.steem = steem;
+  req.db = db;
   next();
 });
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(cors());
 
-app.use(init);
+app.use(strategy);
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
 
-app.use('/api/v1', api);
-app.use('/oauth2', oauth2);
-app.use('/', front);
+app.use('/api', require('./routes/api'));
+app.use('/', require('./routes/oauth2'));
+app.use('/', require('./routes'));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
