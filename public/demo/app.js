@@ -1,5 +1,5 @@
 sc2.init({
-  baseURL: 'http://localhost:3000',
+  baseURL: window.location.origin,
   app: 'busy.app',
   callbackURL: 'http://localhost:3000/demo'
 });
