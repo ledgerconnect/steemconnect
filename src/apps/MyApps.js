@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import fetch from 'isomorphic-fetch';
 import Icon from '../widgets/Icon';
 import Loading from '../widgets/Loading';
+import AppPreview from './AppPreview';
 
 export default class MyApps extends Component {
   constructor(props) {
@@ -43,13 +44,13 @@ export default class MyApps extends Component {
         {isLoaded &&
           <div>
             {apps.map((app, key) =>
-              <p key={key}>{app.client_id}</p>
+              <AppPreview app={app} key={key} />
             )}
-            <p>
+            <div className="list-group-item">
               <Link to="/developers/apps/create">
                 <Icon name="add"/> New App
               </Link>
-            </p>
+            </div>
           </div>
         }
       </div>
