@@ -5,32 +5,62 @@ const { encode } = require('steem/lib/auth/memo');
 const { issueUserToken } = require('../helpers/token');
 const router = express.Router();
 
+/** Get my account details */
 router.all('/me', authenticate(), async (req, res, next) => {
   const accounts = await req.steem.api.getAccountsAsync([req.user]);
   res.json(accounts[0]);
 });
 
+/** Get applications */
 router.all('/apps', async (req, res, next) => {
   const query = 'SELECT client_id FROM apps';
   const apps = await req.db.query(query);
   res.json(apps);
 });
 
+/** Get my applications */
 router.all('/apps/me', authenticate('user'), async (req, res, next) => {
   const query = 'SELECT * FROM apps WHERE ${admin} = ANY(admins)';
   const apps = await req.db.query(query, { admin: req.user });
   res.json(apps);
 });
 
-router.all('/apps/:clientId', async (req, res, next) => {
+/** Get application details */
+router.get('/apps/@:clientId', async (req, res, next) => {
   const { clientId } = req.params;
   const query = 'SELECT * FROM apps WHERE client_id = ${client_id} LIMIT 1';
   const apps = await req.db.query(query, { client_id: clientId });
-  if (!apps[0]) next();
-  if (!req.user || !apps[0].admins || apps[0].admins.indexOf(req.username) === -1) {
+  if (!apps[0]) return next();
+  if (!req.user || !apps[0].admins.includes(req.user)) {
     delete apps[0].secret;
   }
   res.json(apps[0]);
+});
+
+/** Update application */
+router.put('/apps/@:clientId', authenticate('user'), async (req, res, next) => {
+  const { clientId } = req.params;
+  const app = req.body;
+  console.log(app);
+  const query = 'UPDATE apps SET ' +
+    'name = ${name}, ' +
+    'description = ${description}, ' +
+    'icon = ${icon}, ' +
+    'redirect_uris = ${redirect_uris} ' +
+    'WHERE client_id = ${client_id} AND ${admin} = ANY(admins)';
+  try {
+    await req.db.query(query, {
+      name: app.name,
+      description: app.description,
+      icon: app.icon,
+      redirect_uris: app.redirect_uris,
+      client_id: clientId,
+      admin: req.user,
+    });
+  } catch (err) {
+    return next(err);
+  }
+  res.json({ success: true });
 });
 
 /** Broadcast transactions */
