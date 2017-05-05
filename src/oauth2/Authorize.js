@@ -38,6 +38,7 @@ export default class Authorize extends Component {
 
   authorize = (auth) => {
     const { clientId, redirectUri } = this.state;
+    this.setState({ step: 0 });
     login({ ...auth }, (err, res) => {
       console.log(err, res);
       addPostingAuthority({ ...auth, clientId }, (err, res) => {
