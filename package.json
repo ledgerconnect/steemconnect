@@ -15,6 +15,7 @@
     "postinstall": "npm run build"
   },
   "dependencies": {
+    "antd": "^2.10.0",
     "autoprefixer-loader": "^3.2.0",
     "babel-core": "^6.16.0",
     "babel-eslint": "^6.1.2",

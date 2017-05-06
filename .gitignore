@@ -1,14 +1,8 @@
-public/js/*.ttf
-public/js/*.woff
-public/js/*.woff2
-public/js/*.eot
 public/js/app.min.js
 public/js/statistics.html
 public/js/app.min.js.map
-.idea
-.save
 *.css.map
-*.css
+base.css
 
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template
@@ -45,3 +39,6 @@ build/Release
 node_modules
 .tern-port
 .envrc
+
+# WebStorm
+.idea
