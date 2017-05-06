@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import fetch from 'isomorphic-fetch';
+import { notification } from 'antd';
 import AppForm from './AppForm';
 import Loading from '../widgets/Loading';
 import Avatar from '../widgets/Avatar';
@@ -37,6 +38,7 @@ export default class EditApp extends Component {
 
   submit = (data) => {
     const { clientId } = this.state;
+    this.setState({ isLoading: true });
     fetch(`/api/apps/@${clientId}`, {
       method: 'PUT',
       headers: new Headers({
@@ -48,7 +50,11 @@ export default class EditApp extends Component {
     })
       .then(res => res.json())
       .then(json => {
-        console.log('Updated');
+        this.setState({ isLoading: false });
+        notification.success({
+          message: 'Success',
+          description: 'Your application has been successfully updated',
+        });
       });
   };
 
@@ -56,12 +62,18 @@ export default class EditApp extends Component {
     const { app, clientId, isLoading, isLoaded } = this.state;
     return (
       <div className="container my-5">
-        <Avatar username={clientId} size="80" className="float-left mr-3" />
-        <h2 className="d-inline">{clientId}</h2>
-        <p>@{clientId}</p>
         {isLoading && <Loading/>}
         {isLoaded &&
-          <AppForm data={app} submit={this.submit} />
+          <div>
+            <Avatar icon={app.icon} size="80" className="float-left mr-3" />
+            <h2 className="d-inline">{clientId}</h2>
+            <p>@{clientId}</p>
+            <AppForm
+              data={app}
+              isLoading={isLoading}
+              submit={this.submit}
+            />
+          </div>
         }
       </div>
     );

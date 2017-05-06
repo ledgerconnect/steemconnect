@@ -82,7 +82,13 @@ export default class SignForm extends Component {
         </div>
         <div className="form-group py-3 text-center">
           <Link to="/apps/me" className="btn btn-secondary">Cancel</Link>
-          <button type="submit" className="btn btn-success ml-3">Save</button>
+          <button
+            type="submit"
+            className="btn btn-success ml-3"
+            disabled={this.props.isLoading}
+          >
+            Save
+          </button>
         </div>
       </form>
     );
