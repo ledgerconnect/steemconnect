@@ -9,7 +9,8 @@ import Apps from './apps/Apps';
 import MyApps from './apps/MyApps';
 import AuthorizedApps from './apps/AuthorizedApps';
 import EditApp from './apps/EditApp';
-import Docs from './statics/Docs';
+import Steemjs from './statics/Docs/Steemjs';
+import OAuth2 from './statics/Docs/OAuth2';
 import Sign from './sign/Sign';
 import Login from './oauth2/Login';
 import Authorize from './oauth2/Authorize';
@@ -32,7 +33,8 @@ export default (
     </Route>
     <Route component={Layout}>
       <Route path="/apps" component={Apps} />
-      <Route path="/docs" component={Docs} />
+      <Route path="/docs/steemjs" component={Steemjs} />
+      <Route path="/docs/oauth2" component={OAuth2} />
       <Route path="/@:username/permissions" component={Permissions} />
       <Route path="/apps/@:clientId" component={App} />
     </Route>

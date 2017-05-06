@@ -9,6 +9,7 @@ const Dashboard = ({ app }) => {
       <p><Link to="/apps/authorized">Authorized Apps</Link></p>
       <h4>Developers</h4>
       <p><Link to="/apps/me">My Apps</Link></p>
+      <p><Link to="/docs/oauth2">OAuth2</Link></p>
     </div>
   );
 };
