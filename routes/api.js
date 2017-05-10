@@ -65,7 +65,7 @@ router.put('/apps/@:clientId', authenticate('user'), async (req, res, next) => {
 
 /** Broadcast transactions */
 router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, res, next) => {
-  const allowedOperations = ['comment', 'comment_options', 'vote']; // custom_json
+  const allowedOperations = ['comment', 'comment_options', 'vote', 'custom_json']; // custom_json
   const { operations } = req.body;
   let isAuthorized = true;
 
@@ -75,7 +75,11 @@ router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, re
       isAuthorized = false;
     }
     /** Check if author of the operation is user */
-    if (operation[1].voter !== req.user && operation[1].author !== req.user) {
+    if (
+      operation[1].voter !== req.user &&
+      operation[1].author !== req.user &&
+      (operation[1].required_posting_auths.length && operation[1].required_posting_auths[0] !== req.user)
+    ) {
       isAuthorized = false;
     }
   });
