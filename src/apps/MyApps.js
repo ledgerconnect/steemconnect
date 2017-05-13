@@ -47,7 +47,7 @@ export default class MyApps extends Component {
               <AppPreview app={app} key={key} />
             )}
             <div className="list-group-item">
-              <Link to="/developers/apps/create">
+              <Link to="/apps/create">
                 <Icon name="add"/> New App
               </Link>
             </div>
