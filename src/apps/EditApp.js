@@ -55,6 +55,13 @@ export default class EditApp extends Component {
           message: 'Success',
           description: 'Your application has been successfully updated',
         });
+      })
+      .catch(err => {
+        console.log(err);
+        notification.error({
+          message: 'Error',
+          description: 'Oops! Something goes wrong.',
+        });
       });
   };
 
