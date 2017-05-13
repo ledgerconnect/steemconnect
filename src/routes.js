@@ -12,6 +12,7 @@ import EditApp from './apps/EditApp';
 import Steemjs from './statics/Docs/Steemjs';
 import OAuth2 from './statics/Docs/OAuth2';
 import Sign from './sign/Sign';
+import CreateAccount from './sign/CreateAccount';
 import Login from './oauth2/Login';
 import Authorize from './oauth2/Authorize';
 import RequireLogin from './oauth2/RequireLogin';
@@ -29,6 +30,7 @@ export default (
         <Route path="/apps/me" component={MyApps} />
         <Route path="/apps/authorized" component={AuthorizedApps} />
         <Route path="/apps/@:clientId/edit" component={EditApp} />
+        <Route path="/accounts/create" component={CreateAccount} />
       </Route>
     </Route>
     <Route component={Layout}>
