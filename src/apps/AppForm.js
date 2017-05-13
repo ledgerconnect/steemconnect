@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import Form from '../widgets/Form';
 
-export default class SignForm extends Component {
+export default class AppForm extends Form {
   constructor(props) {
     super(props);
     const data = this.props.data || {};
@@ -18,11 +19,6 @@ export default class SignForm extends Component {
     }
     data[name] = value;
     this.setState({ data });
-  };
-
-  onSubmit = (event) => {
-    event.preventDefault();
-    this.props.submit(this.state.data);
   };
 
   render() {
@@ -94,4 +90,3 @@ export default class SignForm extends Component {
     );
   }
 }
-
