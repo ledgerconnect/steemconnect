@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import fetch from 'isomorphic-fetch';
 import Loading from '../widgets/Loading';
+import AppPreview from './AppPreview';
 
 export default class MyApps extends Component {
   constructor(props) {
@@ -35,7 +36,7 @@ export default class MyApps extends Component {
         {isLoaded &&
           <div>
             {apps.map((app, key) =>
-              <p key={key}>{app.client_id}</p>
+              <AppPreview app={app} key={key} />
             )}
           </div>
         }

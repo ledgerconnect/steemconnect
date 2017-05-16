@@ -127,10 +127,10 @@ export default class SignForm extends Component {
       : passwordIsValid === ''
         ? 'form-group'
         : 'form-group has-danger';
-
+    const title = this.props.title || 'Sign';
     return (
       <div>
-        <h2><Icon name="gesture" lg /> Sign</h2>
+        <h2><Icon name="gesture" lg /> {title}</h2>
         {isAuth
           ? <p>
             Do you want to confirm this operation using the Steem account <b>@{username}</b>?

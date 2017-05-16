@@ -1,13 +1,18 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import Wrapper from './wrapper';
-import App from './app';
+import Layout from './app';
 import Index from './statics/Index';
 import Dashboard from './statics/Dashboard';
+import App from './apps/App';
 import Apps from './apps/Apps';
 import MyApps from './apps/MyApps';
-import Docs from './statics/Docs';
+import AuthorizedApps from './apps/AuthorizedApps';
+import EditApp from './apps/EditApp';
+import Steemjs from './statics/Docs/Steemjs';
+import OAuth2 from './statics/Docs/OAuth2';
 import Sign from './sign/Sign';
+import CreateAccount from './sign/CreateAccount';
 import Login from './oauth2/Login';
 import Authorize from './oauth2/Authorize';
 import RequireLogin from './oauth2/RequireLogin';
@@ -19,16 +24,21 @@ import Error404 from './statics/Error404';
 export default (
   <Route path="/" component={Wrapper}>
     <IndexRoute component={Index} />
-    <Route component={App}>
-      <Route path="/apps" component={Apps} />
-      <Route path="/docs" component={Docs} />
-      <Route path="/@:username/permissions" component={Permissions} />
-    </Route>
     <Route component={RequireLogin}>
-      <Route component={App}>
+      <Route component={Layout}>
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/apps/me" component={MyApps} />
+        <Route path="/apps/authorized" component={AuthorizedApps} />
+        <Route path="/apps/@:clientId/edit" component={EditApp} />
+        <Route path="/accounts/create" component={CreateAccount} />
       </Route>
+    </Route>
+    <Route component={Layout}>
+      <Route path="/apps" component={Apps} />
+      <Route path="/docs/steemjs" component={Steemjs} />
+      <Route path="/docs/oauth2" component={OAuth2} />
+      <Route path="/@:username/permissions" component={Permissions} />
+      <Route path="/apps/@:clientId" component={App} />
     </Route>
     <Route path="/login" component={Login} />
     <Route path="/oauth2/authorize" component={Authorize} />
