@@ -3,6 +3,7 @@ const debug = require('debug')('sc2:server');
 const { authenticate, verifyPermissions } = require('../helpers/middleware');
 const { encode } = require('steem/lib/auth/memo');
 const { issueUserToken } = require('../helpers/token');
+const { App } = require('../db/models');
 const router = express.Router();
 
 /** Get my account details */
@@ -12,50 +13,43 @@ router.all('/me', authenticate(), async (req, res, next) => {
 });
 
 /** Get applications */
-router.all('/apps', async (req, res, next) => {
-  const query = 'SELECT client_id FROM apps';
-  const apps = await req.db.query(query);
+router.get('/apps', async (req, res, next) => {
+  const apps = await App.findAll({ attributes: { exclude: ['secret'] } });
   res.json(apps);
 });
 
 /** Get my applications */
 router.all('/apps/me', authenticate('user'), async (req, res, next) => {
-  const query = 'SELECT * FROM apps WHERE ${admin} = ANY(admins)';
-  const apps = await req.db.query(query, { admin: req.user });
+  const apps = await App.findAll({ where: { owner: req.user } });
   res.json(apps);
 });
 
 /** Get application details */
 router.get('/apps/@:clientId', async (req, res, next) => {
   const { clientId } = req.params;
-  const query = 'SELECT * FROM apps WHERE client_id = ${client_id} LIMIT 1';
-  const apps = await req.db.query(query, { client_id: clientId });
-  if (!apps[0]) return next();
-  if (!req.user || !apps[0].admins.includes(req.user)) {
-    delete apps[0].secret;
+  const app = await App.findOne({ where: { client_id: clientId } });
+  if (!app) return next();
+  if (!req.user || app.owner !== req.user) {
+    app.secret = undefined;
   }
-  res.json(apps[0]);
+  res.json(app);
 });
 
 /** Update application */
 router.put('/apps/@:clientId', authenticate('user'), async (req, res, next) => {
   const { clientId } = req.params;
   const app = req.body;
-  console.log(app);
-  const query = 'UPDATE apps SET ' +
-    'name = ${name}, ' +
-    'description = ${description}, ' +
-    'icon = ${icon}, ' +
-    'redirect_uris = ${redirect_uris} ' +
-    'WHERE client_id = ${client_id} AND ${admin} = ANY(admins)';
   try {
-    await req.db.query(query, {
+    await App.update({
+      redirect_uris: app.redirect_uris,
       name: app.name,
       description: app.description,
       icon: app.icon,
-      redirect_uris: app.redirect_uris,
-      client_id: clientId,
-      admin: req.user,
+    }, {
+      where: {
+        client_id: clientId,
+        owner: req.user,
+      }
     });
   } catch (err) {
     return next(err);
