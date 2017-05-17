@@ -3,14 +3,17 @@ const debug = require('debug')('sc2:server');
 const { issueAppToken } = require('../helpers/token');
 const { authenticate } = require('../helpers/middleware');
 const config = require('../config.json');
+const { App } = require('../db/models');
 const router = express.Router();
 
 router.get('/oauth2/authorize', async (req, res, next) => {
   const redirectUri = req.query.redirect_uri;
   const clientId = req.query.client_id;
-  const query = 'SELECT * FROM apps WHERE client_id = ${clientId} AND ${redirectUri} = ANY(redirect_uris) LIMIT 1';
-  const apps = await req.db.query(query, { clientId, redirectUri });
-  if (!apps[0]) {
+  const app = await App.findOne({ where: {
+    client_id: clientId,
+    redirect_uris: { $contains: [redirectUri] }
+  }});
+  if (!app) {
     debug(`The app @${clientId} has not been setup.`);
     return res.redirect('/404');
   } else {

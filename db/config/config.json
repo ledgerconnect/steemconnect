@@ -1,0 +1,22 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": null,
+    "database": "sc2",
+    "host": "localhost",
+    "dialect": "postgres",
+    "port": 5432
+  },
+  "copper": {
+    "use_env_variable": "HEROKU_POSTGRESQL_COPPER_URL",
+    "dialectOptions": {
+      "ssl": true
+    }
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL",
+    "dialectOptions": {
+      "ssl": true
+    }
+  }
+}

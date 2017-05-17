@@ -30,7 +30,6 @@ export default (
         <Route path="/apps/me" component={MyApps} />
         <Route path="/apps/authorized" component={AuthorizedApps} />
         <Route path="/apps/@:clientId/edit" component={EditApp} />
-        <Route path="/accounts/create" component={CreateAccount} />
       </Route>
     </Route>
     <Route component={Layout}>
@@ -39,6 +38,7 @@ export default (
       <Route path="/docs/oauth2" component={OAuth2} />
       <Route path="/@:username/permissions" component={Permissions} />
       <Route path="/apps/@:clientId" component={App} />
+      <Route path="/accounts/create" component={CreateAccount} />
     </Route>
     <Route path="/login" component={Login} />
     <Route path="/oauth2/authorize" component={Authorize} />

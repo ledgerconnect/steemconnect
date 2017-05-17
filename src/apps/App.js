@@ -46,7 +46,7 @@ export default class MyApps extends Component {
             <Avatar icon={app.icon} size="80" className="float-left mr-3" />
             <h2 className="d-inline">{clientId}</h2>
             <span className="float-right">
-              {isLoaded && app.admins.includes(this.props.app.user.name) &&
+              {isLoaded && app.owner === this.props.app.user.name &&
                 <Link to={`/apps/@${clientId}/edit`} className="btn btn-secondary btn-sm ml-2">
                   Edit
                 </Link>
