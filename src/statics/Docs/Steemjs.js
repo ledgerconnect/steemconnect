@@ -35,7 +35,7 @@ const Operation = ({ operation }) => {
   )
 };
 
-const Docs = () => {
+const Steemjs = () => {
   return (
     <div className="container my-5">
       <h2>API</h2>
@@ -50,4 +50,4 @@ const Docs = () => {
   );
 };
 
-export default Docs;
+export default Steemjs;

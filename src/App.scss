@@ -120,7 +120,7 @@ b {
   border-radius: 0.25em;
 }
 
-input {
+input, textarea {
   font-family: $font-primary;
 }
 
@@ -134,6 +134,7 @@ pre {
 }
 
 .label {
+  font-weight: bold;
   width: 140px;
 }
 
@@ -147,5 +148,12 @@ li {
 }
 
 .container {
-  max-width: 600px;
+  max-width: 660px;
+}
+
+.block {
+  background-color: #ffffff;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  padding: 0.75rem 1.25rem;
 }
