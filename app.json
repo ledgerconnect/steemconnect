@@ -12,13 +12,17 @@
     "DATABASE_URL": {
       "required": true
     },
+    "HEROKU_POSTGRESQL_COPPER_URL": {
+      "required": true
+    },
     "NODE_MODULES_CACHE": {
       "required": true
     },
     "JWT_SECRET": {
       "generator": "secret"
     },
-    "DEBUG": "sc2:*"
+    "DEBUG": "sc2:*",
+    "NODE_ENV": "copper"
   },
   "formation": {
   },
