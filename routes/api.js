@@ -59,13 +59,15 @@ router.put('/apps/@:clientId', authenticate('user'), async (req, res, next) => {
 
 /** Broadcast transactions */
 router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, res, next) => {
-  const allowedOperations = ['comment', 'comment_options', 'vote', 'custom_json']; // custom_json
+  const scope = req.scope.length
+    ? req.scope
+    : ['comment', 'comment_options', 'vote', 'custom_json', 'claim_reward_balance'];
   const { operations } = req.body;
   let isAuthorized = true;
 
   operations.forEach((operation) => {
     /** Check if operation is allowed */
-    if (allowedOperations.indexOf(operation[0]) === -1) {
+    if (scope.indexOf(operation[0]) === -1) {
       isAuthorized = false;
     }
     /** Check if author of the operation is user */

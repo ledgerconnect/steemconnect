@@ -30,6 +30,7 @@ const strategy = (req, res, next) => {
     req.role = decoded.role;
     req.user = decoded.user;
     req.proxy = decoded.proxy;
+    req.scope = decoded.scope || [];
   } catch(err) {}
   next();
 };
