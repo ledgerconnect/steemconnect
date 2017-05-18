@@ -51,7 +51,8 @@ The token hash is saved on user localStorage once he login.
 {
   role: 'app',
   proxy: 'example',
-  user: 'guest'
+  user: 'guest',
+  scope: ['vote', 'comment']
 }
 ```
 
