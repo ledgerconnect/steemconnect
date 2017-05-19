@@ -44,6 +44,7 @@ router.put('/apps/@:clientId', authenticate('user'), async (req, res, next) => {
       name: app.name,
       description: app.description,
       icon: app.icon,
+      website: app.website,
     }, {
       where: {
         client_id: clientId,
