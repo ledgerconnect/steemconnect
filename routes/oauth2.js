@@ -3,13 +3,12 @@ const debug = require('debug')('sc2:server');
 const { issueAppToken } = require('../helpers/token');
 const { authenticate } = require('../helpers/middleware');
 const config = require('../config.json');
-const { App } = require('../db/models');
 const router = express.Router();
 
 router.get('/oauth2/authorize', async (req, res, next) => {
   const redirectUri = req.query.redirect_uri;
   const clientId = req.query.client_id;
-  const app = await App.findOne({ where: {
+  const app = await req.db.apps.findOne({ where: {
     client_id: clientId,
     redirect_uris: { $contains: [redirectUri] }
   }});
