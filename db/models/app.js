@@ -1,6 +1,5 @@
-'use strict';
-module.exports = function(sequelize, DataTypes) {
-  var App = sequelize.define('App', {
+module.exports = (sequelize, DataTypes) => {
+  return sequelize.define('apps', {
     client_id: DataTypes.STRING,
     secret: DataTypes.STRING,
     owner: DataTypes.STRING,
@@ -10,12 +9,12 @@ module.exports = function(sequelize, DataTypes) {
     icon: DataTypes.TEXT,
     website: DataTypes.TEXT
   }, {
+    freezeTableName: true,
     underscored: true,
     classMethods: {
-      associate: function(models) {
+      associate: (models) => {
         // associations can be defined here
       }
     }
   });
-  return App;
 };

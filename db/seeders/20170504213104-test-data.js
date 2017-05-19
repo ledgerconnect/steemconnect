@@ -2,7 +2,7 @@
 
 module.exports = {
   up: function (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('Apps', [
+    return queryInterface.bulkInsert('apps', [
       {
         client_id: 'busy.app',
         secret: 'secretkey-abc-123',
@@ -31,6 +31,6 @@ module.exports = {
   },
 
   down: function (queryInterface, Sequelize) {
-    return queryInterface.bulkDelete('Apps', null, {});
+    return queryInterface.bulkDelete('apps', null, {});
   }
 };
