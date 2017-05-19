@@ -7,6 +7,7 @@ const http = require('http');
 const https = require('https');
 const cors = require('cors');
 const steem = require('steem');
+const db = require('./db/models');
 const { strategy } = require('./helpers/middleware');
 
 http.globalAgent.maxSockets = Infinity;
@@ -26,6 +27,7 @@ app.enable('trust proxy');
 
 app.use((req, res, next) => {
   req.steem = steem;
+  req.db = db;
   next();
 });
 
