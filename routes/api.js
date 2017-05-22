@@ -40,8 +40,8 @@ apiRouter.get('/verify', (req, res) => {
     userId: req.userId,
     username: req.username,
   }, process.env.JWT_SECRET, {
-    expiresIn: '1 day',
-  });
+      expiresIn: '1 day',
+    });
 
   if (req.username && (req.permissions !== null || req.baseUrl === '/api/@steemconnect')) {
     return res.json({
@@ -120,6 +120,12 @@ apiRouter.get('/ignore', (req, res) => {
 apiRouter.get('/customJson', (req, res) => {
   const { id, json, requiredPostingAuths, requiredAuths } = req.query;
   steem.broadcast.customJson(req.wif, requiredAuths, requiredPostingAuths, id, json,
+    (err, result) => sendResponse({ err, result }, res));
+});
+
+apiRouter.get('/claimRewardBalance', (req, res) => {
+  const { account, rewardSteem, rewardSbd, rewardVests } = req.query;
+  steem.broadcast.claimRewardBalance(req.wif, account, rewardSteem, rewardSbd, rewardVests,
     (err, result) => sendResponse({ err, result }, res));
 });
 
