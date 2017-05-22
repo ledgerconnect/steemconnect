@@ -46,7 +46,10 @@ router.post('/auth/login', (req, res) => {
     } else if (result.length === 0) {
       res.status(401).send({ error: 'Incorrect Username' });
     } else if (result[0] && steem.auth.wifIsValid(wif, result[0].posting.key_auths[0][0])) {
-      const secret = encryptMessage(JSON.stringify({ username, wif }), process.env.JWT_SECRET);
+      const userId = result[0].id;
+      const secret = encryptMessage(
+        JSON.stringify({ username, wif, userId }),
+        process.env.JWT_SECRET);
       const expiresIn = 60 * 60 * 24 * 30;
       const auth = jwt.sign({ username, secret }, process.env.JWT_SECRET, { expiresIn });
       res.cookie('auth', auth, { path: '/', secure: req.hostname !== 'localhost', maxAge: expiresIn * 1000 });
