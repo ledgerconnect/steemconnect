@@ -125,8 +125,12 @@ apiRouter.get('/customJson', (req, res) => {
 
 apiRouter.get('/claimRewardBalance', (req, res) => {
   const { account, rewardSteem, rewardSbd, rewardVests } = req.query;
-  steem.broadcast.claimRewardBalance(req.wif, account, rewardSteem, rewardSbd, rewardVests,
-    (err, result) => sendResponse({ err, result }, res));
+  if (req.username !== account) {
+    sendResponse({ err: 'account name must match with steemconnect account name' }, res);
+  } else {
+    steem.broadcast.claimRewardBalance(req.wif, account, rewardSteem, rewardSbd, rewardVests,
+      (err, result) => sendResponse({ err, result }, res));
+  }
 });
 
 module.exports = router;
