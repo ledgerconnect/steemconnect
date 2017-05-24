@@ -91,6 +91,7 @@ function checkPermission(req, res, next) {
       throw new Error('Unauthorized');
     }
     permissions = _.map((permissions || []), v => PermissionList[v]);
+    permissions.push({ name: 'ClaimRewardBalance', paths: ['/claimRewardBalance'] }); // ClaimRewardBalance should be enabled regardless of permission
     const selectedQuery = _.find(permissions, p => (p.paths.indexOf(requestPath) >= 0));
     if (selectedQuery || reqFromSteemConnect) {
       next();
