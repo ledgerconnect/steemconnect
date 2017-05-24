@@ -16,9 +16,11 @@ export default class Authorize extends Component {
     super(props);
     const clientId = this.props.location.query.client_id;
     const redirectUri = this.props.location.query.redirect_uri;
+    const scope = this.props.location.query.scope || '';
     this.state = {
       clientId,
       redirectUri,
+      scope,
       step: 0,
     };
   }
@@ -37,13 +39,13 @@ export default class Authorize extends Component {
   };
 
   authorize = (auth) => {
-    const { clientId, redirectUri } = this.state;
+    const { clientId, redirectUri, scope } = this.state;
     this.setState({ step: 0 });
     login({ ...auth }, (err, res) => {
       console.log(err, res);
       addPostingAuthority({ ...auth, clientId }, (err, res) => {
         console.log(err, res);
-        authorize({ clientId }, (err, res) => {
+        authorize({ clientId, scope }, (err, res) => {
           console.log(err, res);
           window.location = `${redirectUri}?${qs.stringify(res)}`;
         });

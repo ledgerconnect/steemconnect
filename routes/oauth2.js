@@ -23,8 +23,9 @@ router.get('/oauth2/authorize', async (req, res, next) => {
 
 router.all('/api/oauth2/authorize', authenticate('user'), async (req, res, next) => {
   const clientId = req.query.client_id;
+  const scope = req.query.scope ? req.query.scope.split(',') : [];
   debug(`Issue app token for user @${req.user} using @${clientId} proxy.`);
-  const accessToken = issueAppToken(clientId, req.user);
+  const accessToken = issueAppToken(clientId, req.user, scope);
   res.json({
     access_token: accessToken,
     expires_in: config.token_expiration,
