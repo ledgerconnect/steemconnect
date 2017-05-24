@@ -3,7 +3,6 @@ const debug = require('debug')('sc2:server');
 const { authenticate, verifyPermissions } = require('../helpers/middleware');
 const { encode } = require('steem/lib/auth/memo');
 const { issueUserToken } = require('../helpers/token');
-const { App } = require('../db/models');
 const router = express.Router();
 
 /** Get my account details */
@@ -14,20 +13,20 @@ router.all('/me', authenticate(), async (req, res, next) => {
 
 /** Get applications */
 router.get('/apps', async (req, res, next) => {
-  const apps = await App.findAll({ attributes: { exclude: ['secret'] } });
+  const apps = await req.db.apps.findAll({ attributes: { exclude: ['secret'] } });
   res.json(apps);
 });
 
 /** Get my applications */
 router.all('/apps/me', authenticate('user'), async (req, res, next) => {
-  const apps = await App.findAll({ where: { owner: req.user } });
+  const apps = await req.db.apps.findAll({ where: { owner: req.user } });
   res.json(apps);
 });
 
 /** Get application details */
 router.get('/apps/@:clientId', async (req, res, next) => {
   const { clientId } = req.params;
-  const app = await App.findOne({ where: { client_id: clientId } });
+  const app = await req.db.apps.findOne({ where: { client_id: clientId } });
   if (!app) return next();
   if (!req.user || app.owner !== req.user) {
     app.secret = undefined;
@@ -40,11 +39,12 @@ router.put('/apps/@:clientId', authenticate('user'), async (req, res, next) => {
   const { clientId } = req.params;
   const app = req.body;
   try {
-    await App.update({
+    await req.db.apps.update({
       redirect_uris: app.redirect_uris,
       name: app.name,
       description: app.description,
       icon: app.icon,
+      website: app.website,
     }, {
       where: {
         client_id: clientId,

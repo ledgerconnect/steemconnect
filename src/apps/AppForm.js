@@ -6,9 +6,7 @@ export default class AppForm extends Form {
   constructor(props) {
     super(props);
     const data = this.props.data || {};
-    this.state = {
-      data,
-    };
+    this.state = { data };
   }
 
   onChange = (event) => {
@@ -60,6 +58,16 @@ export default class AppForm extends Form {
               name="icon"
               onChange={this.onChange}
               defaultValue={data.icon}
+            />
+          </div>
+          <div className="form-group">
+            <label className="label">Website</label>
+            <input
+              type="text"
+              className="form-control"
+              name="website"
+              onChange={this.onChange}
+              defaultValue={data.website}
             />
           </div>
           <div className="form-group">
