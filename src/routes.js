@@ -38,8 +38,8 @@ export default (
       <Route path="/docs/oauth2" component={OAuth2} />
       <Route path="/@:username/permissions" component={Permissions} />
       <Route path="/apps/@:clientId" component={App} />
-      <Route path="/accounts/create" component={CreateAccount} />
     </Route>
+    <Route path="/accounts/create" component={CreateAccount} />
     <Route path="/login" component={Login} />
     <Route path="/oauth2/authorize" component={Authorize} />
     <Route path="/sign/:type" component={Sign} />
