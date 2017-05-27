@@ -24,7 +24,7 @@ export default class CreateAccount extends Component {
 
   sign = (auth) => {
     const { account } = this.state;
-    const publicKeys = steem.auth.generateKeys(auth.username, auth.password, ['owner', 'active', 'posting', 'memo']);
+    const publicKeys = steem.auth.generateKeys(account.name, account.password, ['owner', 'active', 'posting', 'memo']);
     const owner = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.owner, 1]] };
     const active = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.active, 1]] };
     const posting = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.posting, 1]] };

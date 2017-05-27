@@ -1,6 +1,7 @@
 import steem from 'steem';
 import fetch from 'isomorphic-fetch';
 import { decode } from 'steem/lib/auth/memo';
+import { key_utils } from 'steem/lib/auth/ecc';
 
 export const login = ({ username, wif, role = 'posting' }, cb) => {
   fetch(`/api/login/challenge?username=${username}&role=${role}`)
@@ -47,4 +48,11 @@ export const authorize = ({ clientId, scope }, cb) => {
     .then(res => res.json())
     .then(data => cb(null, data))
     .catch(err => cb(err, null));
+};
+
+// https://github.com/steemit/condenser/blob/634c13cd0d2fafa28592e9d5f43589e201198248/app/components/elements/SuggestPassword.jsx#L97
+export const createSuggestedPassword = () => {
+  const PASSWORD_LENGTH = 32;
+  const privateKey = key_utils.get_random_key();
+  return privateKey.toWif().substring(3, 3 + PASSWORD_LENGTH);
 };
