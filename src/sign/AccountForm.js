@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import crypto from 'crypto';
 import Form from '../widgets/Form';
+import { createSuggestedPassword } from '../helpers/authHelper';
 
 export default class AccountForm extends Form {
   constructor(props) {
     super(props);
+    const password = createSuggestedPassword();
     const data = this.props.data || {
-      password: crypto.randomBytes(32).toString('base64'),
+      password,
       steem: '0.000 STEEM',
       vests: '0.000000 VESTS'
     };
