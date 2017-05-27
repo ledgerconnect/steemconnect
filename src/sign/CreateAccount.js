@@ -67,8 +67,7 @@ export default class CreateAccount extends Component {
           {step === 0 &&
             <div>
               <h2 className="text-center">Create Account</h2>
-              <AccountForm submit={this.submit}
-              />
+              <AccountForm submit={this.submit} />
             </div>
           }
           {step === 1 &&
