@@ -62,24 +62,25 @@ export default class CreateAccount extends Component {
   render() {
     const { step } = this.state;
     return (
-      <div className="container my-5">
-        {step === 0 &&
-          <div>
-            <h2>Create Account</h2>
-            <AccountForm submit={this.submit}
-            />
-          </div>
-        }
-        {step === 1 &&
-          <div className="text-center">
-            <SignForm roles={['active']} sign={this.sign} />
-          </div>
-        }
-        {step === 2 &&
-          <div className="text-center">
-            <Loading/>
-          </div>
-        }
+      <div className="Sign">
+        <div className="Sign__content container text-left my-2">
+          {step === 0 &&
+            <div>
+              <h2 className="text-center">Create Account</h2>
+              <AccountForm submit={this.submit} />
+            </div>
+          }
+          {step === 1 &&
+            <div className="text-center">
+              <SignForm roles={['active']} sign={this.sign} />
+            </div>
+          }
+          {step === 2 &&
+            <div className="text-center">
+              <Loading/>
+            </div>
+          }
+        </div>
       </div>
     );
   }
