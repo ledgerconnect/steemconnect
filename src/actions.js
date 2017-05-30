@@ -19,7 +19,7 @@ export const authenticate = () =>
         .then(res => res.json())
         .then(data => {
           dispatch(authenticateSuccess({
-            user: data,
+            user: data.account,
             token,
           }));
         })
