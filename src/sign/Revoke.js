@@ -28,7 +28,7 @@ export default class Revoke extends Component {
     this.setState({ step: 2 });
 
     steem.api.getAccounts([auth.username], (err, result) => {
-      const { owner, active, posting, memo_key, json_metadata } = result[0];
+      const { posting, memo_key, json_metadata } = result[0];
       let hasAuth = false;
       let postingNew = posting;
 
@@ -43,8 +43,8 @@ export default class Revoke extends Component {
       steem.broadcast.accountUpdate(
         auth.wif,
         auth.username,
-        owner,
-        active,
+        undefined,
+        undefined,
         postingNew,
         memo_key,
         json_metadata,
