@@ -1,15 +1,13 @@
 import React from 'react';
+import { Icon } from 'antd';
 import './Loading.scss';
 
-const Loading = ({ color }) => {
-  let className = (color === 'white') ? 'loading-white' : 'loading';
-  className += ' align-center';
+const Loading = () => {
   return (
-    <div>
-      <div className={className}>
-        <span>●</span><span>●</span><span>●</span>
-      </div>
-    </div>
+    <Icon
+      type="loading"
+      className="Loading"
+    />
   );
 };
 
