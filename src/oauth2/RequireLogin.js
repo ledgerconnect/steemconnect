@@ -4,6 +4,7 @@ import Loading from '../widgets/Loading';
 
 const RequireLogin = (props) => {
   if (props.app.isLoaded && !props.app.user.name) {
+    const next = props.location.pathname;
     const to = next === '/dashboard' ? '/login' : `/login?next=${next}`;
     browserHistory.push(to);
   }
