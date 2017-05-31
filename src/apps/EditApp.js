@@ -23,7 +23,7 @@ export default class EditApp extends Component {
 
     fetch(`/api/apps/@${clientId}`, {
       headers: new Headers({
-        Authorization: this.props.app.token,
+        Authorization: this.props.auth.token,
       })
     })
       .then(res => res.json())
@@ -44,7 +44,7 @@ export default class EditApp extends Component {
       headers: new Headers({
         'Accept': 'application/json, text/plain, */*',
         'Content-Type': 'application/json',
-        Authorization: this.props.app.token,
+        Authorization: this.props.auth.token,
       }),
       body: JSON.stringify(data)
     })
@@ -72,9 +72,11 @@ export default class EditApp extends Component {
         {isLoading && <Loading/>}
         {isLoaded &&
           <div>
-            <Avatar icon={app.icon} size="80" className="float-left mr-3" />
-            <h2 className="d-inline">{clientId}</h2>
-            <p>@{clientId}</p>
+            <div className="pb-3">
+              <Avatar icon={app.icon} size="80" className="float-left mr-3" />
+              <h2 className="d-inline">{clientId}</h2>
+              <p>@{clientId}</p>
+            </div>
             <AppForm
               data={app}
               isLoading={isLoading}

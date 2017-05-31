@@ -2,17 +2,17 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 import Loading from '../widgets/Loading';
 
-const RequireLogin = (props) => {
-  if (props.app.isLoaded && !props.app.user.name) {
-    const next = props.location.pathname;
+const RequireLogin = ({ auth, location, children }) => {
+  if (auth.isLoaded && !auth.user.name) {
+    const next = location.pathname;
     const to = next === '/dashboard' ? '/login' : `/login?next=${next}`;
     browserHistory.push(to);
   }
-  return (props.app.isLoaded && props.app.user.name)
-    ? React.cloneElement(props.children, {app: props.app})
+  return (auth.isLoaded && auth.user.name)
+    ? React.cloneElement(children, { auth })
     : <div className="Sign">
       <div className="Sign__content container my-2">
-        {props.app.isLoading && <Loading/>}
+        {auth.isLoading && <Loading/>}
       </div>
     </div>;
 };

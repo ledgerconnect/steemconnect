@@ -24,7 +24,7 @@ export default class MyApps extends Component {
 
     fetch(`/api/apps/@${clientId}`, {
       headers: new Headers({
-        Authorization: this.props.app.token,
+        Authorization: this.props.auth.token,
       })
     })
       .then(res => res.json())
@@ -46,12 +46,12 @@ export default class MyApps extends Component {
             <Avatar icon={app.icon} size="80" className="float-left mr-3" />
             <h2 className="d-inline">{clientId}</h2>
             <span className="float-right">
-              {isLoaded && app.owner === this.props.app.user.name &&
+              {isLoaded && app.owner === this.props.auth.user.name &&
                 <Link to={`/apps/@${clientId}/edit`} className="btn btn-secondary btn-sm ml-2">
                   Edit
                 </Link>
               }
-              {this.props.app.isAuthenticated && hasAuthority(this.props.app.user, clientId) &&
+              {this.props.auth.isAuthenticated && hasAuthority(this.props.auth.user, clientId) &&
                 <Link to={`/revoke/@${clientId}`} className="btn btn-danger btn-sm ml-2">
                   Revoke
                 </Link>

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { authenticate } from './actions';
+import { authenticate } from './actions/auth';
 import './App.scss';
 
 @connect(
   state => ({
-    app: state.app,
+    auth: state.auth,
   }),
   dispatch => bindActionCreators({
     authenticate,
@@ -21,7 +21,7 @@ export default class Wrapper extends Component {
     return (
       React.cloneElement(
         this.props.children,
-        { app: this.props.app }
+        { auth: this.props.auth }
       )
     );
   }

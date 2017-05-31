@@ -1,9 +1,9 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import reducer from './reducer';
+import auth from './reducers/auth';
 
 const reducers = combineReducers({
-  app: reducer,
+  auth,
 });
 
 if (process.env.ENABLE_LOGGER &&

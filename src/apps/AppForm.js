@@ -23,7 +23,7 @@ export default class AppForm extends Form {
     const { data } = this.state;
     const redirectUris = data.redirect_uris && data.redirect_uris.join('\n');
     return (
-      <form className="pt-3" onSubmit={this.onSubmit}>
+      <form onSubmit={this.onSubmit}>
         <div className="block">
           <div className="form-group">
             <label className="label">App Name</label>

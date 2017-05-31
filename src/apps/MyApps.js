@@ -21,7 +21,7 @@ export default class MyApps extends Component {
 
     fetch(`/api/apps/me`, {
       headers: new Headers({
-        Authorization: this.props.app.token,
+        Authorization: this.props.auth.token,
       })
     })
       .then(res => res.json())
