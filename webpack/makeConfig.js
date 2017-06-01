@@ -65,12 +65,13 @@ function makeStyleLoaders(options) {
   if (options.isDevelopment) {
     return [
       {
-        test: /\.s[ac]ss$/,
+        test: /\.s[ac]ss|.less$/,
         loaders: [
           'style',
           'css?sourceMap?importLoaders=1',
           'autoprefixer-loader?browsers=last 2 version',
           'sass?sourceMap&sourceMapContents',
+          'less-loader',
         ],
       },
     ];
@@ -78,10 +79,10 @@ function makeStyleLoaders(options) {
 
   return [
     {
-      test: /\.s[ac]ss$/,
+      test: /\.s[ac]ss|.less$/,
       loader: ExtractTextPlugin.extract(
         'style-loader',
-        'css?importLoaders=1!autoprefixer-loader?browsers=last 2 version!sass'
+        'css?importLoaders=1!autoprefixer-loader?browsers=last 2 version!sass!less'
       ),
     },
   ];
