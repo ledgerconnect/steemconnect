@@ -1,7 +1,7 @@
 sc2.init({
   baseURL: window.location.origin,
   app: 'busy.app',
-  callbackURL: 'http://v2.steemconnect.com/demo',
+  callbackURL: 'https://v2.steemconnect.com/demo',
   scope: ['vote', 'comment']
 });
 
