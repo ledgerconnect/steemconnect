@@ -81,6 +81,7 @@
     "url-loader": "^0.5.7",
     "validator": "^5.1.0",
     "webpack": "^1.13.2",
+    "webpack-dev-middleware": "^1.10.2",
     "webpack-visualizer-plugin": "^0.1.5"
   },
   "devDependencies": {
