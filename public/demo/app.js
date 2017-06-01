@@ -1,7 +1,7 @@
 sc2.init({
   baseURL: window.location.origin,
   app: 'busy.app',
-  callbackURL: 'http://localhost:3000/demo',
+  callbackURL: 'http://v2.steemconnect.com/demo',
   scope: ['vote', 'comment']
 });
 
@@ -18,7 +18,7 @@ angular.module('app', [])
       sc2.setAccessToken($scope.accessToken);
       sc2.me(function (err, result) {
         console.log('/me', err, result);
-        $scope.user = result;
+        $scope.user = result.account;
         $scope.$apply();
       });
     }

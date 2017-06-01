@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import numeral from 'numeral';
-import changeCase from 'change-case';
 import Loading from '../widgets/Loading';
 
 export default class AuthorizedApps extends Component {
@@ -16,7 +15,7 @@ export default class AuthorizedApps extends Component {
 
   render() {
     const { isLoading } = this.state;
-    const { user } = this.props.app;
+    const { user } = this.props.auth;
     return (
       <div className="container py-5">
         <h2>Authorized Apps</h2>

@@ -1,5 +1,7 @@
-$font-primary: Whitney,"Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
-$font-alt: WhitneyMedium,"Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+@import "~antd/dist/antd.less";
+@import "./custom.less";
+
+@font-family-secondary: WhitneyMedium,"Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
 
 @font-face {
   font-family: Whitney;
@@ -22,26 +24,19 @@ $font-alt: WhitneyMedium,"Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-s
   src: url(/fonts/WhitneyBold.woff) format('woff')
 }
 
-
-html, body, #app {
-  height: 100%;
-  font-size: 18px;
-}
-
-body {
-  background-color: #fcfcfc;
-}
-
 #app {
-  color: lighten(black, 60%);
-  font-family: $font-primary;
+  height: 100%;
 }
 
-h1, h2, h3, h4, h5 {
-  color: black;
-  font-family: $font-alt;
+h1, h2, h3, h4 {
+  font-family: @font-family-secondary;
   font-weight: 700;
-  margin-bottom: 1em;
+  padding-bottom: 0.6em;
+  color: #202020;
+}
+
+p {
+  padding-bottom: 1em;
 }
 
 blockquote {
@@ -64,7 +59,7 @@ b {
   letter-spacing: 1px;
   padding: 0.75em 1.5em;
   border: none !important;
-  font-family: $font-alt;
+  font-family: @font-family-secondary;
   border-radius: 0.25em;
 
   &:hover, &:focus, &:active {
@@ -121,7 +116,7 @@ b {
 }
 
 input, textarea {
-  font-family: $font-primary;
+  font-family: @font-family;
 }
 
 a, button {
@@ -130,7 +125,7 @@ a, button {
 
 pre {
   font-size: 18px;
-  font-family: $font-primary;
+  font-family: @font-family;
 }
 
 .label {

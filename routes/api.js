@@ -3,12 +3,18 @@ const debug = require('debug')('sc2:server');
 const { authenticate, verifyPermissions } = require('../helpers/middleware');
 const { encode } = require('steem/lib/auth/memo');
 const { issueUserToken } = require('../helpers/token');
+const config = require('../config.json');
 const router = express.Router();
 
 /** Get my account details */
 router.all('/me', authenticate(), async (req, res, next) => {
+  const scope = req.scope.length ? req.scope : config.authorized_operations;
   const accounts = await req.steem.api.getAccountsAsync([req.user]);
-  res.json(accounts[0]);
+  res.json({
+    user: req.user,
+    account: accounts[0],
+    scope,
+  });
 });
 
 /** Get applications */
@@ -59,9 +65,7 @@ router.put('/apps/@:clientId', authenticate('user'), async (req, res, next) => {
 
 /** Broadcast transactions */
 router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, res, next) => {
-  const scope = req.scope.length
-    ? req.scope
-    : ['comment', 'comment_options', 'vote', 'custom_json', 'claim_reward_balance'];
+  const scope = req.scope.length ? req.scope : config.authorized_operations;
   const { operations } = req.body;
   let isAuthorized = true;
 

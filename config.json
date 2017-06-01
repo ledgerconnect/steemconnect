@@ -1,3 +1,11 @@
 {
-  "token_expiration": 36000
+  "token_expiration": 36000,
+  "authorized_operations": [
+    "vote",
+    "comment",
+    "comment_delete",
+    "comment_options",
+    "custom_json",
+    "claim_reward_balance"
+  ]
 }

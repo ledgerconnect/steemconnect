@@ -4,18 +4,20 @@ import Avatar from './Avatar';
 import './Header.scss';
 
 const Header = ({ username }) =>
-  <header className="Header">
-    <div className="container">
-      <div className="Header__log">
-        {username
-          ? <Link to="/dashboard">
-            <span className="mr-2">{username}</span>
-            <div className="float-right"><Avatar username={username} /></div>
-          </Link>
-          : <Link to="/login">Log In</Link>
-        }
-      </div>
+  <div className="Header container">
+    <div className="Header__log">
+      {username &&
+        <Link to="/dashboard">
+          <span className="mr-2">{username}</span>
+          <div className="float-right"><Avatar username={username}/></div>
+        </Link>
+      }
+      {!username &&
+        <div>
+          <Link to="/login">Log In</Link>
+        </div>
+      }
     </div>
-  </header>;
+  </div>;
 
 export default Header;

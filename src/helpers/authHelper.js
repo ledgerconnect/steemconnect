@@ -21,15 +21,15 @@ export const hasAuthority = (user, clientId, role = 'posting') => {
 
 export const addPostingAuthority = ({ username, wif, clientId }, cb) => {
   steem.api.getAccounts([username], (err, result) => {
-    const { owner, active, posting, memo_key, json_metadata } = result[0];
+    const { posting, memo_key, json_metadata } = result[0];
     let postingNew = posting;
     if (!hasAuthority(result[0], clientId)) {
       postingNew.account_auths.push([clientId, parseInt(posting.weight_threshold)]);
       steem.broadcast.accountUpdate(
         wif,
         username,
-        owner,
-        active,
+        undefined,
+        undefined,
         postingNew,
         memo_key,
         json_metadata,
