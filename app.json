@@ -9,10 +9,7 @@
     "BROADCASTER_USERNAME": {
       "required": true
     },
-    "DATABASE_URL": {
-      "required": true
-    },
-    "HEROKU_POSTGRESQL_COPPER_URL": {
+    "STAGING_DATABASE_URL": {
       "required": true
     },
     "NODE_MODULES_CACHE": {
@@ -22,7 +19,7 @@
       "generator": "secret"
     },
     "DEBUG": "sc2:*",
-    "NODE_ENV": "copper"
+    "DATABASE_NAME": "staging"
   },
   "formation": {
   },
