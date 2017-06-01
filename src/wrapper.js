@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { authenticate } from './actions/auth';
-import './App.scss';
+import './styles/common.less';
 
 @connect(
   state => ({
