@@ -7,8 +7,8 @@
     "dialect": "postgres",
     "port": 5432
   },
-  "copper": {
-    "use_env_variable": "HEROKU_POSTGRESQL_COPPER_URL",
+  "staging": {
+    "use_env_variable": "STAGING_DATABASE_URL",
     "dialectOptions": {
       "ssl": true
     }
