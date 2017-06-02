@@ -6777,9 +6777,9 @@ statuses@~1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.2.1.tgz#dded45cc18256d51ed40aec142489d5c61026d28"
 
-steem@^0.5.10:
-  version "0.5.10"
-  resolved "https://registry.yarnpkg.com/steem/-/steem-0.5.10.tgz#41884b944670b8767570c316a28e9733e5b816dd"
+steem@^0.5.11:
+  version "0.5.11"
+  resolved "https://registry.yarnpkg.com/steem/-/steem-0.5.11.tgz#93bff5536f8defdc11fbab842dbfcebd39f6afa1"
   dependencies:
     bigi "^1.4.2"
     bluebird "^3.4.6"
