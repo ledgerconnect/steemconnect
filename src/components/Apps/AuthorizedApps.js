@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import numeral from 'numeral';
-import Loading from '../widgets/Loading';
+import Loading from '../../widgets/Loading';
 
 export default class AuthorizedApps extends Component {
   constructor(props) {

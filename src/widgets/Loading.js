@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from 'antd';
-import './Loading.scss';
+import './Loading.less';
 
 const Loading = () => {
   return (

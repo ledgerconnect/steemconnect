@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import * as validator from '../helpers/validatorHelpers';
+import * as validator from '../utils/validator';
 
 export default class Form extends Component {
   constructor(props) {

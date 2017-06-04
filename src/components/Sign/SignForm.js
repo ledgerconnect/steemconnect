@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import steem from 'steem';
-import { clear, hasAuth, getAuth, addAuth, setLastUsername } from '../helpers/localStorageHelper';
-import Icon from '../widgets/Icon';
-import './Sign.scss';
+import { clear, hasAuth, getAuth, addAuth, setLastUsername } from '../../utils/localStorage';
+import Icon from '../../widgets/Icon';
+import '../Sign.less';
 
 export default class SignForm extends Component {
   constructor(props) {

@@ -2,10 +2,10 @@ import React from 'react';
 import { Card, notification } from 'antd';
 import steem from 'steem';
 import { Link } from 'react-router';
-import RecoverAccountForm from './Form/RecoverAccount';
-import Loading from '../widgets/Loading';
-import { getErrorMessage } from '../helpers/operationHelpers';
-import { createSuggestedPassword } from '../helpers/authHelper';
+import RecoverAccountForm from '../Form/RecoverAccount';
+import Loading from '../../widgets/Loading';
+import { getErrorMessage } from '../../utils/operation';
+import { createSuggestedPassword } from '../../utils/auth';
 
 console.log(steem.auth.toWif('fabien', undefined, 'owner'));
 

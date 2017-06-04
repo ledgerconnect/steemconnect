@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import steem from 'steem';
-import SignForm from './SignForm';
-import SignSuccess from '../sign/SignSuccess';
-import SignError from '../sign/SignError';
-import { getOperation, parseQuery } from '../helpers/operationHelpers';
-import SignPlaceholderDefault from './Placeholder/SignPlaceholderDefault';
-import SignPlaceholderComment from './Placeholder/SignPlaceholderComment';
+import SignForm from './Sign/SignForm';
+import SignSuccess from './Sign/SignSuccess';
+import SignError from './Sign/SignError';
+import { getOperation, parseQuery } from '../utils/operation';
+import SignPlaceholderDefault from './Sign/Placeholder/SignPlaceholderDefault';
+import SignPlaceholderComment from './Sign/Placeholder/SignPlaceholderComment';
 import Loading from '../widgets/Loading';
-import './Sign.scss';
+import './Sign.less';
 
 export default class Sign extends Component {
   constructor(props) {

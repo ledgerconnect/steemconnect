@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Icon from '../widgets/Icon';
+import Icon from '../../widgets/Icon';
 
 export default class Sign extends Component {
   constructor(props) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import Avatar from './Avatar';
-import './Header.scss';
+import './Header.less';
 
 const Header = ({ username }) =>
   <div className="Header container">

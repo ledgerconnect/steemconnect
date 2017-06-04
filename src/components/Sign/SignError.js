@@ -1,5 +1,5 @@
 import React from 'react';
-import Icon from '../widgets/Icon';
+import Icon from '../../widgets/Icon';
 
 const SignError = ({ error, resetForm }) =>
   <div>

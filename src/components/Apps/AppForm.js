@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import Form from '../widgets/Form';
+import Form from '../../widgets/Form';
 
 export default class AppForm extends Form {
   constructor(props) {

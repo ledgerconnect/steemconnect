@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input, Button } from 'antd';
-import { accountExist } from '../../helpers/validatorHelpers';
+import { accountExist } from '../../utils/validator';
 
 const FormItem = Form.Item;
 
