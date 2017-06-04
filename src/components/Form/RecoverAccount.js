@@ -49,7 +49,7 @@ class RecoverAccountForm extends React.Component {
         >
           {getFieldDecorator('account_to_recover', {
             rules: [
-              { validator: accountExist, message: 'Account name is not found' },
+              { validator: accountExist },
               { required: true, message: 'Please input the account to recover' },
             ],
           })(
@@ -73,6 +73,7 @@ class RecoverAccountForm extends React.Component {
         <FormItem
           {...formItemLayout}
           label="New password"
+          help={<p>Write down your password and keep it somewhere very safe and secure.</p>}
           hasFeedback
         >
           {getFieldDecorator('new_password', {
