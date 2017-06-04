@@ -13,6 +13,7 @@ import Steemjs from './statics/Docs/Steemjs';
 import OAuth2 from './statics/Docs/OAuth2';
 import Sign from './sign/Sign';
 import RecoverAccount from './components/RecoverAccount';
+import RequestAccountRecovery from './components/RequestAccountRecovery';
 import CreateAccount from './sign/CreateAccount';
 import Login from './oauth2/Login';
 import Authorize from './oauth2/Authorize';
@@ -42,6 +43,7 @@ export default (
     </Route>
     <Route path="/accounts/create" component={CreateAccount} />
     <Route path="/accounts/recover" component={RecoverAccount} />
+    <Route path="/accounts/request-recovery" component={RequestAccountRecovery} />
     <Route path="/login" component={Login} />
     <Route path="/oauth2/authorize" component={Authorize} />
     <Route path="/sign/:type" component={Sign} />
