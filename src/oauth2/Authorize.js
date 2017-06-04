@@ -26,10 +26,10 @@ export default class Authorize extends Component {
   }
 
   componentWillReceiveProps = (props) => {
-    const { clientId, redirectUri } = this.state;
+    const { clientId, scope, redirectUri } = this.state;
     const { auth } = props;
     if (auth.isAuthenticated && hasAuthority(auth.user, clientId)) {
-      authorize({ clientId }, (err, res) => {
+      authorize({ clientId, scope }, (err, res) => {
         console.log(err, res);
         window.location = `${redirectUri}?${qs.stringify(res)}`;
       });
