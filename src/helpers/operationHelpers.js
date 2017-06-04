@@ -1,4 +1,5 @@
 import { formatter } from 'steem';
+import _ from 'lodash';
 import changeCase from 'change-case';
 import diacritics from 'diacritics';
 import operations from 'steem/lib/broadcast/operations.json';
@@ -41,6 +42,12 @@ export const parseVote = (query, username) => {
   query.voter = query.voter || username;
   query.weight = query.weight || 10000;
   return query;
+};
+
+export const getErrorMessage = (error) => {
+  return _.has(error, 'payload.error.data.stack[0].format')
+    ? error.payload.error.data.stack[0].format
+    : '';
 };
 
 export const parseComment = (query, username) => {
