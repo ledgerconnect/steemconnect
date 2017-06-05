@@ -18,8 +18,10 @@ angular.module('app', [])
       sc2.setAccessToken($scope.accessToken);
       sc2.me(function (err, result) {
         console.log('/me', err, result);
-        $scope.user = result.account;
-        $scope.$apply();
+        if (!err) {
+          $scope.user = result.account;
+          $scope.$apply();
+        }
       });
     }
 
