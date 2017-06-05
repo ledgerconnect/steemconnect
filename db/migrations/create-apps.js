@@ -8,9 +8,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       client_id: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
       },
       secret: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       owner: {
@@ -30,6 +33,12 @@ module.exports = {
       },
       website: {
         type: Sequelize.TEXT
+      },
+      beneficiaries: {
+        type: Sequelize.JSONB
+      },
+      disabled: {
+        type: Sequelize.BOOLEAN
       },
       created_at: {
         allowNull: false,
