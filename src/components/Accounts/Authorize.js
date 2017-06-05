@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import steem from 'steem';
-import SignForm from '../Sign/SignForm';
-import SignSuccess from '../Sign/SignSuccess';
-import SignError from '../Sign/SignError';
+import SignForm from '../Form/Sign';
+import SignSuccess from '../Sign/Success';
+import SignError from '../Sign/Error';
 import Loading from '../../widgets/Loading';
 
 export default class Authorize extends Component {

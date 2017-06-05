@@ -3,7 +3,7 @@ import { Card, notification } from 'antd';
 import steem from 'steem';
 import RequestAccountRecoveryForm from '../Form/RequestAccountRecovery';
 import Loading from '../../widgets/Loading';
-import SignForm from '../Sign/SignForm';
+import SignForm from '../Form/Sign';
 import { createSuggestedPassword } from '../../utils/auth';
 import { getErrorMessage } from '../../utils/operation';
 

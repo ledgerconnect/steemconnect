@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import steem from 'steem';
-import SignForm from './Sign/SignForm';
-import SignSuccess from './Sign/SignSuccess';
-import SignError from './Sign/SignError';
+import SignForm from './Form/Sign';
+import SignSuccess from './Sign/Success';
+import SignError from './Sign/Error';
 import { getOperation, parseQuery } from '../utils/operation';
-import SignPlaceholderDefault from './Sign/Placeholder/SignPlaceholderDefault';
-import SignPlaceholderComment from './Sign/Placeholder/SignPlaceholderComment';
+import SignPlaceholderDefault from './Sign/Placeholder/Default';
+import SignPlaceholderComment from './Sign/Placeholder/Comment';
 import Loading from '../widgets/Loading';
 import './Sign.less';
 

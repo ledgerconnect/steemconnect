@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import qs from 'query-string';
 import { authorize, login, hasAuthority, addPostingAuthority } from '../../utils/auth';
 import Loading from '../../widgets/Loading';
-import SignForm from '../Sign/SignForm';
+import SignForm from '../Form/Sign';
 
 @connect(
   dispatch => bindActionCreators({
