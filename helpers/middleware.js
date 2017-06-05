@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { tokens } = require('../db/models');
 
 /**
  * Check if user allow app proxy account to post on his behalf
@@ -38,6 +39,12 @@ const strategy = (req, res, next) => {
 const authenticate = (role) => async (req, res, next) => {
   if (!req.role || (role && req.role !== role)) {
     return res.status(401).send('Unauthorized');
+  }
+  if (req.role === 'app') {
+    const token = await tokens.findOne({ token: req.token });
+    if (!token) {
+      return res.status(401).send('Unauthorized');
+    }
   }
   next();
 };
