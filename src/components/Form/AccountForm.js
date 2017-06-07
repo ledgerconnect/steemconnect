@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Form from '../widgets/Form';
-import { createSuggestedPassword } from '../helpers/authHelper';
+import Form from '../../widgets/Form';
+import { createSuggestedPassword } from '../../utils/auth';
 
 export default class AccountForm extends Form {
   constructor(props) {

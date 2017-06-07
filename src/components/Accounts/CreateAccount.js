@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import steem from 'steem';
 import { notification } from 'antd';
-import AccountForm from './AccountForm';
-import SignForm from '../sign/SignForm';
-import Loading from '../widgets/Loading';
+import AccountForm from '../Form/AccountForm';
+import SignForm from '../Form/Sign';
+import Loading from '../../widgets/Loading';
 
 export default class CreateAccount extends Component {
   constructor(props) {

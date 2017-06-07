@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import fetch from 'isomorphic-fetch';
 import { notification } from 'antd';
 import AppForm from './AppForm';
-import Loading from '../widgets/Loading';
-import Avatar from '../widgets/Avatar';
+import Loading from '../../widgets/Loading';
+import Avatar from '../../widgets/Avatar';
 
 export default class EditApp extends Component {
   constructor(props) {

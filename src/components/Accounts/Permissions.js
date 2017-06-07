@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import steem from 'steem';
 import numeral from 'numeral';
 import changeCase from 'change-case';
-import Loading from '../widgets/Loading';
+import Loading from '../../widgets/Loading';
 
 export default class Permissions extends Component {
   constructor(props) {

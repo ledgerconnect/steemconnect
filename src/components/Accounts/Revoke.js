@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import steem from 'steem';
-import SignForm from './SignForm';
-import SignSuccess from './SignSuccess';
-import SignError from './SignError';
-import Loading from '../widgets/Loading';
+import SignForm from '../Form/Sign';
+import SignSuccess from '../Sign/Success';
+import SignError from '../Sign/Error';
+import Loading from '../../widgets/Loading';
 
-export default class Authorize extends Component {
+export default class Revoke extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,9 +23,8 @@ export default class Authorize extends Component {
     });
   };
 
-  authorize = (auth) => {
+  revoke = (auth) => {
     const { username } = this.props.params;
-    const weight = this.props.location.query.weight || 1;
     this.setState({ step: 2 });
 
     steem.api.getAccounts([auth.username], (err, result) => {
@@ -33,12 +32,13 @@ export default class Authorize extends Component {
       let hasAuth = false;
       let postingNew = posting;
 
-      posting.account_auths.map((account) => {
+      posting.account_auths.map((account, idx) => {
         if (account[0] === username) {
           hasAuth = true;
+          postingNew.account_auths.splice(idx, 1);
         }
       });
-      !hasAuth && postingNew.account_auths.push([username, parseInt(weight)]);
+      console.log(postingNew);
 
       steem.broadcast.accountUpdate(
         auth.wif,
@@ -55,8 +55,7 @@ export default class Authorize extends Component {
         if (!err) {
           this.setState({ success: result });
         } else {
-          console.log(err);
-          this.setState({ error: err.payload.error });
+          this.setState({ error: err });
         }
         this.setState({ step: 3 });
       });
@@ -65,35 +64,22 @@ export default class Authorize extends Component {
 
   render() {
     const { step, success, error } = this.state;
-    const { params: { username }, location: { query } } = this.props;
-    const weight = query.weight;
-    const redirectUri = query.cb || query.redirect_uri;
+    const { params: { username } } = this.props;
     return (
       <div className="Sign">
         <div className="Sign__content container my-2">
           {step === 0 &&
             <div>
-              <h2>Authorize</h2>
-              <p>
-                Do you want to authorize the Steem account
-                <b> @{ username }</b> to use your <b>posting</b> role
-                {weight && <span> with a weight of <b>{weight}</b></span>}
-                ?
-              </p>
+              <h2>Revoke</h2>
+              <p>Do you want to revoke the Steem account <b>@{ username }</b> to use your <b>posting</b> role?</p>
               <div className="form-group my-4">
-                <button
-                  type="submit"
-                  onClick={() => this.setState({ step: 1 })}
-                  className="btn btn-success"
-                >
-                  Continue
-                </button>
+                <button type="submit" onClick={() => this.setState({ step: 1 })} className="btn btn-success">Continue</button>
               </div>
             </div>
           }
-          {step === 1 && <SignForm roles={['owner', 'active']} sign={this.authorize} />}
+          {step === 1 && <SignForm roles={['owner', 'active']} sign={this.revoke} />}
           {step === 2 && <Loading />}
-          {step === 3 && success && <SignSuccess result={success} cb={redirectUri} />}
+          {step === 3 && success && <SignSuccess result={success} cb={this.props.location.query.cb} />}
           {step === 3 && error && <SignError error={error} resetForm={this.resetForm} />}
         </div>
       </div>

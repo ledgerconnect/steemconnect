@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import fetch from 'isomorphic-fetch';
-import { hasAuthority } from '../helpers/authHelper';
-import Loading from '../widgets/Loading';
-import Avatar from '../widgets/Avatar';
+import { hasAuthority } from '../../utils/auth';
+import Loading from '../../widgets/Loading';
+import Avatar from '../../widgets/Avatar';
 
 export default class MyApps extends Component {
   constructor(props) {

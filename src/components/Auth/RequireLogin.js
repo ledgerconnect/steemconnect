@@ -1,6 +1,6 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
-import Loading from '../widgets/Loading';
+import Loading from '../../widgets/Loading';
 
 const RequireLogin = ({ auth, location, children }) => {
   if (auth.isLoaded && !auth.user.name) {

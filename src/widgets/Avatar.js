@@ -1,5 +1,5 @@
 import React from 'react';
-import './Avatar.scss';
+import './Avatar.less';
 
 const Avatar = ({
   username,

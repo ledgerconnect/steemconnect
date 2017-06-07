@@ -1,11 +1,11 @@
 import React from 'react';
 import { Card, notification } from 'antd';
 import steem from 'steem';
-import RequestAccountRecoveryForm from './Form/RequestAccountRecovery';
-import Loading from '../widgets/Loading';
-import SignForm from '../sign/SignForm';
-import { createSuggestedPassword } from '../helpers/authHelper';
-import { getErrorMessage } from '../helpers/operationHelpers';
+import RequestAccountRecoveryForm from '../Form/RequestAccountRecovery';
+import Loading from '../../widgets/Loading';
+import SignForm from '../Form/Sign';
+import { createSuggestedPassword } from '../../utils/auth';
+import { getErrorMessage } from '../../utils/operation';
 
 class RecoverAccount extends React.Component {
   state = {

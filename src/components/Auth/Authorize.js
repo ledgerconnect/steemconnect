@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import qs from 'query-string';
-import { authorize, login, hasAuthority, addPostingAuthority } from '../helpers/authHelper';
-import Loading from '../widgets/Loading';
-import SignForm from '../sign/SignForm';
+import { authorize, login, hasAuthority, addPostingAuthority } from '../../utils/auth';
+import Loading from '../../widgets/Loading';
+import SignForm from '../Form/Sign';
 
 @connect(
   dispatch => bindActionCreators({
