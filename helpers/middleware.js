@@ -41,7 +41,7 @@ const authenticate = (role) => async (req, res, next) => {
     return res.status(401).send('Unauthorized');
   }
   if (req.role === 'app') {
-    const token = await tokens.findOne({ token: req.token });
+    const token = await tokens.findOne({ where: { token: req.token } });
     if (!token) {
       return res.status(401).send('Unauthorized');
     }
