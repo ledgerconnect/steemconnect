@@ -7,8 +7,6 @@ import Loading from '../../widgets/Loading';
 import { getErrorMessage } from '../../utils/operation';
 import { createSuggestedPassword } from '../../utils/auth';
 
-console.log(steem.auth.toWif('fabien', undefined, 'owner'));
-
 class RecoverAccount extends React.Component {
   state = {
     isLoading: false,
