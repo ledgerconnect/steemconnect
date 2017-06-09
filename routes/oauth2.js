@@ -31,4 +31,10 @@ router.all('/api/oauth2/authorize', authenticate('user'), async (req, res, next)
   });
 });
 
+/** Revoke app access token */
+router.all('/api/oauth2/token/revoke', authenticate('app'), async (req, res, next) => {
+  await req.db.tokens.destroy({ where: { token: req.token } });
+  res.json({ success: true });
+});
+
 module.exports = router;

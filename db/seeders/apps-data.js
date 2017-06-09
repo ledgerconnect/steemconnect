@@ -12,6 +12,8 @@ module.exports = {
         description: 'Ensuring compensation for the creators of value',
         icon: 'https://byteball.co/img/logo.jpg',
         website: 'https://busy.org',
+        beneficiaries: JSON.stringify([{ account: 'busy.org', weight: 1500 }]),
+        disabled: false,
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -24,6 +26,8 @@ module.exports = {
         description: 'This is a test app.',
         icon: 'https://byteball.co/img/logo.jpg',
         website: 'https://example.com',
+        beneficiaries: JSON.stringify([]),
+        disabled: false,
         created_at: new Date(),
         updated_at: new Date(),
       }

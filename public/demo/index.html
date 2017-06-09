@@ -21,12 +21,13 @@
       ng-href="{{loginURL}}"
       class="btn btn-primary"
     >
-      Login with SteemConnect
+      Log in with SteemConnect
     </a>
   </div>
-  <form ng-show="user" ng-submit="main.submit()">
+  <form ng-show="user">
     <p>You are now logged with <b>@{{user.name}}</b> account.</p>
-    <button class="btn btn-primary" type="submit">Vote @siol/test 1%</button>
+    <button class="btn btn-primary" type="submit" ng-click="main.vote()">Vote @siol/test 1%</button>
+    <button class="btn btn-secondary" type="submit" ng-click="main.logout()">Log Out</button>
   </form>
 </div>
 </body>

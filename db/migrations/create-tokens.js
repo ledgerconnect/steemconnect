@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('apps', {
+    return queryInterface.createTable('tokens', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -8,27 +8,15 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       client_id: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      user: {
+        allowNull: false,
         type: Sequelize.STRING
       },
-      secret: {
-        type: Sequelize.STRING
-      },
-      owner: {
-        type: Sequelize.STRING
-      },
-      redirect_uris: {
-        type: Sequelize.JSONB
-      },
-      name: {
-        type: Sequelize.STRING
-      },
-      description: {
-        type: Sequelize.TEXT
-      },
-      icon: {
-        type: Sequelize.TEXT
-      },
-      website: {
+      token: {
+        allowNull: false,
         type: Sequelize.TEXT
       },
       created_at: {
@@ -42,6 +30,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('apps');
+    return queryInterface.dropTable('tokens');
   }
 };
