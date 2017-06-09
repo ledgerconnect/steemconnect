@@ -25,9 +25,18 @@ angular.module('app', [])
       });
     }
 
-    this.submit = function() {
+    this.vote = function() {
       sc2.vote($scope.user.name, 'siol', 'test', 100, function (err, result) {
-        console.log('/broadcast', err, result);
+        console.log('You successfully vote for @siol/test', err, result);
       });
-    }
+    };
+
+    this.logout = function() {
+      sc2.revokeToken(function (err, result) {
+        console.log('You successfully logged out', err, result);
+        delete $scope.user;
+        delete $scope.accessToken;
+        $scope.$apply();
+      });
+    };
   });
