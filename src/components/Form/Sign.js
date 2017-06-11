@@ -1,202 +1,96 @@
-import React, { Component } from 'react';
+import React from 'react';
 import steem from 'steem';
-import { clear, hasAuth, getAuth, addAuth, setLastUsername } from '../../utils/localStorage';
-import Icon from '../../widgets/Icon';
-import '../Sign.less';
+import { Form, Icon, Input, Button } from 'antd';
+import { accountExist } from '../../utils/validator';
+import './Sign.less';
 
-export default class SignForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: '',
-      remember: false,
-      isAuth: false,
-      wif: '',
-      role: '',
-      account: {},
-      usernameIsValid: '',
-      passwordIsValid: '',
-    };
-  }
+class Sign extends React.Component {
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields(async (err, values) => {
+      if (!err) {
+        const { username, password } = values;
+        const { roles } = this.props;
+        const accounts = await steem.api.getAccountsAsync([username]);
+        const account = accounts[0];
 
-  componentWillMount = () => {
-    const auth = getAuth();
-    if (this.props.roles[0] == 'posting' && !this.props.roles[1] && auth) {
-      this.setState({
-        isAuth: true,
-        username: auth.username,
-        wif: auth.wif,
-        usernameIsValid: true,
-        passwordIsValid: true,
-      });
-    }
-  };
+        /** Change password to public WIF */
+        const privateWif = steem.auth.isWif(password)
+          ? password
+          : steem.auth.toWif(username, password, roles[0]);
+        const publicWif = steem.auth.wifToPublic(privateWif);
 
-  onSubmit = (event) => {
-    event.preventDefault();
-    const { username, remember, wif, role } = this.state;
-    if (remember) { addAuth(username, role, wif); }
-    if (hasAuth()) { setLastUsername(username); }
-    this.props.sign({ username, wif, role });
-  };
+        /** Check if public WIF is valid */
+        let wifIsValid = false;
+        let role;
+        roles.map(r => {
+          if (account[r].key_auths[0][0] === publicWif) {
+            wifIsValid = true;
+            role = r;
+          }
+        });
 
-  handleUsernameChange = () => {
-    const username = this.username.value;
-    this.setState({ username });
-    if (username && username.length > 2) {
-      steem.api.getAccounts([username], (err, result) => {
-          const usernameIsValid = (!err && result[0]);
-          this.setState({
-            account: result[0],
-            usernameIsValid ,
+        /** Submit form */
+        if (wifIsValid) {
+          const payload = {
+            username: username,
+            wif: privateWif,
+            role,
+          };
+          this.props.onSubmit && this.props.onSubmit(payload);
+          this.props.sign && this.props.sign(payload);
+        } else {
+          this.props.form.setFields({
+            password: {
+              value: password,
+              errors: [new Error('Password or WIF is not valid')],
+            },
           });
-          this.handlePasswordChange();
         }
-      );
-    } else {
-      this.setState({ usernameIsValid: '' });
-    }
-  };
-
-  handlePasswordChange = () => {
-    const { password } = this;
-    setTimeout(() => {
-      if (
-        this.state.usernameIsValid
-        && password.value !== this.state.lastPassword
-      ) {
-        this.validatePassword();
-      }
-    }, 1000);
-  };
-
-  validatePassword = () => {
-    const { username, password } = this;
-    const { account } = this.state;
-    const { roles } = this.props;
-
-    const wif = steem.auth.isWif(password.value)
-      ? password.value
-      : steem.auth.toWif(username.value, password.value, roles[0]);
-
-    let wifIsValid = false;
-    const publicWif = steem.auth.wifToPublic(wif);
-
-    roles.map(role => {
-      if (account[role].key_auths[0][0] === publicWif) {
-        this.setState({ role: role });
-        wifIsValid = true;
       }
     });
-
-    const passwordIsValid = password.value ? wifIsValid : '';
-
-    this.setState({
-      lastPassword: password.value,
-      wif,
-      wifIsValid,
-      passwordIsValid,
-    });
   };
 
-  handleRememberChange = () => {
-    this.setState({ remember: !this.state.remember })
-  };
-
-  resetAuth = () => {
-    clear();
-    this.setState({
-      isAuth: false,
-      username: '',
-      wif: '',
-      usernameIsValid: '',
-      passwordIsValid: '',
-    })
+  toCredentials = (password) => {
+    const username = this.props.form.getFieldValue('username');
+    return { username, password };
   };
 
   render() {
-    const { isAuth, username, remember, usernameIsValid, passwordIsValid } = this.state;
-    const { roles } = this.props;
-    const usernameClass = usernameIsValid
-      ? 'form-group has-success'
-      : usernameIsValid === ''
-        ? 'form-group'
-        : 'form-group has-danger';
-    const passwordClass = passwordIsValid
-      ? 'form-group has-success'
-      : passwordIsValid === ''
-        ? 'form-group'
-        : 'form-group has-danger';
-    const title = this.props.title || 'Sign';
+    const { getFieldDecorator } = this.props.form;
+    const title = this.props.title ? this.props.title : 'Sign In';
+    const btnTitle = this.props.btnTitle ? this.props.btnTitle : 'Sign In';
     return (
-      <div>
-        <h2><Icon name="gesture" lg /> {title}</h2>
-        {isAuth
-          ? <p>
-            Do you want to confirm this operation using the Steem account <b>@{username}</b>?
-            {' '}Or <a href="#" onClick={() => this.resetAuth()}>change account</a>.
-          </p>
-          : <p>This operation require a password or WIF ({ roles.join(', ') }).</p>
-        }
-        <form className="Sign__form" onSubmit={this.onSubmit}>
-          {!isAuth &&
-            <div>
-              <div className={usernameClass}>
-                <div className="input-group">
-                  <span className="input-group-addon">
-                    <Icon name="perm_identity" sm />
-                  </span>
-                  <input
-                    ref={(i) => { this.username = i; }}
-                    onChange={() => this.handleUsernameChange()}
-                    placeholder="Username"
-                    type="text"
-                    className="form-control"
-                  />
-                </div>
-              </div>
-              <div className={passwordClass}>
-                <div className="input-group">
-                  <span className="input-group-addon">
-                    <Icon name="fingerprint" sm />
-                  </span>
-                  <input
-                    ref={(i) => { this.password = i; }}
-                    onChange={() => this.handlePasswordChange()}
-                    onBlur={() => this.handlePasswordChange()}
-                    placeholder={`Password or WIF`}
-                    type="password"
-                    className="form-control"
-                  />
-                </div>
-              </div>
-              {roles[0] == 'posting' && !roles[1] &&
-                <div className="form-check">
-                  <label className="form-check-label">
-                    <input
-                      onChange={this.handleRememberChange}
-                      checked={remember}
-                      type="checkbox"
-                      className="form-check-input mr-2"
-                    />
-                    Remember me
-                  </label>
-                </div>
-              }
-            </div>
-          }
-          <div className="form-group py-3">
-            <button
-              type="submit"
-              className="btn btn-success"
-              disabled={usernameIsValid && passwordIsValid ? '' : 'disabled'}
-            >
-              Confirm
-            </button>
-          </div>
-        </form>
-      </div>
+      <Form onSubmit={this.handleSubmit} className="SignForm">
+        <center><h2>{title}</h2></center>
+        <p>This operation requires your {this.props.roles.join(', ')} key or master password.</p>
+        <Form.Item hasFeedback>
+          {getFieldDecorator('username', {
+            rules: [
+              { required: true, message: 'Please input your username' },
+              { validator: accountExist },
+            ],
+          })(
+            <Input prefix={<Icon type="user" size="large" />} placeholder="Username" />
+          )}
+        </Form.Item>
+        <Form.Item hasFeedback>
+          {getFieldDecorator('password', {
+            rules: [
+              { required: true, message: 'Please input your password or WIF' },
+            ],
+          })(
+            <Input prefix={<Icon type="lock" size="large" />} type="password" placeholder="Password or WIF" />
+          )}
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" className="SignForm__button">
+            {btnTitle}
+          </Button>
+        </Form.Item>
+      </Form>
     );
   }
 }
 
+export default Form.create()(Sign);
