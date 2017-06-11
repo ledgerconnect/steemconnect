@@ -32,6 +32,21 @@ export default (state = initialState, action) => {
         isLoading: false,
         isAuthenticated: false,
       };
+
+    case types.LOGOUT_REQUEST:
+      return {
+        ...state,
+      };
+    case types.LOGOUT_SUCCESS:
+      return {
+        ...state,
+        user: initialState.user,
+        token: '',
+        isLoaded: true,
+        isLoading: false,
+        isAuthenticated: false,
+      };
+
     default:
       return state;
   }

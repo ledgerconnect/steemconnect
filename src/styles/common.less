@@ -123,11 +123,6 @@ a, button {
   cursor: pointer;
 }
 
-pre {
-  font-size: 18px;
-  font-family: @font-family;
-}
-
 .label {
   font-weight: bold;
   width: 140px;
@@ -151,4 +146,26 @@ li {
   border-radius: 0.25rem;
   border: 1px solid rgba(0, 0, 0, 0.125);
   padding: 0.75rem 1.25rem;
+}
+
+.ant-radio {
+  vertical-align: baseline;
+}
+
+.ant-input-affix-wrapper .ant-input:not(:first-child) {
+  padding-left: 40px;
+}
+
+.ant-form-explain {
+  margin: 0.2em 0 0.8em;
+}
+
+.ant-form-item-required:before {
+  display: none;
+}
+
+pre {
+  font-size: 14px;
+  background-color: #f3f5f6;
+  padding: 1em;
 }
