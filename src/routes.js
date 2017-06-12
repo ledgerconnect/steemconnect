@@ -48,6 +48,7 @@ export default (
     <Route path="/oauth2/authorize" component={Authorize} />
     <Route path="/sign/:type" component={Sign} />
     <Route path="/authorize/@:username" component={SignAuthorize} />
+    <Route path="/authorize/@:username/:role" component={SignAuthorize} />
     <Route path="/revoke/@:username" component={Revoke} />
     <Route path="/*" component={Error404} />
   </Route>
