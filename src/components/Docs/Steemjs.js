@@ -20,7 +20,7 @@ const Method = ({ method }) => {
           {changeCase.titleCase(method.method)}
         </a>
       </h4>
-      <p><Link to={apiLink}>Try it</Link></p>
+      <p><a href={apiLink} target="_blank">Try it</a></p>
       <pre>
         <code>
           {`steem.api.${changeCase.camelCase(method.method)}(${inlineParams}function(err, result) {
@@ -48,7 +48,7 @@ const Operation = ({ operation }) => {
           {changeCase.titleCase(operation.operation)}
         </a>
       </h4>
-      <p><b>Required authority:</b> {inlineRoles}. <Link to={signLink}>Try it</Link></p>
+      <p><b>Required authority:</b> {inlineRoles}. <a href={signLink} target="_blank">Try it</a></p>
       <pre>
         <code>
           {`steem.broadcast.${changeCase.camelCase(operation.operation)}(wif, ${inlineParams}function(err, result) {
