@@ -36,11 +36,11 @@ export default (
     </Route>
     <Route component={Layout}>
       <Route path="/apps" component={Apps} />
-      <Route path="/docs/steemjs" component={Steemjs} />
       <Route path="/docs/oauth2" component={OAuth2} />
       <Route path="/@:username/permissions" component={Permissions} />
       <Route path="/apps/@:clientId" component={App} />
     </Route>
+    <Route path="/docs/steemjs" component={Steemjs} />
     <Route path="/accounts/create" component={CreateAccount} />
     <Route path="/accounts/recover" component={RecoverAccount} />
     <Route path="/accounts/request-recovery" component={RequestAccountRecovery} />
