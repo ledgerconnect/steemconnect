@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import changeCase from 'change-case';
+import pkg from 'steem/package.json';
 import methods from 'steem/lib/api/methods.json';
 import operations from 'steem/lib/broadcast/operations.json';
 
@@ -8,6 +9,10 @@ const Method = ({ method }) => {
   const inlineParams = method.params
     ? method.params.join(', ') + ', ' :
     '';
+  let apiLink = `https://api.steemjs.com/${method.method}`;
+  if (method.params) {
+    apiLink += '?' + method.params.map((param) => param).join('=value&') + '=value';
+  }
   return (
     <div className="mb-5">
       <h4>
@@ -15,11 +20,12 @@ const Method = ({ method }) => {
           {changeCase.titleCase(method.method)}
         </a>
       </h4>
+      <p><Link to={apiLink}>Try it</Link></p>
       <pre>
         <code>
           {`steem.api.${changeCase.camelCase(method.method)}(${inlineParams}function(err, result) {
-    console.log(err, result);
-  });`}
+  console.log(err, result);
+});`}
         </code>
       </pre>
     </div>
@@ -46,8 +52,8 @@ const Operation = ({ operation }) => {
       <pre>
         <code>
           {`steem.broadcast.${changeCase.camelCase(operation.operation)}(wif, ${inlineParams}function(err, result) {
-    console.log(err, result);
-  });`}
+  console.log(err, result);
+});`}
         </code>
       </pre>
     </div>
@@ -57,6 +63,12 @@ const Operation = ({ operation }) => {
 const Steemjs = () => {
   return (
     <div className="container my-5">
+      <h1>Steem.js</h1>
+      <p>
+        This documentation is generated from Steem.js v{pkg.version} <a href="https://github.com/steemit/steem-js">source code</a>.
+        It include every <a href="#api">API methods</a> and every <a href="#broadcast">operations</a>.
+        You can click on "Try it" link and change default values with appropriate parameters to test them.
+      </p>
       <h2><a href="#api" name="api">API</a></h2>
       {methods.map((method, key) =>
         <Method key={key} method={method} />
