@@ -52,7 +52,12 @@ export default class Authorize extends Component {
             }
             this.setState({ step: 3 });
           });
-        }
+      } else {
+        this.setState({
+          step: 3,
+          success: true
+        });
+      }
     });
   };
 
