@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import steem from 'steem';
+import changeCase from 'change-case';
 import SignForm from './Form/Sign';
 import SignSuccess from './Sign/Success';
 import SignError from './Sign/Error';
@@ -44,7 +45,7 @@ export default class Sign extends Component {
 
     /* Broadcast */
     this.setState({ step: 2 });
-    steem.broadcast[`${type}With`](auth.wif, params, (err, result) => {
+    steem.broadcast[`${changeCase.camelCase(type)}With`](auth.wif, params, (err, result) => {
       if (!err) {
         this.setState({ success: result });
       } else {
