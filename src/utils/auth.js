@@ -56,3 +56,12 @@ export const createSuggestedPassword = () => {
   const privateKey = key_utils.get_random_key();
   return privateKey.toWif().substring(3, 3 + PASSWORD_LENGTH);
 };
+
+export const getAccountCreationFee = async () => {
+  const chainConfig = await steem.api.getConfig();
+  const chainProps = await steem.api.getChainPropertiesAsync();
+  const accountCreationFee = chainProps.account_creation_fee;
+  const steemModifier = chainConfig.STEEMIT_CREATE_ACCOUNT_WITH_STEEM_MODIFIER;
+  const accountCreationSteemFee = parseFloat(accountCreationFee.split(' ')[0]) * steemModifier;
+  return accountCreationSteemFee.toFixed(3) + ' STEEM';
+};
