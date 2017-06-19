@@ -3,7 +3,7 @@ import { Layout } from 'antd';
 import Header from './widgets/Header';
 import Sidebar from './components/Sidebar';
 
-export const SIDEBAR_WIDTH = 240;
+export const SIDEBAR_WIDTH = 200;
 export default class App extends Component {
   render() {
     return (
@@ -11,8 +11,13 @@ export default class App extends Component {
         <Layout.Header style={{ borderBottom: '1px solid #E9E7E7' }}>
           <Header username={this.props.auth.user.name} />
         </Layout.Header>
-        <Layout>
-          <Layout.Sider breakpoint="sm" collapsedWidth="0" width={SIDEBAR_WIDTH}>
+        <Layout style={{ maxWidth: '990px', margin: '1em auto' }}>
+          <Layout.Sider
+            breakpoint="sm"
+            collapsedWidth="0"
+            style={{ background: 'transparent' }}
+            width={SIDEBAR_WIDTH}
+          >
             <Sidebar width={SIDEBAR_WIDTH} />
           </Layout.Sider>
           <Layout.Content>
