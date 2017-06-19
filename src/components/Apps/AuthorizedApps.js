@@ -17,7 +17,7 @@ export default class AuthorizedApps extends Component {
     const { isLoading } = this.state;
     const { user } = this.props.auth;
     return (
-      <div className="container py-5">
+      <div>
         <h2>Authorized Apps</h2>
         {isLoading && <Loading/>}
         {user.posting &&

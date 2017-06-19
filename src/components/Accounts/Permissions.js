@@ -12,7 +12,7 @@ export default class Permissions extends Component {
       error: false,
       isLoading: false,
       isLoaded: false,
-      account: {},
+      account: {}
     };
   }
 
@@ -23,7 +23,7 @@ export default class Permissions extends Component {
         error: err,
         account: result[0],
         isLoading: false,
-        isLoaded: true,
+        isLoaded: true
       });
     });
   };
@@ -31,9 +31,9 @@ export default class Permissions extends Component {
   render() {
     const { account, isLoading } = this.state;
     return (
-      <div className="container py-5">
+      <div>
         <h2>Permissions</h2>
-        {isLoading && <Loading/>}
+        {isLoading && <Loading />}
         {account.posting &&
           <div>
             <p>Here is a list of <b>@{this.props.params.username}</b>'s account permissions.</p>
@@ -53,8 +53,7 @@ export default class Permissions extends Component {
                           className="float-right btn btn-secondary btn-sm ml-1"
                         >
                           Revoke
-                        </Link>
-                      }
+                        </Link>}
                     </li>
                   )}
                   {account[role].key_auths.map((auth, idx) =>
@@ -65,8 +64,7 @@ export default class Permissions extends Component {
                 </ul>
               </div>
             )}
-          </div>
-        }
+          </div>}
       </div>
     );
   }

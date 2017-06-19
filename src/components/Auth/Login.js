@@ -36,7 +36,7 @@ export default class Login extends Component {
     const { step } = this.state;
     return (
       <div className="Sign">
-        <div className="Sign__content container my-2">
+        <div className="Sign__content">
           {step === 1 && <SignForm title="Log In" roles={['posting']} sign={this.login} />}
           {step === 2 && <Loading />}
         </div>

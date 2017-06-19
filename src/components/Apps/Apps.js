@@ -30,7 +30,7 @@ export default class MyApps extends Component {
   render() {
     const { apps, isLoading, isLoaded } = this.state;
     return (
-      <div className="container my-5">
+      <div>
         <h2>Apps</h2>
         {isLoading && <Loading/>}
         {isLoaded &&

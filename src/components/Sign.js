@@ -63,7 +63,7 @@ export default class Sign extends Component {
     Placeholder = (type === 'comment') ? SignPlaceholderComment : Placeholder;
     return (
       <div className="Sign">
-        <div className="Sign__content container my-2">
+        <div className="Sign__content">
           {step === 0 &&
             <div>
               <Placeholder type={type} query={query} params={op.params} />

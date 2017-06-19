@@ -4,7 +4,7 @@ import Avatar from './Avatar';
 import './Header.less';
 
 const Header = ({ username }) =>
-  <div className="Header container">
+  <div className="Header">
     <div className="Header__log">
       {username &&
         <Link to="/dashboard">

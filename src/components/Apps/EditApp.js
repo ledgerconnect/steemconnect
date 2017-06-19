@@ -68,7 +68,7 @@ export default class EditApp extends Component {
   render() {
     const { app, clientId, isLoading, isLoaded } = this.state;
     return (
-      <div className="container my-5">
+      <div>
         {isLoading && <Loading/>}
         {isLoaded &&
           <div>

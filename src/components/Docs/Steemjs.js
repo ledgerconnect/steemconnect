@@ -62,7 +62,7 @@ const Operation = ({ operation }) => {
 
 const Steemjs = () => {
   return (
-    <div className="container my-5">
+    <div>
       <h1>Steem.js</h1>
       <p>
         This documentation is generated from Steem.js v{pkg.version} <a href="https://github.com/steemit/steem-js">source code</a>.
