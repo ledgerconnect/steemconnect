@@ -12,7 +12,7 @@ export default class App extends Component {
           <Header username={this.props.auth.user.name} />
         </Layout.Header>
         <Layout>
-          <Layout.Sider width={SIDEBAR_WIDTH}>
+          <Layout.Sider breakpoint="sm" collapsedWidth="0" width={SIDEBAR_WIDTH}>
             <Sidebar width={SIDEBAR_WIDTH} />
           </Layout.Sider>
           <Layout.Content>

@@ -1,27 +1,27 @@
 @import "~antd/dist/antd.less";
 @import "./custom.less";
 
-@font-family-secondary: WhitneyMedium,"Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+@font-family-secondary: WhitneyMedium, "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 
 @font-face {
   font-family: Whitney;
   font-style: normal;
   font-weight: 500;
-  src: url(/fonts/Whitney.woff) format('woff')
+  src: url(/fonts/Whitney.woff) format('woff');
 }
 
 @font-face {
   font-family: Whitney;
   font-style: medium;
   font-weight: 600;
-  src: url(/fonts/WhitneyMedium.woff) format('woff')
+  src: url(/fonts/WhitneyMedium.woff) format('woff');
 }
 
 @font-face {
   font-family: WhitneyMedium;
   font-style: medium;
   font-weight: 600;
-  src: url(/fonts/WhitneyBold.woff) format('woff')
+  src: url(/fonts/WhitneyBold.woff) format('woff');
 }
 
 #app {
@@ -75,8 +75,7 @@ b {
   }
 }
 
-.btn:disabled,
-.btn:disabled:hover {
+.btn:disabled, .btn:disabled:hover {
   background-color: #8c8c8c !important;
 }
 
@@ -164,6 +163,14 @@ li {
   display: none;
 }
 
+.ant-layout-sider-zero-width-trigger {
+  background: #656565;
+  z-index: 1;
+  top: 0;
+  &:hover {
+    background: #000;
+  }
+}
 pre {
   font-size: 14px;
   background-color: #f3f5f6;
