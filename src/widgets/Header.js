@@ -8,8 +8,8 @@ const Header = ({ username }) =>
     <div className="Header__log">
       {username &&
         <Link to="/dashboard">
-          <span className="mr-2">{username}</span>
-          <div className="float-right"><Avatar username={username}/></div>
+          <span className="username">{username}</span>
+          <div className="avatar"><Avatar username={username} /></div>
         </Link>
       }
       {!username &&

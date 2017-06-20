@@ -11,7 +11,7 @@ export default class App extends Component {
         <Layout.Header style={{ borderBottom: '1px solid #E9E7E7' }}>
           <Header username={this.props.auth.user.name} />
         </Layout.Header>
-        <Layout style={{ maxWidth: '990px', margin: '1em auto', width: '100%' }}>
+        <Layout className="content-layout">
           <Layout.Sider
             breakpoint="sm"
             collapsedWidth="0"

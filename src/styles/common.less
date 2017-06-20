@@ -24,6 +24,8 @@
   src: url(/fonts/WhitneyBold.woff) format('woff');
 }
 
+@maxWidth:990px;
+
 #app {
   height: 100%;
 }
@@ -192,4 +194,10 @@ pre {
   margin-bottom: -1px;
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, .125);
+}
+
+.content-layout {
+  max-width: @maxWidth;
+  margin: 1em auto;
+  width: 100%;
 }
