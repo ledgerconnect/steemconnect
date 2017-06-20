@@ -37,7 +37,7 @@ export default class MyApps extends Component {
   render() {
     const { apps, isLoading, isLoaded } = this.state;
     return (
-      <div>
+      <div className="main-container">
         <h2>My Apps</h2>
         <p>These are your apps.</p>
         {isLoading && <Loading/>}

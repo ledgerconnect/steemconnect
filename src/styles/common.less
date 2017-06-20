@@ -136,10 +136,6 @@ li {
   white-space: pre-line;
 }
 
-.container {
-  max-width: 660px;
-}
-
 .block {
   background-color: #ffffff;
   border-radius: 0.25rem;
@@ -175,4 +171,25 @@ pre {
   font-size: 14px;
   background-color: #f3f5f6;
   padding: 1em;
+}
+
+.main-container {
+  margin: 1em 2em;
+}
+
+.list-group-item {
+  &:first-child {
+    border-top-right-radius: .25rem;
+    border-top-left-radius: .25rem;
+  }
+  &:last-child {
+    margin-bottom: 0;
+    border-bottom-right-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+  }
+
+  padding: .75rem 1.25rem;
+  margin-bottom: -1px;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, .125);
 }

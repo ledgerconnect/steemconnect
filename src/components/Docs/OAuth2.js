@@ -4,14 +4,14 @@ import { Link } from 'react-router';
 const OAuth2 = ({ app }) => {
   const origin = window.location.origin;
   return (
-    <div>
+    <div className="main-container">
       <h3>OAuth2</h3>
       <h4>Implementing OAuth2</h4>
       <p>
         The first step in implementing OAuth2 is <Link to="/apps/create">registering a developer application</Link>
         , and retrieving your client ID and client secret. The URLs for OAuth2 are as follows:
       </p>
-      <div className="list-group">
+      <div>
         <div className="list-group-item">
           <a className="mr-2" href={`${origin}/api/oauth2/authorize`}>
             {`${origin}/api/oauth2/authorize`}
