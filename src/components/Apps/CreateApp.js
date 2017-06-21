@@ -14,6 +14,12 @@ class CreateApp extends React.Component {
     visible: false,
     isLoading: false,
     values: {},
+    accountCreationFee: '',
+  };
+
+  componentWillMount = async () => {
+    const accountCreationFee = await getAccountCreationFee();
+    this.setState({ accountCreationFee });
   };
 
   showModal = () => {
@@ -98,10 +104,18 @@ class CreateApp extends React.Component {
   render() {
     return (
       <div className="container py-5">
+        <h1>Create App</h1>
         <div className="block py-4">
-          {this.state.isLoading
+          {this.state.isLoading || !this.state.accountCreationFee
             ? <center><Loading /></center>
-            : <CreateAppForm onSubmit={this.handleFormSubmit} />
+            : <div>
+              <p>
+                You need to create a new Steem account for setup your application on SteemConnect.
+                The current fee for create a new account is <b>{this.state.accountCreationFee}</b>.
+                Make sure you have enough funds on your account before proceed.
+              </p>
+              <CreateAppForm onSubmit={this.handleFormSubmit} />
+            </div>
           }
         </div>
         <Modal
