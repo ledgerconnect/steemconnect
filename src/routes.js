@@ -9,6 +9,7 @@ import Apps from './components/Apps/Apps';
 import MyApps from './components/Apps/MyApps';
 import AuthorizedApps from './components/Apps/AuthorizedApps';
 import EditApp from './components/Apps/EditApp';
+import CreateApp from './components/Apps/CreateApp';
 import Steemjs from './components/Docs/Steemjs';
 import OAuth2 from './components/Docs/OAuth2';
 import Sign from './components/Sign';
@@ -30,6 +31,7 @@ export default (
       <Route component={Layout}>
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/apps/me" component={MyApps} />
+        <Route path="/apps/create" component={CreateApp} />
         <Route path="/apps/authorized" component={AuthorizedApps} />
         <Route path="/apps/@:clientId/edit" component={EditApp} />
       </Route>

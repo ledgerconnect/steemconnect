@@ -17,52 +17,6 @@ router.all('/me', authenticate(), async (req, res, next) => {
   });
 });
 
-/** Get applications */
-router.get('/apps', async (req, res, next) => {
-  const apps = await req.db.apps.findAll({ attributes: { exclude: ['secret'] } });
-  res.json(apps);
-});
-
-/** Get my applications */
-router.all('/apps/me', authenticate('user'), async (req, res, next) => {
-  const apps = await req.db.apps.findAll({ where: { owner: req.user } });
-  res.json(apps);
-});
-
-/** Get application details */
-router.get('/apps/@:clientId', async (req, res, next) => {
-  const { clientId } = req.params;
-  const app = await req.db.apps.findOne({ where: { client_id: clientId } });
-  if (!app) return next();
-  if (!req.user || app.owner !== req.user) {
-    app.secret = undefined;
-  }
-  res.json(app);
-});
-
-/** Update application */
-router.put('/apps/@:clientId', authenticate('user'), async (req, res, next) => {
-  const { clientId } = req.params;
-  const app = req.body;
-  try {
-    await req.db.apps.update({
-      redirect_uris: app.redirect_uris,
-      name: app.name,
-      description: app.description,
-      icon: app.icon,
-      website: app.website,
-    }, {
-      where: {
-        client_id: clientId,
-        owner: req.user,
-      }
-    });
-  } catch (err) {
-    return next(err);
-  }
-  res.json({ success: true });
-});
-
 /** Broadcast transactions */
 router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, res, next) => {
   const scope = req.scope.length ? req.scope : config.authorized_operations;
