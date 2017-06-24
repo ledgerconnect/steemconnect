@@ -30,7 +30,7 @@ class CreateApp extends React.Component {
     this.setState({ visible: false });
   };
 
-  handleFormSubmit = async (values) => {
+  handleFormSubmit = (values) => {
     this.setState({ values });
     this.showModal();
   };
