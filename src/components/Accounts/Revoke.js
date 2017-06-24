@@ -67,7 +67,7 @@ export default class Revoke extends Component {
     const { params: { username } } = this.props;
     return (
       <div className="Sign">
-        <div className="Sign__content container my-2">
+        <div className="Sign__content">
           {step === 0 &&
             <div>
               <h2>Revoke</h2>

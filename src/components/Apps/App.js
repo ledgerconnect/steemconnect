@@ -40,7 +40,7 @@ export default class MyApps extends Component {
   render() {
     const { app, clientId, isLoading, isLoaded, revealSecret } = this.state;
     return (
-      <div className="container my-5">
+      <div>
         {isLoaded &&
           <div>
             <Avatar icon={app.icon} size="80" className="float-left mr-3" />

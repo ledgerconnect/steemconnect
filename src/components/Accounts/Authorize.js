@@ -11,7 +11,7 @@ export default class Authorize extends Component {
     this.state = {
       step: 0,
       success: false,
-      error: false,
+      error: false
     };
   }
 
@@ -19,7 +19,7 @@ export default class Authorize extends Component {
     this.setState({
       step: 0,
       error: false,
-      success: false,
+      success: false
     });
   };
 
@@ -31,7 +31,7 @@ export default class Authorize extends Component {
     steem.api.getAccounts([auth.username], (err, result) => {
       const { posting, memo_key, json_metadata } = result[0];
       let hasAuth = false;
-      let postingNew = posting;
+      const postingNew = posting;
 
       posting.account_auths.map((account) => {
         if (account[0] === username) {
@@ -49,17 +49,17 @@ export default class Authorize extends Component {
         memo_key,
         json_metadata,
         (err, result) => {
+          console.log(err, result);
 
-        console.log(err, result);
-
-        if (!err) {
-          this.setState({ success: result });
-        } else {
-          console.log(err);
-          this.setState({ error: err.payload.error });
+          if (!err) {
+            this.setState({ success: result });
+          } else {
+            console.log(err);
+            this.setState({ error: err.payload.error });
+          }
+          this.setState({ step: 3 });
         }
-        this.setState({ step: 3 });
-      });
+      );
     });
   };
 
@@ -70,13 +70,13 @@ export default class Authorize extends Component {
     const redirectUri = query.cb || query.redirect_uri;
     return (
       <div className="Sign">
-        <div className="Sign__content container my-2">
+        <div className="Sign__content">
           {step === 0 &&
             <div>
               <h2>Authorize</h2>
               <p>
                 Do you want to authorize the Steem account
-                <b> @{ username }</b> to use your <b>posting</b> role
+                <b> @{username}</b> to use your <b>posting</b> role
                 {weight && <span> with a weight of <b>{weight}</b></span>}
                 ?
               </p>
@@ -89,8 +89,7 @@ export default class Authorize extends Component {
                   Continue
                 </button>
               </div>
-            </div>
-          }
+            </div>}
           {step === 1 && <SignForm roles={['owner', 'active']} sign={this.authorize} />}
           {step === 2 && <Loading />}
           {step === 3 && success && <SignSuccess result={success} cb={redirectUri} />}

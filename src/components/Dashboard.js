@@ -19,7 +19,7 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div className="container my-5">
+      <div className="main-container">
         <h4>Account</h4>
         <p><Link onClick={this.handleLogoutClick}>Log Out</Link></p>
         <h4>Applications</h4>

@@ -11,7 +11,7 @@ const RequireLogin = ({ auth, location, children }) => {
   return (auth.isLoaded && auth.user.name)
     ? React.cloneElement(children, { auth })
     : <div className="Sign">
-      <div className="Sign__content container my-2">
+      <div className="Sign__content">
         {auth.isLoading && <Loading/>}
       </div>
     </div>;

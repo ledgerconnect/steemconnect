@@ -17,13 +17,13 @@ export default class AuthorizedApps extends Component {
     const { isLoading } = this.state;
     const { user } = this.props.auth;
     return (
-      <div className="container py-5">
+      <div className="main-container">
         <h2>Authorized Apps</h2>
-        {isLoading && <Loading/>}
+        {isLoading && <Loading />}
         {user.posting &&
           <div>
             <p>Here is a list of authorized application to use your account.</p>
-            <ul className="list-group text-xs-left mb-3">
+            <ul>
               {user.posting.account_auths.map((auth, idx) =>
                 <li key={idx} className="list-group-item">
                   <b><Link to={`/apps/@${auth[0]}`}>{auth[0]}</Link></b>

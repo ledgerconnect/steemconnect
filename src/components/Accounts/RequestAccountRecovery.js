@@ -73,7 +73,7 @@ class RecoverAccount extends React.Component {
   render() {
     const { step, fields, isLoading } = this.state;
     return (
-      <div className="container py-5">
+      <div>
         <Card>
           {isLoading && <div className="text-center my-4"><Loading/></div>}
           {!isLoading && step === 0 &&

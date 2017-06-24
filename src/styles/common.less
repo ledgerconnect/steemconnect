@@ -1,28 +1,30 @@
 @import "~antd/dist/antd.less";
 @import "./custom.less";
 
-@font-family-secondary: WhitneyMedium,"Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+@font-family-secondary: WhitneyMedium, "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 
 @font-face {
   font-family: Whitney;
   font-style: normal;
   font-weight: 500;
-  src: url(/fonts/Whitney.woff) format('woff')
+  src: url(/fonts/Whitney.woff) format('woff');
 }
 
 @font-face {
   font-family: Whitney;
   font-style: medium;
   font-weight: 600;
-  src: url(/fonts/WhitneyMedium.woff) format('woff')
+  src: url(/fonts/WhitneyMedium.woff) format('woff');
 }
 
 @font-face {
   font-family: WhitneyMedium;
   font-style: medium;
   font-weight: 600;
-  src: url(/fonts/WhitneyBold.woff) format('woff')
+  src: url(/fonts/WhitneyBold.woff) format('woff');
 }
+
+@maxWidth:990px;
 
 #app {
   height: 100%;
@@ -75,8 +77,7 @@ b {
   }
 }
 
-.btn:disabled,
-.btn:disabled:hover {
+.btn:disabled, .btn:disabled:hover {
   background-color: #8c8c8c !important;
 }
 
@@ -137,10 +138,6 @@ li {
   white-space: pre-line;
 }
 
-.container {
-  max-width: 660px;
-}
-
 .block {
   background-color: #ffffff;
   border-radius: 0.25rem;
@@ -164,8 +161,43 @@ li {
   display: none;
 }
 
+.ant-layout-sider-zero-width-trigger {
+  background: #656565;
+  z-index: 1;
+  top: 0;
+  &:hover {
+    background: #000;
+  }
+}
 pre {
   font-size: 14px;
   background-color: #f3f5f6;
   padding: 1em;
+}
+
+.main-container {
+  margin: 1em 2em;
+}
+
+.list-group-item {
+  &:first-child {
+    border-top-right-radius: .25rem;
+    border-top-left-radius: .25rem;
+  }
+  &:last-child {
+    margin-bottom: 0;
+    border-bottom-right-radius: .25rem;
+    border-bottom-left-radius: .25rem;
+  }
+
+  padding: .75rem 1.25rem;
+  margin-bottom: -1px;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, .125);
+}
+
+.content-layout {
+  max-width: @maxWidth;
+  margin: 1em auto;
+  width: 100%;
 }
