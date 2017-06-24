@@ -3,7 +3,6 @@ const debug = require('debug')('sc2:server');
 const crypto = require('crypto');
 const _ = require('lodash');
 const { authenticate } = require('../helpers/middleware');
-const { sleep } = require('../helpers/utils');
 const config = require('../config.json');
 const router = express.Router();
 
@@ -33,9 +32,6 @@ router.get('/@:clientId', async (req, res, next) => {
 /** Create application */
 router.post('/@:clientId', authenticate('user'), async (req, res, next) => {
   const { clientId } = req.params;
-
-  /** Wait 5 seconds to insure the newly created account is available on the node */
-  await sleep(5000);
 
   const accounts = await req.steem.api.getAccountsAsync([clientId]);
   if (!accounts[0]) {

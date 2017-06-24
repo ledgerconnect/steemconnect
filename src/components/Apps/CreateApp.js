@@ -8,6 +8,7 @@ import config from '../../../config.json';
 import { getAccountCreationFee } from '../../utils/auth';
 import { getErrorMessage } from '../../utils/operation';
 import Loading from '../../widgets/Loading';
+import { sleep } from '../../../helpers/utils';
 
 class CreateApp extends React.Component {
   state = {
@@ -62,7 +63,10 @@ class CreateApp extends React.Component {
       publicKeys.memo,
       { owner: this.props.auth.user.name },
       []
-    ).then((result) => {
+    ).then(async (result) => {
+      /** Wait 5 seconds to insure the newly created account is indexed on the node */
+      await sleep(5000);
+
       /** Send request to server for create app */
       fetch(`/api/apps/@${clientId}`, {
         headers: new Headers({
