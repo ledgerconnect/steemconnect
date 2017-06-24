@@ -50,7 +50,7 @@ class CreateApp extends React.Component {
     const posting = { weight_threshold: 1, account_auths: [['steemconnect', 1]], key_auths: [[publicKeys.posting, 1]] };
 
     /** Create proxy account */
-    steem.broadcast.accountCreateWithDelegation(
+    await steem.broadcast.accountCreateWithDelegationAsync(
       auth.wif,
       accountCreationFee,
       '0.000000 VESTS',
@@ -61,42 +61,40 @@ class CreateApp extends React.Component {
       posting,
       publicKeys.memo,
       { owner: this.props.auth.user.name },
-      [],
-      (err, result) => {
-        if (err) {
-          this.setState({ isLoading: false });
-          console.log(err);
-          notification.error({
-            message: 'Error',
-            description: getErrorMessage(err) || 'Oops! Something goes wrong, open your console to see the error details.',
-          });
-        } else {
-          /** Send request to server for create app */
-          fetch(`/api/apps/@${clientId}`, {
-            headers: new Headers({
-              Authorization: this.props.auth.token,
-            }),
-            method: 'POST',
-          })
-            .then(res => res.json())
-            .then((data) => {
-              if (!data.error) {
-                /** Redirect to edit app */
-                browserHistory.push(`/apps/@${clientId}/edit`);
-                notification.success({
-                  message: 'Success',
-                  description: `The proxy account @${clientId} has been successfully created`,
-                });
-              } else {
-                this.setState({ isLoading: false });
-                console.log(data.error);
-                notification.error({
-                  message: 'Error',
-                  description: data.error || 'Oops! Something goes wrong, open your console to see the error details.',
-                });
-              }
+      []
+    ).then((result) => {
+      /** Send request to server for create app */
+      fetch(`/api/apps/@${clientId}`, {
+        headers: new Headers({
+          Authorization: this.props.auth.token,
+        }),
+        method: 'POST',
+      })
+        .then(res => res.json())
+        .then((data) => {
+          if (!data.error) {
+            /** Redirect to edit app */
+            browserHistory.push(`/apps/@${clientId}/edit`);
+            notification.success({
+              message: 'Success',
+              description: `The proxy account @${clientId} has been successfully created`,
             });
-        }
+          } else {
+            this.setState({ isLoading: false });
+            console.log(data.error);
+            notification.error({
+              message: 'Error',
+              description: data.error || 'Oops! Something goes wrong, open your console to see the error details.',
+            });
+          }
+        });
+      }).catch((err) => {
+        this.setState({ isLoading: false });
+        console.log(err);
+        notification.error({
+          message: 'Error',
+          description: getErrorMessage(err) || 'Oops! Something goes wrong, open your console to see the error details.',
+        });
       }
     );
   };
