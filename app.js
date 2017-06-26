@@ -43,7 +43,6 @@ if (process.env.NODE_ENV !== 'test') {
   ));
 }
 
-app.use(csurf({ cookie: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -52,8 +51,9 @@ app.use(express.static(path.join(__dirname, 'node_modules')));
 
 app.use(cors({ credentials: true, origin: true }));
 
-app.use('/embed', embed);
 app.use(api);
+app.use(csurf({ cookie: true }));
+app.use('/embed', embed);
 app.use(auth);
 app.use(index);
 
