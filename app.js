@@ -35,8 +35,8 @@ app.get('/loaderio-09d794fb07ae242522b107c6eb88734a.txt', (req, res) => {
   res.send('loaderio-09d794fb07ae242522b107c6eb88734a');
 });
 
-app.get('/.well-known/acme-challenge/1MA6IVigdKrYhvfgnsrZgLz9HHROjOBtZsV-OQmrMTM', (req, res) => {
-  res.send('1MA6IVigdKrYhvfgnsrZgLz9HHROjOBtZsV-OQmrMTM.jgkX-hetJtOPr-FJcfSN5VmYj5eCmmCtg_iTILuHYQg');
+app.get('/.well-known/acme-challenge/:challenge', (req, res) => {
+  res.send(process.env.CERTBOT_RESPONSE);
 });
 
 if (process.env.NODE_ENV !== 'test') {
