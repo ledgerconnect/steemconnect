@@ -21,20 +21,11 @@ export default class Sign extends Component {
     return (
       <div>
         <h2><Icon name="check" className="text-success" lg /> Success</h2>
-        <h5>The operation has been successfully broadcasted.</h5>
-        <p>
-          Ref Block Num:<b> {result.ref_block_num}</b>
-          , Ref Block Prefix:<b> {result.ref_block_prefix}</b>
-        </p>
+        <h5 className="mb-4">The operation has been successfully broadcasted.</h5>
         {cb &&
           <p>
             If you are not redirected within 10 seconds{' '}
-            <a
-              href={cb}
-              target="_blank"
-            >
-              click here
-            </a>.
+            <a href={cb} target="_blank">click here</a>.
           </p>
         }
       </div>

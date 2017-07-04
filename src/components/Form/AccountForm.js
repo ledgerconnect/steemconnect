@@ -31,6 +31,7 @@ export default class AccountForm extends Form {
               data-validator="isNotUsername"
               onChange={this.onChange}
               defaultValue={data.name}
+              maxLength="16"
             />
           </div>
           <div className="form-group">

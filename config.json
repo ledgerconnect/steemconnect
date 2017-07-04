@@ -7,5 +7,11 @@
     "comment_options",
     "custom_json",
     "claim_reward_balance"
-  ]
+  ],
+  "offline_generated_public_keys": {
+    "owner": "STM82hFUKjN2j8KGqQ8rz9YgFAbMrWFuCPkabtrAnUfV2JQshNPLz",
+    "active": "STM78mV5drS6a5SredobAJXvzZv7tvBo4Cj15rumRcBtMzTWT173a",
+    "posting": "STM6ZVzWQvbYSzVpY2PRJHu7QSASVy8aB8xSVcJgx5seYGHPFvJkZ",
+    "memo": "STM7o1DigBaUEF28n2ap5PeY9Jqhndz3zWmF7xZ3zfRgSqeLaMnyA"
+  }
 }
