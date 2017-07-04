@@ -3,6 +3,7 @@ const debug = require('debug')('sc2:server');
 const { authenticate, verifyPermissions } = require('../helpers/middleware');
 const { encode } = require('steem/lib/auth/memo');
 const { issueUserToken } = require('../helpers/token');
+const { ops } = require('steem/lib/auth/serializer');
 const config = require('../config.json');
 const router = express.Router();
 
@@ -41,11 +42,35 @@ router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, re
   if (!isAuthorized) {
     res.status(401).send('Unauthorized!');
   } else {
+
     debug(`Broadcast transaction for @${req.user} from app @${req.proxy}`);
     req.steem.broadcast.send(
       { operations, extensions: [] },
       { posting: process.env.BROADCASTER_POSTING_WIF },
       (err, result) => {
+
+        /** Save in database the operations broadcasted */
+        if (!err) {
+          const { signed_transaction } = ops;
+          const buf = signed_transaction.toBuffer(result);
+          const txId = buf.toString('hex');
+
+          const opsArray = operations.map((operation) => {
+            return {
+              client_id: req.proxy,
+              user: req.user,
+              token: req.token,
+              operation_type: operation[0],
+              operation_payload: operation[1],
+              tx_id: txId,
+            };
+          });
+
+          req.db.operations.bulkCreate(opsArray).catch((err) => {
+            debug('Operation has not been saved on database', err);
+          });
+        }
+
         console.log(err, result);
         res.json({ errors: err, result });
       }
