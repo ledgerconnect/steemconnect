@@ -7,28 +7,53 @@
   <meta id="viewport" name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_ykgtxz90gjve7b9.css">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
-  <script src="https://rawgit.com/adcpm/sc2-sdk/master/dist/sc2.min.js"></script>
+  <script src="//rawgit.com/adcpm/sc2-sdk/master/dist/sc2.min.js"></script>
+  <script src="//cdn.steemjs.com/lib/latest/steem.min.js"></script>
   <script src="app.js"></script>
+  <style>
+    .container { max-width: 600px; }
+    .pull-right { float: right; }
+  </style>
 </head>
 <body>
-<div class="container py-5" style="max-width: 600px;" ng-controller="Main as main">
-  <h3>Demo</h3>
-  <div ng-show="!user">
-    <p>You are not logged, click below to login</p>
-    <a
-      ng-href="{{loginURL}}"
-      class="btn btn-primary"
-    >
-      Log in with SteemConnect
-    </a>
+<div class="container py-5" ng-controller="Main as main">
+  <div class="mb-4">
+    <h1>Demo</h1>
+    <p>This is a demo using SteemConnect 2 SDK. You can login, logout, comment and upvote.</p>
+    <p>Find the code of this demo on GitHub: <a href="https://github.com/busyorg/sc2/tree/dev/public/demo">https://github.com/busyorg/sc2/tree/dev/public/demo</a></p>
   </div>
-  <form ng-show="user">
-    <p>You are now logged with <b>@{{user.name}}</b> account.</p>
-    <button class="btn btn-primary" type="submit" ng-click="main.vote()">Vote @siol/test 1%</button>
-    <button class="btn btn-secondary" type="submit" ng-click="main.logout()">Log Out</button>
+
+  <div>
+    <b ng-show="isAuth()"><img src="//img.steemconnect.com/@{{user.name}}?s=32" width="32" height="32"> @{{user.name}}</b>
+    <a ng-show="isAuth()" class="btn btn-secondary" href="https://dev.steemconnect.com/logout">Log Out</a>
+    <a class="btn btn-primary" ng-href="{{loginURL}}" ng-hide="isAuth()">Log In</a>
+  </div>
+
+  <div class="input-group input-group-lg mt-4">
+    Last comments on the post: @{{parentAuthor}}/{{parentPermlink}}
+  </div>
+
+  <ul class="list-group my-4" ng-init="loadComments()">
+    <li class="list-group-item" ng-repeat="comment in comments">
+      @{{comment.author}} {{comment.body}}
+      <button ng-show="isAuth()" class="ml-2 btn btn-secondary btn-sm" type="submit" ng-click="vote(comment.author, comment.permlink, 1000)">
+        <i class="icon iconfont icon-praise"></i> {{comment.net_votes}}
+      </button>
+    </li>
+  </ul>
+
+  <form ng-show="isAuth()" ng-submit="comment()">
+    <div class="input-group">
+      <input type="text" class="form-control" ng-disabled="loading" placeholder="Write a comment here" ng-model="message">
+      <span class="input-group-btn">
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </span>
+    </div>
   </form>
+
 </div>
 </body>
 </html>
