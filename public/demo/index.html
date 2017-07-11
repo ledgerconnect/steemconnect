@@ -13,13 +13,11 @@
   <script src="//rawgit.com/adcpm/sc2-sdk/master/dist/sc2.min.js"></script>
   <script src="//cdn.steemjs.com/lib/latest/steem.min.js"></script>
   <script src="app.js"></script>
-  <style>
-    .container { max-width: 600px; }
-    .pull-right { float: right; }
-  </style>
 </head>
+
 <body>
-<div class="container py-5" ng-controller="Main as main">
+
+<div class="container py-5" style="max-width: 600px;" ng-controller="Main as main">
   <div class="mb-4">
     <h1>Demo</h1>
     <p>This is a demo using <a href="https://github.com/busyorg/sc2-sdk">SteemConnect 2 SDK</a>. You can login, logout, comment and upvote.</p>
@@ -38,7 +36,7 @@
 
   <ul class="list-group my-4" ng-init="loadComments()">
     <li class="list-group-item" ng-repeat="comment in comments">
-      @{{comment.author}} {{comment.body}}
+      @{{comment.author}}: {{comment.body}}
       <button ng-show="isAuth()" class="ml-2 btn btn-secondary btn-sm" type="submit" ng-click="vote(comment.author, comment.permlink, 1000)">
         <i class="icon iconfont icon-praise"></i> {{comment.net_votes}}
       </button>
@@ -55,5 +53,6 @@
   </form>
 
 </div>
+
 </body>
 </html>
