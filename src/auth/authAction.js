@@ -145,6 +145,9 @@ export function getAppDetails(appUserName, redirectUrl = '') {
   })
     .then(response => response.json())
     .then((response) => {
+      if (response.error) {
+        throw new Error(response.error); // incase of 400 errors
+      }
       const app = response;
       app.permissions = _.map(app.permissions,
         v => Object.assign(PermissionList[v], { api: v }));
