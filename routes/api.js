@@ -3,19 +3,51 @@ const debug = require('debug')('sc2:server');
 const { authenticate, verifyPermissions } = require('../helpers/middleware');
 const { encode } = require('steem/lib/auth/memo');
 const { issueUserToken } = require('../helpers/token');
+const { getUserMetadata, updateUserMetadata } = require('../helpers/metadata');
 const { ops } = require('steem/lib/auth/serializer');
 const config = require('../config.json');
 const router = express.Router();
 
 /** Get my account details */
-router.all('/me', authenticate(), async (req, res, next) => {
+router.post('/me', authenticate(), async (req, res, next) => {
   const scope = req.scope.length ? req.scope : config.authorized_operations;
   const accounts = await req.steem.api.getAccountsAsync([req.user]);
+  const user_metadata = await getUserMetadata(req.proxy, req.user);
   res.json({
     user: req.user,
     account: accounts[0],
     scope,
+    user_metadata,
   });
+});
+
+/** Update user_metadata */
+router.put('/me', authenticate(), async (req, res, next) => {
+  const scope = req.scope.length ? req.scope : config.authorized_operations;
+  const accounts = await req.steem.api.getAccountsAsync([req.user]);
+  const { user_metadata } = req.body;
+
+  if (typeof user_metadata === 'object') {
+    /** Check object size */
+    const bytes = Buffer.byteLength(JSON.stringify(user_metadata), 'utf8');
+    if (bytes <= config.user_metadata.max_size) {
+
+      /** Save user_metadata object on database */
+      debug(`Store object for ${req.user} (size ${bytes} bytes)`);
+      await updateUserMetadata(req.proxy, req.user, user_metadata);
+
+      res.json({
+        user: req.user,
+        account: accounts[0],
+        scope,
+        user_metadata,
+      });
+    } else {
+      res.status(401).send('Unauthorized');
+    }
+  } else {
+    res.status(401).send('Unauthorized');
+  }
 });
 
 /** Broadcast transactions */
@@ -40,7 +72,7 @@ router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, re
   });
 
   if (!isAuthorized) {
-    res.status(401).send('Unauthorized!');
+    res.status(401).send('Unauthorized');
   } else {
 
     debug(`Broadcast transaction for @${req.user} from app @${req.proxy}`);
