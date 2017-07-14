@@ -80,6 +80,23 @@ router.post('/auth/signup', (req, res) => {
     });
 });
 
+router.get('/authorize/@:appUserName', (req, res, next) => {
+  const { appUserName } = req.params;
+  getApp(appUserName).then(() => {
+    next();
+  }).catch((err) => {
+    if (typeof err === 'string') {
+      res.status(400).send({ error: err });
+    } else {
+      let message = err.message;
+      if (err.message.search('json_metadata') >= 0 || err.message === 'User not found') {
+        message = 'App not found';
+      }
+      res.status(400).send({ error: message });
+    }
+  });
+});
+
 router.get('/auth/authorize', verifyAuth, (req, res) => {
   const { appUserName, redirect_url, permissions } = req.query;
   getApp(appUserName)
