@@ -13,6 +13,10 @@
   <script src="//rawgit.com/adcpm/sc2-sdk/master/dist/sc2.min.js"></script>
   <script src="//cdn.steemjs.com/lib/latest/steem.min.js"></script>
   <script src="app.js"></script>
+  <style>
+    hr { margin: 40px 0; }
+    h3 { margin-bottom: 20px; }
+  </style>
 </head>
 
 <body>
@@ -24,13 +28,19 @@
     <p>Find the code of this demo on GitHub: <a href="https://github.com/busyorg/sc2/tree/dev/public/demo">https://github.com/busyorg/sc2/tree/dev/public/demo</a></p>
   </div>
 
+  <hr />
   <div>
+    <h3>Login & logout</h3>
     <b ng-show="isAuth()"><img src="//img.steemconnect.com/@{{user.name}}?s=32" width="32" height="32"> @{{user.name}}</b>
-    <a ng-show="isAuth()" class="btn btn-secondary" href="https://dev.steemconnect.com/logout">Log Out</a>
+    <button ng-show="isAuth()" class="ml-2 btn btn-secondary" type="submit" ng-click="logout()">
+      Logout
+    </button>
     <a class="btn btn-primary" ng-href="{{loginURL}}" ng-hide="isAuth()">Log In</a>
   </div>
 
-  <div class="input-group input-group-lg mt-4">
+  <hr />
+  <h3>Comment & vote</h3>
+  <div class="input-group input-group-lg">
     Last comments on the post: @{{parentAuthor}}/{{parentPermlink}}
   </div>
 
@@ -50,6 +60,19 @@
         <button class="btn btn-primary" type="submit">Submit</button>
       </span>
     </div>
+  </form>
+
+  <hr />
+  <h3>User metadata</h3>
+  <p>SteemConnect allows you to store data related to each user (such as user preferences) that do not impact a user's core functionality.</p>
+  <form ng-show="isAuth()" ng-submit="updateUserMetadata({ locale: locale })">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="What is your locale?" ng-model="locale">
+      <span class="input-group-btn">
+        <button class="btn btn-primary" type="submit">Save</button>
+      </span>
+    </div>
+    <pre class="mt-4">{{metadata}}</pre>
   </form>
 
 </div>

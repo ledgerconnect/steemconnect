@@ -23,6 +23,7 @@ angular.module('app', [])
         console.log('/me', err, result);
         if (!err) {
           $scope.user = result.account;
+          $scope.metadata = JSON.stringify(result.user_metadata, null, 2);
           $scope.$apply();
         }
       });
@@ -59,6 +60,22 @@ angular.module('app', [])
           alert('You successfully vote for @' + author + '/' + permlink);
           console.log('You successfully vote for @siol/test', err, result);
           $scope.loadComments();
+        } else {
+          console.log(err);
+        }
+      });
+    };
+
+    $scope.updateUserMetadata = function(metadata) {
+      sc2.updateUserMetadata(metadata, function (err, result) {
+        if (!err) {
+          alert('You successfully updated user_metadata');
+          console.log('You successfully updated user_metadata', result);
+          if (!err) {
+            $scope.user = result.account;
+            $scope.metadata = JSON.stringify(result.user_metadata, null, 2);
+            $scope.$apply();
+          }
         } else {
           console.log(err);
         }

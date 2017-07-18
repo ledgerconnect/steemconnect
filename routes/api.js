@@ -3,22 +3,59 @@ const debug = require('debug')('sc2:server');
 const { authenticate, verifyPermissions } = require('../helpers/middleware');
 const { encode } = require('steem/lib/auth/memo');
 const { issueUserToken } = require('../helpers/token');
-const { ops } = require('steem/lib/auth/serializer');
+const { getUserMetadata, updateUserMetadata } = require('../helpers/metadata');
 const config = require('../config.json');
 const router = express.Router();
 
 /** Get my account details */
-router.all('/me', authenticate(), async (req, res, next) => {
+router.post('/me', authenticate(), async (req, res, next) => {
   const scope = req.scope.length ? req.scope : config.authorized_operations;
   const accounts = await req.steem.api.getAccountsAsync([req.user]);
+  const user_metadata = req.role === 'app'
+    ? await getUserMetadata(req.proxy, req.user)
+    : undefined;
   res.json({
     user: req.user,
     account: accounts[0],
     scope,
+    user_metadata,
   });
 });
 
-/** Broadcast transactions */
+/** Update user_metadata */
+router.put('/me', authenticate('app'), async (req, res, next) => {
+  const scope = req.scope.length ? req.scope : config.authorized_operations;
+  const accounts = await req.steem.api.getAccountsAsync([req.user]);
+  const { user_metadata } = req.body;
+
+  if (typeof user_metadata === 'object') {
+    /** Check object size */
+    const bytes = Buffer.byteLength(JSON.stringify(user_metadata), 'utf8');
+    if (bytes <= config.user_metadata.max_size) {
+
+      /** Save user_metadata object on database */
+      debug(`Store object for ${req.user} (size ${bytes} bytes)`);
+      await updateUserMetadata(req.proxy, req.user, user_metadata);
+
+      res.json({
+        user: req.user,
+        account: accounts[0],
+        scope,
+        user_metadata,
+      });
+    } else {
+      res.status(400).json({
+        errors: [`User metadata object must not exceed ${config.user_metadata.max_size / 1000000} MB`]
+      });
+    }
+  } else {
+    res.status(400).json({
+      errors: ['User metadata must be an object']
+    });
+  }
+});
+
+/** Broadcast transaction */
 router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, res, next) => {
   const scope = req.scope.length ? req.scope : config.authorized_operations;
   const { operations } = req.body;
@@ -40,7 +77,7 @@ router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, re
   });
 
   if (!isAuthorized) {
-    res.status(401).send('Unauthorized!');
+    res.status(401).send('Unauthorized');
   } else {
 
     debug(`Broadcast transaction for @${req.user} from app @${req.proxy}`);
@@ -51,10 +88,6 @@ router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, re
 
         /** Save in database the operations broadcasted */
         if (!err) {
-          const { signed_transaction } = ops;
-          const buf = signed_transaction.toBuffer(result);
-          const txId = buf.toString('hex');
-
           const opsArray = operations.map((operation) => {
             return {
               client_id: req.proxy,
@@ -62,17 +95,19 @@ router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, re
               token: req.token,
               operation_type: operation[0],
               operation_payload: operation[1],
-              tx_id: txId,
+              tx_id: result.id,
             };
           });
 
           req.db.operations.bulkCreate(opsArray).catch((err) => {
-            debug('Operation has not been saved on database', err);
+            debug('Operations failed to be stored on database', err);
           });
-        }
 
-        console.log(err, result);
-        res.json({ errors: err, result });
+          res.json({ errors: err, result });
+        } else {
+          debug('Transaction broadcast failed', operations, err);
+          res.status(400).json({ errors: err, result });
+        }
       }
     );
   }
