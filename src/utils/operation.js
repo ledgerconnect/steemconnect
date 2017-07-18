@@ -2,7 +2,7 @@ import { formatter } from 'steem';
 import _ from 'lodash';
 import changeCase from 'change-case';
 import diacritics from 'diacritics';
-import operations from 'steem/lib/broadcast/operations.json';
+import operations from 'steem/lib/broadcast/operations';
 
 export const getOperation = type => {
   const ops = operations.filter(op =>

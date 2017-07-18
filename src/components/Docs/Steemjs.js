@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router';
 import changeCase from 'change-case';
 import pkg from 'steem/package.json';
-import methods from 'steem/lib/api/methods.json';
-import operations from 'steem/lib/broadcast/operations.json';
+import methods from 'steem/lib/api/methods';
+import operations from 'steem/lib/broadcast/operations';
 
 const Method = ({ method }) => {
   const inlineParams = method.params
