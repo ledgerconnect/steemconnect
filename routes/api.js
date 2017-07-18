@@ -11,7 +11,9 @@ const router = express.Router();
 router.post('/me', authenticate(), async (req, res, next) => {
   const scope = req.scope.length ? req.scope : config.authorized_operations;
   const accounts = await req.steem.api.getAccountsAsync([req.user]);
-  const user_metadata = await getUserMetadata(req.proxy, req.user);
+  const user_metadata = req.role === 'app'
+    ? await getUserMetadata(req.proxy, req.user)
+    : undefined;
   res.json({
     user: req.user,
     account: accounts[0],
@@ -21,7 +23,7 @@ router.post('/me', authenticate(), async (req, res, next) => {
 });
 
 /** Update user_metadata */
-router.put('/me', authenticate(), async (req, res, next) => {
+router.put('/me', authenticate('app'), async (req, res, next) => {
   const scope = req.scope.length ? req.scope : config.authorized_operations;
   const accounts = await req.steem.api.getAccountsAsync([req.user]);
   const { user_metadata } = req.body;
@@ -42,10 +44,14 @@ router.put('/me', authenticate(), async (req, res, next) => {
         user_metadata,
       });
     } else {
-      res.status(401).send('Unauthorized');
+      res.status(400).json({
+        errors: [`User metadata object must not exceed ${config.user_metadata.max_size / 1000000} MB`]
+      });
     }
   } else {
-    res.status(401).send('Unauthorized');
+    res.status(400).json({
+      errors: ['User metadata must be an object']
+    });
   }
 });
 
