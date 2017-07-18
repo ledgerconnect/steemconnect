@@ -20,6 +20,7 @@ export const authenticate = () =>
     const token = localStorage.getItem('token');
     if (token) {
       fetch('/api/me', {
+        method: 'POST',
         headers: new Headers({ Authorization: token })
       })
         .then(res => res.json())
