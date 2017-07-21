@@ -44,13 +44,15 @@ router.put('/me', authenticate('app'), async (req, res, next) => {
         user_metadata,
       });
     } else {
-      res.status(400).json({
-        errors: [`User metadata object must not exceed ${config.user_metadata.max_size / 1000000} MB`]
+      return res.status(400).json({
+        error: 'invalid_request',
+        error_description: `User metadata object must not exceed ${config.user_metadata.max_size / 1000000} MB`,
       });
     }
   } else {
-    res.status(400).json({
-      errors: ['User metadata must be an object']
+    return res.status(400).json({
+      error: 'invalid_request',
+      error_description: 'User metadata must be an object',
     });
   }
 });
@@ -59,27 +61,35 @@ router.put('/me', authenticate('app'), async (req, res, next) => {
 router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, res, next) => {
   const scope = req.scope.length ? req.scope : config.authorized_operations;
   const { operations } = req.body;
-  let isAuthorized = true;
 
+  let scopeIsValid = true;
+  let requestIsValid = true;
   operations.forEach((operation) => {
     /** Check if operation is allowed */
     if (scope.indexOf(operation[0]) === -1) {
-      isAuthorized = false;
+      scopeIsValid = false;
     }
     /** Check if author of the operation is user */
     if (
-      operation[1].voter !== req.user &&
-      operation[1].author !== req.user &&
-      (operation[1].required_posting_auths.length && operation[1].required_posting_auths[0] !== req.user)
+      (operation[0] === 'vote' && operation[1].voter !== req.user)
+      || (operation[0] === 'comment' && operation[1].author !== req.user)
+      || (operation[0] === 'custom_json' && operation[1].required_posting_auths[0] && operation[1].required_posting_auths[0] !== req.user)
     ) {
-      isAuthorized = false;
+      requestIsValid = false;
     }
   });
 
-  if (!isAuthorized) {
-    res.status(401).send('Unauthorized');
+  if (!scopeIsValid) {
+    return res.status(400).json({
+      error: 'invalid_scope',
+      error_description: `The operation ${operation[0]} is not allowed by the access_token scope`,
+    });
+  } else if (!requestIsValid) {
+    return res.status(400).json({
+      error: 'invalid_request',
+      error_description: `This access_token allow you to broadcast transaction only for the account @${req.user}`,
+    });
   } else {
-
     debug(`Broadcast transaction for @${req.user} from app @${req.proxy}`);
     req.steem.broadcast.send(
       { operations, extensions: [] },
@@ -103,10 +113,13 @@ router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, re
             debug('Operations failed to be stored on database', err);
           });
 
-          res.json({ errors: err, result });
+          res.json({ result });
         } else {
           debug('Transaction broadcast failed', operations, err);
-          res.status(400).json({ errors: err, result });
+          return res.status(400).json({
+            error: 'server_error',
+            error_description: err.message || err,
+          });
         }
       }
     );
