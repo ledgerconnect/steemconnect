@@ -44,7 +44,7 @@ router.put('/me', authenticate('app'), async (req, res, next) => {
         user_metadata,
       });
     } else {
-      return res.status(400).json({
+      return res.status(413).json({
         error: 'invalid_request',
         error_description: `User metadata object must not exceed ${config.user_metadata.max_size / 1000000} MB`,
       });
@@ -80,13 +80,13 @@ router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, re
   });
 
   if (!scopeIsValid) {
-    return res.status(400).json({
+    return res.status(401).json({
       error: 'invalid_scope',
       error_description: `The operation ${operation[0]} is not allowed by the access_token scope`,
     });
   } else if (!requestIsValid) {
-    return res.status(400).json({
-      error: 'invalid_request',
+    return res.status(401).json({
+      error: 'unauthorized_client',
       error_description: `This access_token allow you to broadcast transaction only for the account @${req.user}`,
     });
   } else {
@@ -116,7 +116,7 @@ router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, re
           res.json({ result });
         } else {
           debug('Transaction broadcast failed', operations, err);
-          return res.status(400).json({
+          return res.status(500).json({
             error: 'server_error',
             error_description: err.message || err,
           });

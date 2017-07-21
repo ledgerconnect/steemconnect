@@ -10,7 +10,7 @@ const verifyPermissions = async (req, res, next) => {
 
   const userAccountAuths = accounts[1].posting.account_auths.map((account) => account[0]);
   if (userAccountAuths.indexOf(req.proxy) === -1) {
-    return res.status(400).json({
+    return res.status(401).json({
       error: 'unauthorized_client',
       error_description: `The app @${req.proxy} don't have permission to broadcast for @${req.user}`,
     });
@@ -18,7 +18,7 @@ const verifyPermissions = async (req, res, next) => {
 
   const appAccountAuths = accounts[0].posting.account_auths.map((account) => account[0]);
   if (appAccountAuths.indexOf(process.env.BROADCASTER_USERNAME) === -1) {
-    return res.status(400).json({
+    return res.status(401).json({
       error: 'unauthorized_client',
       error_description: `Broadcaster account don't have permission to broadcast for @${req.proxy}`,
     });
@@ -42,7 +42,7 @@ const strategy = (req, res, next) => {
 
 const authenticate = (role) => async (req, res, next) => {
   if (!req.role || (role && req.role !== role)) {
-    return res.status(400).json({
+    return res.status(401).json({
       error: 'invalid_grant',
       error_description: 'The access_token has invalid role',
     });
@@ -50,7 +50,7 @@ const authenticate = (role) => async (req, res, next) => {
   if (req.role === 'app') {
     const token = await tokens.findOne({ where: { token: req.token } });
     if (!token) {
-      return res.status(400).json({
+      return res.status(401).json({
         error: 'invalid_grant',
         error_description: 'The access_token has been revoked',
       });
