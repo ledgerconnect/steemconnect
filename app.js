@@ -40,7 +40,6 @@ app.use(cors());
 app.use(strategy);
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'node_modules')));
 
 app.use('/api', require('./routes/api'));
 app.use('/api/apps', require('./routes/apps'));
