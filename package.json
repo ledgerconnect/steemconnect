@@ -46,7 +46,7 @@
     "moment": "^2.15.1",
     "morgan": "^1.7.0",
     "newrelic": "^1.36.1",
-    "node-sass": "^3.10.1",
+    "node-sass": "^3.13.1",
     "nodemon": "^1.11.0",
     "numeral": "^1.5.3",
     "pg": "^6.1.2",
