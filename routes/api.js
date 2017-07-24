@@ -4,6 +4,7 @@ const { authenticate, verifyPermissions } = require('../helpers/middleware');
 const { encode } = require('steem/lib/auth/memo');
 const { issueUserToken } = require('../helpers/token');
 const { getUserMetadata, updateUserMetadata } = require('../helpers/metadata');
+const { getErrorMessage } = require('../helpers/operation');
 const config = require('../config.json');
 const router = express.Router();
 
@@ -118,7 +119,7 @@ router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, re
           debug('Transaction broadcast failed', operations, err);
           return res.status(500).json({
             error: 'server_error',
-            error_description: err.message || err,
+            error_description: getErrorMessage(err) || err.message || err,
           });
         }
       }
