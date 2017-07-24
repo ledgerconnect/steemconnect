@@ -21,7 +21,7 @@ npm start
 
 ## Demo
 
-Test demo app here: http://localhost:3000/demo
+Test demo app here: https://sc2-angular.herokuapp.com
 
 ## Api
 
