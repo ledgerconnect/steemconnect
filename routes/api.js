@@ -5,7 +5,7 @@ const { encode } = require('steem/lib/auth/memo');
 const { issueUserToken } = require('../helpers/token');
 const { getUserMetadata, updateUserMetadata } = require('../helpers/metadata');
 const { getErrorMessage } = require('../helpers/operation');
-const { isOperationAuthor } = require('../helpers/queryUtils');
+const { isOperationAuthor } = require('../helpers/operation');
 const config = require('../config.json');
 
 const router = express.Router();
@@ -83,7 +83,7 @@ router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, re
   if (!scopeIsValid) {
     return res.status(401).json({
       error: 'invalid_scope',
-      error_description: `The operation ${invalidScopes} is not allowed by the access_token scope`,
+      error_description: `The access_token scope does not allow the following operation(s): ${invalidScopes}`,
     });
   } else if (!requestIsValid) {
     return res.status(401).json({

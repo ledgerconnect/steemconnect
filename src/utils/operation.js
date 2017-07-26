@@ -3,7 +3,7 @@ import _ from 'lodash';
 import changeCase from 'change-case';
 import diacritics from 'diacritics';
 import operations from 'steem/lib/broadcast/operations';
-import { setDefaultParameters } from '../../helpers/queryUtils';
+import { setDefaultAuthor } from '../../helpers/operation';
 
 export const getOperation = type => {
   const ops = operations.filter(op =>
@@ -27,7 +27,7 @@ export const isValid = (op, params) => {
 
 export const parseQuery = (type, query, username) => {
   type = changeCase.snakeCase(type);
-  query = setDefaultParameters(type, query, username);
+  query = setDefaultAuthor(type, query, username);
 
   switch (type) {
     case 'vote':
