@@ -12,6 +12,7 @@
     "eslint-autofix": "eslint --fix src/**/*.js *.js",
     "lint": "eslint src/**",
     "build": "webpack --progress -p --config webpack/webpack.prod.config.js",
+    "build-dev": "webpack --progress -p --config webpack/webpack.config.js",
     "postinstall": "npm run build"
   },
   "dependencies": {
@@ -54,7 +55,7 @@
     "lodash": "^4.0.0",
     "lodash-webpack-plugin": "^0.10.6",
     "morgan": "~1.6.1",
-    "node-sass": "^3.10.0",
+    "node-sass": "^4.5.3",
     "nodemon": "^1.11.0",
     "numeral": "^1.5.3",
     "object-assign": "^4.1.0",
@@ -71,6 +72,7 @@
     "redux-promise-middleware": "^4.0.0",
     "redux-thunk": "^2.1.0",
     "sass-loader": "^4.1.0",
+    "sc2-sdk": "0.0.1",
     "sequelize": "^3.30.4",
     "sequelize-cli": "^2.7.0",
     "serve-favicon": "~2.3.0",
