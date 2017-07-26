@@ -3,6 +3,7 @@ import _ from 'lodash';
 import changeCase from 'change-case';
 import diacritics from 'diacritics';
 import operations from 'steem/lib/broadcast/operations';
+import { setDefaultAuthor } from '../../helpers/operation';
 
 export const getOperation = type => {
   const ops = operations.filter(op =>
@@ -26,20 +27,21 @@ export const isValid = (op, params) => {
 
 export const parseQuery = (type, query, username) => {
   type = changeCase.snakeCase(type);
+  query = setDefaultAuthor(type, query, username);
+
   switch (type) {
     case 'vote':
-      return parseVote(query, username);
+      return parseVote(query);
     case 'comment':
-      return parseComment(query, username);
+      return parseComment(query);
     case 'transfer':
-      return parseTransfer(query, username);
+      return parseTransfer(query);
     default:
       return query;
   }
 };
 
-export const parseVote = (query, username) => {
-  query.voter = query.voter || username;
+export const parseVote = (query) => {
   query.weight = query.weight || 10000;
   return query;
 };
@@ -50,8 +52,7 @@ export const getErrorMessage = (error) => {
     : '';
 };
 
-export const parseComment = (query, username) => {
-  query.author = query.author || username;
+export const parseComment = (query) => {
   query.parent_author = query.parent_author || '';
   query.parent_permlink =  query.parent_permlink || '';
   query.title = query.title || '';
@@ -70,8 +71,7 @@ export const parseComment = (query, username) => {
   return query;
 };
 
-export const parseTransfer = (query, username) => {
-  query.from = query.from || username;
+export const parseTransfer = (query) => {
   query.memo = query.memo || '';
   return query;
 };

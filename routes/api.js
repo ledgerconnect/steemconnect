@@ -5,7 +5,9 @@ const { encode } = require('steem/lib/auth/memo');
 const { issueUserToken } = require('../helpers/token');
 const { getUserMetadata, updateUserMetadata } = require('../helpers/metadata');
 const { getErrorMessage } = require('../helpers/operation');
+const { isOperationAuthor } = require('../helpers/operation');
 const config = require('../config.json');
+
 const router = express.Router();
 
 /** Get my account details */
@@ -65,17 +67,15 @@ router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, re
 
   let scopeIsValid = true;
   let requestIsValid = true;
+  let invalidScopes = '';
   operations.forEach((operation) => {
     /** Check if operation is allowed */
     if (scope.indexOf(operation[0]) === -1) {
       scopeIsValid = false;
+      invalidScopes += (invalidScopes !== '' ? ', ' : '') + operation[0];
     }
     /** Check if author of the operation is user */
-    if (
-      (operation[0] === 'vote' && operation[1].voter !== req.user)
-      || (operation[0] === 'comment' && operation[1].author !== req.user)
-      || (operation[0] === 'custom_json' && operation[1].required_posting_auths[0] && operation[1].required_posting_auths[0] !== req.user)
-    ) {
+    if (!isOperationAuthor(operation[0], operation[1], req.user)) {
       requestIsValid = false;
     }
   });
@@ -83,7 +83,7 @@ router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, re
   if (!scopeIsValid) {
     return res.status(401).json({
       error: 'invalid_scope',
-      error_description: `The operation ${operation[0]} is not allowed by the access_token scope`,
+      error_description: `The access_token scope does not allow the following operation(s): ${invalidScopes}`,
     });
   } else if (!requestIsValid) {
     return res.status(401).json({
