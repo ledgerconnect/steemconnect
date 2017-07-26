@@ -27,7 +27,7 @@ export default class EditApp extends Component {
       })
     })
       .then(res => res.json())
-      .then(app => {
+      .then((app) => {
         this.setState({
           app,
           isLoading: false,
@@ -42,21 +42,21 @@ export default class EditApp extends Component {
     fetch(`/api/apps/@${clientId}`, {
       method: 'PUT',
       headers: new Headers({
-        'Accept': 'application/json, text/plain, */*',
+        Accept: 'application/json, text/plain, */*',
         'Content-Type': 'application/json',
         Authorization: this.props.auth.token,
       }),
       body: JSON.stringify(data)
     })
       .then(res => res.json())
-      .then(json => {
+      .then(() => {
         this.setState({ isLoading: false });
         notification.success({
           message: 'Success',
           description: 'Your application has been successfully updated',
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         notification.error({
           message: 'Error',
@@ -69,7 +69,7 @@ export default class EditApp extends Component {
     const { app, clientId, isLoading, isLoaded } = this.state;
     return (
       <div className="container my-5">
-        {isLoading && <Loading/>}
+        {isLoading && <Loading />}
         {isLoaded &&
           <div>
             <div className="pb-3">
@@ -87,4 +87,4 @@ export default class EditApp extends Component {
       </div>
     );
   }
-};
+}

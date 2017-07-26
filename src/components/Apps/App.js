@@ -28,7 +28,7 @@ export default class MyApps extends Component {
       })
     })
       .then(res => res.json())
-      .then(app => {
+      .then((app) => {
         this.setState({
           app,
           isLoading: false,
@@ -84,8 +84,8 @@ export default class MyApps extends Component {
             </div>
           </div>
         }
-        {isLoading && <Loading/>}
+        {isLoading && <Loading />}
       </div>
     );
   }
-};
+}

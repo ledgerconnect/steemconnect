@@ -18,7 +18,7 @@ export default class MyApps extends Component {
     this.setState({ isLoading: true });
     fetch('/api/apps')
       .then(res => res.json())
-      .then(apps => {
+      .then((apps) => {
         this.setState({
           apps,
           isLoading: false,
@@ -32,7 +32,7 @@ export default class MyApps extends Component {
     return (
       <div className="container my-5">
         <h2>Apps</h2>
-        {isLoading && <Loading/>}
+        {isLoading && <Loading />}
         {isLoaded &&
           <div>
             {apps.map((app, key) =>
@@ -43,4 +43,4 @@ export default class MyApps extends Component {
       </div>
     );
   }
-};
+}

@@ -25,9 +25,8 @@ export default class Authorize extends Component {
     this.setState({ step: 2 });
 
     steem.api.getAccounts([auth.username], (err, accounts) => {
-
       if (!hasAuthority(accounts[0], username, role)) {
-        let updatedAuthority = accounts[0][role];
+        const updatedAuthority = accounts[0][role];
         updatedAuthority.account_auths.push([username, parseInt(weight)]);
 
         const owner = role === 'owner' ? updatedAuthority : undefined;
@@ -43,12 +42,12 @@ export default class Authorize extends Component {
           posting,
           accounts[0].memo_key,
           accounts[0].json_metadata,
-          (err, result) => {
-            console.log(err, result);
-            if (!err) {
+          (errBc, result) => {
+            console.log(errBc, result);
+            if (!errBc) {
               this.setState({ success: result });
             } else {
-              this.setState({ error: err.payload.error });
+              this.setState({ error: errBc.payload.error });
             }
             this.setState({ step: 3 });
           });

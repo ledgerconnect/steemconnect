@@ -10,7 +10,7 @@
   "scripts": {
     "start": "nodemon --ignore src ./bin/www",
     "eslint-autofix": "eslint --fix src/**/*.js *.js",
-    "lint": "eslint src/**",
+    "lint": "eslint src/**/*.js routes/**/*.js helpers/**/*.js",
     "build": "webpack --progress -p --config webpack/webpack.prod.config.js",
     "build-dev": "webpack --progress -p --config webpack/webpack.config.js",
     "postinstall": "npm run build"

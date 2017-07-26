@@ -3,24 +3,26 @@ const debug = require('debug')('sc2:server');
 const { issueAppToken } = require('../helpers/token');
 const { authenticate } = require('../helpers/middleware');
 const config = require('../config.json');
-const router = express.Router();
 
-router.get('/oauth2/authorize', async (req, res, next) => {
+const router = express.Router(); // eslint-disable-line new-cap
+
+router.get('/oauth2/authorize', async (req, res) => {
   const redirectUri = req.query.redirect_uri;
   const clientId = req.query.client_id;
-  const app = await req.db.apps.findOne({ where: {
-    client_id: clientId,
-    redirect_uris: { $contains: [redirectUri] }
-  }});
+  const app = await req.db.apps.findOne({
+    where: {
+      client_id: clientId,
+      redirect_uris: { $contains: [redirectUri] }
+    }
+  });
   if (!app) {
     debug(`The app @${clientId} has not been setup.`);
-    return res.redirect('/404');
-  } else {
-    res.render('index', { title: 'SteemConnect' });
+    res.redirect('/404');
   }
+  res.render('index', { title: 'SteemConnect' });
 });
 
-router.all('/api/oauth2/authorize', authenticate('user'), async (req, res, next) => {
+router.all('/api/oauth2/authorize', authenticate('user'), async (req, res) => {
   const clientId = req.query.client_id;
   const scope = req.query.scope ? req.query.scope.split(',') : [];
   debug(`Issue app token for user @${req.user} using @${clientId} proxy.`);
@@ -32,7 +34,7 @@ router.all('/api/oauth2/authorize', authenticate('user'), async (req, res, next)
 });
 
 /** Revoke app access token */
-router.all('/api/oauth2/token/revoke', authenticate('app'), async (req, res, next) => {
+router.all('/api/oauth2/token/revoke', authenticate('app'), async (req, res) => {
   await req.db.tokens.destroy({ where: { token: req.token } });
   res.json({ success: true });
 });

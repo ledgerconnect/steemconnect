@@ -44,7 +44,7 @@ class RecoverAccount extends React.Component {
     const onSuccess = () => {
       notification.success({
         message: 'Success',
-        description: `Account recovery has been successfully requested`,
+        description: 'Account recovery has been successfully requested',
       });
     };
 
@@ -55,7 +55,12 @@ class RecoverAccount extends React.Component {
   requestAccountRecovery = async (creatorOwnerPrivate, recoveryAccount, accountToRecover, newPassword, onError, onSuccess) => {
     const newOwnerPrivate = steem.auth.toWif(accountToRecover, newPassword.trim(), 'owner');
     const newOwner = steem.auth.wifToPublic(newOwnerPrivate);
-    const newOwnerAuthority = { weight_threshold: 1, account_auths: [], key_auths: [[newOwner, 1]] };
+    const newOwnerAuthority = {
+      weight_threshold: 1,
+      account_auths: [],
+      key_auths: [[newOwner, 1]]
+    };
+
     try {
       await steem.broadcast.requestAccountRecoveryAsync(
         creatorOwnerPrivate,
@@ -65,7 +70,7 @@ class RecoverAccount extends React.Component {
         []
       );
       onSuccess();
-    } catch(error) {
+    } catch (error) {
       onError(error);
     }
   };
@@ -75,7 +80,7 @@ class RecoverAccount extends React.Component {
     return (
       <div className="container py-5">
         <Card>
-          {isLoading && <div className="text-center my-4"><Loading/></div>}
+          {isLoading && <div className="text-center my-4"><Loading /></div>}
           {!isLoading && step === 0 &&
             <div>
               <div className="my-4 text-center">

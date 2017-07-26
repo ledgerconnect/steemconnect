@@ -19,7 +19,7 @@ export default class AuthorizedApps extends Component {
     return (
       <div className="container py-5">
         <h2>Authorized Apps</h2>
-        {isLoading && <Loading/>}
+        {isLoading && <Loading />}
         {user.posting &&
           <div>
             <p>Here is a list of authorized application to use your account.</p>

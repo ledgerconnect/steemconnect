@@ -10,17 +10,16 @@ const steem = require('steem');
 const db = require('./db/models');
 const { strategy } = require('./helpers/middleware');
 
-//steem.api.setOptions({ transport: 'http' });
+// steem.api.setOptions({ transport: 'http' });
 http.globalAgent.maxSockets = Infinity;
 https.globalAgent.maxSockets = Infinity;
 const app = express();
 const server = http.Server(app);
 
-if (process.env.NODE_ENV !== 'production')
-  require('./webpack/webpack')(app);
+if (process.env.NODE_ENV !== 'production') { require('./webpack/webpack')(app); }
 
 const hbs = require('hbs');
-hbs.registerPartials(__dirname + '/views/partials');
+hbs.registerPartials(`${__dirname}/views/partials`);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
