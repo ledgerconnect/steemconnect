@@ -39,7 +39,7 @@ const strategy = (req, res, next) => {
     req.scope = decoded.scope || [];
     /* eslint-enable no-param-reassign */
   } catch (err) {
-    console.log(err);
+    // console.log(err);
   }
   next();
 };
