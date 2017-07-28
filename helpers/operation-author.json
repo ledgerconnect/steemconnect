@@ -1,0 +1,6 @@
+{
+  "vote": "voter",
+  "comment": "author",
+  "transfer": "from",
+  "custom_json": "required_posting_auths[0]"
+}
