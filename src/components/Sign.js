@@ -52,7 +52,7 @@ export default class Sign extends Component {
         this.setState({ success: result });
       } else {
         console.log(err);
-        this.setState({ error: err.payload.error });
+        this.setState({ error: err });
       }
       this.setState({ step: 3 });
     });
