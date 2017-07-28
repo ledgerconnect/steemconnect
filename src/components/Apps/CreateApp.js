@@ -7,7 +7,7 @@ import CreateAppForm from '../Form/CreateApp';
 import SignForm from '../Form/Sign';
 import config from '../../../config.json';
 import { getAccountCreationFee } from '../../utils/auth';
-import { getErrorMessage } from '../../utils/operation';
+import { getErrorMessage } from '../../../helpers/operation';
 import Loading from '../../widgets/Loading';
 import { sleep } from '../../../helpers/utils';
 

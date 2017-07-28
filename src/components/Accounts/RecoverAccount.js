@@ -4,7 +4,7 @@ import steem from 'steem';
 import { Link } from 'react-router';
 import RecoverAccountForm from '../Form/RecoverAccount';
 import Loading from '../../widgets/Loading';
-import { getErrorMessage } from '../../utils/operation';
+import { getErrorMessage } from '../../../helpers/operation';
 import { createSuggestedPassword } from '../../utils/auth';
 
 class RecoverAccount extends React.Component {

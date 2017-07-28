@@ -1,5 +1,5 @@
 import React from 'react';
-import { getErrorMessage } from '../../utils/operation';
+import { getErrorMessage } from '../../../helpers/operation';
 import Icon from '../../widgets/Icon';
 
 const SignError = ({ error, resetForm }) =>
