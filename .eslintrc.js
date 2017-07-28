@@ -20,6 +20,7 @@ module.exports = {
     "radix": ["error", "as-needed"],
     "react/jsx-filename-extension": 0,
     "react/prefer-stateless-function": [2, { "ignorePureComponents": true }],
+    "react/require-extension": "off",
     "react/sort-comp": 0,
     "react/prop-types": 0,
     "no-underscore-dangle": 0,

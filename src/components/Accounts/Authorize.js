@@ -47,7 +47,7 @@ export default class Authorize extends Component {
             if (!errBc) {
               this.setState({ success: result });
             } else {
-              this.setState({ error: errBc.payload.error });
+              this.setState({ error: errBc });
             }
             this.setState({ step: 3 });
           });

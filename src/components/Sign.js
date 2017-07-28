@@ -4,7 +4,7 @@ import changeCase from 'change-case';
 import SignForm from './Form/Sign';
 import SignSuccess from './Sign/Success';
 import SignError from './Sign/Error';
-import { getOperation, parseQuery } from '../utils/operation';
+import { getOperation, parseQuery } from '../../helpers/operation';
 import SignPlaceholderDefault from './Sign/Placeholder/Default';
 import SignPlaceholderComment from './Sign/Placeholder/Comment';
 import Loading from '../widgets/Loading';
@@ -52,7 +52,7 @@ export default class Sign extends Component {
         this.setState({ success: result });
       } else {
         console.log(err);
-        this.setState({ error: err.payload.error });
+        this.setState({ error: err });
       }
       this.setState({ step: 3 });
     });

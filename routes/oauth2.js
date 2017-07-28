@@ -18,8 +18,9 @@ router.get('/oauth2/authorize', async (req, res) => {
   if (!app) {
     debug(`The app @${clientId} has not been setup.`);
     res.redirect('/404');
+  } else {
+    res.render('index', { title: 'SteemConnect' });
   }
-  res.render('index', { title: 'SteemConnect' });
 });
 
 router.all('/api/oauth2/authorize', authenticate('user'), async (req, res) => {

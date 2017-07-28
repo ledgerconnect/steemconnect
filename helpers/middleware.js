@@ -12,18 +12,19 @@ const verifyPermissions = async (req, res, next) => {
   if (userAccountAuths.indexOf(req.proxy) === -1) {
     res.status(401).json({
       error: 'unauthorized_client',
-      error_description: `The app @${req.proxy} don't have permission to broadcast for @${req.user}`,
+      error_description: `The app @${req.proxy} doesn't have permission to broadcast for @${req.user}`,
     });
   } else {
     const appAccountAuths = accounts[0].posting.account_auths.map(account => account[0]);
     if (appAccountAuths.indexOf(process.env.BROADCASTER_USERNAME) === -1) {
       res.status(401).json({
         error: 'unauthorized_client',
-        error_description: `Broadcaster account don't have permission to broadcast for @${req.proxy}`,
+        error_description: `Broadcaster account doesn't have permission to broadcast for @${req.proxy}`,
       });
+    } else {
+      next();
     }
   }
-  next();
 };
 
 const strategy = (req, res, next) => {
@@ -57,9 +58,12 @@ const authenticate = role => async (req, res, next) => {
         error: 'invalid_grant',
         error_description: 'The access_token has been revoked',
       });
+    } else {
+      next();
     }
+  } else {
+    next();
   }
-  next();
 };
 
 module.exports = {
