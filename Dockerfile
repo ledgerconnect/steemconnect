@@ -7,10 +7,8 @@ ENV NODE_ENV production
 
 WORKDIR /var/app
 RUN mkdir -p /var/app
-ADD package.json /var/app/package.json
-RUN yarn
-
 COPY . /var/app
+RUN yarn
 
 RUN npm run test && npm run build
 
