@@ -7,7 +7,7 @@ const _ = require('lodash');
 const operationAuthor = require('./operation-author.json');
 
 /** Parse error message from Steemd response */
-export const getErrorMessage = (error) => {
+const getErrorMessage = (error) => {
   let errorMessage = '';
   if (_.has(error, 'payload.error.data.stack[0].format')) {
     errorMessage = error.payload.error.data.stack[0].format;
@@ -21,7 +21,7 @@ export const getErrorMessage = (error) => {
   return errorMessage;
 };
 
-export const isOperationAuthor = (operation, query, username) => {
+const isOperationAuthor = (operation, query, username) => {
   if (Object.prototype.hasOwnProperty.call(operationAuthor, operation)) {
     const field = operationAuthor[operation];
     if (!field) { return false; }
@@ -30,7 +30,7 @@ export const isOperationAuthor = (operation, query, username) => {
   return false;
 };
 
-export const setDefaultAuthor = (operation, query, username) => {
+const setDefaultAuthor = (operation, query, username) => {
   const _query = query;
   if (Object.prototype.hasOwnProperty.call(operationAuthor, operation)) {
     const field = operationAuthor[operation];
@@ -40,14 +40,14 @@ export const setDefaultAuthor = (operation, query, username) => {
   return _query;
 };
 
-export const getOperation = (type) => {
+const getOperation = (type) => {
   const ops = operations.filter(op =>
     op.operation === changeCase.snakeCase(type)
   );
   return ops[0] ? ops[0] : '';
 };
 
-export const isValid = (op, params) => {
+const isValid = (op, params) => {
   let valid = false;
   if (op) {
     valid = true;
@@ -60,12 +60,12 @@ export const isValid = (op, params) => {
   return valid;
 };
 
-export const parseVote = (query) => {
+const parseVote = (query) => {
   query.weight = query.weight || 10000;
   return query;
 };
 
-export const parseComment = (query) => {
+const parseComment = (query) => {
   query.parent_author = query.parent_author || '';
   query.parent_permlink = query.parent_permlink || '';
   query.title = query.title || '';
@@ -83,12 +83,12 @@ export const parseComment = (query) => {
   return query;
 };
 
-export const parseTransfer = (query) => {
+const parseTransfer = (query) => {
   query.memo = query.memo || '';
   return query;
 };
 
-export const parseQuery = (type, query, username) => {
+const parseQuery = (type, query, username) => {
   type = changeCase.snakeCase(type);
   query = setDefaultAuthor(type, query, username);
 
@@ -102,4 +102,13 @@ export const parseQuery = (type, query, username) => {
     default:
       return query;
   }
+};
+
+module.exports = {
+  getErrorMessage,
+  isOperationAuthor,
+  setDefaultAuthor,
+  getOperation,
+  isValid,
+  parseQuery,
 };
