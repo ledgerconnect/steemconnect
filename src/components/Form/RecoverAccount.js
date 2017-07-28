@@ -106,4 +106,4 @@ const RecoverAccount = Form.create({
   },
 })(RecoverAccountForm);
 
-export default RecoverAccount
+export default RecoverAccount;

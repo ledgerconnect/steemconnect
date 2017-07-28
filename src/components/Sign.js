@@ -37,11 +37,13 @@ export default class Sign extends Component {
 
     /* Parse params */
     const params = {};
-    for (const key in query) {
-      params[key] = isNaN(query[key]) || query[key] == ''
-        ? query[key]
-        : parseInt(query[key]);
-    }
+    Object.keys(query).forEach((key) => {
+      if (isNaN(query[key]) || query[key] === '') {
+        params[key] = query[key];
+      } else {
+        params[key] = parseInt(query[key]);
+      }
+    });
 
     /* Broadcast */
     this.setState({ step: 2 });

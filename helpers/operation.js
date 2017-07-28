@@ -2,11 +2,7 @@ const _ = require('lodash');
 const operationAuthor = require('./operation-author.json');
 
 /** Parse error message from Steemd response */
-const getErrorMessage = (error) => {
-  return _.has(error, 'payload.error.data.stack[0].format')
-    ? error.payload.error.data.stack[0].format
-    : '';
-};
+const getErrorMessage = error => (_.has(error, 'payload.error.data.stack[0].format') ? error.payload.error.data.stack[0].format : '');
 
 const isOperationAuthor = (operation, query, username) => {
   if (Object.prototype.hasOwnProperty.call(operationAuthor, operation)) {

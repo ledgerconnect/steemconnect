@@ -106,4 +106,4 @@ const RequestAccountRecovery = Form.create({
   },
 })(RequestAccountRecoveryForm);
 
-export default RequestAccountRecovery
+export default RequestAccountRecovery;

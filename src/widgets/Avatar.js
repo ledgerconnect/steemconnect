@@ -7,17 +7,20 @@ const Avatar = ({
   size = '36',
   className = '',
 }) => {
-  const src = username
-    ? `https://img.steemconnect.com/@${username}?s=${size}`
-    : icon
-      ? `https://steemitimages.com/${size}x${size}/${icon}`
-      : `https://img.steemconnect.com/@steemconnect?s=${size}`;
+  let src;
+  if (username) {
+    src = `https://img.steemconnect.com/@${username}?s=${size}`;
+  } else if (icon) {
+    src = `https://steemitimages.com/${size}x${size}/${icon}`;
+  } else {
+    src = `https://img.steemconnect.com/@steemconnect?s=${size}`;
+  }
   return (
     <span
       className={`Avatar ${className}`}
       style={{ height: `${size}px`, width: `${size}px` }}
     >
-      <img src={src}/>
+      <img src={src} alt="avatar" />
     </span>
   );
 };

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { formatter } from 'steem';
 import _ from 'lodash';
 import changeCase from 'change-case';
@@ -5,7 +6,7 @@ import diacritics from 'diacritics';
 import operations from 'steem/lib/broadcast/operations';
 import { setDefaultAuthor } from '../../helpers/operation';
 
-export const getOperation = type => {
+export const getOperation = (type) => {
   const ops = operations.filter(op =>
     op.operation === changeCase.snakeCase(type)
   );
@@ -13,16 +14,44 @@ export const getOperation = type => {
 };
 
 export const isValid = (op, params) => {
-  let isValid = false;
+  let valid = false;
   if (op) {
-    isValid = true;
+    valid = true;
     op.params.forEach((param) => {
       if (params[param] === undefined) {
-        isValid = false;
+        valid = false;
       }
     });
   }
-  return isValid;
+  return valid;
+};
+
+export const parseVote = (query) => {
+  query.weight = query.weight || 10000;
+  return query;
+};
+
+export const parseComment = (query) => {
+  query.parent_author = query.parent_author || '';
+  query.parent_permlink = query.parent_permlink || '';
+  query.title = query.title || '';
+  if (query.parent_author && query.parent_permlink) {
+    query.permlink = query.permlink
+      || formatter.commentPermlink(query.parent_author, query.parent_permlink).toLowerCase();
+  } else {
+    query.title = query.title || query.body.slice(0, 255);
+    query.permlink = query.permlink
+      || changeCase.paramCase(diacritics.remove(query.title)).slice(0, 255);
+  }
+  let jsonMetadata = {};
+  try { jsonMetadata = JSON.parse(decodeURIComponent(query.json_metadata)); } catch (e) { jsonMetadata = {}; }
+  query.json_metadata = jsonMetadata;
+  return query;
+};
+
+export const parseTransfer = (query) => {
+  query.memo = query.memo || '';
+  return query;
 };
 
 export const parseQuery = (type, query, username) => {
@@ -41,37 +70,6 @@ export const parseQuery = (type, query, username) => {
   }
 };
 
-export const parseVote = (query) => {
-  query.weight = query.weight || 10000;
-  return query;
-};
-
-export const getErrorMessage = (error) => {
-  return _.has(error, 'payload.error.data.stack[0].format')
+export const getErrorMessage = error => (_.has(error, 'payload.error.data.stack[0].format')
     ? error.payload.error.data.stack[0].format
-    : '';
-};
-
-export const parseComment = (query) => {
-  query.parent_author = query.parent_author || '';
-  query.parent_permlink =  query.parent_permlink || '';
-  query.title = query.title || '';
-  if (query.parent_author && query.parent_permlink) {
-    query.permlink = query.permlink
-      || formatter.commentPermlink(query.parent_author, query.parent_permlink).toLowerCase()
-  } else {
-    query.title = query.title || query.body.slice(0, 255);
-    query.permlink = query.permlink
-      || changeCase.paramCase(diacritics.remove(query.title)).slice(0, 255)
-  }
-  let jsonMetadata = {};
-  try { jsonMetadata = JSON.parse(decodeURIComponent(query.json_metadata)); }
-  catch (e) { jsonMetadata = {}; }
-  query.json_metadata = jsonMetadata;
-  return query;
-};
-
-export const parseTransfer = (query) => {
-  query.memo = query.memo || '';
-  return query;
-};
+    : '');

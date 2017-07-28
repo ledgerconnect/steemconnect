@@ -1,12 +1,12 @@
 import steem from 'steem';
 import fetch from 'isomorphic-fetch';
 import { decode } from 'steem/lib/auth/memo';
-import { key_utils } from 'steem/lib/auth/ecc';
+import { key_utils } from 'steem/lib/auth/ecc'; // eslint-disable-line camelcase
 
 export const login = ({ username, wif, role = 'posting' }, cb) => {
   fetch(`/api/login/challenge?username=${username}&role=${role}`)
     .then(res => res.json())
-    .then(data => {
+    .then((data) => {
       const token = decode(wif, data.code).substring(1);
       localStorage.setItem('token', token);
       cb(null, data);
@@ -15,14 +15,14 @@ export const login = ({ username, wif, role = 'posting' }, cb) => {
 };
 
 export const hasAuthority = (user, clientId, role = 'posting') => {
-  const auths = user[role].account_auths.map((auth) => auth[0]);
+  const auths = user[role].account_auths.map(auth => auth[0]);
   return auths.indexOf(clientId) !== -1;
 };
 
 export const addPostingAuthority = ({ username, wif, clientId }, cb) => {
   steem.api.getAccounts([username], (err, result) => {
     const { posting, memo_key, json_metadata } = result[0];
-    let postingNew = posting;
+    const postingNew = posting;
     if (!hasAuthority(result[0], clientId)) {
       postingNew.account_auths.push([clientId, parseInt(posting.weight_threshold)]);
       steem.broadcast.accountUpdate(
@@ -33,7 +33,7 @@ export const addPostingAuthority = ({ username, wif, clientId }, cb) => {
         postingNew,
         memo_key,
         json_metadata,
-        (err, result) => cb(err, result));
+        (errA, resultA) => cb(errA, resultA));
     } else {
       cb(null, {});
     }
@@ -63,5 +63,5 @@ export const getAccountCreationFee = async () => {
   const accountCreationFee = chainProps.account_creation_fee;
   const steemModifier = chainConfig.STEEMIT_CREATE_ACCOUNT_WITH_STEEM_MODIFIER;
   const accountCreationSteemFee = parseFloat(accountCreationFee.split(' ')[0]) * steemModifier;
-  return accountCreationSteemFee.toFixed(3) + ' STEEM';
+  return `${accountCreationSteemFee.toFixed(3)} STEEM`;
 };

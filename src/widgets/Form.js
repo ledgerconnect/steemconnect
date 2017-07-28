@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import * as validator from '../utils/validator';
 
 export default class Form extends Component {
@@ -11,7 +11,7 @@ export default class Form extends Component {
   }
 
   onChange = async (event) => {
-    let { name, value, dataset } = event.target;
+    const { name, value, dataset } = event.target;
     const { data, valid } = this.state;
     if (dataset.validator) {
       valid[name] = value.length > 0
@@ -29,8 +29,11 @@ export default class Form extends Component {
   };
 
   getClasses = (name, value) => {
-    return this.state.valid[name] === true
-      ? `${value} has-success` : this.state.valid[name] === false
-        ? `${value} has-danger` : value;
-  };
+    if (this.state.valid[name] === true) {
+      return `${value} has-success`;
+    } else if (this.state.valid[name] === false) {
+      return `${value} has-danger`;
+    }
+    return value;
+  }
 }

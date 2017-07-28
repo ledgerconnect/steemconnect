@@ -1,4 +1,5 @@
 import React from 'react';
+import fetch from 'isomorphic-fetch';
 import steem from 'steem';
 import { notification, Modal } from 'antd';
 import { browserHistory } from 'react-router';
@@ -63,7 +64,7 @@ class CreateApp extends React.Component {
       publicKeys.memo,
       { owner: this.props.auth.user.name },
       []
-    ).then(async (result) => {
+    ).then(async () => {
       /** Wait 5 seconds to insure the newly created account is indexed on the node */
       await sleep(5000);
 
@@ -92,15 +93,14 @@ class CreateApp extends React.Component {
             });
           }
         });
-      }).catch((err) => {
-        this.setState({ isLoading: false });
-        console.log(err);
-        notification.error({
-          message: 'Error',
-          description: getErrorMessage(err) || 'Oops! Something goes wrong, open your console to see the error details.',
-        });
-      }
-    );
+    }).catch((err) => {
+      this.setState({ isLoading: false });
+      console.log(err);
+      notification.error({
+        message: 'Error',
+        description: getErrorMessage(err) || 'Oops! Something goes wrong, open your console to see the error details.',
+      });
+    });
   };
 
   render() {

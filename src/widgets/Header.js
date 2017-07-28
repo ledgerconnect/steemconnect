@@ -9,7 +9,7 @@ const Header = ({ username }) =>
       {username &&
         <Link to="/dashboard">
           <span className="mr-2">{username}</span>
-          <div className="float-right"><Avatar username={username}/></div>
+          <div className="float-right"><Avatar username={username} /></div>
         </Link>
       }
       {!username &&
