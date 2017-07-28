@@ -47,44 +47,55 @@ class RecoverAccount extends React.Component {
   };
 
   // https://github.com/steemit/condenser/blob/0b3af70996c08423a770db2ef23189cd4e7d12be/app/redux/TransactionSaga.js#L481
-  recoverAccount = async (account_to_recover, old_password, new_password, onError, onSuccess) => {
-    const oldOwnerPrivate = steem.auth.isWif(old_password) ? old_password :
-      steem.auth.toWif(account_to_recover, old_password, 'owner');
+  recoverAccount = async (accountToRecover, oldPassword, newPassword, onError, onSuccess) => {
+    const oldOwnerPrivate = steem.auth.isWif(oldPassword) ? oldPassword :
+      steem.auth.toWif(accountToRecover, oldPassword, 'owner');
 
     const oldOwner = steem.auth.wifToPublic(oldOwnerPrivate);
 
-    const newOwnerPrivate = steem.auth.toWif(account_to_recover, new_password.trim(), 'owner');
+    const newOwnerPrivate = steem.auth.toWif(accountToRecover, newPassword.trim(), 'owner');
     const newOwner = steem.auth.wifToPublic(newOwnerPrivate);
     const pwPubkey = (name, pw, role) => steem.auth.wifToPublic(steem.auth.toWif(name, pw.trim(), role));
-    const newActive = pwPubkey(account_to_recover, new_password.trim(), 'active');
-    const newPosting = pwPubkey(account_to_recover, new_password.trim(), 'posting');
-    const newMemo = pwPubkey(account_to_recover, new_password.trim(), 'memo');
+    const newActive = pwPubkey(accountToRecover, newPassword.trim(), 'active');
+    const newPosting = pwPubkey(accountToRecover, newPassword.trim(), 'posting');
+    const newMemo = pwPubkey(accountToRecover, newPassword.trim(), 'memo');
 
-    const new_owner_authority = { weight_threshold: 1, account_auths: [], key_auths: [[newOwner, 1]] };
-    const recent_owner_authority = { weight_threshold: 1, account_auths: [], key_auths: [[oldOwner, 1]] };
+    const newOwnerAuthority = {
+      weight_threshold: 1,
+      account_auths: [],
+      key_auths: [[newOwner, 1]]
+    };
+
+    const recentOwnerAuthority = {
+      weight_threshold: 1,
+      account_auths: [],
+      key_auths: [[oldOwner, 1]]
+    };
 
     try {
-      await steem.broadcast.sendAsync({extensions: [], operations: [
-        ['recover_account', {
-          account_to_recover,
-          new_owner_authority,
-          recent_owner_authority,
-        }]
-      ]}, [oldOwnerPrivate, newOwnerPrivate]);
+      await steem.broadcast.sendAsync({ extensions: [],
+        operations: [
+          ['recover_account', {
+            account_to_recover: accountToRecover,
+            new_owner_authority: newOwnerAuthority,
+            recent_owner_authority: recentOwnerAuthority,
+          }]
+        ] }, [oldOwnerPrivate, newOwnerPrivate]);
 
       // change password
       // change password probably requires a separate transaction (single trx has not been tested)
-      await steem.broadcast.sendAsync({extensions: [], operations: [
-        ['account_update', {
-          account: account_to_recover,
-          active: { weight_threshold: 1, account_auths: [], key_auths: [[newActive, 1]] },
-          posting: { weight_threshold: 1, account_auths: [], key_auths: [[newPosting, 1]] },
-          memo_key: newMemo,
-          json_metadata: '',
-        }]
-      ]}, [newOwnerPrivate]);
+      await steem.broadcast.sendAsync({ extensions: [],
+        operations: [
+          ['account_update', {
+            account: accountToRecover,
+            active: { weight_threshold: 1, account_auths: [], key_auths: [[newActive, 1]] },
+            posting: { weight_threshold: 1, account_auths: [], key_auths: [[newPosting, 1]] },
+            memo_key: newMemo,
+            json_metadata: '',
+          }]
+        ] }, [newOwnerPrivate]);
       onSuccess();
-    } catch(error) {
+    } catch (error) {
       onError(error);
     }
   };
@@ -94,7 +105,7 @@ class RecoverAccount extends React.Component {
     return (
       <div className="container py-5">
         <Card>
-          {isLoading && <div className="text-center my-4"><Loading/></div>}
+          {isLoading && <div className="text-center my-4"><Loading /></div>}
           {!isLoading &&
             <div>
               <div className="text-center my-4">

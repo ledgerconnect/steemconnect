@@ -24,13 +24,13 @@ export const authenticate = () =>
         headers: new Headers({ Authorization: token })
       })
         .then(res => res.json())
-        .then(data => {
+        .then((data) => {
           dispatch(authenticateSuccess({
             user: data.account,
             token,
           }));
         })
-        .catch((err) => {
+        .catch(() => {
           dispatch(authenticateFailure());
         });
     } else {
@@ -43,6 +43,6 @@ export const logout = (next = false) =>
     dispatch(logoutRequest());
     localStorage.removeItem('token');
     dispatch(logoutSuccess());
-    const to = next ? next : '/';
+    const to = next || '/';
     browserHistory.push(to);
   };

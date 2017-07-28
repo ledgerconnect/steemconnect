@@ -33,7 +33,7 @@ export default class Permissions extends Component {
     return (
       <div className="container py-5">
         <h2>Permissions</h2>
-        {isLoading && <Loading/>}
+        {isLoading && <Loading />}
         {account.posting &&
           <div>
             <p>Here is a list of <b>@{this.props.params.username}</b>'s account permissions.</p>
@@ -41,8 +41,8 @@ export default class Permissions extends Component {
               <div key={idx}>
                 <p><b>{changeCase.titleCase(role)}</b></p>
                 <ul className="list-group text-xs-left mb-3">
-                  {account[role].account_auths.map((auth, idx) =>
-                    <li key={idx} className="list-group-item">
+                  {account[role].account_auths.map((auth, idxA) =>
+                    <li key={idxA} className="list-group-item">
                       <b>@{auth[0]}</b>
                       <span className="ml-1">
                         {numeral(100 / account[role].weight_threshold * auth[1] / 100).format('0%')}
@@ -57,8 +57,8 @@ export default class Permissions extends Component {
                       }
                     </li>
                   )}
-                  {account[role].key_auths.map((auth, idx) =>
-                    <li key={idx} className="list-group-item">
+                  {account[role].key_auths.map((auth, idxA) =>
+                    <li key={idxA} className="list-group-item">
                       {auth[0]}
                     </li>
                   )}

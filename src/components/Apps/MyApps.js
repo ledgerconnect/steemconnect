@@ -19,20 +19,20 @@ export default class MyApps extends Component {
   componentWillMount() {
     this.setState({ isLoading: true });
 
-    fetch(`/api/apps/me`, {
+    fetch('/api/apps/me', {
       headers: new Headers({
         Authorization: this.props.auth.token,
       })
     })
       .then(res => res.json())
-      .then(apps => {
+      .then((apps) => {
         this.setState({
           apps,
           isLoading: false,
           isLoaded: true,
         });
       });
-  };
+  }
 
   render() {
     const { apps, isLoading, isLoaded } = this.state;
@@ -40,7 +40,7 @@ export default class MyApps extends Component {
       <div className="container my-5">
         <h2>My Apps</h2>
         <p>These are your apps.</p>
-        {isLoading && <Loading/>}
+        {isLoading && <Loading />}
         {isLoaded &&
           <div>
             {apps.map((app, key) =>
@@ -48,7 +48,7 @@ export default class MyApps extends Component {
             )}
             <div className="list-group-item">
               <Link to="/apps/create">
-                <Icon name="add"/> New App
+                <Icon name="add" /> New App
               </Link>
             </div>
           </div>
@@ -56,4 +56,4 @@ export default class MyApps extends Component {
       </div>
     );
   }
-};
+}

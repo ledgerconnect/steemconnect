@@ -25,10 +25,10 @@ export default class Login extends Component {
     this.setState({ step: 2 });
     fetch(`/api/login/challenge?username=${auth.username}`)
       .then(res => res.json())
-      .then(data => {
+      .then((data) => {
         const token = decode(auth.wif, data.code);
         localStorage.setItem('token', token.substring(1));
-        window.location = next ? next : '/dashboard';
+        window.location = next || '/dashboard';
       });
   };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-const OAuth2 = ({ app }) => {
+const OAuth2 = () => {
   const origin = window.location.origin;
   return (
     <div className="container my-5">

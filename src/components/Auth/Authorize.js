@@ -34,7 +34,7 @@ export default class Authorize extends Component {
         window.location = `${redirectUri}?${qs.stringify(res)}`;
       });
     } else if (auth.isLoaded) {
-      this.setState({ step: 1 })
+      this.setState({ step: 1 });
     }
   };
 
@@ -43,14 +43,14 @@ export default class Authorize extends Component {
     this.setState({ step: 0 });
     login({ ...auth }, (err, res) => {
       console.log(err, res);
-      addPostingAuthority({ ...auth, clientId }, (err, res) => {
-        console.log(err, res);
-        authorize({ clientId, scope }, (err, res) => {
-          console.log(err, res);
-          window.location = `${redirectUri}?${qs.stringify(res)}`;
+      addPostingAuthority({ ...auth, clientId }, (errPa, resPa) => {
+        console.log(errPa, resPa);
+        authorize({ clientId, scope }, (errA, resA) => {
+          console.log(errA, resA);
+          window.location = `${redirectUri}?${qs.stringify(resA)}`;
         });
       });
-    })
+    });
   };
 
   render() {
@@ -58,7 +58,7 @@ export default class Authorize extends Component {
     return (
       <div className="Sign">
         <div className="Sign__content container my-2">
-          {step === 0 && <Loading/>}
+          {step === 0 && <Loading />}
           {step === 1 &&
             <div>
               <h2>Authorize</h2>

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router';
 import Form from '../../widgets/Form';
 
@@ -10,7 +10,8 @@ export default class AppForm extends Form {
   }
 
   onChange = (event) => {
-    let { name, value } = event.target;
+    const { name } = event.target;
+    let { value } = event.target;
     const { data } = this.state;
     if (name === 'redirect_uris') {
       value = value.split('\n');
@@ -26,8 +27,9 @@ export default class AppForm extends Form {
       <form onSubmit={this.onSubmit}>
         <div className="block">
           <div className="form-group">
-            <label className="label">App Name</label>
+            <label className="label" htmlFor="appName">App Name</label>
             <input
+              id="appName"
               type="text"
               className="form-control"
               name="name"
@@ -39,8 +41,9 @@ export default class AppForm extends Form {
             </small>
           </div>
           <div className="form-group">
-            <label className="label">App Description</label>
+            <label className="label" htmlFor="appDesc">App Description</label>
             <textarea
+              id="appDesc"
               className="form-control"
               name="description"
               onChange={this.onChange}
@@ -51,8 +54,9 @@ export default class AppForm extends Form {
             </small>
           </div>
           <div className="form-group">
-            <label className="label">App Icon</label>
+            <label className="label" htmlFor="appIcon">App Icon</label>
             <input
+              id="appIcon"
               type="text"
               className="form-control"
               name="icon"
@@ -61,8 +65,9 @@ export default class AppForm extends Form {
             />
           </div>
           <div className="form-group">
-            <label className="label">Website</label>
+            <label className="label" htmlFor="website">Website</label>
             <input
+              id="website"
               type="text"
               className="form-control"
               name="website"
@@ -71,8 +76,9 @@ export default class AppForm extends Form {
             />
           </div>
           <div className="form-group">
-            <label className="label">Redirect URI(s)</label>
+            <label className="label" htmlFor="redirectURI">Redirect URI(s)</label>
             <textarea
+              id="redirectURI"
               className="form-control"
               name="redirect_uris"
               onChange={this.onChange}

@@ -1,10 +1,9 @@
 const jwt = require('jsonwebtoken');
-const config = require('../config.json');
 const { tokens } = require('../db/models');
 const debug = require('debug')('sc2:server');
 
 /** Create a new access token for user */
-const issueUserToken = (user) =>
+const issueUserToken = user =>
   jwt.sign({
     role: 'user',
     user

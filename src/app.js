@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Layout } from 'antd';
 import Header from './widgets/Header';
 
-export default class App extends Component {
+export default class App extends PureComponent {
   render() {
     return (
       <Layout>

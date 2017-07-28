@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import Icon from '../../widgets/Icon';
 
 export default class Sign extends Component {
-  constructor(props) {
-    super(props);
-  };
 
   componentDidMount = () => {
     console.log(this.props.result);
@@ -17,7 +14,7 @@ export default class Sign extends Component {
   };
 
   render() {
-    const { result, cb } = this.props;
+    const { cb } = this.props;
     return (
       <div>
         <h2><Icon name="check" className="text-success" lg /> Success</h2>
@@ -25,10 +22,10 @@ export default class Sign extends Component {
         {cb &&
           <p>
             If you are not redirected within 10 seconds{' '}
-            <a href={cb} target="_blank">click here</a>.
+            <a href={cb} target="_blank" rel="noopener noreferrer">click here</a>.
           </p>
         }
       </div>
     );
-  };
+  }
 }
