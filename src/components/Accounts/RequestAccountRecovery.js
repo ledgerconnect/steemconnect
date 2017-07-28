@@ -5,7 +5,7 @@ import RequestAccountRecoveryForm from '../Form/RequestAccountRecovery';
 import Loading from '../../widgets/Loading';
 import SignForm from '../Form/Sign';
 import { createSuggestedPassword } from '../../utils/auth';
-import { getErrorMessage } from '../../utils/operation';
+import { getErrorMessage } from '../../../helpers/operation';
 
 class RecoverAccount extends React.Component {
   state = {
