@@ -29,15 +29,12 @@ export default class Revoke extends Component {
 
     steem.api.getAccounts([auth.username], (err, result) => {
       const { posting, memo_key, json_metadata } = result[0];
-      let hasAuth = false;
-      let postingNew = posting;
+      const postingNew = posting;
 
-      posting.account_auths.map((account, idx) => {
-        if (account[0] === username) {
-          hasAuth = true;
-          postingNew.account_auths.splice(idx, 1);
-        }
-      });
+      posting.account_auths.map((account, idx) => (
+          account[0] === username ? postingNew.account_auths.splice(idx, 1) : null
+        )
+      );
       console.log(postingNew);
 
       steem.broadcast.accountUpdate(
@@ -48,17 +45,16 @@ export default class Revoke extends Component {
         postingNew,
         memo_key,
         json_metadata,
-        (err, result) => {
+        (errBc, resultBc) => {
+          console.log(errBc, resultBc);
 
-        console.log(err, result);
-
-        if (!err) {
-          this.setState({ success: result });
-        } else {
-          this.setState({ error: err });
-        }
-        this.setState({ step: 3 });
-      });
+          if (!errBc) {
+            this.setState({ success: resultBc });
+          } else {
+            this.setState({ error: errBc });
+          }
+          this.setState({ step: 3 });
+        });
     });
   };
 

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Form from '../../widgets/Form';
 import { createSuggestedPassword } from '../../utils/auth';
 
@@ -23,8 +23,9 @@ export default class AccountForm extends Form {
       <form onSubmit={this.onSubmit}>
         <div className="block">
           <div className={this.getClasses('name', 'form-group')}>
-            <label className="label">Username</label>
+            <label className="label" htmlFor="username">Username</label>
             <input
+              id="username"
               type="text"
               className="form-control"
               name="name"
@@ -35,8 +36,9 @@ export default class AccountForm extends Form {
             />
           </div>
           <div className="form-group">
-            <label className="label">Password</label>
+            <label className="label" htmlFor="password">Password</label>
             <input
+              id="password"
               type="text"
               className="form-control"
               name="password"
@@ -46,8 +48,9 @@ export default class AccountForm extends Form {
             <small>Write down your password and keep it somewhere very safe and secure.</small>
           </div>
           <div className="form-group">
-            <label className="label">Steem</label>
+            <label className="label" htmlFor="steem">Steem</label>
             <input
+              id="steem"
               type="text"
               className="form-control"
               name="steem"
@@ -56,8 +59,9 @@ export default class AccountForm extends Form {
             />
           </div>
           <div className="form-group">
-            <label className="label">Vests</label>
+            <label className="label" htmlFor="vests">Vests</label>
             <input
+              id="vests"
               type="text"
               className="form-control"
               name="vests"

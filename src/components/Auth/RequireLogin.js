@@ -12,7 +12,7 @@ const RequireLogin = ({ auth, location, children }) => {
     ? React.cloneElement(children, { auth })
     : <div className="Sign">
       <div className="Sign__content container my-2">
-        {auth.isLoading && <Loading/>}
+        {auth.isLoading && <Loading />}
       </div>
     </div>;
 };

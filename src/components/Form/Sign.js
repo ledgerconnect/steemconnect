@@ -23,22 +23,27 @@ class Sign extends React.Component {
         /** Check if public WIF is valid */
         let wifIsValid = false;
         let role;
-        roles.map(r => {
-          if (account[r].key_auths[0][0] === publicWif) {
+        for (let i = 0; i < roles.length; i += 1) {
+          if (account[roles[i]].key_auths[0][0] === publicWif) {
             wifIsValid = true;
-            role = r;
+            role = roles[i];
+            break;
           }
-        });
+        }
 
         /** Submit form */
         if (wifIsValid) {
           const payload = {
-            username: username,
+            username,
             wif: privateWif,
             role,
           };
-          this.props.onSubmit && this.props.onSubmit(payload);
-          this.props.sign && this.props.sign(payload);
+          if (this.props.onSubmit) {
+            this.props.onSubmit(payload);
+          }
+          if (this.props.sign) {
+            this.props.sign(payload);
+          }
         } else {
           this.props.form.setFields({
             password: {

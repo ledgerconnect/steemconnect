@@ -6,8 +6,11 @@ const SignPlaceholderComment = ({
   query,
 }) => {
   let jsonMetadata = {};
-  try { jsonMetadata = JSON.parse(query.json_metadata); }
-  catch (e) { jsonMetadata = {}; }
+  try {
+    jsonMetadata = JSON.parse(query.json_metadata);
+  } catch (e) {
+    jsonMetadata = {};
+  }
   return (
     <div>
       <h2>{ changeCase.titleCase(type) }</h2>
