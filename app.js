@@ -51,7 +51,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'node_modules')));
 
 app.use(cors({ credentials: true, origin: true }));
 
@@ -92,6 +91,11 @@ app.use((err, req, res) => {
   });
 });
 
-steem.config.set('websocket', 'wss://steemd.steemit.com');
+if (process.env.WS) {
+  steem.api.setOptions({
+    transport: 'ws',
+    websocket: process.env.WS,
+  });
+}
 
 module.exports = app;

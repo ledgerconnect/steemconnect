@@ -13,7 +13,12 @@ require('isomorphic-fetch');
 // load the stylesheet
 require('./styles/base.sass');
 
-steem.config.set('websocket', 'wss://steemd.steemit.com');
+if (process.env.WS) {
+  steem.api.setOptions({
+    transport: 'ws',
+    websocket: process.env.WS,
+  });
+}
 
 const appHistory = useRouterHistory(createHistory)({ queryKey: false });
 ReactDOM.render(
