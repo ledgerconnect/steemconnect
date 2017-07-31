@@ -91,6 +91,11 @@ app.use((err, req, res) => {
   });
 });
 
-steem.config.set('websocket', 'wss://steemd.steemit.com');
+if (process.env.WS) {
+  steem.api.setOptions({
+    transport: 'ws',
+    websocket: process.env.WS,
+  });
+}
 
 module.exports = app;
