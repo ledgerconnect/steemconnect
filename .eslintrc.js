@@ -11,7 +11,6 @@ module.exports = {
   "extends": "airbnb",
   "rules": {
     "jsx-a11y/href-no-hash": 0,
-    "linebreak-style": 0,
     "max-len": ["error", 150],
     "no-func-assign": 0,
     "no-class-assign": 0,
