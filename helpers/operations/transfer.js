@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { isEmpty, isAsset } = require('../validation-utils');
+const { isEmpty, isAsset, userExists } = require('../validation-utils');
 
 const parse = (query) => {
   const _query = _.cloneDeep(query);
@@ -11,17 +11,19 @@ const parse = (query) => {
   };
 };
 
-const validate = (query) => {
+const validate = async (query) => {
   const errors = [];
 
   if (isEmpty(query.to)) {
-    errors.push('to is required');
+    errors.push('\'to\' is required');
+  } else if (!await userExists(query.to)) {
+    errors.push('the destination user doesn\'t exist');
   }
 
   if (isEmpty(query.amount)) {
     errors.push('amount is required');
-  } else if (!isAsset(query.amount, 3)) {
-    errors.push('please type a valid amount, 12.345 STEEM for example');
+  } else if (!isAsset(query.amount)) {
+    errors.push('please type a valid amount, 12.123 STEEM or 12.123456 VESTS for example');
   }
 
   return errors;

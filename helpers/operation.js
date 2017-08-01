@@ -67,12 +67,12 @@ const isValid = (op, params) => {
   return valid;
 };
 
-const parseQuery = (type, query, username) => {
+const parseQuery = async (type, query, username) => {
   type = changeCase.snakeCase(type);
   query = setDefaultAuthor(type, query, username);
 
   if (_.hasIn(parseOperations, type)) {
-    const errors = parseOperations[type].validate(query);
+    const errors = await parseOperations[type].validate(query);
     console.log('errors ', errors);
     if (errors.length > 0) {
       return {

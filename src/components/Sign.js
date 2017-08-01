@@ -33,13 +33,13 @@ export default class Sign extends Component {
     });
   };
 
-  sign = (auth) => {
+  sign = async (auth) => {
     const { type, query } = this.state;
-    const parsedQuery = parseQuery(type, query, auth.username);
+    const parsedQuery = await parseQuery(type, query, auth.username);
     const _query = parsedQuery.query;
     const _type = parsedQuery.type;
     const validationErrors = parsedQuery.errors;
-    console.log(parsedQuery);
+
     if (validationErrors && validationErrors.length > 0) {
       this.setState({ validationErrors, step: 3 });
     } else {
