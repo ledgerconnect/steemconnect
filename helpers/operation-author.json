@@ -15,6 +15,8 @@
   "account_witness_proxy": "account",
   "delete_comment": "author",
   "custom_json": "required_posting_auths[0]",
+  "follow": "follower",
+  "unfollow": "follower",
   "comment_options": "author",
   "escrow_transfer": "from",
   "escrow_dispute": "from",
