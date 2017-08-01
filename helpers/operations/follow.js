@@ -1,3 +1,5 @@
+const { isEmpty } = require('../validation-utils');
+
 const parse = (query) => {
   const _query = {
     id: 'follow',
@@ -18,4 +20,17 @@ const parse = (query) => {
   };
 };
 
-module.exports = parse;
+const validate = (query) => {
+  const errors = [];
+
+  if (isEmpty(query.following)) {
+    errors.push('following is required');
+  }
+
+  return errors;
+};
+
+module.exports = {
+  parse,
+  validate
+};

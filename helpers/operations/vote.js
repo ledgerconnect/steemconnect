@@ -9,4 +9,13 @@ const parse = (query) => {
   };
 };
 
-module.exports = parse;
+const validate = (query) => {
+  const errors = [];
+
+  return errors;
+};
+
+module.exports = {
+  parse,
+  validate
+};

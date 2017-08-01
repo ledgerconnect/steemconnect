@@ -2,6 +2,7 @@ const _ = require('lodash');
 const { formatter } = require('steem');
 const changeCase = require('change-case');
 const diacritics = require('diacritics');
+const { isEmpty } = require('../validation-utils');
 
 const parse = (query) => {
   const _query = _.cloneDeep(query);
@@ -30,4 +31,20 @@ const parse = (query) => {
   };
 };
 
-module.exports = parse;
+const validate = (query) => {
+  const errors = [];
+
+  if (isEmpty(query.body)) {
+    errors.push('body is required');
+  }
+  if (isEmpty(query.permlink)) {
+    errors.push('permlink is required');
+  }
+
+  return errors;
+};
+
+module.exports = {
+  parse,
+  validate
+};

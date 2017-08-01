@@ -4,6 +4,7 @@ import changeCase from 'change-case';
 import SignForm from './Form/Sign';
 import SignSuccess from './Sign/Success';
 import SignError from './Sign/Error';
+import SignValidationError from './Sign/ValidationError';
 import { getOperation, parseQuery } from '../../helpers/operation';
 import SignPlaceholderDefault from './Sign/Placeholder/Default';
 import SignPlaceholderComment from './Sign/Placeholder/Comment';
@@ -20,6 +21,7 @@ export default class Sign extends Component {
       step: 0,
       success: false,
       error: false,
+      validationErrors: null
     };
   }
 
@@ -36,35 +38,37 @@ export default class Sign extends Component {
     const parsedQuery = parseQuery(type, query, auth.username);
     const _query = parsedQuery.query;
     const _type = parsedQuery.type;
+    const validationErrors = parsedQuery.errors;
     console.log(parsedQuery);
+    if (validationErrors && validationErrors.length > 0) {
+      this.setState({ validationErrors, step: 3 });
+    } else {
+      /* Parse params */
+      const params = {};
+      Object.keys(_query).forEach((key) => {
+        if (isNaN(_query[key]) || _query[key] === '' || typeof _query[key] === 'object') {
+          params[key] = _query[key];
+        } else {
+          params[key] = parseInt(_query[key]);
+        }
+      });
 
-    /* Parse params */
-    const params = {};
-    Object.keys(_query).forEach((key) => {
-      if (isNaN(_query[key]) || _query[key] === '' || typeof _query[key] === 'object') {
-        params[key] = _query[key];
-      } else {
-        params[key] = parseInt(_query[key]);
-      }
-    });
-
-    console.log(params);
-
-    /* Broadcast */
-    this.setState({ step: 2 });
-    steem.broadcast[`${changeCase.camelCase(_type)}With`](auth.wif, params, (err, result) => {
-      if (!err) {
-        this.setState({ success: result });
-      } else {
-        console.log(err);
-        this.setState({ error: err });
-      }
-      this.setState({ step: 3 });
-    });
+      /* Broadcast */
+      this.setState({ step: 2 });
+      steem.broadcast[`${changeCase.camelCase(_type)}With`](auth.wif, params, (err, result) => {
+        if (!err) {
+          this.setState({ success: result });
+        } else {
+          console.log(err);
+          this.setState({ error: err });
+        }
+        this.setState({ step: 3 });
+      });
+    }
   };
 
   render() {
-    const { step, success, error, query, type } = this.state;
+    const { step, success, error, validationErrors, query, type } = this.state;
     const op = getOperation(type);
     let Placeholder = SignPlaceholderDefault;
     Placeholder = (type === 'comment') ? SignPlaceholderComment : Placeholder;
@@ -88,7 +92,8 @@ export default class Sign extends Component {
           {step === 1 && <SignForm roles={op.roles} sign={this.sign} />}
           {step === 2 && <Loading />}
           {step === 3 && success && <SignSuccess result={success} cb={query.cb} />}
-          {step === 3 && error && <SignError error={error} resetForm={this.resetForm} />}
+          {step === 3 && !validationErrors && error && <SignError error={error} resetForm={this.resetForm} />}
+          {step === 3 && validationErrors && !error && <SignValidationError errors={validationErrors} />}
         </div>
       </div>
     );

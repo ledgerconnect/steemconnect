@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 const changeCase = require('change-case');
 const operations = require('steem/lib/broadcast/operations');
-const customOperations = require('./operations/customOperations');
+const customOperations = require('./operations/custom-operations');
 const _ = require('lodash');
 const operationAuthor = require('./operation-author.json');
 const parseOperations = require('./operations');
@@ -72,7 +72,14 @@ const parseQuery = (type, query, username) => {
   query = setDefaultAuthor(type, query, username);
 
   if (_.hasIn(parseOperations, type)) {
-    return parseOperations[type](query);
+    const errors = parseOperations[type].validate(query);
+    console.log('errors ', errors);
+    if (errors.length > 0) {
+      return {
+        errors
+      };
+    }
+    return parseOperations[type].parse(query);
   }
   return {
     query,
