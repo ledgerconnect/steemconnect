@@ -8,6 +8,7 @@ import SignValidationError from './Sign/ValidationError';
 import { getOperation, normalize, validate, setDefaultAuthor } from '../../helpers/operation';
 import SignPlaceholderDefault from './Sign/Placeholder/Default';
 import SignPlaceholderComment from './Sign/Placeholder/Comment';
+import SignPlaceholderCustomJSON from './Sign/Placeholder/CustomJSON';
 import SignPlaceholderFollow from './Sign/Placeholder/Follow';
 import SignPlaceholderDelegateVestingShares from './Sign/Placeholder/DelegateVestingShares';
 import Loading from '../widgets/Loading';
@@ -19,7 +20,7 @@ export default class Sign extends Component {
     this.state = {
       type: this.props.params.type,
       query: this.props.location.query,
-      step: 0,
+      step: 2,
       success: false,
       error: false,
       validationErrors: null
@@ -31,10 +32,10 @@ export default class Sign extends Component {
     const validationErrors = await validate(type, query);
     if (validationErrors && validationErrors.errors && validationErrors.errors.length > 0) {
       this.setState({ validationErrors: validationErrors.errors, step: 3 });
+    } else {
+      const normalizedQuery = await normalize(type, query);
+      this.setState({ query: normalizedQuery.query, type: normalizedQuery.type, step: 0 });
     }
-
-    const normalizedQuery = await normalize(type, query);
-    this.setState({ query: normalizedQuery.query, type: normalizedQuery.type });
   }
 
   resetForm = () => {
@@ -73,12 +74,17 @@ export default class Sign extends Component {
   };
 
   render() {
-    const { step, success, error, validationErrors, query, type } = this.state;
+    const { step, success, error, validationErrors, query } = this.state;
+    let { type } = this.state;
+    const pType = this.props.params.type;
     const op = getOperation(type);
     let Placeholder = SignPlaceholderDefault;
-    Placeholder = (type === 'comment') ? SignPlaceholderComment : Placeholder;
-    Placeholder = (type === 'follow') ? SignPlaceholderFollow : Placeholder;
-    Placeholder = (type === 'delegate_vesting_shares') ? SignPlaceholderDelegateVestingShares : Placeholder;
+    if (type === 'comment') Placeholder = SignPlaceholderComment;
+    else if (pType === 'follow' || pType === 'unfollow' || pType === 'mute' || pType === 'unmute') {
+      Placeholder = SignPlaceholderFollow;
+      type = pType;
+    } else if (type === 'custom_json') Placeholder = SignPlaceholderCustomJSON;
+    else if (type === 'delegate_vesting_shares') Placeholder = SignPlaceholderDelegateVestingShares;
 
     return (
       <div className="Sign">

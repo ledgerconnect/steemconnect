@@ -6,7 +6,7 @@ const normalize = (query) => {
     json: JSON.stringify([
       'follow', {
         following: query.following.charAt(0) === '@' ? query.following.substr(1) : query.following,
-        what: query.what ? JSON.parse(query.what) : ['blog']
+        what: query.what ? JSON.parse(query.what) : ['ignore']
       }
     ]),
     required_auths: [],

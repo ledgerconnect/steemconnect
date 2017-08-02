@@ -6,10 +6,10 @@ const SignPlaceholderFollow = ({ type, query }) =>
     <h2>{ changeCase.titleCase(type) }</h2>
     <table className="table text-left">
       <tbody>
-        {query.following &&
+        {query.json &&
         <tr>
           <td className="label"><b>Following</b></td>
-          <td>{query.following}</td>
+          <td>{JSON.parse(query.json)[1].following}</td>
         </tr>
         }
       </tbody>

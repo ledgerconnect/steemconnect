@@ -32,7 +32,12 @@ const isAsset = (value) => {
 };
 
 const userExists = async (username) => {
-  const accounts = await steem.api.getAccountsAsync([username]);
+  let _username = username;
+  if (_username.charAt(0) === '@') {
+    _username = _username.substr(1);
+  }
+
+  const accounts = await steem.api.getAccountsAsync([_username]);
   return accounts && accounts.length > 0;
 };
 

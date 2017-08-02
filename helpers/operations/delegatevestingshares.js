@@ -8,6 +8,10 @@ const normalize = async (query) => {
   const [amount, symbol] = _query.vesting_shares.split(' ');
   const globalProps = await steem.api.getDynamicGlobalPropertiesAsync();
 
+  if (_query.delegatee.charAt(0) === '@') {
+    _query.delegatee = _query.delegatee.substr(1);
+  }
+
   if (symbol === 'SP') {
     _query.vesting_shares_display = _.join([parseFloat(amount).toFixed(3), symbol], ' ');
     _query.vesting_shares = _.join([

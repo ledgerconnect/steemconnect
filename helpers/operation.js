@@ -68,10 +68,10 @@ const isValid = (op, params) => {
 };
 
 const validate = async (type, query) => {
+  type = changeCase.snakeCase(type);
   let errors = [];
-
-  if (_.hasIn(parseOperations, type)) {
-    errors = await parseOperations[type].validate(query);
+  if (_.hasIn(parseOperations, _.replace(type, /_/g, ''))) {
+    errors = await parseOperations[_.replace(type, /_/g, '')].validate(query);
   }
   return {
     errors
@@ -80,9 +80,8 @@ const validate = async (type, query) => {
 
 const normalize = async (type, query) => {
   type = changeCase.snakeCase(type);
-
-  if (_.hasIn(parseOperations, type)) {
-    return parseOperations[type].normalize(query);
+  if (_.hasIn(parseOperations, _.replace(type, /_/g, ''))) {
+    return parseOperations[_.replace(type, /_/g, '')].normalize(query);
   }
   return {
     query,

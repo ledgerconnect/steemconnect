@@ -10,13 +10,18 @@ module.exports = [
     params: ['following']
   },
   {
-    roles: ['active'],
-    operation: 'delegatevestingshares',
-    params: ['delegator', 'delegatee', 'vesting_shares']
+    roles: ['posting', 'active'],
+    operation: 'mute',
+    params: ['following']
+  },
+  {
+    roles: ['posting', 'active'],
+    operation: 'unmute',
+    params: ['following']
   },
   {
     roles: ['active'],
-    operation: 'undelegatevestingshares',
-    params: ['delegator', 'delegatee', 'vesting_shares']
+    operation: 'undelegate_vesting_shares',
+    params: ['delegatee']
   }
 ];

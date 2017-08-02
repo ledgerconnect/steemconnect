@@ -8,6 +8,11 @@ const normalize = (query) => {
   const _query = _.cloneDeep(query);
 
   _query.parent_author = _query.parent_author || '';
+
+  if (_query.parent_author.charAt(0) === '@') {
+    _query.parent_author = _query.parent_author.substr(1);
+  }
+
   _query.parent_permlink = _query.parent_permlink || '';
   _query.title = _query.title || '';
   if (_query.parent_author && _query.parent_permlink) {
