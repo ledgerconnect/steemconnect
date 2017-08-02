@@ -17,7 +17,7 @@ const validate = async (query) => {
   if (isEmpty(query.to)) {
     errors.push('\'to\' is required');
   } else if (!await userExists(query.to)) {
-    errors.push('the destination user doesn\'t exist');
+    errors.push(`the user ${query.to} doesn't exist`);
   }
 
   if (isEmpty(query.amount)) {

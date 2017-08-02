@@ -1,4 +1,4 @@
-const { isEmpty } = require('../validation-utils');
+const { isEmpty, userExists } = require('../validation-utils');
 
 const parse = (query) => {
   const _query = {
@@ -7,7 +7,7 @@ const parse = (query) => {
       'follow', {
         follower: query.follower,
         following: query.following,
-        what: query.what ? JSON.parse(query.what) : ['blog', 'posts']
+        what: query.what ? JSON.parse(query.what) : ['blog']
       }
     ]),
     required_auths: [],
@@ -20,11 +20,13 @@ const parse = (query) => {
   };
 };
 
-const validate = (query) => {
+const validate = async (query) => {
   const errors = [];
 
   if (isEmpty(query.following)) {
     errors.push('following is required');
+  } else if (!await userExists(query.following)) {
+    errors.push(`the user ${query.following} doesn't exist`);
   }
 
   return errors;

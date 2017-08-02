@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const { isEmpty } = require('../validation-utils');
 
 const parse = (query) => {
   const _query = _.cloneDeep(query);
@@ -11,7 +12,12 @@ const parse = (query) => {
 
 const validate = (query) => {
   const errors = [];
-
+  if (isEmpty(query.author)) {
+    errors.push('\'author\' is required');
+  }
+  if (isEmpty(query.permlink)) {
+    errors.push('\'permlink\' is required');
+  }
   return errors;
 };
 

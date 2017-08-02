@@ -3,7 +3,7 @@ const steem = require('steem');
 const isEmpty = value => value === undefined || value === null || value === '';
 
 const isAsset = (value) => {
-  const allowedSymbol = [{ symbol: 'SBD', precision: 3 }, { symbol: 'STEEM', precision: 3 }, { symbol: 'VESTS', precision: 6 }]
+  const allowedSymbol = [{ symbol: 'SBD', precision: 3 }, { symbol: 'STEEM', precision: 3 }, { symbol: 'VESTS', precision: 6 }];
 
   if (!/^[0-9]+\.?[0-9]* [A-Za-z0-9]+$/.test(value)) {
     return false;
@@ -28,9 +28,8 @@ const isAsset = (value) => {
 
 const userExists = async (username) => {
   const accounts = await steem.api.getAccountsAsync([username]);
-  console.log(accounts && accounts.length > 0);
   return accounts && accounts.length > 0;
-}
+};
 
 module.exports = {
   isEmpty,

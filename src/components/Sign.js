@@ -5,7 +5,7 @@ import SignForm from './Form/Sign';
 import SignSuccess from './Sign/Success';
 import SignError from './Sign/Error';
 import SignValidationError from './Sign/ValidationError';
-import { getOperation, parseQuery } from '../../helpers/operation';
+import { getOperation, parseQuery, validateQuery } from '../../helpers/operation';
 import SignPlaceholderDefault from './Sign/Placeholder/Default';
 import SignPlaceholderComment from './Sign/Placeholder/Comment';
 import SignPlaceholderFollow from './Sign/Placeholder/Follow';
@@ -25,6 +25,14 @@ export default class Sign extends Component {
     };
   }
 
+  async componentWillMount() {
+    const { type, query } = this.state;
+    const validationErrors = await validateQuery(type, query);
+    if (validationErrors && validationErrors.errors && validationErrors.errors.length > 0) {
+      this.setState({ validationErrors: validationErrors.errors, step: 3 });
+    }
+  }
+
   resetForm = () => {
     this.setState({
       step: 0,
@@ -38,33 +46,28 @@ export default class Sign extends Component {
     const parsedQuery = await parseQuery(type, query, auth.username);
     const _query = parsedQuery.query;
     const _type = parsedQuery.type;
-    const validationErrors = parsedQuery.errors;
 
-    if (validationErrors && validationErrors.length > 0) {
-      this.setState({ validationErrors, step: 3 });
-    } else {
-      /* Parse params */
-      const params = {};
-      Object.keys(_query).forEach((key) => {
-        if (isNaN(_query[key]) || _query[key] === '' || typeof _query[key] === 'object') {
-          params[key] = _query[key];
-        } else {
-          params[key] = parseInt(_query[key]);
-        }
-      });
+    /* Parse params */
+    const params = {};
+    Object.keys(_query).forEach((key) => {
+      if (isNaN(_query[key]) || _query[key] === '' || typeof _query[key] === 'object') {
+        params[key] = _query[key];
+      } else {
+        params[key] = parseInt(_query[key]);
+      }
+    });
 
-      /* Broadcast */
-      this.setState({ step: 2 });
-      steem.broadcast[`${changeCase.camelCase(_type)}With`](auth.wif, params, (err, result) => {
-        if (!err) {
-          this.setState({ success: result });
-        } else {
-          console.log(err);
-          this.setState({ error: err });
-        }
-        this.setState({ step: 3 });
-      });
-    }
+    /* Broadcast */
+    this.setState({ step: 2 });
+    steem.broadcast[`${changeCase.camelCase(_type)}With`](auth.wif, params, (err, result) => {
+      if (!err) {
+        this.setState({ success: result });
+      } else {
+        console.log(err);
+        this.setState({ error: err });
+      }
+      this.setState({ step: 3 });
+    });
   };
 
   render() {
