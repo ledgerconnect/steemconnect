@@ -1,5 +1,4 @@
 import React from 'react';
-import changeCase from 'change-case';
 
 const SignPlaceholderDelegateVestingShares = ({ query }) =>
   <div>
