@@ -1,6 +1,6 @@
 const { isEmpty, userExists } = require('../validation-utils');
 
-const parse = (query) => {
+const normalize = (query) => {
   const _query = {
     id: 'follow',
     json: JSON.stringify([
@@ -33,6 +33,6 @@ const validate = async (query) => {
 };
 
 module.exports = {
-  parse,
+  normalize,
   validate
 };

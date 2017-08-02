@@ -4,7 +4,7 @@ const changeCase = require('change-case');
 const diacritics = require('diacritics');
 const { isEmpty } = require('../validation-utils');
 
-const parse = (query) => {
+const normalize = (query) => {
   const _query = _.cloneDeep(query);
 
   _query.parent_author = _query.parent_author || '';
@@ -45,6 +45,6 @@ const validate = (query) => {
 };
 
 module.exports = {
-  parse,
+  normalize,
   validate
 };

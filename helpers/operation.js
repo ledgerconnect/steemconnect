@@ -67,8 +67,9 @@ const isValid = (op, params) => {
   return valid;
 };
 
-const validateQuery = async (type, query) => {
+const validate = async (type, query) => {
   let errors = [];
+
   if (_.hasIn(parseOperations, type)) {
     errors = await parseOperations[type].validate(query);
   }
@@ -77,12 +78,11 @@ const validateQuery = async (type, query) => {
   };
 };
 
-const parseQuery = async (type, query, username) => {
+const normalize = async (type, query) => {
   type = changeCase.snakeCase(type);
-  query = setDefaultAuthor(type, query, username);
 
   if (_.hasIn(parseOperations, type)) {
-    return parseOperations[type].parse(query);
+    return parseOperations[type].normalize(query);
   }
   return {
     query,
@@ -96,6 +96,6 @@ module.exports = {
   setDefaultAuthor,
   getOperation,
   isValid,
-  parseQuery,
-  validateQuery
+  normalize,
+  validate
 };

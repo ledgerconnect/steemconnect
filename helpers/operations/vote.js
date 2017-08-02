@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const { isEmpty } = require('../validation-utils');
 
-const parse = (query) => {
+const normalize = (query) => {
   const _query = _.cloneDeep(query);
   _query.weight = _query.weight || 10000;
   return {
@@ -22,6 +22,6 @@ const validate = (query) => {
 };
 
 module.exports = {
-  parse,
+  normalize,
   validate
 };

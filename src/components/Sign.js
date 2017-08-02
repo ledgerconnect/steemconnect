@@ -5,10 +5,11 @@ import SignForm from './Form/Sign';
 import SignSuccess from './Sign/Success';
 import SignError from './Sign/Error';
 import SignValidationError from './Sign/ValidationError';
-import { getOperation, parseQuery, validateQuery } from '../../helpers/operation';
+import { getOperation, normalize, validate, setDefaultAuthor } from '../../helpers/operation';
 import SignPlaceholderDefault from './Sign/Placeholder/Default';
 import SignPlaceholderComment from './Sign/Placeholder/Comment';
 import SignPlaceholderFollow from './Sign/Placeholder/Follow';
+import SignPlaceholderDelegateVestingShares from './Sign/Placeholder/DelegateVestingShares';
 import Loading from '../widgets/Loading';
 import './Sign.less';
 
@@ -27,10 +28,13 @@ export default class Sign extends Component {
 
   async componentWillMount() {
     const { type, query } = this.state;
-    const validationErrors = await validateQuery(type, query);
+    const validationErrors = await validate(type, query);
     if (validationErrors && validationErrors.errors && validationErrors.errors.length > 0) {
       this.setState({ validationErrors: validationErrors.errors, step: 3 });
     }
+
+    const normalizedQuery = await normalize(type, query);
+    this.setState({ query: normalizedQuery.query, type: normalizedQuery.type });
   }
 
   resetForm = () => {
@@ -41,11 +45,9 @@ export default class Sign extends Component {
     });
   };
 
-  sign = async (auth) => {
+  sign = (auth) => {
     const { type, query } = this.state;
-    const parsedQuery = await parseQuery(type, query, auth.username);
-    const _query = parsedQuery.query;
-    const _type = parsedQuery.type;
+    const _query = setDefaultAuthor(type, query, auth.username);
 
     /* Parse params */
     const params = {};
@@ -59,7 +61,7 @@ export default class Sign extends Component {
 
     /* Broadcast */
     this.setState({ step: 2 });
-    steem.broadcast[`${changeCase.camelCase(_type)}With`](auth.wif, params, (err, result) => {
+    steem.broadcast[`${changeCase.camelCase(type)}With`](auth.wif, params, (err, result) => {
       if (!err) {
         this.setState({ success: result });
       } else {
@@ -76,6 +78,8 @@ export default class Sign extends Component {
     let Placeholder = SignPlaceholderDefault;
     Placeholder = (type === 'comment') ? SignPlaceholderComment : Placeholder;
     Placeholder = (type === 'follow') ? SignPlaceholderFollow : Placeholder;
+    Placeholder = (type === 'delegate_vesting_shares') ? SignPlaceholderDelegateVestingShares : Placeholder;
+
     return (
       <div className="Sign">
         <div className="Sign__content container my-2">
