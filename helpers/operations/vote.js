@@ -1,13 +1,11 @@
 const _ = require('lodash');
-const { isEmpty } = require('../validation-utils');
+const { isEmpty, normalizeUsername } = require('../validation-utils');
 
 const normalize = (query) => {
   const _query = _.cloneDeep(query);
   _query.weight = _query.weight || 10000;
 
-  if (_query.author.charAt(0) === '@') {
-    _query.author = _query.author.substr(1);
-  }
+  _query.author = normalizeUsername(_query.author);
 
   return {
     query: _query,

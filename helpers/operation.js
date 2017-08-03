@@ -30,13 +30,34 @@ const isOperationAuthor = (operation, query, username) => {
   return false;
 };
 
+const customJsonSpecial = (operation, query) => {
+  if (operation === 'follow' || operation === 'unfollow' || operation === 'mute' || operation === 'unmute' || operation === 'reblog') {
+    if (typeof query.json === 'string') {
+      query.json = JSON.parse(query.json);
+    } else {
+      query.json = JSON.stringify(query.json);
+    }
+  }
+  return query;
+};
+
 const setDefaultAuthor = (operation, query, username) => {
-  const _query = query;
+  const _query = _.cloneDeep(query);
+  customJsonSpecial(operation, _query);
   if (Object.prototype.hasOwnProperty.call(operationAuthor, operation)) {
     const field = operationAuthor[operation];
     if (!field) { return _query; }
-    if (!_.get(query, field)) { _.set(query, field, username); }
+    if (Array.isArray(field)) {
+      field.forEach((f) => {
+        if (!_.get(_query, f)) {
+          _.set(_query, f, username);
+        }
+      });
+    } else if (!_.get(_query, field)) {
+      _.set(_query, field, username);
+    }
   }
+  customJsonSpecial(operation, _query);
   return _query;
 };
 

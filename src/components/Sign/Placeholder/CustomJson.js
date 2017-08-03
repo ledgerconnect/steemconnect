@@ -1,7 +1,7 @@
 import React from 'react';
 import changeCase from 'change-case';
 
-const SignPlaceholderCustomJSON = ({ type, query }) =>
+const SignPlaceholderCustomJson = ({ type, query }) =>
   <div>
     <h2>{ changeCase.titleCase(type) }</h2>
     <table className="table text-left">
@@ -34,4 +34,4 @@ const SignPlaceholderCustomJSON = ({ type, query }) =>
     </table>
   </div>
 ;
-export default SignPlaceholderCustomJSON;
+export default SignPlaceholderCustomJson;

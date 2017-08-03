@@ -4,12 +4,14 @@ import changeCase from 'change-case';
 import SignForm from './Form/Sign';
 import SignSuccess from './Sign/Success';
 import SignError from './Sign/Error';
+import SignError404 from './Error404';
 import SignValidationError from './Sign/ValidationError';
 import { getOperation, normalize, validate, setDefaultAuthor } from '../../helpers/operation';
 import SignPlaceholderDefault from './Sign/Placeholder/Default';
 import SignPlaceholderComment from './Sign/Placeholder/Comment';
-import SignPlaceholderCustomJSON from './Sign/Placeholder/CustomJSON';
+import SignPlaceholderCustomJson from './Sign/Placeholder/CustomJson';
 import SignPlaceholderFollow from './Sign/Placeholder/Follow';
+import SignPlaceholderReblog from './Sign/Placeholder/Reblog';
 import SignPlaceholderDelegateVestingShares from './Sign/Placeholder/DelegateVestingShares';
 import Loading from '../widgets/Loading';
 import './Sign.less';
@@ -48,7 +50,8 @@ export default class Sign extends Component {
 
   sign = (auth) => {
     const { type, query } = this.state;
-    const _query = setDefaultAuthor(type, query, auth.username);
+    const pType = this.props.params.type;
+    const _query = setDefaultAuthor(pType, query, auth.username);
 
     /* Parse params */
     const params = {};
@@ -83,13 +86,17 @@ export default class Sign extends Component {
     else if (pType === 'follow' || pType === 'unfollow' || pType === 'mute' || pType === 'unmute') {
       Placeholder = SignPlaceholderFollow;
       type = pType;
-    } else if (type === 'custom_json') Placeholder = SignPlaceholderCustomJSON;
+    } else if (pType === 'reblog') {
+      Placeholder = SignPlaceholderReblog;
+      type = pType;
+    } else if (type === 'custom_json') Placeholder = SignPlaceholderCustomJson;
     else if (type === 'delegate_vesting_shares') Placeholder = SignPlaceholderDelegateVestingShares;
 
     return (
       <div className="Sign">
         <div className="Sign__content container my-2">
-          {step === 0 &&
+          {step === 0 && !op && <SignError404 />}
+          {step === 0 && op &&
             <div>
               <Placeholder type={type} query={query} params={op.params} />
               <div className="form-group my-4">

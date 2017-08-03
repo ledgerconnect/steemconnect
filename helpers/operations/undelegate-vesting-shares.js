@@ -1,12 +1,10 @@
 const _ = require('lodash');
-const { isEmpty, userExists } = require('../validation-utils');
+const { isEmpty, userExists, normalizeUsername } = require('../validation-utils');
 
 const normalize = async (query) => {
   const _query = _.cloneDeep(query);
 
-  if (_query.delegatee.charAt(0) === '@') {
-    _query.delegatee = _query.delegatee.substr(1);
-  }
+  _query.delegatee = normalizeUsername(_query.delegatee);
 
   _query.vesting_shares = _.join([parseFloat(0).toFixed(6), 'VESTS'], ' ');
 

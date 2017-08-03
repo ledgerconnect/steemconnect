@@ -2,26 +2,31 @@ module.exports = [
   {
     roles: ['posting', 'active'],
     operation: 'follow',
-    params: ['following']
+    params: ['follower', 'following']
   },
   {
     roles: ['posting', 'active'],
     operation: 'unfollow',
-    params: ['following']
+    params: ['follower', 'following']
   },
   {
     roles: ['posting', 'active'],
     operation: 'mute',
-    params: ['following']
+    params: ['follower', 'following']
   },
   {
     roles: ['posting', 'active'],
     operation: 'unmute',
-    params: ['following']
+    params: ['follower', 'following']
+  },
+  {
+    roles: ['posting', 'active'],
+    operation: 'reblog',
+    params: ['author', 'permlink']
   },
   {
     roles: ['active'],
     operation: 'undelegate_vesting_shares',
-    params: ['delegatee']
+    params: ['delegator', 'delegatee']
   }
 ];

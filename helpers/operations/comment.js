@@ -2,16 +2,14 @@ const _ = require('lodash');
 const { formatter } = require('steem');
 const changeCase = require('change-case');
 const diacritics = require('diacritics');
-const { isEmpty } = require('../validation-utils');
+const { isEmpty, normalizeUsername } = require('../validation-utils');
 
 const normalize = (query) => {
   const _query = _.cloneDeep(query);
 
   _query.parent_author = _query.parent_author || '';
 
-  if (_query.parent_author.charAt(0) === '@') {
-    _query.parent_author = _query.parent_author.substr(1);
-  }
+  _query.parent_author = normalizeUsername(_query.parent_author);
 
   _query.parent_permlink = _query.parent_permlink || '';
   _query.title = _query.title || '';

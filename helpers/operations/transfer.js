@@ -1,17 +1,15 @@
 const _ = require('lodash');
-const { isAsset, isEmpty, oneOf, userExists } = require('../validation-utils');
+const { isAsset, isEmpty, oneOf, userExists, normalizeUsername } = require('../validation-utils');
 
 const normalize = (query) => {
   const _query = _.cloneDeep(query);
   const [amount, symbol] = _query.amount.split(' ');
 
-  if (_query.to.charAt(0) === '@') {
-    _query.to = _query.to.substr(1);
-  }
+  _query.to = normalizeUsername(_query.to);
 
   _query.amount = _.join([(symbol === 'VESTS' || symbol === 'SP') ? parseFloat(amount).toFixed(6) : parseFloat(amount).toFixed(3), symbol], ' ');
   _query.memo = query.memo || '';
-  console.log(_query);
+
   return {
     query: _query,
     type: 'transfer'

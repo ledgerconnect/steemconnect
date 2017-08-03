@@ -1,16 +1,14 @@
 const _ = require('lodash');
 const steem = require('steem');
 const { formatter } = require('steem');
-const { isAsset, isEmpty, oneOf, userExists } = require('../validation-utils');
+const { isAsset, isEmpty, oneOf, userExists, normalizeUsername } = require('../validation-utils');
 
 const normalize = async (query) => {
   const _query = _.cloneDeep(query);
   const [amount, symbol] = _query.vesting_shares.split(' ');
   const globalProps = await steem.api.getDynamicGlobalPropertiesAsync();
 
-  if (_query.delegatee.charAt(0) === '@') {
-    _query.delegatee = _query.delegatee.substr(1);
-  }
+  _query.delegatee = normalizeUsername(_query.delegatee);
 
   if (symbol === 'SP') {
     _query.vesting_shares_display = _.join([parseFloat(amount).toFixed(3), symbol], ' ');
