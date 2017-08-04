@@ -5,6 +5,7 @@ const normalize = async (query) => {
   const _query = _.cloneDeep(query);
 
   _query.delegatee = normalizeUsername(_query.delegatee);
+  _query.delegator = normalizeUsername(_query.delegator);
 
   _query.vesting_shares = _.join([parseFloat(0).toFixed(6), 'VESTS'], ' ');
 
@@ -20,6 +21,10 @@ const validate = async (query) => {
     errors.push('\'delegatee\' is required');
   } else if (!await userExists(query.delegatee)) {
     errors.push(`the user ${query.delegatee} doesn't exist`);
+  }
+
+  if (!isEmpty(query.delegator) && !await userExists(query.delegator)) {
+    errors.push(`the user ${query.delegator} doesn't exist`);
   }
 
   return errors;

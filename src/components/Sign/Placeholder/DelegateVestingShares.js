@@ -6,6 +6,12 @@ const SignPlaceholderDelegateVestingShares = ({ query }) =>
     {!query.vesting_shares_display && <h2>Undelegate Vesting Shares</h2>}
     <table className="table text-left">
       <tbody>
+        {query.delegator &&
+        <tr>
+          <td className="label"><b>Delegator</b></td>
+          <td>{query.delegator}</td>
+        </tr>
+        }
         {query.delegatee &&
         <tr>
           <td className="label"><b>Delegatee</b></td>

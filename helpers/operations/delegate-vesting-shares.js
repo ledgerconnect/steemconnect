@@ -9,6 +9,7 @@ const normalize = async (query) => {
   const globalProps = await steem.api.getDynamicGlobalPropertiesAsync();
 
   _query.delegatee = normalizeUsername(_query.delegatee);
+  _query.delegator = normalizeUsername(_query.delegator);
 
   if (symbol === 'SP') {
     _query.vesting_shares_display = _.join([parseFloat(amount).toFixed(3), symbol], ' ');
@@ -37,6 +38,10 @@ const validate = async (query) => {
     errors.push('\'delegatee\' is required');
   } else if (!await userExists(query.delegatee)) {
     errors.push(`the user ${query.delegatee} doesn't exist`);
+  }
+
+  if (!isEmpty(query.delegator) && !await userExists(query.delegator)) {
+    errors.push(`the user ${query.delegator} doesn't exist`);
   }
 
   if (isEmpty(query.vesting_shares)) {
