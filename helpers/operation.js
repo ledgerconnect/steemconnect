@@ -31,14 +31,9 @@ const isOperationAuthor = (operation, query, username) => {
 };
 
 const customJsonSpecial = (operation, query) => {
-  if (operation === 'follow' || operation === 'unfollow' || operation === 'mute' || operation === 'unmute' || operation === 'reblog') {
-    if (typeof query.json === 'string') {
-      query.json = JSON.parse(query.json);
-    } else {
-      query.json = JSON.stringify(query.json);
-    }
+  if (_.hasIn(parseOperations, operation) && parseOperations[operation].revertQueryJson) {
+    parseOperations[operation].revertQueryJson(query);
   }
-  return query;
 };
 
 const setDefaultAuthor = (operation, query, username) => {

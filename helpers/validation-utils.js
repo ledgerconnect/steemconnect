@@ -48,10 +48,18 @@ const contentExists = async (auhtor, permlink) => {
 
 const normalizeUsername = username => ((username && username.charAt(0) === '@') ? username.substr(1) : username);
 
+const revertJson = (query) => {
+  if (typeof query.json === 'string') {
+    query.json = JSON.parse(query.json); // eslint-disable-line no-param-reassign
+  } else {
+    query.json = JSON.stringify(query.json); // eslint-disable-line no-param-reassign
+  }
+}
 module.exports = {
   contentExists,
   isAsset,
   isEmpty,
   normalizeUsername,
+  revertJson,
   userExists
 };

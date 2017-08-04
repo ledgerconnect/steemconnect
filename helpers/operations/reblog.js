@@ -1,4 +1,4 @@
-const { contentExists, isEmpty, userExists, normalizeUsername } = require('../validation-utils');
+const { contentExists, isEmpty, userExists, normalizeUsername, revertJson } = require('../validation-utils');
 
 const normalize = (query) => {
   const _query = {
@@ -39,7 +39,12 @@ const validate = async (query) => {
   return errors;
 };
 
+const revertQueryJson = (query) => {
+  revertJson(query);
+};
+
 module.exports = {
   normalize,
+  revertQueryJson,
   validate
 };
