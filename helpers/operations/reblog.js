@@ -24,16 +24,17 @@ const validate = async (query) => {
 
   if (isEmpty(query.author)) {
     errors.push('author is required');
-  } else if (!await userExists(query.author)) {
-    errors.push(`the user ${query.author} doesn't exist`);
-  }
+  } else
 
   if (isEmpty(query.permlink)) {
     errors.push('permlink is required');
   }
 
-  if (!await contentExists(query.author, query.permlink)) {
+  if (errors.length === 0 && !contentExists(query.author, query.permlink)) {
     errors.push('the post doesn\'t exist');
+    if (!await userExists(query.author)) {
+      errors.push(`the user ${query.author} doesn't exist`);
+    }
   }
   return errors;
 };
