@@ -1,10 +1,8 @@
-/* eslint-disable no-param-reassign */
-const { formatter } = require('steem');
 const changeCase = require('change-case');
-const diacritics = require('diacritics');
 const operations = require('steem/lib/broadcast/operations');
 const _ = require('lodash');
 const operationAuthor = require('./operation-author.json');
+const helperOperations = require('./operations');
 
 /** Parse error message from Steemd response */
 const getErrorMessage = (error) => {
@@ -60,48 +58,17 @@ const isValid = (op, params) => {
   return valid;
 };
 
-const parseVote = (query) => {
-  query.weight = query.weight || 10000;
-  return query;
-};
-
-const parseComment = (query) => {
-  query.parent_author = query.parent_author || '';
-  query.parent_permlink = query.parent_permlink || '';
-  query.title = query.title || '';
-  if (query.parent_author && query.parent_permlink) {
-    query.permlink = query.permlink
-      || formatter.commentPermlink(query.parent_author, query.parent_permlink).toLowerCase();
-  } else {
-    query.title = query.title || query.body.slice(0, 255);
-    query.permlink = query.permlink
-      || changeCase.paramCase(diacritics.remove(query.title)).slice(0, 255);
-  }
-  let jsonMetadata = {};
-  try { jsonMetadata = JSON.parse(decodeURIComponent(query.json_metadata)); } catch (e) { jsonMetadata = {}; }
-  query.json_metadata = jsonMetadata;
-  return query;
-};
-
-const parseTransfer = (query) => {
-  query.memo = query.memo || '';
-  return query;
-};
-
 const parseQuery = (type, query, username) => {
-  type = changeCase.snakeCase(type);
-  query = setDefaultAuthor(type, query, username);
+  const snakeCaseType = changeCase.snakeCase(type);
+  let _query = _.cloneDeep(query);
 
-  switch (type) {
-    case 'vote':
-      return parseVote(query);
-    case 'comment':
-      return parseComment(query);
-    case 'transfer':
-      return parseTransfer(query);
-    default:
-      return query;
+  _query = setDefaultAuthor(snakeCaseType, _query, username);
+
+  if (_.hasIn(helperOperations, snakeCaseType)) {
+    return helperOperations[snakeCaseType].parse(_query);
   }
+
+  return _query;
 };
 
 module.exports = {
