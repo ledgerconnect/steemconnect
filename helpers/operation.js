@@ -1,10 +1,10 @@
 /* eslint-disable no-param-reassign */
-const { formatter } = require('steem');
 const changeCase = require('change-case');
-const diacritics = require('diacritics');
 const operations = require('steem/lib/broadcast/operations');
+const customOperations = require('./operations/custom-operations');
 const _ = require('lodash');
 const operationAuthor = require('./operation-author.json');
+const parseOperations = require('./operations');
 
 /** Parse error message from Steemd response */
 const getErrorMessage = (error) => {
@@ -30,13 +30,29 @@ const isOperationAuthor = (operation, query, username) => {
   return false;
 };
 
+const customJsonSpecial = (operation, query) => {
+  if (_.hasIn(parseOperations, operation) && parseOperations[operation].revertQueryJson) {
+    parseOperations[operation].revertQueryJson(query);
+  }
+};
+
 const setDefaultAuthor = (operation, query, username) => {
-  const _query = query;
+  const _query = _.cloneDeep(query);
+  customJsonSpecial(operation, _query);
   if (Object.prototype.hasOwnProperty.call(operationAuthor, operation)) {
     const field = operationAuthor[operation];
     if (!field) { return _query; }
-    if (!_.get(query, field)) { _.set(query, field, username); }
+    if (Array.isArray(field)) {
+      field.forEach((f) => {
+        if (!_.get(_query, f)) {
+          _.set(_query, f, username);
+        }
+      });
+    } else if (!_.get(_query, field)) {
+      _.set(_query, field, username);
+    }
   }
+  customJsonSpecial(operation, _query);
   return _query;
 };
 
@@ -44,7 +60,14 @@ const getOperation = (type) => {
   const ops = operations.filter(op =>
     op.operation === changeCase.snakeCase(type)
   );
-  return ops[0] ? ops[0] : '';
+  if (ops[0]) {
+    return ops[0];
+  }
+  const cOps = customOperations.filter(op =>
+    op.operation === changeCase.snakeCase(type)
+  );
+
+  return cOps[0] ? cOps[0] : '';
 };
 
 const isValid = (op, params) => {
@@ -60,48 +83,26 @@ const isValid = (op, params) => {
   return valid;
 };
 
-const parseVote = (query) => {
-  query.weight = query.weight || 10000;
-  return query;
-};
-
-const parseComment = (query) => {
-  query.parent_author = query.parent_author || '';
-  query.parent_permlink = query.parent_permlink || '';
-  query.title = query.title || '';
-  if (query.parent_author && query.parent_permlink) {
-    query.permlink = query.permlink
-      || formatter.commentPermlink(query.parent_author, query.parent_permlink).toLowerCase();
-  } else {
-    query.title = query.title || query.body.slice(0, 255);
-    query.permlink = query.permlink
-      || changeCase.paramCase(diacritics.remove(query.title)).slice(0, 255);
-  }
-  let jsonMetadata = {};
-  try { jsonMetadata = JSON.parse(decodeURIComponent(query.json_metadata)); } catch (e) { jsonMetadata = {}; }
-  query.json_metadata = jsonMetadata;
-  return query;
-};
-
-const parseTransfer = (query) => {
-  query.memo = query.memo || '';
-  return query;
-};
-
-const parseQuery = (type, query, username) => {
+const validate = async (type, query) => {
   type = changeCase.snakeCase(type);
-  query = setDefaultAuthor(type, query, username);
-
-  switch (type) {
-    case 'vote':
-      return parseVote(query);
-    case 'comment':
-      return parseComment(query);
-    case 'transfer':
-      return parseTransfer(query);
-    default:
-      return query;
+  let errors = [];
+  if (_.hasIn(parseOperations, type)) {
+    errors = await parseOperations[type].validate(query);
   }
+  return {
+    errors
+  };
+};
+
+const normalize = async (type, query) => {
+  type = changeCase.snakeCase(type);
+  if (_.hasIn(parseOperations, type)) {
+    return parseOperations[type].normalize(query);
+  }
+  return {
+    query,
+    type
+  };
 };
 
 module.exports = {
@@ -110,5 +111,6 @@ module.exports = {
   setDefaultAuthor,
   getOperation,
   isValid,
-  parseQuery,
+  normalize,
+  validate
 };
