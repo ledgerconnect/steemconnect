@@ -7,14 +7,14 @@ const transfer = require('./transfer');
 const unfollow = require('./unfollow');
 const unmute = require('./unmute');
 const vote = require('./vote');
-const delegatevestingshares = require('./delegate-vesting-shares');
-const undelegatevestingshares = require('./undelegate-vesting-shares');
+const delegateVestingShares = require('./delegate-vesting-shares');
+const undelegateVestingShares = require('./undelegate-vesting-shares');
 
 module.exports = {
   comment,
   customjson,
-  delegate_vesting_shares: delegatevestingshares,
-  undelegate_vesting_shares: undelegatevestingshares,
+  delegate_vesting_shares: delegateVestingShares,
+  undelegate_vesting_shares: undelegateVestingShares,
   follow,
   mute,
   reblog,
