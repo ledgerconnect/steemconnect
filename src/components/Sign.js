@@ -33,15 +33,14 @@ export default class Sign extends Component {
   sign = (auth) => {
     const { type, query } = this.state;
     const parsedQuery = parseQuery(type, query, auth.username);
-    console.log(parsedQuery);
 
     /* Parse params */
     const params = {};
-    Object.keys(query).forEach((key) => {
-      if (isNaN(query[key]) || query[key] === '') {
-        params[key] = query[key];
+    Object.keys(parsedQuery).forEach((key) => {
+      if (isNaN(parsedQuery[key]) || parsedQuery[key] === '') {
+        params[key] = parsedQuery[key];
       } else {
-        params[key] = parseInt(query[key]);
+        params[key] = parseInt(parsedQuery[key]);
       }
     });
 
