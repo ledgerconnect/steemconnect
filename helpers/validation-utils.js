@@ -41,9 +41,15 @@ const userExists = async (username) => {
   return accounts && accounts.length > 0;
 };
 
+const contentExists = async (auhtor, permlink) => {
+  const content = await steem.api.getContent(auhtor, permlink);
+  return parseInt(content.id) !== 0;
+}
+
 const normalizeUsername = username => ((username && username.charAt(0) === '@') ? username.substr(1) : username);
 
 module.exports = {
+  contentExists,
   isAsset,
   isEmpty,
   normalizeUsername,

@@ -1,4 +1,4 @@
-const { isEmpty, userExists, normalizeUsername } = require('../validation-utils');
+const { contentExists, isEmpty, userExists, normalizeUsername } = require('../validation-utils');
 
 const normalize = (query) => {
   const _query = {
@@ -32,6 +32,9 @@ const validate = async (query) => {
     errors.push('permlink is required');
   }
 
+  if (!await contentExists(query.author, query.permlink)) {
+    errors.push('the post doesn\'t exist');
+  }
   return errors;
 };
 

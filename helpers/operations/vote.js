@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { isEmpty, normalizeUsername } = require('../validation-utils');
+const { contentExists, isEmpty, normalizeUsername } = require('../validation-utils');
 
 const normalize = (query) => {
   const _query = _.cloneDeep(query);
@@ -13,13 +13,16 @@ const normalize = (query) => {
   };
 };
 
-const validate = (query) => {
+const validate = async (query) => {
   const errors = [];
   if (isEmpty(query.author)) {
     errors.push('\'author\' is required');
   }
   if (isEmpty(query.permlink)) {
     errors.push('\'permlink\' is required');
+  }
+  if (!await contentExists(query.author, query.permlink)) {
+    errors.push('the post doesn\'t exist');
   }
   return errors;
 };
