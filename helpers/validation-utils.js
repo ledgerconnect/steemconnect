@@ -41,14 +41,11 @@ const userExists = async (username) => {
   return accounts && accounts.length > 0;
 };
 
-const oneOf = (enumeration, value) => enumeration.indexOf(value) !== -1;
-
 const normalizeUsername = username => ((username && username.charAt(0) === '@') ? username.substr(1) : username);
 
 module.exports = {
   isAsset,
   isEmpty,
   normalizeUsername,
-  oneOf,
   userExists
 };

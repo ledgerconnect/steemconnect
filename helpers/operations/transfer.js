@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const { isAsset, isEmpty, oneOf, userExists, normalizeUsername } = require('../validation-utils');
+const { isAsset, isEmpty, userExists, normalizeUsername } = require('../validation-utils');
 
 const normalize = (query) => {
   const _query = _.cloneDeep(query);
@@ -27,7 +27,7 @@ const validate = async (query) => {
 
   if (isEmpty(query.amount)) {
     errors.push('amount is required');
-  } else if (!oneOf(['STEEM', 'SBD'], query.amount.split(' ')[1])) {
+  } else if (!['STEEM', 'SBD'].includes(query.amount.split(' ')[1])) {
     errors.push('please select a valid symbol: STEEM or SBD');
   } else if (!isAsset(query.amount)) {
     errors.push('please type a valid amount, 12.123 STEEM or 12.123 SBD for example');
