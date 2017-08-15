@@ -5,13 +5,15 @@ const SignValidationErrors = ({ errors }) =>
   <div>
     <h2><Icon name="close" className="text-danger" lg /> Error</h2>
     <h5 className="mb-4">Validation errors in your request!</h5>
-    <ul>
-      {errors.map((error, idx) =>
-        <li key={idx}>
-          {error}
-        </li>
-      )}
-    </ul>
+    <table className="table text-center">
+      <tbody>
+        {errors.map((error, idx) =>
+          <tr key={idx}>
+            <td>{error}</td>
+          </tr>
+        )}
+      </tbody>
+    </table>
   </div>;
 
 export default SignValidationErrors;
