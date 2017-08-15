@@ -17,7 +17,7 @@ export default class Sign extends Component {
     this.state = {
       type: this.props.params.type,
       query: this.props.location.query,
-      step: '',
+      step: 'loading',
       success: false,
       error: false,
     };
