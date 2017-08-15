@@ -74,7 +74,7 @@ const parseQuery = (type, query, username) => {
 const validate = async (type, query) => {
   const snakeCaseType = changeCase.snakeCase(type);
   let errors = [];
-  if (_.hasIn(helperOperations, snakeCaseType)) {
+  if (_.hasIn(helperOperations, snakeCaseType) && typeof helperOperations[snakeCaseType].validate === 'function') {
     errors = await helperOperations[snakeCaseType].validate(query);
   }
   return errors;
