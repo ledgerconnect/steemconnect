@@ -11,6 +11,11 @@
 @from-huge: 1681px;
 @to-huge: @from-huge - 1;
 
+.landing-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 #header {
   min-height: 760px;
   position: relative;
@@ -25,15 +30,11 @@
   align-items: center;
   margin-bottom: 150px;
 
-  @media (max-width: @to-tiny) {
+  @media (max-width: @to-small) {
     min-height: 460px;
   }
 
-  @media (min-width: @from-tiny) and (max-width: @to-small) {
-    min-height: 560px;
-  }
-
-  @media (min-width: @from-small) and (max-width: @to-laptop){
+  @media (min-width: @from-small) and (max-width: @to-medium){
     min-height: 660px;
   }
 
@@ -54,12 +55,16 @@
   .title {
     color: white;
     text-align: center;
-    font-size: 2.8vw;
+    font-size: 50px;
     margin-top: 70px;
     max-width: 800px;
     z-index: 2;
 
-    @media (max-width: @to-small) {
+    @media (max-width: @to-tiny) {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+    @media  (min-width: @from-tiny) and (max-width: @to-small) {
       margin-top: 30px;
       font-size: 5vw;
     }
@@ -73,12 +78,15 @@
   .sub-title {
     color: white;
     text-align: center;
-    font-size: 1.2vw;
+    font-size: 30px;
     margin-bottom: 40px;
     max-width: 630px;
     z-index: 2;
 
-    @media (max-width: @to-small) {
+    @media (max-width: @to-tiny) {
+      font-size: 14px;
+    }
+    @media  (min-width: @from-tiny) and (max-width: @to-small) {
       font-size: 2.5vw;
     }
 
@@ -111,6 +119,7 @@
       .ant-form-item {
         &:first-child {
           flex: 3 0 0;
+          margin-right: 3px;
         }
 
         &:last-child {
@@ -153,13 +162,17 @@
     padding: 0 100px;
 
     @media (max-width: @to-tiny) {
-      bottom: -160px;
-      padding: 0 20px;
+      bottom: -25%;
+      padding: 0 30px;
     }
 
-    @media (min-width: @from-tiny) and (max-width: @to-medium){
-      bottom: -240px;
-      padding: 0 50px;
+    @media (min-width: @from-tiny) and (max-width: @to-small){
+      top: 330px;
+      padding: 0px 20%;
+    }
+    @media (min-width: @from-small) and (max-width: @to-medium){
+      top: 420px;
+      padding: 0 17%;
     }
 
     @media (min-width: @from-medium) and (max-width: @to-laptop){
@@ -170,6 +183,17 @@
 
   button[type="submit"] {
     background: #4bcef2;
+  }
+}
+
+h3 {
+
+  @media (max-width: @to-small) {
+    font-size: 3.8vw;
+  }
+
+  @media (min-width: @from-small) and (max-width: @to-laptop){
+    font-size: 2.8vw;
   }
 }
 
@@ -191,11 +215,15 @@
 
 .follow-us {
   color: white !important;
-  border: 1px solid white;
+  border: 1px solid #70a1d6;
   border-radius: 3px;
   padding: 10px 20px;
   display: flex;
   height: 50px;
+
+  &:hover {
+    border: 1px solid white;
+  }
 
   @media (min-width: @from-tiny) and (max-width: @to-medium){
     height: 45px;
@@ -216,16 +244,21 @@
 }
 
 .landing-link {
+  text-transform: uppercase;
+  font-weight: bold;
   color: white !important;
   border-radius: 5px;
   background: #4ba2f2;
   padding: 10px 20px;
   font-size: 18px;
-  box-shadow: 0 6px 10px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
   text-decoration: none;
+  transition: all .15s ease;
 
   &:hover {
     background: #4eacff;
+    transform: translateY(-1px);
+    box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
   }
 }
 
@@ -290,9 +323,12 @@
   }
 }
 
-.safe-secure {
+.safe-secure-container {
   width: 100%;
   background: #f7faff;
+}
+
+.safe-secure {
   padding: 100px 0;
   margin-bottom: 50px;
   display: flex;
@@ -348,8 +384,9 @@
     border-radius: 5px;
     padding: 10px;
     margin: 20px;
-    max-width: 500px;
     display: flex;
+    flex: 1;
+    min-height: 210px;
 
     object {
       max-width: 140px;
@@ -373,9 +410,13 @@
     }
   }
 }
+.get-started-container {
+  background: #f7faff;
+  width: 100%;
+}
 
 .get-started {
-  background: #f7faff;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -394,6 +435,7 @@
     &:last-child {
       flex: 1 0 0;
       max-width: 400px;
+      text-align: center;
     }
   }
 

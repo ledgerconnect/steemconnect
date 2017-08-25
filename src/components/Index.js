@@ -30,7 +30,7 @@ class Index extends React.Component {
             </div>
             <div className="menu-item">
               <a href="https://busy.org/@busy" target="_blank" rel="noreferrer noopener" className="follow-us">
-                <span>Follow us on</span><object data="img/steem.svg" type="image/svg+xml" />
+                <span>Follow us on</span><object fill="#ffffff" data="img/steem.svg" type="image/svg+xml" />
               </a>
             </div>
           </div>
@@ -57,7 +57,7 @@ class Index extends React.Component {
           <img src="/img/macbook.png" id="macbook-img" alt="macbook" />
         </div>
 
-        <div className="how-it-works">
+        <div className="landing-container how-it-works">
           <span className="small-title">How it works</span>
           <h3>
             SteemConnect is a simple identity layer built on top of the Steem blockchain
@@ -65,7 +65,7 @@ class Index extends React.Component {
           </h3>
         </div>
 
-        <div className="steem-features-container">
+        <div className="landing-container steem-features-container">
           <div className="steem-features">
             <div className="steem-feature">
               <object data="img/apps.svg" type="image/svg+xml" />
@@ -90,27 +90,29 @@ class Index extends React.Component {
           </div>
         </div>
 
-        <div className="safe-secure">
-          <div>
-            <object data="img/lock.svg" type="image/svg+xml" />
-          </div>
-          <div>
-            <span className="small-title">Safe & Secure</span>
-            <h3>Your information have never been more secured</h3>
-            <p>
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
-              totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-              Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit
-            </p>
+        <div className="safe-secure-container">
+          <div className="landing-container safe-secure">
+            <div>
+              <object data="img/lock.svg" type="image/svg+xml" />
+            </div>
+            <div>
+              <span className="small-title">Safe & Secure</span>
+              <h3>Your information have never been more secured</h3>
+              <p>
+                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+                totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="learn-more">
+        <div className="landing-container learn-more">
           <span className="small-title">Learn more</span>
           <h3>Become part of the community</h3>
         </div>
 
-        <div className="project">
+        <div className="landing-container project">
           <div className="project-item">
             <object data="img/opensource.svg" type="image/svg+xml" />
             <div className="project-info">
@@ -134,17 +136,19 @@ class Index extends React.Component {
           </div>
         </div>
 
-        <div className="get-started">
-          <div>
-            <h2>Register to Get Started</h2>
-            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusant doloremque laudantium, totam rem aperiam</p>
-          </div>
-          <div>
-            <a href="/" className="landing-link">Get Started Now</a>
+        <div className="get-started-container">
+          <div className="landing-container get-started">
+            <div>
+              <h2>Register to Get Started</h2>
+              <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusant doloremque laudantium, totam rem aperiam</p>
+            </div>
+            <div>
+              <a href="/" className="landing-link">Get Started Now</a>
+            </div>
           </div>
         </div>
 
-        <div className="footer-menu">
+        <div className="landing-container footer-menu">
           <ul>
             <li><Link to="/">About Us</Link></li>
             <li className="separator">|</li>
@@ -153,14 +157,6 @@ class Index extends React.Component {
             <li><Link to="/">Terms of Services</Link></li>
             <li className="separator">|</li>
             <li><Link to="/">Privacy Policy</Link></li>
-          </ul>
-        </div>
-
-        <div className="footer-social">
-          <ul>
-            <li><Link to="/"><img src="/img/twitter.png" alt="twitter" /></Link></li>
-            <li><Link to="/"><img src="/img/facebook.png" alt="facebook" /></Link></li>
-            <li><Link to="/"><img src="/img/linkedin.png" alt="linkedin" /></Link></li>
           </ul>
         </div>
       </div>
