@@ -12,8 +12,10 @@
 @to-huge: @from-huge - 1;
 
 .landing-container {
-  max-width: 1200px;
+  max-width: 1080px;
   margin: 0 auto;
+  padding-left: 25px;
+  padding-right: 25px;
 }
 
 #header {
@@ -28,7 +30,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 150px;
+  margin-bottom: 180px;
 
   @media (max-width: @to-small) {
     min-height: 460px;
@@ -55,43 +57,27 @@
   .title {
     color: white;
     text-align: center;
-    font-size: 50px;
+    font-size: 38px;
     margin-top: 70px;
     max-width: 800px;
     z-index: 2;
 
-    @media (max-width: @to-tiny) {
-      margin-top: 20px;
-      font-size: 20px;
-    }
-    @media  (min-width: @from-tiny) and (max-width: @to-small) {
+    @media (max-width: @to-small) {
       margin-top: 30px;
-      font-size: 5vw;
-    }
-
-    @media (min-width: @from-small) and (max-width: @to-laptop){
-      margin-top: 50px;
-      font-size: 3.8vw;
+      font-size: 32px;
     }
   }
 
   .sub-title {
     color: white;
     text-align: center;
-    font-size: 30px;
     margin-bottom: 40px;
     max-width: 630px;
+    font-size: 28px;
     z-index: 2;
 
-    @media (max-width: @to-tiny) {
-      font-size: 14px;
-    }
-    @media  (min-width: @from-tiny) and (max-width: @to-small) {
-      font-size: 2.5vw;
-    }
-
-    @media (min-width: @from-small) and (max-width: @to-laptop){
-      font-size: 1.9vw;
+    @media (max-width: @to-small){
+      font-size: 24px;
     }
   }
 
@@ -135,21 +121,13 @@
 
   #header-bg {
     position: absolute;
-    bottom: -90px;
-    width: 100%;
-    max-width: 1400px;
+    bottom: -60px;
+    max-width: 200%;
+    min-width: 400px;
     z-index: 0;
 
-    @media (max-width: @to-tiny) {
-      bottom: 0px;
-    }
-
-    @media (min-width: @from-tiny) and (max-width: @to-medium){
-      bottom: -30px;
-    }
-
-    @media (min-width: @from-medium) and (max-width: @to-laptop){
-      bottom: -50px;
+    @media (min-width: @from-tiny) and (max-width: @to-laptop){
+      bottom: -120px;
     }
   }
 
@@ -183,17 +161,6 @@
 
   button[type="submit"] {
     background: #4bcef2;
-  }
-}
-
-h3 {
-
-  @media (max-width: @to-small) {
-    font-size: 3.8vw;
-  }
-
-  @media (min-width: @from-small) and (max-width: @to-laptop){
-    font-size: 2.8vw;
   }
 }
 
@@ -241,6 +208,8 @@ h3 {
 
 .small-title {
   color: #4ba1f1;
+  display: inline-block;
+  margin-bottom: 15px;
 }
 
 .landing-link {
@@ -267,11 +236,7 @@ h3 {
 }
 
 .steem-features-container {
-  width: 100%;
-
   .steem-features {
-    max-width: 1200px;
-    margin:0 auto;
     display: flex;
     align-content: center;
     justify-content: space-between;
@@ -310,15 +275,6 @@ h3 {
           font-size: 20px;
         }
       }
-
-      .feature-desc {
-        color: #888;
-        font-size: 18px;
-
-        @media (min-width: @from-small) and (max-width: @to-laptop){
-          font-size: 14px;
-        }
-      }
     }
   }
 }
@@ -329,7 +285,8 @@ h3 {
 }
 
 .safe-secure {
-  padding: 100px 0;
+  padding-top: 100px;
+  padding-bottom: 100px;
   margin-bottom: 50px;
   display: flex;
   align-items: center;
@@ -341,30 +298,16 @@ h3 {
 
   div {
     max-width: 500px;
-    padding: 25px;
+    margin-left: 0;
 
+    @media (min-width: @from-small){
+      margin-left: 40px;
+    }
 
     object {
       width: 100%;
     }
 
-  }
-
-  h3 {
-    margin: 10px 0;
-    font-size: 26px;
-
-    @media (min-width: @from-small) and (max-width: @to-laptop){
-      font-size: 20px;
-    }
-  }
-
-  p {
-    font-size: 18px;
-
-    @media (min-width: @from-small) and (max-width: @to-laptop){
-      font-size: 14px;
-    }
   }
 }
 
@@ -380,23 +323,22 @@ h3 {
   }
 
   .project-item {
+    vertical-align: top;
     border: 1px solid #e4e8ef;
     border-radius: 5px;
-    padding: 10px;
+    padding: 40px 30px;
     margin: 20px;
     display: flex;
+    align-items: flex-start;
     flex: 1;
     min-height: 210px;
 
     object {
-      max-width: 140px;
-      width: 140px;
-      padding: 0px 30px;
+      width: 100px;
+      margin-right: 20px;
     }
 
     .project-info {
-      padding: 20px 0;
-
       .project-title {
         color: #1a5099;
         font-size: 24px;
@@ -438,18 +380,12 @@ h3 {
       text-align: center;
     }
   }
-
-  h2 {
-    color: #1a5099;
-  }
-
-  p {
-    color: #888;
-  }
 }
 
-.footer-menu, .footer-social {
-  margin: 20px 0;
+.footer-menu {
+  margin: 40px auto;
+  font-size: 16px;
+
   ul {
     display: flex;
     justify-content: space-between;
@@ -463,14 +399,9 @@ h3 {
     }
 
     a {
-      font-size: 14px;
       color: #333;
       font-weight: bolder;
     }
 
   }
-}
-
-.footer-social ul {
-  max-width: 150px;
 }

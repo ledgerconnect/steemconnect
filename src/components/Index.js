@@ -60,13 +60,12 @@ class Index extends React.Component {
         <div className="landing-container how-it-works">
           <span className="small-title">How it works</span>
           <h3>
-            SteemConnect is a simple identity layer built on top of the Steem blockchain
-            that allows you to connect to authorized apps in a secure and convenient way.
+            The simple identity layer built on top of the Steem blockchain
           </h3>
         </div>
 
-        <div className="landing-container steem-features-container">
-          <div className="steem-features">
+        <div className="steem-features-container">
+          <div className="landing-container steem-features">
             <div className="steem-feature">
               <object data="img/apps.svg" type="image/svg+xml" />
               <strong className="feature-title">Steem Apps</strong>
