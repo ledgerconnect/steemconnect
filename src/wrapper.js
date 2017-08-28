@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { IntlProvider } from 'react-intl';
 import { authenticate } from './actions/auth';
+import locales from './utils/locales';
 import './styles/common.less';
 
 @connect(
@@ -19,10 +21,12 @@ export default class Wrapper extends Component {
 
   render() {
     return (
-      React.cloneElement(
-        this.props.children,
-        { auth: this.props.auth }
-      )
+      <IntlProvider locale="en" messages={locales.en}>
+        {React.cloneElement(
+          this.props.children,
+          { auth: this.props.auth }
+        )}
+      </IntlProvider>
     );
   }
 }
