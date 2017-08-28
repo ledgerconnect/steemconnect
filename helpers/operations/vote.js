@@ -13,7 +13,6 @@ const validate = async (query, errors) => {
   if (errors.length === 0 && !await contentExists(query.author, query.permlink)) {
     errors.push('the post doesn\'t exist');
   }
-  return errors;
 };
 
 module.exports = {
