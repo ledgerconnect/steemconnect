@@ -2,7 +2,7 @@ const changeCase = require('change-case');
 const operations = require('steem/lib/broadcast/operations');
 const _ = require('lodash');
 const operationAuthor = require('./operation-author.json');
-const operationMapper = require('./operation-mapper.json');
+const customOperations = require('./operations/custom-operations');
 const helperOperations = require('./operations');
 
 /** Parse error message from Steemd response */
@@ -31,10 +31,9 @@ const isOperationAuthor = (operation, query, username) => {
 
 const setDefaultAuthor = (operation, query, username) => {
   const _query = _.cloneDeep(query);
-  const realOp = operationMapper[operation] ? operationMapper[operation] : operation;
 
-  if (Object.prototype.hasOwnProperty.call(operationAuthor, realOp)) {
-    const field = operationAuthor[realOp];
+  if (Object.prototype.hasOwnProperty.call(operationAuthor, operation)) {
+    const field = operationAuthor[operation];
     if (!field) { return _query; }
     if (!_.get(_query, field)) { _.set(_query, field, username); }
   }
@@ -49,14 +48,11 @@ const getOperation = (type) => {
     return ops[0];
   }
 
-  const mappedOp = operationMapper[changeCase.snakeCase(type)];
-  if (mappedOp) {
-    ops = operations.filter(op =>
-      op.operation === changeCase.snakeCase(mappedOp)
-    );
-    if (ops[0]) {
-      return ops[0];
-    }
+  ops = customOperations.filter(op =>
+      op.operation === changeCase.snakeCase(type)
+  );
+  if (ops[0]) {
+    return ops[0];
   }
 
   return '';
@@ -89,7 +85,10 @@ const parseQuery = (type, query, username) => {
 
 const validateRequired = (type, query) => {
   const errors = [];
-  const operation = operations.find(o => o.operation === type);
+  let operation = operations.find(o => o.operation === type);
+  if (!operation) {
+    operation = customOperations.find(o => o.operation === type);
+  }
   if (operation) {
     let authorField;
     let optionalFields = [];

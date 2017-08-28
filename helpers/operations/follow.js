@@ -1,5 +1,7 @@
 const { userExists, isEmpty, normalizeUsername } = require('../validation-utils');
 
+const optionalFields = ['follower'];
+
 const parse = (query) => {
   const _query = {
     id: 'follow',
@@ -18,9 +20,7 @@ const parse = (query) => {
 };
 
 const validate = async (query, errors) => {
-  if (isEmpty(query.following)) {
-    errors.push('following is required');
-  } else if (!await userExists(query.following)) {
+  if (!isEmpty(query.following) && !await userExists(query.following)) {
     errors.push(`the user ${query.following} doesn't exist`);
   }
 
@@ -30,6 +30,7 @@ const validate = async (query, errors) => {
 };
 
 module.exports = {
+  optionalFields,
   parse,
   validate
 };
