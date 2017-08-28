@@ -11,7 +11,8 @@
 @from-huge: 1681px;
 @to-huge: @from-huge - 1;
 
-.landing-container {
+.lp-container {
+  width: 100%;
   max-width: 1080px;
   margin: 0 auto;
   padding-left: 25px;
@@ -22,6 +23,7 @@
   min-height: 760px;
   position: relative;
   width: 100%;
+  text-align: center;
   background: rgb(26,80,153); /* Old browsers */
   background: -moz-linear-gradient(-45deg,  rgba(26,80,153,1) 0%, rgba(146,215,250,1) 100%); /* FF3.6-15 */
   background: -webkit-linear-gradient(-45deg,  rgba(26,80,153,1) 0%,rgba(146,215,250,1) 100%); /* Chrome10-25,Safari5.1-6 */
@@ -44,8 +46,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    max-width: 1080px;
     margin-top: 40px;
     padding: 0 20px;
 
@@ -54,12 +54,17 @@
     }
   }
 
+  .hero {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
   .title {
     color: white;
     text-align: center;
     font-size: 38px;
     margin-top: 70px;
-    max-width: 800px;
     z-index: 2;
 
     @media (max-width: @to-small) {
@@ -71,9 +76,9 @@
   .sub-title {
     color: white;
     text-align: center;
-    margin-bottom: 40px;
-    max-width: 630px;
+    max-width: 600px;
     font-size: 28px;
+    margin-bottom: 40px;
     z-index: 2;
 
     @media (max-width: @to-small){
@@ -84,12 +89,8 @@
   .newsletter {
     z-index: 2;
     width: 100%;
-    max-width: 520px;
-    padding: 0 10px;
-
-    input, button {
-      font-size: 15px;
-    }
+    margin: 0 auto;
+    max-width: 400px;
 
     form {
       display: flex;
@@ -105,11 +106,26 @@
       .ant-form-item {
         &:first-child {
           flex: 3 0 0;
-          margin-right: 3px;
+          margin-right: 0;
+
+          @media (min-width: @to-tiny) {
+            input {
+              border-top-right-radius: 0;
+              border-bottom-right-radius: 0;
+              border-right: 0;
+            }
+          }
         }
 
         &:last-child {
           flex: 1 0 0;
+
+          @media (min-width: @to-tiny) {
+            button {
+              border-top-left-radius: 0;
+              border-bottom-left-radius: 0;
+            }
+          }
         }
 
         .ant-form-item-control-wrapper, .has-error {
@@ -142,14 +158,8 @@
     @media (max-width: @to-small) {
       display: none;
     }
-    @media (min-width: @from-small) and (max-width: @to-medium){
-      top: 420px;
-      padding: 0 17%;
-    }
-
-    @media (min-width: @from-medium) and (max-width: @to-laptop){
-      bottom: -230px;
-      padding: 0 80px;
+    @media (min-width: @from-small) and (max-width: @to-laptop){
+      top: 460px;
     }
   }
 
@@ -176,13 +186,14 @@
 
 .follow-us {
   color: white !important;
-  border: 1px solid #70a1d6;
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 3px;
   padding: 10px 20px;
   display: flex;
   height: 50px;
 
   &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
     border: 1px solid white;
   }
 
@@ -206,7 +217,7 @@
   margin-bottom: 15px;
 }
 
-.landing-link {
+.lp-link {
   text-transform: uppercase;
   font-weight: bold;
   color: white !important;
@@ -220,7 +231,6 @@
 
   &:hover {
     background: #4eacff;
-    transform: translateY(-1px);
     box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
   }
 }
@@ -320,16 +330,19 @@
     vertical-align: top;
     border: 1px solid #e4e8ef;
     border-radius: 5px;
-    padding: 40px 30px;
+    padding: 40px 30px 60px;
     margin: 20px;
-    display: flex;
-    align-items: flex-start;
-    flex: 1;
     min-height: 210px;
 
+    @media (min-width: @to-small) {
+      display: flex;
+      align-items: flex-start;
+      flex: 1;
+    }
+
     @media (max-width: @to-small) {
-      flex-direction: column;
-      align-items: center;
+      text-align: center;
+      width: 100%;
     }
 
     object {
@@ -341,12 +354,6 @@
       .project-title {
         color: #1a5099;
         font-size: 24px;
-      }
-
-      .project-desc {
-        color: #888;
-        font-size: 18px;
-        margin-bottom: 10px;
       }
     }
   }

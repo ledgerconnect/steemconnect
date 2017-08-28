@@ -24,40 +24,44 @@ class Index extends React.Component {
     return (
       <div>
         <div id="header">
-          <div id="menu">
-            <div className="menu-item logo">
-              <object data="img/logo-white.svg" type="image/svg+xml" />
-            </div>
-            <div className="menu-item">
-              <a href="https://busy.org/@busy" target="_blank" rel="noreferrer noopener" className="follow-us">
-                <span>Follow us on</span><object fill="#ffffff" data="img/steem.svg" type="image/svg+xml" />
-              </a>
-            </div>
-          </div>
-          <h1 className="title">Plateform to Manage Your Steems</h1>
-          <h2 className="sub-title">Manage your Steem account and apps through a secure and independant plateform</h2>
-          <div className="newsletter">
-            <Form onSubmit={this.handleSubmit} layout="inline">
-              <Form.Item hasFeedback>
-                {getFieldDecorator('email', {
-                  rules: [
-                    { type: 'email', message: 'Please input a valid email address' },
-                    { required: true, message: 'Please input your email address' },
-                  ],
-                })(
-                  <Input placeholder="Email address" />
-                )}
-              </Form.Item>
-              <Form.Item>
-                <Button type="primary" htmlType="submit" loading={this.state.submitting}>Notify Me</Button>
-              </Form.Item>
-            </Form>
-          </div>
-          <object data="img/hero.svg" type="image/svg+xml" id="header-bg" />
           <img src="/img/macbook.png" id="macbook-img" alt="macbook" />
+          <object data="img/hero.svg" type="image/svg+xml" id="header-bg" />
+          <div className="lp-container">
+            <div id="menu">
+              <div className="menu-item logo">
+                <object data="img/logo-white.svg" type="image/svg+xml" />
+              </div>
+              <div className="menu-item">
+                <a href="https://steemit.com/@steemconnect" target="_blank" rel="noreferrer noopener" className="follow-us">
+                  <span>Follow us on</span><object fill="#ffffff" data="img/steem.svg" type="image/svg+xml" />
+                </a>
+              </div>
+            </div>
+            <div className="hero">
+              <h1 className="title">Plateform to Manage Your Steems</h1>
+              <h2 className="sub-title">Manage your Steem account and apps through a secure and independant plateform</h2>
+              <div className="newsletter">
+                <Form onSubmit={this.handleSubmit} layout="inline">
+                  <Form.Item hasFeedback>
+                    {getFieldDecorator('email', {
+                      rules: [
+                        { type: 'email', message: 'Please input a valid email address' },
+                        { required: true, message: 'Please input your email address' },
+                      ],
+                    })(
+                      <Input placeholder="Email address" />
+                    )}
+                  </Form.Item>
+                  <Form.Item>
+                    <Button type="primary" htmlType="submit" loading={this.state.submitting} className="lp-link">Sign up</Button>
+                  </Form.Item>
+                </Form>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="landing-container how-it-works">
+        <div className="lp-container how-it-works">
           <span className="small-title">How it works</span>
           <h3>
             The simple identity layer built on top of the Steem blockchain
@@ -65,7 +69,7 @@ class Index extends React.Component {
         </div>
 
         <div className="steem-features-container">
-          <div className="landing-container steem-features">
+          <div className="lp-container steem-features">
             <div className="steem-feature">
               <object data="img/apps.svg" type="image/svg+xml" />
               <strong className="feature-title">Steem Apps</strong>
@@ -90,7 +94,7 @@ class Index extends React.Component {
         </div>
 
         <div className="safe-secure-container">
-          <div className="landing-container safe-secure">
+          <div className="lp-container safe-secure">
             <div>
               <object data="img/lock.svg" type="image/svg+xml" />
             </div>
@@ -106,48 +110,48 @@ class Index extends React.Component {
           </div>
         </div>
 
-        <div className="landing-container learn-more">
+        <div className="lp-container learn-more">
           <span className="small-title">Learn more</span>
           <h3>Become part of the community</h3>
         </div>
 
-        <div className="landing-container project">
+        <div className="lp-container project">
           <div className="project-item">
             <object data="img/opensource.svg" type="image/svg+xml" />
             <div className="project-info">
               <h4 className="project-title">It's an Open Source Project</h4>
-              <p className="project-desc">
-                Check the github repository <br />
+              <p>
+                Check the github repository<br />
                 and start digging
               </p>
-              <a href="https://github.com/steemit/sc2" target="_blank" rel="noreferrer noopener" className="landing-link">Learn More</a>
+              <a href="https://github.com/steemit/sc2" target="_blank" rel="noreferrer noopener" className="lp-link">Learn More</a>
             </div>
           </div>
           <div className="project-item">
             <object data="img/code.svg" type="image/svg+xml" />
             <div className="project-info">
               <h4 className="project-title">We Invite Developers</h4>
-              <p className="project-desc">
+              <p>
                 Start developing your app and rely on SteemConnect
               </p>
-              <a href="/" className="landing-link">Register Now</a>
+              <a href="/" className="lp-link">Register Now</a>
             </div>
           </div>
         </div>
 
         <div className="get-started-container">
-          <div className="landing-container get-started">
+          <div className="lp-container get-started">
             <div>
               <h2>Register to Get Started</h2>
               <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusant doloremque laudantium, totam rem aperiam</p>
             </div>
             <div>
-              <a href="/" className="landing-link">Get Started Now</a>
+              <a href="/" className="lp-link">Get Started Now</a>
             </div>
           </div>
         </div>
 
-        <div className="landing-container footer-menu">
+        <div className="lp-container footer-menu">
           <ul>
             <li><Link to="/">About Us</Link></li>
             <li className="separator">|</li>
