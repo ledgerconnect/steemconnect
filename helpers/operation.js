@@ -71,11 +71,36 @@ const parseQuery = (type, query, username) => {
   return _query;
 };
 
+const validateRequired = (type, query) => {
+  const errors = [];
+  const operation = operations.find(o => o.operation === type);
+  if (operation) {
+    let authorField;
+    let optionalFields = [];
+
+    if (Object.prototype.hasOwnProperty.call(operationAuthor, type)) {
+      authorField = operationAuthor[type];
+    }
+
+    if (_.hasIn(helperOperations, type) && helperOperations[type].optionalFields) {
+      optionalFields = helperOperations[type].optionalFields;
+    }
+
+    operation.params.forEach((p) => {
+      if (!optionalFields.includes(p) && !query[p] && (!authorField || p !== authorField)) {
+        errors.push(`${p} is required`);
+      }
+    });
+  }
+
+  return errors;
+};
+
 const validate = async (type, query) => {
   const snakeCaseType = changeCase.snakeCase(type);
-  let errors = [];
+  const errors = validateRequired(snakeCaseType, query);
   if (_.hasIn(helperOperations, snakeCaseType) && typeof helperOperations[snakeCaseType].validate === 'function') {
-    errors = await helperOperations[snakeCaseType].validate(query);
+    await helperOperations[snakeCaseType].validate(query, errors);
   }
   return errors;
 };
