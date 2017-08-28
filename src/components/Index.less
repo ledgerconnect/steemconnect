@@ -333,6 +333,11 @@
     flex: 1;
     min-height: 210px;
 
+    @media (max-width: @to-small) {
+      flex-direction: column;
+      align-items: center;
+    }
+
     object {
       width: 100px;
       margin-right: 20px;
