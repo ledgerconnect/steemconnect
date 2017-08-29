@@ -6,7 +6,7 @@ import SignSuccess from './Sign/Success';
 import SignError from './Sign/Error';
 import SignValidationErrors from './Sign/ValidationErrors';
 import { getOperation, parseQuery, validate } from '../../helpers/operation';
-import operationMapper from '../../helpers/operation-mapper';
+import customOperations from '../../helpers/operations/custom-operations';
 import SignPlaceholderDefault from './Sign/Placeholder/Default';
 import SignPlaceholderComment from './Sign/Placeholder/Comment';
 import SignPlaceholderFollow from './Sign/Placeholder/Follow';
@@ -60,7 +60,8 @@ export default class Sign extends Component {
     });
 
     /* Broadcast */
-    const mappedType = operationMapper[type] ? operationMapper[type] : type;
+    const customOp = customOperations.find(o => o.operation === type);
+    const mappedType = customOp ? customOp.type : type;
     steem.broadcast[`${changeCase.camelCase(mappedType)}With`](auth.wif, params, (err, result) => {
       if (!err) {
         this.setState({ success: result });
