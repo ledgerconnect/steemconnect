@@ -36,7 +36,7 @@ const normalizeUsername = username => ((username && username.charAt(0) === '@') 
 const userExists = async (username) => {
   const _username = normalizeUsername(username);
   const accounts = await steem.api.getAccountsAsync([_username]);
-  return accounts && accounts.length > 0;
+  return accounts && accounts.length > 0 && accounts.find(a => a.name === _username);
 };
 
 const contentExists = async (auhtor, permlink) => {
