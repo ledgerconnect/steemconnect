@@ -4,6 +4,7 @@ const mute = require('./mute');
 const reblog = require('./reblog');
 const transfer = require('./transfer');
 const unfollow = require('./unfollow');
+const unmute = require('./unmute');
 const vote = require('./vote');
 
 module.exports = {
@@ -13,5 +14,6 @@ module.exports = {
   reblog,
   transfer,
   unfollow,
+  unmute,
   vote
 };
