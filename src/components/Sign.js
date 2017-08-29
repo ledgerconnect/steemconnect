@@ -10,6 +10,7 @@ import customOperations from '../../helpers/operations/custom-operations';
 import SignPlaceholderDefault from './Sign/Placeholder/Default';
 import SignPlaceholderComment from './Sign/Placeholder/Comment';
 import SignPlaceholderFollow from './Sign/Placeholder/Follow';
+import SignPlaceholderReblog from './Sign/Placeholder/Reblog';
 import Loading from '../widgets/Loading';
 import './Sign.less';
 
@@ -79,6 +80,7 @@ export default class Sign extends Component {
     let Placeholder = SignPlaceholderDefault;
     Placeholder = (type === 'comment') ? SignPlaceholderComment : Placeholder;
     Placeholder = ['follow', 'unfollow', 'mute', 'unmute'].includes(type) ? SignPlaceholderFollow : Placeholder;
+    Placeholder = (type === 'reblog') ? SignPlaceholderReblog : Placeholder;
     return (
       <div className="Sign">
         <div className="Sign__content container my-2">
