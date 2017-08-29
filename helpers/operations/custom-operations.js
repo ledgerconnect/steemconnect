@@ -9,4 +9,9 @@ module.exports = [
     type: 'custom_json',
     params: ['follower', 'following']
   },
+  {
+    operation: 'unmute',
+    type: 'custom_json',
+    params: ['follower', 'following']
+  },
 ];
