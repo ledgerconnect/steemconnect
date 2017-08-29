@@ -78,7 +78,7 @@ export default class Sign extends Component {
     const op = getOperation(type);
     let Placeholder = SignPlaceholderDefault;
     Placeholder = (type === 'comment') ? SignPlaceholderComment : Placeholder;
-    Placeholder = (type === 'follow' || type === 'unfollow') ? SignPlaceholderFollow : Placeholder;
+    Placeholder = ['follow', 'unfollow', 'mute'].includes(type) ? SignPlaceholderFollow : Placeholder;
     return (
       <div className="Sign">
         <div className="Sign__content container my-2">
