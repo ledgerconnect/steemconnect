@@ -13,5 +13,10 @@ module.exports = [
     operation: 'reblog',
     type: 'custom_json',
     params: ['author', 'permlink']
-  }
+  },
+  {
+    operation: 'mute',
+    type: 'custom_json',
+    params: ['follower', 'following']
+  },
 ];
