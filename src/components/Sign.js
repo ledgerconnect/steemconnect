@@ -6,8 +6,10 @@ import SignSuccess from './Sign/Success';
 import SignError from './Sign/Error';
 import SignValidationErrors from './Sign/ValidationErrors';
 import { getOperation, parseQuery, validate } from '../../helpers/operation';
+import customOperations from '../../helpers/operations/custom-operations';
 import SignPlaceholderDefault from './Sign/Placeholder/Default';
 import SignPlaceholderComment from './Sign/Placeholder/Comment';
+import SignPlaceholderFollow from './Sign/Placeholder/Follow';
 import Loading from '../widgets/Loading';
 import './Sign.less';
 
@@ -58,7 +60,9 @@ export default class Sign extends Component {
     });
 
     /* Broadcast */
-    steem.broadcast[`${changeCase.camelCase(type)}With`](auth.wif, params, (err, result) => {
+    const customOp = customOperations.find(o => o.operation === type);
+    const mappedType = customOp ? customOp.type : type;
+    steem.broadcast[`${changeCase.camelCase(mappedType)}With`](auth.wif, params, (err, result) => {
       if (!err) {
         this.setState({ success: result });
       } else {
@@ -74,6 +78,7 @@ export default class Sign extends Component {
     const op = getOperation(type);
     let Placeholder = SignPlaceholderDefault;
     Placeholder = (type === 'comment') ? SignPlaceholderComment : Placeholder;
+    Placeholder = (type === 'follow') ? SignPlaceholderFollow : Placeholder;
     return (
       <div className="Sign">
         <div className="Sign__content container my-2">
