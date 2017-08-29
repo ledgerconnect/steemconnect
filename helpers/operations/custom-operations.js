@@ -1,7 +1,7 @@
 module.exports = [
   {
-    roles: ['posting', 'active'],
     operation: 'follow',
+    type: 'custom_json',
     params: ['follower', 'following']
   },
   {

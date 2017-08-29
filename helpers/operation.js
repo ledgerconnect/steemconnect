@@ -41,18 +41,19 @@ const setDefaultAuthor = (operation, query, username) => {
 };
 
 const getOperation = (type) => {
-  let ops = operations.filter(op =>
+  let ops = operations.find(op =>
     op.operation === changeCase.snakeCase(type)
   );
-  if (ops[0]) {
-    return ops[0];
+  if (ops) {
+    return ops;
   }
 
-  ops = customOperations.filter(op =>
+  ops = customOperations.find(op =>
       op.operation === changeCase.snakeCase(type)
   );
-  if (ops[0]) {
-    return ops[0];
+  if (ops) {
+    ops.roles = operations.find(op => op.operation === ops.type).roles;
+    return ops;
   }
 
   return '';
