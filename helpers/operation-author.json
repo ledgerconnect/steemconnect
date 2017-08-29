@@ -21,6 +21,7 @@
   "escrow_release": "from",
   "escrow_approve": "from",
   "follow": "required_posting_auths[0]",
+  "unfollow": "required_posting_auths[0]",
   "transfer_to_savings": "from",
   "transfer_from_savings": "from",
   "cancel_transfer_from_savings": "from",
