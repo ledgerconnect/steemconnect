@@ -5,8 +5,13 @@ module.exports = [
     params: ['follower', 'following']
   },
   {
-    roles: ['posting', 'active'],
     operation: 'unfollow',
+    type: 'custom_json',
     params: ['follower', 'following']
+  },
+  {
+    operation: 'reblog',
+    type: 'custom_json',
+    params: ['author', 'permlink']
   }
 ];
