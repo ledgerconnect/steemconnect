@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const { contentExists, normalizeUsername } = require('../validation-utils');
 
 const parse = (query) => {
