@@ -10,6 +10,11 @@ module.exports = [
     params: ['follower', 'following']
   },
   {
+    operation: 'mute',
+    type: 'custom_json',
+    params: ['follower', 'following']
+  },
+  {
     operation: 'unmute',
     type: 'custom_json',
     params: ['follower', 'following']
