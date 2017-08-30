@@ -1,4 +1,5 @@
 const comment = require('./comment');
+const delegateVestingShares = require('./delegate-vesting-shares');
 const follow = require('./follow');
 const mute = require('./mute');
 const reblog = require('./reblog');
@@ -9,6 +10,7 @@ const vote = require('./vote');
 
 module.exports = {
   comment,
+  delegate_vesting_shares: delegateVestingShares,
   follow,
   mute,
   reblog,
