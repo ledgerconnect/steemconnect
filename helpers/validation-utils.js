@@ -31,18 +31,18 @@ const isAsset = (value) => {
   return true;
 };
 
+const normalizeUsername = username => ((username && username.charAt(0) === '@') ? username.substr(1) : username);
+
 const userExists = async (username) => {
-  const _username = this.normalizeUsername(username);
+  const _username = normalizeUsername(username);
   const accounts = await steem.api.getAccountsAsync([_username]);
-  return accounts && accounts.length > 0;
+  return accounts && accounts.length > 0 && accounts.find(a => a.name === _username);
 };
 
 const contentExists = async (auhtor, permlink) => {
   const content = await steem.api.getContent(auhtor, permlink);
   return parseInt(content.id) !== 0;
 };
-
-const normalizeUsername = username => ((username && username.charAt(0) === '@') ? username.substr(1) : username);
 
 module.exports = {
   contentExists,

@@ -1,5 +1,7 @@
 const _ = require('lodash');
-const { contentExists, isEmpty } = require('../validation-utils');
+const { contentExists } = require('../validation-utils');
+
+const optionalFields = ['weight'];
 
 const parse = (query) => {
   const _query = _.cloneDeep(query);
@@ -7,21 +9,14 @@ const parse = (query) => {
   return _query;
 };
 
-const validate = async (query) => {
-  const errors = [];
-  if (isEmpty(query.author)) {
-    errors.push('\'author\' is required');
-  }
-  if (isEmpty(query.permlink)) {
-    errors.push('\'permlink\' is required');
-  }
+const validate = async (query, errors) => {
   if (errors.length === 0 && !await contentExists(query.author, query.permlink)) {
     errors.push('the post doesn\'t exist');
   }
-  return errors;
 };
 
 module.exports = {
+  optionalFields,
+  parse,
   validate,
-  parse
 };

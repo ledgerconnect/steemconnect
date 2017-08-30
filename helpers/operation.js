@@ -2,6 +2,7 @@ const changeCase = require('change-case');
 const operations = require('steem/lib/broadcast/operations');
 const _ = require('lodash');
 const operationAuthor = require('./operation-author.json');
+const customOperations = require('./operations/custom-operations');
 const helperOperations = require('./operations');
 
 /** Parse error message from Steemd response */
@@ -29,20 +30,33 @@ const isOperationAuthor = (operation, query, username) => {
 };
 
 const setDefaultAuthor = (operation, query, username) => {
-  const _query = query;
+  const _query = _.cloneDeep(query);
+
   if (Object.prototype.hasOwnProperty.call(operationAuthor, operation)) {
     const field = operationAuthor[operation];
     if (!field) { return _query; }
-    if (!_.get(query, field)) { _.set(query, field, username); }
+    if (!_.get(_query, field)) { _.set(_query, field, username); }
   }
   return _query;
 };
 
 const getOperation = (type) => {
-  const ops = operations.filter(op =>
+  let ops = operations.find(op =>
     op.operation === changeCase.snakeCase(type)
   );
-  return ops[0] ? ops[0] : '';
+  if (ops) {
+    return ops;
+  }
+
+  ops = customOperations.find(op =>
+      op.operation === changeCase.snakeCase(type)
+  );
+  if (ops) {
+    ops.roles = operations.find(op => op.operation === ops.type).roles;
+    return ops;
+  }
+
+  return '';
 };
 
 const isValid = (op, params) => {
@@ -61,7 +75,6 @@ const isValid = (op, params) => {
 const parseQuery = (type, query, username) => {
   const snakeCaseType = changeCase.snakeCase(type);
   let _query = _.cloneDeep(query);
-
   _query = setDefaultAuthor(snakeCaseType, _query, username);
 
   if (_.hasIn(helperOperations, snakeCaseType)) {
@@ -71,11 +84,39 @@ const parseQuery = (type, query, username) => {
   return _query;
 };
 
+const validateRequired = (type, query) => {
+  const errors = [];
+  let operation = operations.find(o => o.operation === type);
+  if (!operation) {
+    operation = customOperations.find(o => o.operation === type);
+  }
+  if (operation) {
+    let authorField;
+    let optionalFields = [];
+
+    if (Object.prototype.hasOwnProperty.call(operationAuthor, type)) {
+      authorField = operationAuthor[type];
+    }
+
+    if (_.hasIn(helperOperations, type) && helperOperations[type].optionalFields) {
+      optionalFields = helperOperations[type].optionalFields;
+    }
+
+    operation.params.forEach((p) => {
+      if (!optionalFields.includes(p) && !query[p] && (!authorField || p !== authorField)) {
+        errors.push(`${p} is required`);
+      }
+    });
+  }
+
+  return errors;
+};
+
 const validate = async (type, query) => {
   const snakeCaseType = changeCase.snakeCase(type);
-  let errors = [];
+  const errors = validateRequired(snakeCaseType, query);
   if (_.hasIn(helperOperations, snakeCaseType) && typeof helperOperations[snakeCaseType].validate === 'function') {
-    errors = await helperOperations[snakeCaseType].validate(query);
+    await helperOperations[snakeCaseType].validate(query, errors);
   }
   return errors;
 };

@@ -3,6 +3,8 @@ const { formatter } = require('steem');
 const changeCase = require('change-case');
 const diacritics = require('diacritics');
 
+const optionalFields = ['parent_author', 'parent_permlink', 'title', 'json_metadata'];
+
 const parse = (query) => {
   const _query = _.cloneDeep(query);
   _query.parent_author = _query.parent_author || '';
@@ -23,5 +25,6 @@ const parse = (query) => {
 };
 
 module.exports = {
+  optionalFields,
   parse
 };

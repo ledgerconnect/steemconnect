@@ -20,12 +20,18 @@
   "escrow_dispute": "from",
   "escrow_release": "from",
   "escrow_approve": "from",
+  "follow": "required_posting_auths[0]",
+  "unfollow": "required_posting_auths[0]",
+  "mute": "required_posting_auths[0]",
+  "unmute": "required_posting_auths[0]",
+  "reblog": "required_posting_auths[0]",
   "transfer_to_savings": "from",
   "transfer_from_savings": "from",
   "cancel_transfer_from_savings": "from",
   "decline_voting_rights": "account",
   "claim_reward_balance": "account",
   "delegate_vesting_shares": "delegator",
+  "undelegate_vesting_shares": "delegator",
   "account_create_with_delegation": "creator",
   "fill_convert_request": "owner"
 }
