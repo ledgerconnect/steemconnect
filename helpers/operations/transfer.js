@@ -24,6 +24,12 @@ const validate = async (query, errors) => {
   } else if (!isEmpty(query.amount) && !isAsset(query.amount)) {
     errors.push('please type a valid amount, 12.123 STEEM or 12.123 SBD for example');
   }
+
+  if (errors.length === 0) {
+    const [amount, symbol] = query.amount.split(' ');
+    // eslint-disable-next-line no-param-reassign
+    query.amount = _.join([parseFloat(amount).toFixed(3), symbol], ' ');
+  }
 };
 
 module.exports = {
