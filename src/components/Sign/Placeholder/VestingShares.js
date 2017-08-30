@@ -50,7 +50,7 @@ export default class SignPlaceholderVestingShares extends Component {
             }
             {this.state.vestingSharesDisplay &&
               <tr>
-                <td className="label"><b>Vesting Share</b></td>
+                <td className="label"><b>Vesting Shares</b></td>
                 <td>{this.state.vestingSharesDisplay}</td>
               </tr>
             }
