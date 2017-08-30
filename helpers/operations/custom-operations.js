@@ -24,4 +24,9 @@ module.exports = [
     type: 'custom_json',
     params: ['follower', 'following']
   },
+  {
+    operation: 'undelegate_vesting_shares',
+    type: 'delegate_vesting_shares',
+    params: ['delegator', 'delegatee']
+  },
 ];
