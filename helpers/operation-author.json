@@ -31,6 +31,7 @@
   "decline_voting_rights": "account",
   "claim_reward_balance": "account",
   "delegate_vesting_shares": "delegator",
+  "undelegate_vesting_shares": "delegator",
   "account_create_with_delegation": "creator",
   "fill_convert_request": "owner"
 }

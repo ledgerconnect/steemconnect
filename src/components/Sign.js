@@ -11,6 +11,7 @@ import SignPlaceholderDefault from './Sign/Placeholder/Default';
 import SignPlaceholderComment from './Sign/Placeholder/Comment';
 import SignPlaceholderFollow from './Sign/Placeholder/Follow';
 import SignPlaceholderReblog from './Sign/Placeholder/Reblog';
+import SignPlaceholderVestingShares from './Sign/Placeholder/VestingShares';
 import Loading from '../widgets/Loading';
 import './Sign.less';
 
@@ -44,11 +45,11 @@ export default class Sign extends Component {
     });
   };
 
-  sign = (auth) => {
+  sign = async (auth) => {
     this.setState({ step: 'loading' });
 
     const { type, query } = this.state;
-    const parsedQuery = parseQuery(type, query, auth.username);
+    const parsedQuery = await parseQuery(type, query, auth.username);
 
     /* Parse params */
     const params = {};
@@ -61,7 +62,7 @@ export default class Sign extends Component {
     });
 
     /* Broadcast */
-    const customOp = customOperations.find(o => o.operation === type);
+    const customOp = customOperations.find(o => o.operation === changeCase.snakeCase(type));
     const mappedType = customOp ? customOp.type : type;
     steem.broadcast[`${changeCase.camelCase(mappedType)}With`](auth.wif, params, (err, result) => {
       if (!err) {
@@ -81,6 +82,8 @@ export default class Sign extends Component {
     Placeholder = (type === 'comment') ? SignPlaceholderComment : Placeholder;
     Placeholder = ['follow', 'unfollow', 'mute', 'unmute'].includes(type) ? SignPlaceholderFollow : Placeholder;
     Placeholder = (type === 'reblog') ? SignPlaceholderReblog : Placeholder;
+    Placeholder = ['delegate_vesting_shares', 'undelegate_vesting_shares']
+      .includes(changeCase.snakeCase(type)) ? SignPlaceholderVestingShares : Placeholder;
     return (
       <div className="Sign">
         <div className="Sign__content container my-2">
