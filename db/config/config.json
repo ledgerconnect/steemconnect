@@ -1,11 +1,9 @@
 {
   "development": {
-    "username": "postgres",
-    "password": null,
-    "database": "sc2",
-    "host": "localhost",
-    "dialect": "postgres",
-    "port": 5432
+    "use_env_variable": "STAGING_DATABASE_URL",
+    "dialectOptions": {
+      "ssl": true
+    }
   },
   "staging": {
     "use_env_variable": "STAGING_DATABASE_URL",

@@ -70,13 +70,13 @@ export default class MyApps extends Component {
                     {revealSecret
                       ? <div>
                         {`${app.secret} `}
-                        <a href="#" onClick={() => this.setState({ revealSecret: false })}>
+                        <button className="button-link" onClick={() => this.setState({ revealSecret: false })}>
                           hide
-                        </a>
+                        </button>
                       </div>
-                      : <a href="#" onClick={() => this.setState({ revealSecret: true })}>
+                      : <button className="button-link" onClick={() => this.setState({ revealSecret: true })}>
                         click to reveal
-                      </a>
+                      </button>
                     }
                   </div>
                 }
