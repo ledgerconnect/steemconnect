@@ -15,8 +15,8 @@ const parse = async (query) => {
   if (symbol === 'SP') {
     cQuery.vesting_shares = _.join([
       (
-        parseFloat(amount) *
-        parseFloat(globalProps.total_vesting_shares) /
+        (parseFloat(amount) *
+        parseFloat(globalProps.total_vesting_shares)) /
         parseFloat(globalProps.total_vesting_fund_steem)
       ).toFixed(6),
       'VESTS',

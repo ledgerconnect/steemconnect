@@ -45,7 +45,7 @@ export default class Permissions extends Component {
                     <li key={idxA} className="list-group-item">
                       <b>@{auth[0]}</b>
                       <span className="ml-1">
-                        {numeral(100 / account[role].weight_threshold * auth[1] / 100).format('0%')}
+                        {numeral((100 / account[role].weight_threshold) * (auth[1] / 100)).format('0%')}
                       </span>
                       {role === 'posting' &&
                         <Link

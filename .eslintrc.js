@@ -10,7 +10,6 @@ module.exports = {
   },
   "extends": "airbnb",
   "rules": {
-    "no-mixed-operators": ["error", {"allowSamePrecedence": true}],
     "react/jsx-filename-extension": 0,
     "react/prefer-stateless-function": [2, { "ignorePureComponents": true }],
     "react/require-extension": "off",
