@@ -15,7 +15,7 @@ const parse = async (query) => {
   if (symbol === 'SP') {
     _query.vesting_shares = _.join([
       (parseFloat(amount) * parseFloat(globalProps.total_vesting_shares) / parseFloat(globalProps.total_vesting_fund_steem)).toFixed(6),
-      'VESTS'
+      'VESTS',
     ], ' ');
   } else {
     _query.vesting_shares = _.join([parseFloat(amount).toFixed(6), symbol], ' ');
@@ -44,5 +44,5 @@ const validate = async (query, errors) => {
 module.exports = {
   optionalFields,
   parse,
-  validate
+  validate,
 };

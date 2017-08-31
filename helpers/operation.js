@@ -128,5 +128,5 @@ module.exports = {
   getOperation,
   isValid,
   parseQuery,
-  validate
+  validate,
 };

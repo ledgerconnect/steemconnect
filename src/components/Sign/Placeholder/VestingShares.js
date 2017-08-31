@@ -20,7 +20,7 @@ export default class SignPlaceholderVestingShares extends Component {
       vestingSharesDisplay = _.join(
         [
           formatter.vestToSteem(query.vesting_shares, globalProps.total_vesting_shares, globalProps.total_vesting_fund_steem).toFixed(3),
-          'SP'
+          'SP',
         ], ' ');
     } else if (query.vesting_shares) {
       const [amount, symbol] = query.vesting_shares.split(' ');

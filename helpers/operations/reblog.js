@@ -8,10 +8,10 @@ const parse = (query) => {
         account: query.required_posting_auths[0],
         author: normalizeUsername(query.author),
         permlink: query.permlink,
-      }
+      },
     ]),
     required_auths: [],
-    required_posting_auths: query.required_posting_auths
+    required_posting_auths: query.required_posting_auths,
   };
 
   return _query;

@@ -54,7 +54,7 @@ export default class Authorize extends Component {
       } else {
         this.setState({
           step: 3,
-          success: true
+          success: true,
         });
       }
     });

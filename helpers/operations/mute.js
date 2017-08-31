@@ -9,11 +9,11 @@ const parse = (query) => {
       'follow', {
         follower: query.follower ? normalizeUsername(query.follower) : query.required_posting_auths[0],
         following: normalizeUsername(query.following),
-        what: query.what ? JSON.parse(query.what) : ['ignore']
-      }
+        what: query.what ? JSON.parse(query.what) : ['ignore'],
+      },
     ]),
     required_auths: [],
-    required_posting_auths: query.required_posting_auths
+    required_posting_auths: query.required_posting_auths,
   };
 
   return _query;
@@ -32,5 +32,5 @@ const validate = async (query, errors) => {
 module.exports = {
   optionalFields,
   parse,
-  validate
+  validate,
 };

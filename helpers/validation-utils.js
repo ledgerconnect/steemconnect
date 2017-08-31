@@ -7,7 +7,7 @@ const isAsset = (value) => {
     { symbol: 'SBD', precision: 3 },
     { symbol: 'STEEM', precision: 3 },
     { symbol: 'SP', precision: 3 },
-    { symbol: 'VESTS', precision: 6 }
+    { symbol: 'VESTS', precision: 6 },
   ];
 
   if (!/^[0-9]+\.?[0-9]* [A-Za-z0-9]+$/.test(value)) {
@@ -49,5 +49,5 @@ module.exports = {
   isAsset,
   isEmpty,
   normalizeUsername,
-  userExists
+  userExists,
 };

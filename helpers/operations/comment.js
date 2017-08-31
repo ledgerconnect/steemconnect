@@ -26,5 +26,5 @@ const parse = (query) => {
 
 module.exports = {
   optionalFields,
-  parse
+  parse,
 };

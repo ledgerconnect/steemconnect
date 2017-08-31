@@ -43,7 +43,7 @@ export const addPostingAuthority = ({ username, wif, clientId }, cb) => {
 export const authorize = ({ clientId, scope }, cb) => {
   const token = localStorage.getItem('token');
   fetch(`/api/oauth2/authorize?client_id=${clientId}&scope=${scope}`, {
-    headers: new Headers({ Authorization: token })
+    headers: new Headers({ Authorization: token }),
   })
     .then(res => res.json())
     .then(data => cb(null, data))

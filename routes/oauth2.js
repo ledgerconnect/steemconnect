@@ -12,8 +12,8 @@ router.get('/oauth2/authorize', async (req, res) => {
   const app = await req.db.apps.findOne({
     where: {
       client_id: clientId,
-      redirect_uris: { $contains: [redirectUri] }
-    }
+      redirect_uris: { $contains: [redirectUri] },
+    },
   });
   if (!app) {
     debug(`The app @${clientId} has not been setup.`);

@@ -35,5 +35,5 @@ const validate = async (query, errors) => {
 module.exports = {
   optionalFields,
   parse,
-  validate
+  validate,
 };

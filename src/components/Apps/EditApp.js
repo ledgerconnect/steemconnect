@@ -24,7 +24,7 @@ export default class EditApp extends Component {
     fetch(`/api/apps/@${clientId}`, {
       headers: new Headers({
         Authorization: this.props.auth.token,
-      })
+      }),
     })
       .then(res => res.json())
       .then((app) => {
@@ -46,7 +46,7 @@ export default class EditApp extends Component {
         'Content-Type': 'application/json',
         Authorization: this.props.auth.token,
       }),
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
       .then(res => res.json())
       .then(() => {

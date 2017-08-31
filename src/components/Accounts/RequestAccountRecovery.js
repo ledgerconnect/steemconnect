@@ -58,7 +58,7 @@ class RecoverAccount extends React.Component {
     const newOwnerAuthority = {
       weight_threshold: 1,
       account_auths: [],
-      key_auths: [[newOwner, 1]]
+      key_auths: [[newOwner, 1]],
     };
 
     try {

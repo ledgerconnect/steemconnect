@@ -63,13 +63,13 @@ class RecoverAccount extends React.Component {
     const newOwnerAuthority = {
       weight_threshold: 1,
       account_auths: [],
-      key_auths: [[newOwner, 1]]
+      key_auths: [[newOwner, 1]],
     };
 
     const recentOwnerAuthority = {
       weight_threshold: 1,
       account_auths: [],
-      key_auths: [[oldOwner, 1]]
+      key_auths: [[oldOwner, 1]],
     };
 
     try {
@@ -79,7 +79,7 @@ class RecoverAccount extends React.Component {
             account_to_recover: accountToRecover,
             new_owner_authority: newOwnerAuthority,
             recent_owner_authority: recentOwnerAuthority,
-          }]
+          }],
         ] }, [oldOwnerPrivate, newOwnerPrivate]);
 
       // change password
@@ -92,7 +92,7 @@ class RecoverAccount extends React.Component {
             posting: { weight_threshold: 1, account_auths: [], key_auths: [[newPosting, 1]] },
             memo_key: newMemo,
             json_metadata: '',
-          }]
+          }],
         ] }, [newOwnerPrivate]);
       onSuccess();
     } catch (error) {

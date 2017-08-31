@@ -24,7 +24,7 @@ const updateUserMetadata = async (proxy, user, newMetadata) => {
       await metadata.create({
         client_id: proxy,
         user,
-        user_metadata: newMetadata
+        user_metadata: newMetadata,
       });
     }
   } catch (error) {
