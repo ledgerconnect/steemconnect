@@ -6,22 +6,22 @@ const diacritics = require('diacritics');
 const optionalFields = ['parent_author', 'parent_permlink', 'title', 'json_metadata'];
 
 const parse = (query) => {
-  const _query = _.cloneDeep(query);
-  _query.parent_author = _query.parent_author || '';
-  _query.parent_permlink = _query.parent_permlink || '';
-  _query.title = _query.title || '';
-  if (_query.parent_author && _query.parent_permlink) {
-    _query.permlink = _query.permlink
-      || formatter.commentPermlink(_query.parent_author, _query.parent_permlink).toLowerCase();
+  const cQuery = _.cloneDeep(query);
+  cQuery.parent_author = cQuery.parent_author || '';
+  cQuery.parent_permlink = cQuery.parent_permlink || '';
+  cQuery.title = cQuery.title || '';
+  if (cQuery.parent_author && cQuery.parent_permlink) {
+    cQuery.permlink = cQuery.permlink
+      || formatter.commentPermlink(cQuery.parent_author, cQuery.parent_permlink).toLowerCase();
   } else {
-    _query.title = _query.title || _query.body.slice(0, 255);
-    _query.permlink = _query.permlink
-      || changeCase.paramCase(diacritics.remove(_query.title)).slice(0, 255);
+    cQuery.title = cQuery.title || cQuery.body.slice(0, 255);
+    cQuery.permlink = cQuery.permlink
+      || changeCase.paramCase(diacritics.remove(cQuery.title)).slice(0, 255);
   }
   let jsonMetadata = {};
-  try { jsonMetadata = JSON.parse(decodeURIComponent(_query.json_metadata)); } catch (e) { jsonMetadata = {}; }
-  _query.json_metadata = jsonMetadata;
-  return _query;
+  try { jsonMetadata = JSON.parse(decodeURIComponent(cQuery.json_metadata)); } catch (e) { jsonMetadata = {}; }
+  cQuery.json_metadata = jsonMetadata;
+  return cQuery;
 };
 
 module.exports = {

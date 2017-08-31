@@ -21,7 +21,6 @@ module.exports = {
     "react/require-extension": "off",
     "react/sort-comp": 0,
     "react/prop-types": 0,
-    "no-underscore-dangle": 0,
   },
   "plugins": [
     "react",

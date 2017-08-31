@@ -1,7 +1,7 @@
 const { contentExists, normalizeUsername } = require('../validation-utils');
 
 const parse = (query) => {
-  const _query = {
+  const cQuery = {
     id: 'follow',
     json: JSON.stringify([
       'reblog', {
@@ -14,7 +14,7 @@ const parse = (query) => {
     required_posting_auths: query.required_posting_auths,
   };
 
-  return _query;
+  return cQuery;
 };
 
 const validate = async (query, errors) => {

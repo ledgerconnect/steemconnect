@@ -3,7 +3,7 @@ const { userExists, isEmpty, normalizeUsername } = require('../validation-utils'
 const optionalFields = ['follower'];
 
 const parse = (query) => {
-  const _query = {
+  const cQuery = {
     id: 'follow',
     json: JSON.stringify([
       'follow', {
@@ -16,7 +16,7 @@ const parse = (query) => {
     required_posting_auths: query.required_posting_auths,
   };
 
-  return _query;
+  return cQuery;
 };
 
 const validate = async (query, errors) => {

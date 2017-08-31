@@ -5,23 +5,23 @@ const { isAsset, isEmpty, userExists, normalizeUsername } = require('../validati
 const optionalFields = ['delegator'];
 
 const parse = async (query) => {
-  const _query = _.cloneDeep(query);
-  const [amount, symbol] = _query.vesting_shares.split(' ');
+  const cQuery = _.cloneDeep(query);
+  const [amount, symbol] = cQuery.vesting_shares.split(' ');
   const globalProps = await steem.api.getDynamicGlobalPropertiesAsync();
 
-  _query.delegatee = normalizeUsername(_query.delegatee);
-  _query.delegator = normalizeUsername(_query.delegator);
+  cQuery.delegatee = normalizeUsername(cQuery.delegatee);
+  cQuery.delegator = normalizeUsername(cQuery.delegator);
 
   if (symbol === 'SP') {
-    _query.vesting_shares = _.join([
+    cQuery.vesting_shares = _.join([
       (parseFloat(amount) * parseFloat(globalProps.total_vesting_shares) / parseFloat(globalProps.total_vesting_fund_steem)).toFixed(6),
       'VESTS',
     ], ' ');
   } else {
-    _query.vesting_shares = _.join([parseFloat(amount).toFixed(6), symbol], ' ');
+    cQuery.vesting_shares = _.join([parseFloat(amount).toFixed(6), symbol], ' ');
   }
 
-  return _query;
+  return cQuery;
 };
 
 const validate = async (query, errors) => {
