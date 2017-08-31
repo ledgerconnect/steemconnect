@@ -14,7 +14,6 @@ module.exports = {
     "max-len": ["error", 150],
     "no-func-assign": 0,
     "no-class-assign": 0,
-    "no-console": 0,
     "no-mixed-operators": ["error", {"allowSamePrecedence": true}],
     "react/jsx-filename-extension": 0,
     "react/prefer-stateless-function": [2, { "ignorePureComponents": true }],

@@ -4,7 +4,6 @@ import Icon from '../../widgets/Icon';
 export default class Sign extends Component {
 
   componentDidMount = () => {
-    console.log(this.props.result);
     const cb = this.props.cb;
     if (cb) {
       setTimeout(() => {

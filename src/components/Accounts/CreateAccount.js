@@ -44,7 +44,6 @@ export default class CreateAccount extends Component {
       (err) => {
         this.setState({ step: 0 });
         if (err) {
-          console.log(err);
           notification.error({
             message: 'Error',
             description: getErrorMessage(err) || 'Oops! Something goes wrong, open your console to see the error details.',

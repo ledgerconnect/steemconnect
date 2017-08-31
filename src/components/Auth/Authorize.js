@@ -30,7 +30,6 @@ export default class Authorize extends Component {
     const { auth } = props;
     if (auth.isAuthenticated && hasAuthority(auth.user, clientId)) {
       authorize({ clientId, scope }, (err, res) => {
-        console.log(err, res);
         window.location = `${redirectUri}?${qs.stringify(res)}`;
       });
     } else if (auth.isLoaded) {
@@ -41,12 +40,9 @@ export default class Authorize extends Component {
   authorize = (auth) => {
     const { clientId, redirectUri, scope } = this.state;
     this.setState({ step: 0 });
-    login({ ...auth }, (err, res) => {
-      console.log(err, res);
-      addPostingAuthority({ ...auth, clientId }, (errPa, resPa) => {
-        console.log(errPa, resPa);
+    login({ ...auth }, () => {
+      addPostingAuthority({ ...auth, clientId }, () => {
         authorize({ clientId, scope }, (errA, resA) => {
-          console.log(errA, resA);
           window.location = `${redirectUri}?${qs.stringify(resA)}`;
         });
       });

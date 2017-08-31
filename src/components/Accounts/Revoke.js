@@ -35,7 +35,6 @@ export default class Revoke extends Component {
           account[0] === username ? postingNew.account_auths.splice(idx, 1) : null
         )
       );
-      console.log(postingNew);
 
       steem.broadcast.accountUpdate(
         auth.wif,
@@ -46,8 +45,6 @@ export default class Revoke extends Component {
         memo_key,
         json_metadata,
         (errBc, resultBc) => {
-          console.log(errBc, resultBc);
-
           if (!errBc) {
             this.setState({ success: resultBc });
           } else {

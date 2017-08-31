@@ -68,7 +68,6 @@ export default class Sign extends Component {
       if (!err) {
         this.setState({ success: result });
       } else {
-        console.log(err);
         this.setState({ error: err });
       }
       this.setState({ step: 'result' });

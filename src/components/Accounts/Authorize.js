@@ -43,7 +43,6 @@ export default class Authorize extends Component {
           accounts[0].memo_key,
           accounts[0].json_metadata,
           (errBc, result) => {
-            console.log(errBc, result);
             if (!errBc) {
               this.setState({ success: result });
             } else {

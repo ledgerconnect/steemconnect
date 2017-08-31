@@ -86,7 +86,6 @@ class CreateApp extends React.Component {
             });
           } else {
             this.setState({ isLoading: false });
-            console.log(data.error);
             notification.error({
               message: 'Error',
               description: data.error || 'Oops! Something goes wrong, open your console to see the error details.',
@@ -95,7 +94,6 @@ class CreateApp extends React.Component {
         });
     }).catch((err) => {
       this.setState({ isLoading: false });
-      console.log(err);
       notification.error({
         message: 'Error',
         description: getErrorMessage(err) || 'Oops! Something goes wrong, open your console to see the error details.',

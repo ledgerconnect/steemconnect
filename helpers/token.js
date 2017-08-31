@@ -23,7 +23,7 @@ const issueAppToken = (proxy, user, scope = []) => {
       debug(`A token for user @${user} with ${proxy} as proxy has been saved on database.`);
     });
   } catch (error) {
-    console.log(error);
+    throw new Error(error);
   }
 
   return token;

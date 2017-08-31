@@ -28,7 +28,6 @@ class RecoverAccount extends React.Component {
     this.setState({ values, isLoading: true });
 
     const onError = (error) => {
-      console.log(error);
       notification.error({
         message: 'Error',
         description: getErrorMessage(error) || 'Oops! Something goes wrong, open your console to see the error details.',
