@@ -38,10 +38,6 @@
     min-height: 460px;
   }
 
-  @media (min-width: @from-small) and (max-width: @to-medium){
-    min-height: 660px;
-  }
-
   #menu {
     display: flex;
     justify-content: space-between;
@@ -149,7 +145,7 @@
 
   #macbook-img {
     position: absolute;
-    bottom: -190px;
+    bottom: -240px;
     width: 100%;
     max-width: 800px;
     z-index: 1;
@@ -158,8 +154,9 @@
     @media (max-width: @to-small) {
       display: none;
     }
+
     @media (min-width: @from-small) and (max-width: @to-laptop){
-      top: 460px;
+      top: 540px;
     }
   }
 
