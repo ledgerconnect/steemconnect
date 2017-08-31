@@ -11,7 +11,6 @@ module.exports = {
   "extends": "airbnb",
   "rules": {
     "react/jsx-filename-extension": 0,
-    "react/prefer-stateless-function": [2, { "ignorePureComponents": true }],
     "react/require-extension": "off",
     "react/prop-types": 0,
   },

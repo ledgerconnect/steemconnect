@@ -1,9 +1,11 @@
+/* eslint-disable react/prefer-stateless-function */
 import React, { PureComponent } from 'react';
 import { Layout } from 'antd';
 import Header from './widgets/Header';
 
 export default class App extends PureComponent {
   render() {
+    const { children, auth } = this.props;
     return (
       <Layout>
         <Layout.Header style={{ borderBottom: '1px solid #E9E7E7' }}>
@@ -11,8 +13,8 @@ export default class App extends PureComponent {
         </Layout.Header>
         <Layout.Content>
           {React.cloneElement(
-            this.props.children,
-            { auth: this.props.auth }
+            children,
+            { auth }
           )}
         </Layout.Content>
       </Layout>
