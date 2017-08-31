@@ -41,7 +41,12 @@ class RecoverAccount extends React.Component {
       });
     };
 
-    await this.recoverAccount(values.account_to_recover, values.old_password, values.new_password, onError, onSuccess);
+    await this.recoverAccount(
+      values.account_to_recover,
+      values.old_password,
+      values.new_password,
+      onError,
+      onSuccess);
     this.setState({ isLoading: false });
   };
 
@@ -54,7 +59,8 @@ class RecoverAccount extends React.Component {
 
     const newOwnerPrivate = steem.auth.toWif(accountToRecover, newPassword.trim(), 'owner');
     const newOwner = steem.auth.wifToPublic(newOwnerPrivate);
-    const pwPubkey = (name, pw, role) => steem.auth.wifToPublic(steem.auth.toWif(name, pw.trim(), role));
+    const pwPubkey = (name, pw, role) =>
+      steem.auth.wifToPublic(steem.auth.toWif(name, pw.trim(), role));
     const newActive = pwPubkey(accountToRecover, newPassword.trim(), 'active');
     const newPosting = pwPubkey(accountToRecover, newPassword.trim(), 'posting');
     const newMemo = pwPubkey(accountToRecover, newPassword.trim(), 'memo');

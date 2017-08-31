@@ -65,7 +65,8 @@ const Steemjs = () =>
     <p>
         This documentation is generated from Steem.js v{pkg.version} <a href="https://github.com/steemit/steem-js">source code</a>.
         It include every <a href="#api">API methods</a> and every <a href="#broadcast">operations</a>.
-        You can click on "Try it" link and change default values with appropriate parameters to test them.
+        You can click on "Try it" link and change default values
+        with appropriate parameters to test them.
       </p>
     <h2><a href="#api" name="api">API</a></h2>
     {methods.map((method, key) =>

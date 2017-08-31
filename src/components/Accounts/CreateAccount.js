@@ -28,7 +28,11 @@ export default class CreateAccount extends Component {
     const publicKeys = steem.auth.generateKeys(account.name, account.password, ['owner', 'active', 'posting', 'memo']);
     const owner = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.owner, 1]] };
     const active = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.active, 1]] };
-    const posting = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.posting, 1]] }; // eslint-disable-next-line max-len
+    const posting = {
+      weight_threshold: 1,
+      account_auths: [],
+      key_auths: [[publicKeys.posting, 1]],
+    };
     steem.broadcast.accountCreateWithDelegation(
       auth.wif,
       account.steem,

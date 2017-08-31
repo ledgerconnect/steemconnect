@@ -64,7 +64,11 @@ export default class Revoke extends Component {
           {step === 0 &&
             <div>
               <h2>Revoke</h2>
-              <p>Do you want to revoke the Steem account <b>@{ username }</b> to use your <b>posting</b> role?</p>
+              <p>
+                Do you want to revoke the Steem account
+                <b>@{ username }</b>
+                to use your <b>posting</b> role?
+              </p>
               <div className="form-group my-4">
                 <button type="submit" onClick={() => this.setState({ step: 1 })} className="btn btn-success">Continue</button>
               </div>
@@ -72,7 +76,8 @@ export default class Revoke extends Component {
           }
           {step === 1 && <SignForm roles={['owner', 'active']} sign={this.revoke} />}
           {step === 2 && <Loading />}
-          {step === 3 && success && <SignSuccess result={success} cb={this.props.location.query.cb} />}
+          {step === 3 && success &&
+            <SignSuccess result={success} cb={this.props.location.query.cb} />}
           {step === 3 && error && <SignError error={error} resetForm={this.resetForm} />}
         </div>
       </div>

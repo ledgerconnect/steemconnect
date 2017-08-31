@@ -19,7 +19,10 @@ export default class SignPlaceholderVestingShares extends Component {
     if (query.vesting_shares && query.vesting_shares.includes('VESTS')) {
       vestingSharesDisplay = _.join(
         [
-          formatter.vestToSteem(query.vesting_shares, globalProps.total_vesting_shares, globalProps.total_vesting_fund_steem).toFixed(3),
+          formatter.vestToSteem(
+            query.vesting_shares,
+            globalProps.total_vesting_shares,
+            globalProps.total_vesting_fund_steem).toFixed(3),
           'SP',
         ], ' ');
     } else if (query.vesting_shares) {

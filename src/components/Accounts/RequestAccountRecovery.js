@@ -47,32 +47,43 @@ class RecoverAccount extends React.Component {
       });
     };
 
-    await this.requestAccountRecovery(auth.wif, values.recovery_account, values.account_to_recover, values.new_password, onError, onSuccess);
+    await this.requestAccountRecovery(
+      auth.wif,
+      values.recovery_account,
+      values.account_to_recover,
+      values.new_password,
+      onError,
+      onSuccess);
     this.setState({ step: 0, isLoading: false });
   };
 
-  requestAccountRecovery = async (creatorOwnerPrivate, recoveryAccount, accountToRecover, newPassword, onError, onSuccess) => {
-    const newOwnerPrivate = steem.auth.toWif(accountToRecover, newPassword.trim(), 'owner');
-    const newOwner = steem.auth.wifToPublic(newOwnerPrivate);
-    const newOwnerAuthority = {
-      weight_threshold: 1,
-      account_auths: [],
-      key_auths: [[newOwner, 1]],
-    };
+  requestAccountRecovery =
+    async (creatorOwnerPrivate,
+           recoveryAccount,
+           accountToRecover,
+           newPassword, onError,
+           onSuccess) => {
+      const newOwnerPrivate = steem.auth.toWif(accountToRecover, newPassword.trim(), 'owner');
+      const newOwner = steem.auth.wifToPublic(newOwnerPrivate);
+      const newOwnerAuthority = {
+        weight_threshold: 1,
+        account_auths: [],
+        key_auths: [[newOwner, 1]],
+      };
 
-    try {
-      await steem.broadcast.requestAccountRecoveryAsync(
-        creatorOwnerPrivate,
-        recoveryAccount,
-        accountToRecover,
-        newOwnerAuthority,
-        []
-      );
-      onSuccess();
-    } catch (error) {
-      onError(error);
-    }
-  };
+      try {
+        await steem.broadcast.requestAccountRecoveryAsync(
+          creatorOwnerPrivate,
+          recoveryAccount,
+          accountToRecover,
+          newOwnerAuthority,
+          []
+        );
+        onSuccess();
+      } catch (error) {
+        onError(error);
+      }
+    };
 
   render() {
     const { step, fields, isLoading } = this.state;

@@ -19,7 +19,11 @@ const parse = (query) => {
       || changeCase.paramCase(diacritics.remove(cQuery.title)).slice(0, 255);
   }
   let jsonMetadata = {};
-  try { jsonMetadata = JSON.parse(decodeURIComponent(cQuery.json_metadata)); } catch (e) { jsonMetadata = {}; }
+  try {
+    jsonMetadata = JSON.parse(decodeURIComponent(cQuery.json_metadata));
+  } catch (e) {
+    jsonMetadata = {};
+  }
   cQuery.json_metadata = jsonMetadata;
   return cQuery;
 };

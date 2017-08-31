@@ -7,7 +7,8 @@ const parse = (query) => {
     id: 'follow',
     json: JSON.stringify([
       'follow', {
-        follower: query.follower ? normalizeUsername(query.follower) : query.required_posting_auths[0],
+        follower:
+          query.follower ? normalizeUsername(query.follower) : query.required_posting_auths[0],
         following: normalizeUsername(query.following),
         what: query.what ? JSON.parse(query.what) : [],
       },
