@@ -27,7 +27,7 @@ export default class Authorize extends Component {
     steem.api.getAccounts([auth.username], (err, accounts) => {
       if (!hasAuthority(accounts[0], username, role)) {
         const updatedAuthority = accounts[0][role];
-        updatedAuthority.account_auths.push([username, parseInt(weight)]);
+        updatedAuthority.account_auths.push([username, parseInt(weight, 10)]);
 
         const owner = role === 'owner' ? updatedAuthority : undefined;
         const active = role === 'active' ? updatedAuthority : undefined;

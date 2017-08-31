@@ -41,7 +41,7 @@ const userExists = async (username) => {
 
 const contentExists = async (auhtor, permlink) => {
   const content = await steem.api.getContent(auhtor, permlink);
-  return parseInt(content.id) !== 0;
+  return parseInt(content.id, 10) !== 0;
 };
 
 module.exports = {

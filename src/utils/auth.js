@@ -24,7 +24,7 @@ export const addPostingAuthority = ({ username, wif, clientId }, cb) => {
     const { posting, memo_key, json_metadata } = result[0];
     const postingNew = posting;
     if (!hasAuthority(result[0], clientId)) {
-      postingNew.account_auths.push([clientId, parseInt(posting.weight_threshold)]);
+      postingNew.account_auths.push([clientId, parseInt(posting.weight_threshold, 10)]);
       steem.broadcast.accountUpdate(
         wif,
         username,

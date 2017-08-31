@@ -57,7 +57,7 @@ export default class Sign extends Component {
       if (isNaN(parsedQuery[key]) || parsedQuery[key] === '') {
         params[key] = parsedQuery[key];
       } else {
-        params[key] = parseInt(parsedQuery[key]);
+        params[key] = parseInt(parsedQuery[key], 10);
       }
     });
 

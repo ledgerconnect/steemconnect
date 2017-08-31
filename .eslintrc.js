@@ -16,7 +16,6 @@ module.exports = {
     "no-class-assign": 0,
     "no-console": 0,
     "no-mixed-operators": ["error", {"allowSamePrecedence": true}],
-    "radix": ["error", "as-needed"],
     "react/jsx-filename-extension": 0,
     "react/prefer-stateless-function": [2, { "ignorePureComponents": true }],
     "react/require-extension": "off",
