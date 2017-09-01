@@ -61,7 +61,8 @@ class RecoverAccount extends React.Component {
     async (creatorOwnerPrivate,
            recoveryAccount,
            accountToRecover,
-           newPassword, onError,
+           newPassword,
+           onError,
            onSuccess) => {
       const newOwnerPrivate = steem.auth.toWif(accountToRecover, newPassword.trim(), 'owner');
       const newOwner = steem.auth.wifToPublic(newOwnerPrivate);
