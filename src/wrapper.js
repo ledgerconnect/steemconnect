@@ -9,6 +9,7 @@ import './styles/common.less';
 @connect(
   state => ({
     auth: state.auth,
+    locale: state.appLocale.locale,
   }),
   dispatch => bindActionCreators({
     authenticate,
@@ -21,6 +22,7 @@ export default class Wrapper extends Component {
     // eslint-disable-next-line react/forbid-prop-types
     auth: PropTypes.object,
     authenticate: PropTypes.func,
+    locale: PropTypes.string,
   }
 
   componentWillMount() {
@@ -28,8 +30,9 @@ export default class Wrapper extends Component {
   }
 
   render() {
+    const { locale } = this.props;
     return (
-      <IntlProvider locale="en" messages={locales.en}>
+      <IntlProvider locale={locale} messages={locales[locale]}>
         {React.cloneElement(
           this.props.children,
           { auth: this.props.auth }

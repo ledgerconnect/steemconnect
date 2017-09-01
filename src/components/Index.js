@@ -1,9 +1,36 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { Form, Input, Button } from 'antd';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { Form, Input, Button, Popover } from 'antd';
+import * as actions from '../actions/appLocale';
 import './Index.less';
 
+const LanguageItem = ({ setLocale, locale }) => (
+  <li>
+    <button onClick={() => setLocale(locale)}>
+      <FormattedMessage id={locale} />
+    </button>
+  </li>
+);
+LanguageItem.propTypes = {
+  setLocale: PropTypes.func,
+  locale: PropTypes.string,
+};
+
+@connect(
+  state => ({
+    locale: state.appLocale.locale,
+  }),
+  dispatch =>
+    bindActionCreators(
+      {
+        setLocale: actions.setLocale,
+      },
+      dispatch,
+    ),
+)
 class Index extends React.Component {
   static propTypes = {
     form: PropTypes.shape({
@@ -13,6 +40,7 @@ class Index extends React.Component {
     intl: PropTypes.shape({
       formatMessage: PropTypes.func,
     }),
+    setLocale: PropTypes.func,
   }
 
   constructor(props) {
@@ -31,7 +59,7 @@ class Index extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { form: { getFieldDecorator }, setLocale, locale } = this.props;
     return (
       <div>
         <div id="header">
@@ -43,10 +71,20 @@ class Index extends React.Component {
                 <object data="img/logo-white.svg" type="image/svg+xml" />
               </div>
               <div className="menu-item">
-                <a href="https://steemit.com/@steemconnect" target="_blank" rel="noreferrer noopener" className="follow-us">
-                  <span><FormattedMessage id="lp_follow_us" /></span>
-                  <object fill="#ffffff" data="img/steem.svg" type="image/svg+xml" />
-                </a>
+                <Popover
+                  placement="bottom"
+                  content={
+                    <ul className="lp-language-select">
+                      <LanguageItem locale="en" setLocale={setLocale} />
+                      <LanguageItem locale="fr" setLocale={setLocale} />
+                      <LanguageItem locale="ko" setLocale={setLocale} />
+                      <LanguageItem locale="zh" setLocale={setLocale} />
+                    </ul>
+                  }
+                  trigger="click"
+                >
+                  <Button><FormattedMessage id={locale} /></Button>
+                </Popover>
               </div>
             </div>
             <div className="hero">
@@ -173,11 +211,7 @@ class Index extends React.Component {
 
         <div className="lp-container footer-menu">
           <ul>
-            <li><Link to="/"><FormattedMessage id="about_us" /></Link></li>
-            <li className="separator">|</li>
-            <li><Link to="/"><FormattedMessage id="terms" /></Link></li>
-            <li className="separator">|</li>
-            <li><Link to="/"><FormattedMessage id="privacy" /></Link></li>
+            <li><FormattedMessage id="lp_footer" /></li>
           </ul>
         </div>
       </div>
