@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -35,12 +34,12 @@ class Index extends React.Component {
   static propTypes = {
     form: PropTypes.shape({
       validateFieldsAndScroll: PropTypes.func,
-      getFieldDecorator: PropTypes.func,
     }),
     intl: PropTypes.shape({
       formatMessage: PropTypes.func,
     }),
     setLocale: PropTypes.func,
+    locale: PropTypes.func,
   }
 
   constructor(props) {
