@@ -1,10 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import fetch from 'isomorphic-fetch';
 import { decode } from 'steem/lib/auth/memo';
 import SignForm from '../Form/Sign';
 import Loading from '../../widgets/Loading';
 
 export default class Login extends Component {
+  static propTypes = {
+    location: PropTypes.shape({
+      query: PropTypes.shape({
+        next: PropTypes.string,
+      }),
+    }),
+  }
+
   constructor(props) {
     super(props);
     this.state = {

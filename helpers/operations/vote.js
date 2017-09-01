@@ -4,9 +4,9 @@ const { contentExists } = require('../validation-utils');
 const optionalFields = ['weight'];
 
 const parse = (query) => {
-  const _query = _.cloneDeep(query);
-  _query.weight = _query.weight || 10000;
-  return _query;
+  const cQuery = _.cloneDeep(query);
+  cQuery.weight = cQuery.weight || 10000;
+  return cQuery;
 };
 
 const validate = async (query, errors) => {

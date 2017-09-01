@@ -21,7 +21,7 @@ export const authenticate = () =>
     if (token) {
       fetch('/api/me', {
         method: 'POST',
-        headers: new Headers({ Authorization: token })
+        headers: new Headers({ Authorization: token }),
       })
         .then(res => res.json())
         .then((data) => {

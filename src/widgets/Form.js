@@ -1,7 +1,11 @@
-import { Component } from 'react';
+import { Component, PropTypes } from 'react';
 import * as validator from '../utils/validator';
 
 export default class Form extends Component {
+  static propTypes = {
+    submit: PropTypes.func,
+  }
+
   constructor(props) {
     super(props);
     this.state = {

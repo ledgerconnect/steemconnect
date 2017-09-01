@@ -4,14 +4,14 @@ const { isAsset, isEmpty, userExists, normalizeUsername } = require('../validati
 const optionalFields = ['memo'];
 
 const parse = (query) => {
-  const _query = _.cloneDeep(query);
-  const [amount, symbol] = _query.amount.split(' ');
+  const cQuery = _.cloneDeep(query);
+  const [amount, symbol] = cQuery.amount.split(' ');
 
-  _query.to = normalizeUsername(_query.to);
-  _query.amount = _.join([parseFloat(amount).toFixed(3), symbol], ' ');
-  _query.memo = _query.memo || '';
+  cQuery.to = normalizeUsername(cQuery.to);
+  cQuery.amount = _.join([parseFloat(amount).toFixed(3), symbol], ' ');
+  cQuery.memo = cQuery.memo || '';
 
-  return _query;
+  return cQuery;
 };
 
 const validate = async (query, errors) => {
@@ -35,5 +35,5 @@ const validate = async (query, errors) => {
 module.exports = {
   optionalFields,
   parse,
-  validate
+  validate,
 };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import Icon from '../../widgets/Icon';
 
 const SignValidationErrors = ({ errors }) =>
@@ -15,5 +15,9 @@ const SignValidationErrors = ({ errors }) =>
       </tbody>
     </table>
   </div>;
+
+SignValidationErrors.propTypes = {
+  errors: PropTypes.arrayOf(PropTypes.string),
+};
 
 export default SignValidationErrors;

@@ -28,7 +28,6 @@ class RecoverAccount extends React.Component {
     this.setState({ values, isLoading: true });
 
     const onError = (error) => {
-      console.log(error);
       notification.error({
         message: 'Error',
         description: getErrorMessage(error) || 'Oops! Something goes wrong, open your console to see the error details.',
@@ -42,7 +41,12 @@ class RecoverAccount extends React.Component {
       });
     };
 
-    await this.recoverAccount(values.account_to_recover, values.old_password, values.new_password, onError, onSuccess);
+    await this.recoverAccount(
+      values.account_to_recover,
+      values.old_password,
+      values.new_password,
+      onError,
+      onSuccess);
     this.setState({ isLoading: false });
   };
 
@@ -55,7 +59,8 @@ class RecoverAccount extends React.Component {
 
     const newOwnerPrivate = steem.auth.toWif(accountToRecover, newPassword.trim(), 'owner');
     const newOwner = steem.auth.wifToPublic(newOwnerPrivate);
-    const pwPubkey = (name, pw, role) => steem.auth.wifToPublic(steem.auth.toWif(name, pw.trim(), role));
+    const pwPubkey = (name, pw, role) =>
+      steem.auth.wifToPublic(steem.auth.toWif(name, pw.trim(), role));
     const newActive = pwPubkey(accountToRecover, newPassword.trim(), 'active');
     const newPosting = pwPubkey(accountToRecover, newPassword.trim(), 'posting');
     const newMemo = pwPubkey(accountToRecover, newPassword.trim(), 'memo');
@@ -63,13 +68,13 @@ class RecoverAccount extends React.Component {
     const newOwnerAuthority = {
       weight_threshold: 1,
       account_auths: [],
-      key_auths: [[newOwner, 1]]
+      key_auths: [[newOwner, 1]],
     };
 
     const recentOwnerAuthority = {
       weight_threshold: 1,
       account_auths: [],
-      key_auths: [[oldOwner, 1]]
+      key_auths: [[oldOwner, 1]],
     };
 
     try {
@@ -79,7 +84,7 @@ class RecoverAccount extends React.Component {
             account_to_recover: accountToRecover,
             new_owner_authority: newOwnerAuthority,
             recent_owner_authority: recentOwnerAuthority,
-          }]
+          }],
         ] }, [oldOwnerPrivate, newOwnerPrivate]);
 
       // change password
@@ -92,7 +97,7 @@ class RecoverAccount extends React.Component {
             posting: { weight_threshold: 1, account_auths: [], key_auths: [[newPosting, 1]] },
             memo_key: newMemo,
             json_metadata: '',
-          }]
+          }],
         ] }, [newOwnerPrivate]);
       onSuccess();
     } catch (error) {

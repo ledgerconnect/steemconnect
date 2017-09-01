@@ -1,20 +1,20 @@
 const { contentExists, normalizeUsername } = require('../validation-utils');
 
 const parse = (query) => {
-  const _query = {
+  const cQuery = {
     id: 'follow',
     json: JSON.stringify([
       'reblog', {
         account: query.required_posting_auths[0],
         author: normalizeUsername(query.author),
         permlink: query.permlink,
-      }
+      },
     ]),
     required_auths: [],
-    required_posting_auths: query.required_posting_auths
+    required_posting_auths: query.required_posting_auths,
   };
 
-  return _query;
+  return cQuery;
 };
 
 const validate = async (query, errors) => {

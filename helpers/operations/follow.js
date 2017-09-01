@@ -3,20 +3,21 @@ const { userExists, isEmpty, normalizeUsername } = require('../validation-utils'
 const optionalFields = ['follower'];
 
 const parse = (query) => {
-  const _query = {
+  const cQuery = {
     id: 'follow',
     json: JSON.stringify([
       'follow', {
-        follower: query.follower ? normalizeUsername(query.follower) : query.required_posting_auths[0],
+        follower:
+          query.follower ? normalizeUsername(query.follower) : query.required_posting_auths[0],
         following: normalizeUsername(query.following),
-        what: query.what ? JSON.parse(query.what) : ['blog']
-      }
+        what: query.what ? JSON.parse(query.what) : ['blog'],
+      },
     ]),
     required_auths: [],
-    required_posting_auths: query.required_posting_auths
+    required_posting_auths: query.required_posting_auths,
   };
 
-  return _query;
+  return cQuery;
 };
 
 const validate = async (query, errors) => {
@@ -32,5 +33,5 @@ const validate = async (query, errors) => {
 module.exports = {
   optionalFields,
   parse,
-  validate
+  validate,
 };

@@ -10,20 +10,8 @@ module.exports = {
   },
   "extends": "airbnb",
   "rules": {
-    "jsx-a11y/href-no-hash": 0,
-    "max-len": ["error", 150],
-    "no-func-assign": 0,
-    "no-class-assign": 0,
-    "no-console": 0,
-    "no-mixed-operators": ["error", {"allowSamePrecedence": true}],
-    "radix": ["error", "as-needed"],
     "react/jsx-filename-extension": 0,
-    "react/prefer-stateless-function": [2, { "ignorePureComponents": true }],
     "react/require-extension": "off",
-    "react/sort-comp": 0,
-    "react/prop-types": 0,
-    "no-underscore-dangle": 0,
-    "comma-dangle": 0
   },
   "plugins": [
     "react",

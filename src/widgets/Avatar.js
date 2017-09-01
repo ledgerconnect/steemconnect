@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import './Avatar.less';
 
 const Avatar = ({
@@ -23,6 +23,13 @@ const Avatar = ({
       <img src={src} alt="avatar" />
     </span>
   );
+};
+
+Avatar.propTypes = {
+  username: PropTypes.string,
+  icon: PropTypes.string,
+  size: PropTypes.string,
+  className: PropTypes.string,
 };
 
 export default Avatar;
