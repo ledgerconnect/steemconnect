@@ -7,28 +7,17 @@ import './Index.less';
 class Index extends React.Component {
   static propTypes = {
     form: PropTypes.shape({
-      validateFieldsAndScroll: PropTypes.func,
       getFieldDecorator: PropTypes.func,
     }),
     intl: PropTypes.shape({
       formatMessage: PropTypes.func,
     }),
-  }
+  };
 
   constructor(props) {
     super(props);
-    this.state = {
-      submitting: false,
-    };
+    this.state = {};
   }
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.setState({ submitting: true });
-    this.props.form.validateFieldsAndScroll(() => {
-      this.setState({ submitting: false });
-    });
-  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -75,7 +64,7 @@ class Index extends React.Component {
                     )}
                   </Form.Item>
                   <Form.Item>
-                    <Button type="primary" name="subscribe" htmlType="submit" loading={this.state.submitting} className="lp-link">
+                    <Button type="primary" name="subscribe" htmlType="submit" className="lp-link">
                       <FormattedMessage id="signup" />
                     </Button>
                   </Form.Item>
