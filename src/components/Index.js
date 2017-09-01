@@ -32,16 +32,14 @@ LanguageItem.propTypes = {
 )
 class Index extends React.Component {
   static propTypes = {
-    form: PropTypes.shape({
-      validateFieldsAndScroll: PropTypes.func,
-    }),
+    form: PropTypes.shape(),
     intl: PropTypes.shape({
       formatMessage: PropTypes.func,
     }),
     setLocale: PropTypes.func,
     locale: PropTypes.func,
   }
-  
+
   constructor(props) {
     super(props);
     this.state = {};
