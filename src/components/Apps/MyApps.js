@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import fetch from 'isomorphic-fetch';
 import Icon from '../../widgets/Icon';
@@ -6,6 +6,12 @@ import Loading from '../../widgets/Loading';
 import AppPreview from './AppPreview';
 
 export default class MyApps extends Component {
+  static propTypes = {
+    auth: PropTypes.shape({
+      token: PropTypes.string,
+    }),
+  }
+
   constructor(props) {
     super(props);
     this.state = {

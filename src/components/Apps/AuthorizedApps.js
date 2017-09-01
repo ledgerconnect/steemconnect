@@ -1,9 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import numeral from 'numeral';
 import Loading from '../../widgets/Loading';
 
 export default class AuthorizedApps extends Component {
+  static propTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
+    auth: PropTypes.object,
+  }
+
   constructor(props) {
     super(props);
     this.state = {

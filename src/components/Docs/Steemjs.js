@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import changeCase from 'change-case';
 import pkg from 'steem/package.json';
 import methods from 'steem/lib/api/methods';
@@ -31,6 +31,11 @@ const Method = ({ method }) => {
   );
 };
 
+Method.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  method: PropTypes.object,
+};
+
 const Operation = ({ operation }) => {
   const inlineParams = operation.params
     ? `${operation.params.map(param => changeCase.camelCase(param)).join(', ')}, `
@@ -57,6 +62,11 @@ const Operation = ({ operation }) => {
       </pre>
     </div>
   );
+};
+
+Operation.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  operation: PropTypes.object,
 };
 
 const Steemjs = () =>

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import steem from 'steem';
 import SignForm from '../Form/Sign';
 import SignSuccess from '../Sign/Success';
@@ -6,6 +6,17 @@ import SignError from '../Sign/Error';
 import Loading from '../../widgets/Loading';
 
 export default class Revoke extends Component {
+  static propTypes = {
+    params: PropTypes.shape({
+      username: PropTypes.string,
+    }),
+    location: PropTypes.shape({
+      query: PropTypes.shape({
+        cb: PropTypes.func,
+      }),
+    }),
+  }
+
   constructor(props) {
     super(props);
     this.state = {

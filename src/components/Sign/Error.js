@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { getErrorMessage } from '../../../helpers/operation';
 import Icon from '../../widgets/Icon';
 
@@ -9,5 +9,11 @@ const SignError = ({ error, resetForm }) =>
     <p><b>{ getErrorMessage(error) }</b></p>
     <p>Do you want to <button className="button-link" onClick={() => resetForm()}>try again</button>?</p>
   </div>;
+
+SignError.propTypes = {
+  resetForm: PropTypes.func,
+  // eslint-disable-next-line react/forbid-prop-types
+  error: PropTypes.object,
+};
 
 export default SignError;

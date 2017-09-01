@@ -1,7 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Icon from '../../widgets/Icon';
 
 export default class Sign extends Component {
+  static propTypes = {
+    cb: PropTypes.func,
+  }
 
   componentDidMount = () => {
     const cb = this.props.cb;

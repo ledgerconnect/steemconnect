@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import qs from 'query-string';
@@ -12,6 +12,18 @@ import SignForm from '../Form/Sign';
   }, dispatch)
 )
 export default class Authorize extends Component {
+  static propTypes = {
+    location: PropTypes.shape({
+      query: PropTypes.shape({
+        client_id: PropTypes.string,
+        scope: PropTypes.string,
+        redirect_uri: PropTypes.string,
+      }),
+    }),
+    // eslint-disable-next-line react/forbid-prop-types
+    auth: PropTypes.object,
+  }
+
   constructor(props) {
     super(props);
     const clientId = this.props.location.query.client_id;

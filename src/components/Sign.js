@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import steem from 'steem';
 import changeCase from 'change-case';
 import SignForm from './Form/Sign';
@@ -13,8 +13,16 @@ import Loading from '../widgets/Loading';
 import './Sign.less';
 
 export default class Sign extends Component {
+  static propTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
+    location: PropTypes.object,
+    // eslint-disable-next-line react/forbid-prop-types
+    params: PropTypes.object,
+  }
+
   constructor(props) {
     super(props);
+
     this.state = {
       type: this.props.params.type,
       query: this.props.location.query,
@@ -23,7 +31,6 @@ export default class Sign extends Component {
       error: false,
     };
   }
-
   async componentWillMount() {
     const { type, query } = this.state;
     const validationErrors = await validate(type, query);

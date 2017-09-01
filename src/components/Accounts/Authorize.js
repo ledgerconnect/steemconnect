@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import steem from 'steem';
 import SignForm from '../Form/Sign';
 import SignSuccess from '../Sign/Success';
@@ -7,6 +7,15 @@ import Loading from '../../widgets/Loading';
 import { hasAuthority } from '../../utils/auth';
 
 export default class Authorize extends Component {
+  static propTypes = {
+    params: PropTypes.shape({
+      username: PropTypes.string,
+      role: PropTypes.string,
+    }),
+    // eslint-disable-next-line react/forbid-prop-types
+    location: PropTypes.object,
+  }
+
   constructor(props) {
     super(props);
     this.state = {

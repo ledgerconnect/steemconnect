@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import fetch from 'isomorphic-fetch';
 import steem from 'steem';
 import { notification, Modal } from 'antd';
@@ -12,6 +12,11 @@ import Loading from '../../widgets/Loading';
 import { sleep } from '../../../helpers/utils';
 
 class CreateApp extends React.Component {
+  static propTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
+    auth: PropTypes.object,
+  }
+
   state = {
     visible: false,
     isLoading: false,

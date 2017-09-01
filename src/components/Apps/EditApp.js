@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import fetch from 'isomorphic-fetch';
 import { notification } from 'antd';
 import AppForm from './AppForm';
@@ -6,6 +6,15 @@ import Loading from '../../widgets/Loading';
 import Avatar from '../../widgets/Avatar';
 
 export default class EditApp extends Component {
+  static propTypes = {
+    params: PropTypes.shape({
+      clientId: PropTypes.string,
+    }),
+    auth: PropTypes.shape({
+      token: PropTypes.string,
+    }),
+  }
+
   constructor(props) {
     super(props);
     this.state = {
