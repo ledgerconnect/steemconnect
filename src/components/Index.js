@@ -174,7 +174,7 @@ class Index extends React.Component {
               <p><FormattedMessage id="lp_subscribe_description" /></p>
             </div>
             <div>
-              <a href="http://eepurl.com/c1PtNX" target="_blank" className="lp-link">
+              <a href="http://eepurl.com/c1PtNX" rel="noopener noreferrer" target="_blank" className="lp-link">
                 <FormattedMessage id="lp_subscribe_button" />
               </a>
             </div>
