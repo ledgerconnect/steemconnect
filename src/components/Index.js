@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Form, Input, Button, Popover } from 'antd';
+import { Form, Input, Button, Popover, Icon } from 'antd';
 import * as actions from '../actions/appLocale';
 import './Index.less';
 
@@ -70,7 +70,7 @@ class Index extends React.Component {
                   }
                   trigger="click"
                 >
-                  <Button><FormattedMessage id={locale} /></Button>
+                  <Button><FormattedMessage id={locale} /><Icon type="down" /></Button>
                 </Popover>
               </div>
             </div>
