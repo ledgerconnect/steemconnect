@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { Form, Input, Button } from 'antd';
 import './Index.less';
 
 class Index extends React.Component {
+  static propTypes = {
+    form: PropTypes.shape({
+      validateFieldsAndScroll: PropTypes.func,
+      getFieldDecorator: PropTypes.func,
+    }),
+    intl: PropTypes.shape({
+      formatMessage: PropTypes.func,
+    }),
+  }
+
   constructor(props) {
     super(props);
     this.state = {
