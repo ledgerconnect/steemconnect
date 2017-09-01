@@ -1,7 +1,7 @@
 import * as types from '../actions/appLocale';
 
 const initialState = {
-  locale: 'en',
+  locale: 'auto',
 };
 
 export default (state = initialState, action) => {

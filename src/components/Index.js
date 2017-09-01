@@ -37,7 +37,7 @@ class Index extends React.Component {
       formatMessage: PropTypes.func,
     }),
     setLocale: PropTypes.func,
-    locale: PropTypes.func,
+    locale: PropTypes.string,
   }
 
   constructor(props) {
