@@ -4,12 +4,13 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Form, Input, Button, Popover, Icon } from 'antd';
 import * as actions from '../actions/appLocale';
+import locales from '../../helpers/locales.json';
 import './Index.less';
 
 const LanguageItem = ({ setLocale, locale }) => (
   <li>
     <button onClick={() => setLocale(locale)}>
-      <FormattedMessage id={locale} />
+      {locales[locale]}
     </button>
   </li>
 );
@@ -38,7 +39,7 @@ class Index extends React.Component {
     }),
     setLocale: PropTypes.func,
     locale: PropTypes.string,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -70,7 +71,7 @@ class Index extends React.Component {
                   }
                   trigger="click"
                 >
-                  <Button><FormattedMessage id={locale} /><Icon type="down" /></Button>
+                  <Button>{locales[locale]}<Icon type="down" /></Button>
                 </Popover>
               </div>
             </div>
