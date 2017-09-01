@@ -7,28 +7,17 @@ import './Index.less';
 class Index extends React.Component {
   static propTypes = {
     form: PropTypes.shape({
-      validateFieldsAndScroll: PropTypes.func,
       getFieldDecorator: PropTypes.func,
     }),
     intl: PropTypes.shape({
       formatMessage: PropTypes.func,
     }),
-  }
+  };
 
   constructor(props) {
     super(props);
-    this.state = {
-      submitting: false,
-    };
+    this.state = {};
   }
-
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.setState({ submitting: true });
-    this.props.form.validateFieldsAndScroll(() => {
-      this.setState({ submitting: false });
-    });
-  };
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -53,19 +42,29 @@ class Index extends React.Component {
               <h1 className="title"><FormattedMessage id="lp_hero_title" /></h1>
               <h2 className="sub-title"><FormattedMessage id="lp_hero_description" /></h2>
               <div className="newsletter">
-                <Form onSubmit={this.handleSubmit} layout="inline">
+                <Form
+                  onSubmit={() => {}}
+                  action="//busy.us14.list-manage.com/subscribe/post?u=c8daffe293678b527521abf65&amp;id=0a6cefe541"
+                  method="post"
+                  name="mc-embedded-subscribe-form"
+                  target="_blank"
+                  className="ant-form ant-form-inline"
+                  layout="inline"
+                >
                   <Form.Item hasFeedback>
+                    <input type="hidden" name="b_c8daffe293678b527521abf65_0a6cefe541" />
                     {getFieldDecorator('email', {
                       rules: [
                         { type: 'email', message: this.props.intl.formatMessage({ id: 'error_invalid_email' }) },
                         { required: true, message: this.props.intl.formatMessage({ id: 'error_empty_email' }) },
                       ],
+                      className: 'hero_form_item',
                     })(
-                      <Input placeholder={this.props.intl.formatMessage({ id: 'email_address' })} />
+                      <Input name="EMAIL" placeholder={this.props.intl.formatMessage({ id: 'email_address' })} />
                     )}
                   </Form.Item>
                   <Form.Item>
-                    <Button type="primary" htmlType="submit" loading={this.state.submitting} className="lp-link">
+                    <Button type="primary" name="subscribe" htmlType="submit" className="lp-link">
                       <FormattedMessage id="signup" />
                     </Button>
                   </Form.Item>
@@ -164,7 +163,7 @@ class Index extends React.Component {
               <p><FormattedMessage id="lp_subscribe_description" /></p>
             </div>
             <div>
-              <a href="/" className="lp-link">
+              <a href="http://eepurl.com/c1PtNX" rel="noopener noreferrer" target="_blank" className="lp-link">
                 <FormattedMessage id="lp_subscribe_button" />
               </a>
             </div>
