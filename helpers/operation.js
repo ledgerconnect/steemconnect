@@ -30,14 +30,14 @@ const isOperationAuthor = (operation, query, username) => {
 };
 
 const setDefaultAuthor = (operation, query, username) => {
-  const _query = _.cloneDeep(query);
+  const cQuery = _.cloneDeep(query);
 
   if (Object.prototype.hasOwnProperty.call(operationAuthor, operation)) {
     const field = operationAuthor[operation];
-    if (!field) { return _query; }
-    if (!_.get(_query, field)) { _.set(_query, field, username); }
+    if (!field) { return cQuery; }
+    if (!_.get(cQuery, field)) { _.set(cQuery, field, username); }
   }
-  return _query;
+  return cQuery;
 };
 
 const getOperation = (type) => {
@@ -74,14 +74,14 @@ const isValid = (op, params) => {
 
 const parseQuery = (type, query, username) => {
   const snakeCaseType = changeCase.snakeCase(type);
-  let _query = _.cloneDeep(query);
-  _query = setDefaultAuthor(snakeCaseType, _query, username);
+  let cQuery = _.cloneDeep(query);
+  cQuery = setDefaultAuthor(snakeCaseType, cQuery, username);
 
   if (_.hasIn(helperOperations, snakeCaseType)) {
-    return helperOperations[snakeCaseType].parse(_query);
+    return helperOperations[snakeCaseType].parse(cQuery);
   }
 
-  return _query;
+  return cQuery;
 };
 
 const validateRequired = (type, query) => {
@@ -128,5 +128,5 @@ module.exports = {
   getOperation,
   isValid,
   parseQuery,
-  validate
+  validate,
 };

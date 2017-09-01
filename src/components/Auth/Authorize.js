@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import qs from 'query-string';
@@ -12,6 +12,18 @@ import SignForm from '../Form/Sign';
   }, dispatch)
 )
 export default class Authorize extends Component {
+  static propTypes = {
+    location: PropTypes.shape({
+      query: PropTypes.shape({
+        client_id: PropTypes.string,
+        scope: PropTypes.string,
+        redirect_uri: PropTypes.string,
+      }),
+    }),
+    // eslint-disable-next-line react/forbid-prop-types
+    auth: PropTypes.object,
+  }
+
   constructor(props) {
     super(props);
     const clientId = this.props.location.query.client_id;
@@ -30,7 +42,6 @@ export default class Authorize extends Component {
     const { auth } = props;
     if (auth.isAuthenticated && hasAuthority(auth.user, clientId)) {
       authorize({ clientId, scope }, (err, res) => {
-        console.log(err, res);
         window.location = `${redirectUri}?${qs.stringify(res)}`;
       });
     } else if (auth.isLoaded) {
@@ -41,12 +52,9 @@ export default class Authorize extends Component {
   authorize = (auth) => {
     const { clientId, redirectUri, scope } = this.state;
     this.setState({ step: 0 });
-    login({ ...auth }, (err, res) => {
-      console.log(err, res);
-      addPostingAuthority({ ...auth, clientId }, (errPa, resPa) => {
-        console.log(errPa, resPa);
+    login({ ...auth }, () => {
+      addPostingAuthority({ ...auth, clientId }, () => {
         authorize({ clientId, scope }, (errA, resA) => {
-          console.log(errA, resA);
           window.location = `${redirectUri}?${qs.stringify(resA)}`;
         });
       });

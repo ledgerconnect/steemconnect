@@ -6,7 +6,7 @@ const debug = require('debug')('sc2:server');
 const issueUserToken = user =>
   jwt.sign({
     role: 'user',
-    user
+    user,
   }, process.env.JWT_SECRET);
 
 /** Create a new access token for application and store it on the database */
@@ -15,7 +15,7 @@ const issueAppToken = (proxy, user, scope = []) => {
     role: 'app',
     proxy,
     user,
-    scope
+    scope,
   }, process.env.JWT_SECRET);
 
   try {
@@ -23,7 +23,7 @@ const issueAppToken = (proxy, user, scope = []) => {
       debug(`A token for user @${user} with ${proxy} as proxy has been saved on database.`);
     });
   } catch (error) {
-    console.log(error);
+    throw new Error(error);
   }
 
   return token;

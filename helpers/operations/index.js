@@ -19,5 +19,5 @@ module.exports = {
   undelegate_vesting_shares: undelegateVestingShares,
   unfollow,
   unmute,
-  vote
+  vote,
 };

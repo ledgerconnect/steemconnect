@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import steem from 'steem';
 import changeCase from 'change-case';
 import SignForm from './Form/Sign';
@@ -9,15 +9,20 @@ import { getOperation, parseQuery, validate } from '../../helpers/operation';
 import customOperations from '../../helpers/operations/custom-operations';
 import SignPlaceholderDefault from './Sign/Placeholder/Default';
 import SignPlaceholderComment from './Sign/Placeholder/Comment';
-import SignPlaceholderFollow from './Sign/Placeholder/Follow';
-import SignPlaceholderReblog from './Sign/Placeholder/Reblog';
-import SignPlaceholderVestingShares from './Sign/Placeholder/VestingShares';
 import Loading from '../widgets/Loading';
 import './Sign.less';
 
 export default class Sign extends Component {
+  static propTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
+    location: PropTypes.object,
+    // eslint-disable-next-line react/forbid-prop-types
+    params: PropTypes.object,
+  }
+
   constructor(props) {
     super(props);
+
     this.state = {
       type: this.props.params.type,
       query: this.props.location.query,
@@ -26,7 +31,6 @@ export default class Sign extends Component {
       error: false,
     };
   }
-
   async componentWillMount() {
     const { type, query } = this.state;
     const validationErrors = await validate(type, query);
@@ -57,7 +61,7 @@ export default class Sign extends Component {
       if (isNaN(parsedQuery[key]) || parsedQuery[key] === '') {
         params[key] = parsedQuery[key];
       } else {
-        params[key] = parseInt(parsedQuery[key]);
+        params[key] = parseInt(parsedQuery[key], 10);
       }
     });
 
@@ -68,7 +72,6 @@ export default class Sign extends Component {
       if (!err) {
         this.setState({ success: result });
       } else {
-        console.log(err);
         this.setState({ error: err });
       }
       this.setState({ step: 'result' });
@@ -80,10 +83,6 @@ export default class Sign extends Component {
     const op = getOperation(type);
     let Placeholder = SignPlaceholderDefault;
     Placeholder = (type === 'comment') ? SignPlaceholderComment : Placeholder;
-    Placeholder = ['follow', 'unfollow', 'mute', 'unmute'].includes(type) ? SignPlaceholderFollow : Placeholder;
-    Placeholder = (type === 'reblog') ? SignPlaceholderReblog : Placeholder;
-    Placeholder = ['delegate_vesting_shares', 'undelegate_vesting_shares']
-      .includes(changeCase.snakeCase(type)) ? SignPlaceholderVestingShares : Placeholder;
     return (
       <div className="Sign">
         <div className="Sign__content container my-2">

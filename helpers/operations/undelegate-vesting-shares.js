@@ -4,13 +4,13 @@ const { isEmpty, userExists, normalizeUsername } = require('../validation-utils'
 const optionalFields = ['delegator', 'vesting_shares'];
 
 const parse = async (query) => {
-  const _query = _.cloneDeep(query);
+  const cQuery = _.cloneDeep(query);
 
-  _query.delegatee = normalizeUsername(_query.delegatee);
-  _query.delegator = normalizeUsername(_query.delegator);
-  _query.vesting_shares = _.join([parseFloat(0).toFixed(6), 'VESTS'], ' ');
+  cQuery.delegatee = normalizeUsername(cQuery.delegatee);
+  cQuery.delegator = normalizeUsername(cQuery.delegator);
+  cQuery.vesting_shares = _.join([parseFloat(0).toFixed(6), 'VESTS'], ' ');
 
-  return _query;
+  return cQuery;
 };
 
 const validate = async (query, errors) => {
@@ -25,5 +25,5 @@ const validate = async (query, errors) => {
 module.exports = {
   optionalFields,
   parse,
-  validate
+  validate,
 };

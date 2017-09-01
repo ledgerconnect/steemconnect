@@ -9,7 +9,7 @@ export default class AccountForm extends Form {
     const data = this.props.data || {
       password,
       steem: '0.000 STEEM',
-      vests: '0.000000 VESTS'
+      vests: '0.000000 VESTS',
     };
     this.state = {
       data,

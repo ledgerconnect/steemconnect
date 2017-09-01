@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -13,6 +13,10 @@ import { logout } from '../actions/auth';
   }, dispatch)
 )
 export default class Login extends Component {
+  static propTypes = {
+    logout: PropTypes.func,
+  }
+
   handleLogoutClick = () => {
     this.props.logout();
   };
