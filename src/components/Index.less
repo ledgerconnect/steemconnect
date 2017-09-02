@@ -20,7 +20,6 @@
 }
 
 #header {
-  overflow: hidden;
   min-height: 760px;
   position: relative;
   width: 100%;
@@ -39,6 +38,10 @@
     min-height: 460px;
   }
 
+  @media (max-width: @to-tiny) {
+    min-height: 520px;
+  }
+
   #menu {
     display: flex;
     justify-content: space-between;
@@ -48,11 +51,16 @@
 
     .menu-item {
       align-content: center;
+
       button {
         color: #fff;
         font-size: 16px;
-        line-height: 4px;
         background-color: transparent;
+        padding: 0;
+
+        .anticon {
+          font-size: 12px;
+        }
       }
     }
   }
@@ -183,9 +191,6 @@
   object {
     height: 40px;
 
-    @media (min-width: @from-tiny) and (max-width: @to-medium){
-      height: 35px;
-    }
     @media (max-width: @to-tiny) {
       height: 30px;
     }
@@ -231,6 +236,7 @@
   color: white !important;
   border-radius: 5px;
   background: #4ba2f2;
+  width: 100%;
   padding: 10px 20px;
   font-size: 18px;
   box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
@@ -395,7 +401,7 @@
 }
 
 .footer-menu {
-  margin: 40px auto;
+  margin: 20px auto 40px;
   font-size: 16px;
 
   ul {
