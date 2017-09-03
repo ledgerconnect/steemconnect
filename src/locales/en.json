@@ -1,11 +1,8 @@
 {
   "signup":"Sign up",
   "email_address":"Your email here",
-  "about_us":"About Us",
-  "terms":"Terms of Service",
   "error_invalid_email":"Please input your email address",
   "error_empty_email":"Please input a valid email address",
-  "privacy":"Privacy Policy",
   "lp_hero_title":"Secure access to the Steem ecosystem",
   "lp_hero_description":"Securely manage your wallet, check your activity, and connect to services without giving up your password.",
   "lp_follow_us":"Follow us",
@@ -30,5 +27,6 @@
   "lp_developers_button":"Start building",
   "lp_subscribe_title":"Stay up to date",
   "lp_subscribe_description":"SteemConnect is just getting started. Enter your email to get early access to project updates and SteemConnect itself!",
-  "lp_subscribe_button":"Get me access"
+  "lp_subscribe_button":"Get me access",
+  "lp_footer": "A Steemit Inc + Busy project"
 }
