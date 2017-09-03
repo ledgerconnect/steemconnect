@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import steem from 'steem';
 import SignForm from '../Form/Sign';
 import SignSuccess from '../Sign/Success';
@@ -7,6 +7,15 @@ import Loading from '../../widgets/Loading';
 import { hasAuthority } from '../../utils/auth';
 
 export default class Authorize extends Component {
+  static propTypes = {
+    params: PropTypes.shape({
+      username: PropTypes.string,
+      role: PropTypes.string,
+    }),
+    // eslint-disable-next-line react/forbid-prop-types
+    location: PropTypes.object,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -27,7 +36,7 @@ export default class Authorize extends Component {
     steem.api.getAccounts([auth.username], (err, accounts) => {
       if (!hasAuthority(accounts[0], username, role)) {
         const updatedAuthority = accounts[0][role];
-        updatedAuthority.account_auths.push([username, parseInt(weight)]);
+        updatedAuthority.account_auths.push([username, parseInt(weight, 10)]);
 
         const owner = role === 'owner' ? updatedAuthority : undefined;
         const active = role === 'active' ? updatedAuthority : undefined;
@@ -43,7 +52,6 @@ export default class Authorize extends Component {
           accounts[0].memo_key,
           accounts[0].json_metadata,
           (errBc, result) => {
-            console.log(errBc, result);
             if (!errBc) {
               this.setState({ success: result });
             } else {
@@ -54,7 +62,7 @@ export default class Authorize extends Component {
       } else {
         this.setState({
           step: 3,
-          success: true
+          success: true,
         });
       }
     });

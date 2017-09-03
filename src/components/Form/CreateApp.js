@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Form, Input, Button } from 'antd';
 import { accountNotExist, validateAccountName } from '../../utils/validator';
 
 class Internal extends React.Component {
+  static propTypes = {
+    form: PropTypes.shape({
+      validateFieldsAndScroll: PropTypes.func,
+      getFieldDecorator: PropTypes.func,
+    }),
+    onSubmit: PropTypes.func,
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {

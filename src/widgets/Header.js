@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import Avatar from './Avatar';
 import './Header.less';
@@ -19,5 +19,9 @@ const Header = ({ username }) =>
       }
     </div>
   </div>;
+
+Header.propTypes = {
+  username: PropTypes.string,
+};
 
 export default Header;

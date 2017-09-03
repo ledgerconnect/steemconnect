@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import steem from 'steem';
 import SignForm from '../Form/Sign';
 import SignSuccess from '../Sign/Success';
@@ -6,6 +6,17 @@ import SignError from '../Sign/Error';
 import Loading from '../../widgets/Loading';
 
 export default class Revoke extends Component {
+  static propTypes = {
+    params: PropTypes.shape({
+      username: PropTypes.string,
+    }),
+    location: PropTypes.shape({
+      query: PropTypes.shape({
+        cb: PropTypes.func,
+      }),
+    }),
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -35,7 +46,6 @@ export default class Revoke extends Component {
           account[0] === username ? postingNew.account_auths.splice(idx, 1) : null
         )
       );
-      console.log(postingNew);
 
       steem.broadcast.accountUpdate(
         auth.wif,
@@ -46,8 +56,6 @@ export default class Revoke extends Component {
         memo_key,
         json_metadata,
         (errBc, resultBc) => {
-          console.log(errBc, resultBc);
-
           if (!errBc) {
             this.setState({ success: resultBc });
           } else {
@@ -67,7 +75,11 @@ export default class Revoke extends Component {
           {step === 0 &&
             <div>
               <h2>Revoke</h2>
-              <p>Do you want to revoke the Steem account <b>@{ username }</b> to use your <b>posting</b> role?</p>
+              <p>
+                Do you want to revoke the Steem account
+                <b>@{ username }</b>
+                to use your <b>posting</b> role?
+              </p>
               <div className="form-group my-4">
                 <button type="submit" onClick={() => this.setState({ step: 1 })} className="btn btn-success">Continue</button>
               </div>
@@ -75,7 +87,8 @@ export default class Revoke extends Component {
           }
           {step === 1 && <SignForm roles={['owner', 'active']} sign={this.revoke} />}
           {step === 2 && <Loading />}
-          {step === 3 && success && <SignSuccess result={success} cb={this.props.location.query.cb} />}
+          {step === 3 && success &&
+            <SignSuccess result={success} cb={this.props.location.query.cb} />}
           {step === 3 && error && <SignError error={error} resetForm={this.resetForm} />}
         </div>
       </div>

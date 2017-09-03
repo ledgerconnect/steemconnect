@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import changeCase from 'change-case';
 
 const SignPlaceholderDefault = ({
@@ -25,5 +25,12 @@ const SignPlaceholderDefault = ({
     </table>
   </div>
 ;
+
+SignPlaceholderDefault.propTypes = {
+  type: PropTypes.string,
+  // eslint-disable-next-line react/forbid-prop-types
+  query: PropTypes.object,
+  params: PropTypes.arrayOf(PropTypes.string),
+};
 
 export default SignPlaceholderDefault;

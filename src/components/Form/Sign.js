@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import steem from 'steem';
 import { Form, Icon, Input, Button } from 'antd';
 import { accountExist } from '../../utils/validator';
 import './Sign.less';
 
 class Sign extends React.Component {
+  static propTypes = {
+    form: PropTypes.shape({
+      validateFields: PropTypes.func,
+      getFieldValue: PropTypes.func,
+      getFieldDecorator: PropTypes.func,
+    }),
+    roles: PropTypes.arrayOf(PropTypes.string),
+    title: PropTypes.string,
+    btnTitle: PropTypes.string,
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields(async (err, values) => {

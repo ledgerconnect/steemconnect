@@ -1,10 +1,9 @@
-/* eslint-disable no-param-reassign */
-const { formatter } = require('steem');
 const changeCase = require('change-case');
-const diacritics = require('diacritics');
 const operations = require('steem/lib/broadcast/operations');
 const _ = require('lodash');
 const operationAuthor = require('./operation-author.json');
+const customOperations = require('./operations/custom-operations');
+const helperOperations = require('./operations');
 
 /** Parse error message from Steemd response */
 const getErrorMessage = (error) => {
@@ -31,20 +30,33 @@ const isOperationAuthor = (operation, query, username) => {
 };
 
 const setDefaultAuthor = (operation, query, username) => {
-  const _query = query;
+  const cQuery = _.cloneDeep(query);
+
   if (Object.prototype.hasOwnProperty.call(operationAuthor, operation)) {
     const field = operationAuthor[operation];
-    if (!field) { return _query; }
-    if (!_.get(query, field)) { _.set(query, field, username); }
+    if (!field) { return cQuery; }
+    if (!_.get(cQuery, field)) { _.set(cQuery, field, username); }
   }
-  return _query;
+  return cQuery;
 };
 
 const getOperation = (type) => {
-  const ops = operations.filter(op =>
+  let ops = operations.find(op =>
     op.operation === changeCase.snakeCase(type)
   );
-  return ops[0] ? ops[0] : '';
+  if (ops) {
+    return ops;
+  }
+
+  ops = customOperations.find(op =>
+      op.operation === changeCase.snakeCase(type)
+  );
+  if (ops) {
+    ops.roles = operations.find(op => op.operation === ops.type).roles;
+    return ops;
+  }
+
+  return '';
 };
 
 const isValid = (op, params) => {
@@ -60,48 +72,53 @@ const isValid = (op, params) => {
   return valid;
 };
 
-const parseVote = (query) => {
-  query.weight = query.weight || 10000;
-  return query;
-};
-
-const parseComment = (query) => {
-  query.parent_author = query.parent_author || '';
-  query.parent_permlink = query.parent_permlink || '';
-  query.title = query.title || '';
-  if (query.parent_author && query.parent_permlink) {
-    query.permlink = query.permlink
-      || formatter.commentPermlink(query.parent_author, query.parent_permlink).toLowerCase();
-  } else {
-    query.title = query.title || query.body.slice(0, 255);
-    query.permlink = query.permlink
-      || changeCase.paramCase(diacritics.remove(query.title)).slice(0, 255);
-  }
-  let jsonMetadata = {};
-  try { jsonMetadata = JSON.parse(decodeURIComponent(query.json_metadata)); } catch (e) { jsonMetadata = {}; }
-  query.json_metadata = jsonMetadata;
-  return query;
-};
-
-const parseTransfer = (query) => {
-  query.memo = query.memo || '';
-  return query;
-};
-
 const parseQuery = (type, query, username) => {
-  type = changeCase.snakeCase(type);
-  query = setDefaultAuthor(type, query, username);
+  const snakeCaseType = changeCase.snakeCase(type);
+  let cQuery = _.cloneDeep(query);
+  cQuery = setDefaultAuthor(snakeCaseType, cQuery, username);
 
-  switch (type) {
-    case 'vote':
-      return parseVote(query);
-    case 'comment':
-      return parseComment(query);
-    case 'transfer':
-      return parseTransfer(query);
-    default:
-      return query;
+  if (_.hasIn(helperOperations, snakeCaseType)) {
+    return helperOperations[snakeCaseType].parse(cQuery);
   }
+
+  return cQuery;
+};
+
+const validateRequired = (type, query) => {
+  const errors = [];
+  let operation = operations.find(o => o.operation === type);
+  if (!operation) {
+    operation = customOperations.find(o => o.operation === type);
+  }
+  if (operation) {
+    let authorField;
+    let optionalFields = [];
+
+    if (Object.prototype.hasOwnProperty.call(operationAuthor, type)) {
+      authorField = operationAuthor[type];
+    }
+
+    if (_.hasIn(helperOperations, type) && helperOperations[type].optionalFields) {
+      optionalFields = helperOperations[type].optionalFields;
+    }
+
+    operation.params.forEach((p) => {
+      if (!optionalFields.includes(p) && !query[p] && (!authorField || p !== authorField)) {
+        errors.push(`${p} is required`);
+      }
+    });
+  }
+
+  return errors;
+};
+
+const validate = async (type, query) => {
+  const snakeCaseType = changeCase.snakeCase(type);
+  const errors = validateRequired(snakeCaseType, query);
+  if (_.hasIn(helperOperations, snakeCaseType) && typeof helperOperations[snakeCaseType].validate === 'function') {
+    await helperOperations[snakeCaseType].validate(query, errors);
+  }
+  return errors;
 };
 
 module.exports = {
@@ -111,4 +128,5 @@ module.exports = {
   getOperation,
   isValid,
   parseQuery,
+  validate,
 };

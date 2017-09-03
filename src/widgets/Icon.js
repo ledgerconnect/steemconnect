@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import './Icon.less';
 
 const Icon = ({
@@ -20,6 +20,17 @@ const Icon = ({
   return (
     <i className={`material-icons icon ${size} ${className}`} style={style}>{ name }</i>
   );
+};
+
+Icon.propTypes = {
+  name: PropTypes.string,
+  style: PropTypes.string,
+  className: PropTypes.string,
+  xs: PropTypes.bool,
+  sm: PropTypes.bool,
+  md: PropTypes.bool,
+  lg: PropTypes.bool,
+  xl: PropTypes.bool,
 };
 
 export default Icon;

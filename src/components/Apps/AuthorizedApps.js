@@ -1,9 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import numeral from 'numeral';
 import Loading from '../../widgets/Loading';
 
 export default class AuthorizedApps extends Component {
+  static propTypes = {
+    // eslint-disable-next-line react/forbid-prop-types
+    auth: PropTypes.object,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +33,7 @@ export default class AuthorizedApps extends Component {
                 <li key={idx} className="list-group-item">
                   <b><Link to={`/apps/@${auth[0]}`}>{auth[0]}</Link></b>
                   <span className="ml-1">
-                    {numeral(100 / user.posting.weight_threshold * auth[1] / 100).format('0%')}
+                    {numeral((100 / user.posting.weight_threshold) * (auth[1] / 100)).format('0%')}
                   </span>
                   <Link
                     to={`/revoke/@${auth[0]}`}

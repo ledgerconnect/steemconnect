@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import fetch from 'isomorphic-fetch';
 import { notification } from 'antd';
 import AppForm from './AppForm';
@@ -6,6 +6,15 @@ import Loading from '../../widgets/Loading';
 import Avatar from '../../widgets/Avatar';
 
 export default class EditApp extends Component {
+  static propTypes = {
+    params: PropTypes.shape({
+      clientId: PropTypes.string,
+    }),
+    auth: PropTypes.shape({
+      token: PropTypes.string,
+    }),
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -24,7 +33,7 @@ export default class EditApp extends Component {
     fetch(`/api/apps/@${clientId}`, {
       headers: new Headers({
         Authorization: this.props.auth.token,
-      })
+      }),
     })
       .then(res => res.json())
       .then((app) => {
@@ -46,7 +55,7 @@ export default class EditApp extends Component {
         'Content-Type': 'application/json',
         Authorization: this.props.auth.token,
       }),
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
       .then(res => res.json())
       .then(() => {
@@ -56,8 +65,7 @@ export default class EditApp extends Component {
           description: 'Your application has been successfully updated',
         });
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         notification.error({
           message: 'Error',
           description: 'Oops! Something goes wrong.',
