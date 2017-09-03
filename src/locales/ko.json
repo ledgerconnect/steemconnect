@@ -27,5 +27,6 @@
   "lp_developers_button":"제작 시작",
   "lp_subscribe_title":"최신 정보를 놓치지 마세요.",
   "lp_subscribe_description":"SteemConnect가 방금 시작되었습니다. 이메일을 입력하여 프로젝트 업데이트와 SteemConnect를 먼저 이용해 보세요!",
-  "lp_subscribe_button":"내게 액세스 권한 부여"
+  "lp_subscribe_button":"내게 액세스 권한 부여",
+  "lp_footer": "A Steemit Inc + Busy project"
 }
