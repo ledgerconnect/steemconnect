@@ -188,7 +188,9 @@ class Index extends React.Component {
             <div>
               <h4 className="project-title"><FormattedMessage id="lp_developers_title" /></h4>
               <p><FormattedMessage id="lp_developers_description" /></p>
-              <a href="/" className="lp-link"><FormattedMessage id="lp_developers_button" /></a>
+              <a href="http://eepurl.com/c1PtNX" rel="noopener noreferrer" target="_blank" className="lp-link">
+                <FormattedMessage id="lp_developers_button" />
+              </a>
             </div>
           </div>
         </div>
@@ -200,7 +202,7 @@ class Index extends React.Component {
               <p><FormattedMessage id="lp_subscribe_description" /></p>
             </div>
             <div>
-              <a href="http://eepurl.com/c1PtNX" rel="noopener noreferrer" target="_blank" className="lp-link">
+              <a href="http://eepurl.com/c1Z9VH" rel="noopener noreferrer" target="_blank" className="lp-link">
                 <FormattedMessage id="lp_subscribe_button" />
               </a>
             </div>
