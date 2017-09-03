@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 import fetch from 'isomorphic-fetch';
 import { hasAuthority } from '../../utils/auth';
@@ -6,6 +6,19 @@ import Loading from '../../widgets/Loading';
 import Avatar from '../../widgets/Avatar';
 
 export default class MyApps extends Component {
+  static propTypes = {
+    params: PropTypes.shape({
+      clientId: PropTypes.string,
+    }),
+    auth: PropTypes.shape({
+      isAuthenticated: PropTypes.bool,
+      token: PropTypes.string,
+      user: PropTypes.shape({
+        name: PropTypes.string,
+      }),
+    }),
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -25,7 +38,7 @@ export default class MyApps extends Component {
     fetch(`/api/apps/@${clientId}`, {
       headers: new Headers({
         Authorization: this.props.auth.token,
-      })
+      }),
     })
       .then(res => res.json())
       .then((app) => {
@@ -70,13 +83,13 @@ export default class MyApps extends Component {
                     {revealSecret
                       ? <div>
                         {`${app.secret} `}
-                        <a href="#" onClick={() => this.setState({ revealSecret: false })}>
+                        <button className="button-link" onClick={() => this.setState({ revealSecret: false })}>
                           hide
-                        </a>
+                        </button>
                       </div>
-                      : <a href="#" onClick={() => this.setState({ revealSecret: true })}>
+                      : <button className="button-link" onClick={() => this.setState({ revealSecret: true })}>
                         click to reveal
-                      </a>
+                      </button>
                     }
                   </div>
                 }

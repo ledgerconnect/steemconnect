@@ -100,7 +100,7 @@ router.put('/@:clientId', authenticate('user'), async (req, res, next) => {
       where: {
         client_id: clientId,
         owner: req.user,
-      }
+      },
     });
     res.json({ success: true });
   } catch (err) {
