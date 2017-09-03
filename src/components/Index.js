@@ -77,7 +77,7 @@ class Index extends React.Component {
             </div>
             <div className="hero">
               <h1 className="title"><FormattedMessage id="lp_hero_title" /></h1>
-              <h2 className="sub-title"><FormattedMessage id="lp_hero_description" /></h2>
+              <p className="sub-title"><FormattedMessage id="lp_hero_description" /></p>
               <div className="newsletter">
                 <Form
                   onSubmit={() => {}}
