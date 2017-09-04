@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import changeCase from 'change-case';
+import { isAsset, normalizeAsset } from '../../../../helpers/validation-utils';
 
 const SignPlaceholderDefault = ({
   type,
@@ -17,7 +18,7 @@ const SignPlaceholderDefault = ({
                 <b>{changeCase.titleCase(param)}</b>
               </td>
               <td>
-                {query[param]}
+                {isAsset(query[param]) ? normalizeAsset(query[param]) : query[param]}
               </td>
             </tr>
         )}
