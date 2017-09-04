@@ -5,7 +5,7 @@ import SignForm from './Form/Sign';
 import SignSuccess from './Sign/Success';
 import SignError from './Sign/Error';
 import SignValidationErrors from './Sign/ValidationErrors';
-import { getOperation, parseQuery, validate } from '../../helpers/operation';
+import { getOperation, parseQuery, validate, normalize } from '../../helpers/operation';
 import customOperations from '../../helpers/operations/custom-operations';
 import SignPlaceholderDefault from './Sign/Placeholder/Default';
 import SignPlaceholderComment from './Sign/Placeholder/Comment';
@@ -26,6 +26,7 @@ export default class Sign extends Component {
     this.state = {
       type: this.props.params.type,
       query: this.props.location.query,
+      normalizedQuery: null,
       step: 'loading',
       success: false,
       error: false,
@@ -40,7 +41,8 @@ export default class Sign extends Component {
     if (validationErrors.length > 0) {
       this.setState({ validationErrors, step: 'validationErrors' });
     } else {
-      this.setState({ step: 'form' });
+      const normalizedQuery = await normalize(type, query);
+      this.setState({ step: 'form', normalizedQuery });
     }
   }
 
@@ -82,7 +84,7 @@ export default class Sign extends Component {
   };
 
   render() {
-    const { step, success, error, validationErrors, query, type } = this.state;
+    const { step, success, error, validationErrors, normalizedQuery, type } = this.state;
     const op = getOperation(type);
     let Placeholder = SignPlaceholderDefault;
     Placeholder = (type === 'comment') ? SignPlaceholderComment : Placeholder;
@@ -92,7 +94,7 @@ export default class Sign extends Component {
           {step === 'validationErrors' && <SignValidationErrors errors={validationErrors} />}
           {step === 'form' &&
             <div>
-              <Placeholder type={type} query={query} params={op.params} />
+              <Placeholder type={type} query={normalizedQuery} params={op.params} />
               <div className="form-group my-4">
                 <button
                   onClick={() => this.setState({ step: 'signin' })}
@@ -105,7 +107,7 @@ export default class Sign extends Component {
           }
           {step === 'signin' && <SignForm roles={op.roles} sign={this.sign} />}
           {step === 'loading' && <Loading />}
-          {step === 'result' && success && <SignSuccess result={success} cb={query.cb} />}
+          {step === 'result' && success && <SignSuccess result={success} cb={normalizedQuery.cb} />}
           {step === 'result' && error && <SignError error={error} resetForm={this.resetForm} />}
         </div>
       </div>
