@@ -31,7 +31,6 @@ const isOperationAuthor = (operation, query, username) => {
 
 const setDefaultAuthor = (operation, query, username) => {
   const cQuery = _.cloneDeep(query);
-
   if (Object.prototype.hasOwnProperty.call(operationAuthor, operation)) {
     const field = operationAuthor[operation];
     if (!field) { return cQuery; }

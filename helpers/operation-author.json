@@ -10,6 +10,7 @@
   "convert": "owner",
   "account_create": "creator",
   "account_update": "account",
+  "update_account": "account",
   "witness_update": "owner",
   "account_witness_vote": "account",
   "account_witness_proxy": "account",

@@ -9,6 +9,7 @@ import { getOperation, parseQuery, validate } from '../../helpers/operation';
 import customOperations from '../../helpers/operations/custom-operations';
 import SignPlaceholderDefault from './Sign/Placeholder/Default';
 import SignPlaceholderComment from './Sign/Placeholder/Comment';
+import SignPlaceholderNonFiltered from './Sign/Placeholder/NonFiltered';
 import Loading from '../widgets/Loading';
 import './Sign.less';
 
@@ -54,7 +55,6 @@ export default class Sign extends Component {
 
     const { type, query } = this.state;
     const parsedQuery = await parseQuery(type, query, auth.username);
-
     /* Parse params */
     const params = {};
     Object.keys(parsedQuery).forEach((key) => {
@@ -83,6 +83,7 @@ export default class Sign extends Component {
     const op = getOperation(type);
     let Placeholder = SignPlaceholderDefault;
     Placeholder = (type === 'comment') ? SignPlaceholderComment : Placeholder;
+    Placeholder = (changeCase.snakeCase(type) === 'update_account') ? SignPlaceholderNonFiltered : Placeholder;
     return (
       <div className="Sign">
         <div className="Sign__content container my-2">

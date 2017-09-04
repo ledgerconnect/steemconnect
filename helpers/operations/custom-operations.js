@@ -32,6 +32,6 @@ module.exports = [
   {
     operation: 'update_account',
     type: 'account_update',
-    params: ['account'],
+    params: ['account', 'memo_key'],
   },
 ];
