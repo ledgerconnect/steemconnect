@@ -33,6 +33,9 @@ export default class Sign extends Component {
   }
   async componentWillMount() {
     const { type, query } = this.state;
+    if (getOperation(type) === '') {
+      this.props.router.push('/404');
+    }
     const validationErrors = await validate(type, query);
     if (validationErrors.length > 0) {
       this.setState({ validationErrors, step: 'validationErrors' });
