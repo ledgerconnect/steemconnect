@@ -5,7 +5,16 @@ const steem = require('steem');
 const optionalFields = ['account'];
 
 const parse = async (query) => {
-  const jsonMetadata = { profile: {} };
+  const accounts = await steem.api.getAccountsAsync([query.account]);
+  const account = accounts.find(a => a.name === query.account);
+  let jsonMetadata = {};
+
+  if (account.json_metadata) {
+    jsonMetadata = JSON.parse(account.json_metadata);
+  }
+  if (!jsonMetadata.profile) {
+    jsonMetadata.profile = {};
+  }
 
   const op = customOperations.find(o => o.type === 'account_update');
   const keys = Object.keys(query);
@@ -14,9 +23,6 @@ const parse = async (query) => {
       jsonMetadata.profile[changeCase.snakeCase(keys[i])] = query[keys[i]];
     }
   }
-
-  const accounts = await steem.api.getAccountsAsync([query.account]);
-  const account = accounts.find(a => a.name === query.account);
 
   const cQuery = {
     account: query.account,
