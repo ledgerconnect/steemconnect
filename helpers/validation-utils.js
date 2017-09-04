@@ -2,14 +2,14 @@ const steem = require('steem');
 
 const isEmpty = value => value === undefined || value === null || value === '';
 
-const isAsset = (value) => {
-  const allowedSymbols = [
-    { symbol: 'SBD', precision: 3 },
-    { symbol: 'STEEM', precision: 3 },
-    { symbol: 'SP', precision: 3 },
-    { symbol: 'VESTS', precision: 6 },
-  ];
+const allowedSymbols = [
+  { symbol: 'SBD', precision: 3 },
+  { symbol: 'STEEM', precision: 3 },
+  { symbol: 'SP', precision: 3 },
+  { symbol: 'VESTS', precision: 6 },
+];
 
+const isAsset = (value) => {
   if (!/^[0-9]+\.?[0-9]* [A-Za-z0-9]+$/.test(value)) {
     return false;
   }
@@ -31,6 +31,12 @@ const isAsset = (value) => {
   return true;
 };
 
+const normalizeAsset = (value) => {
+  const [amount, symbol] = value.split(' ');
+  const symbolInfo = allowedSymbols.find(s => s.symbol === symbol);
+  return `${parseFloat(amount).toFixed(symbolInfo.precision)} ${symbol}`;
+};
+
 const normalizeUsername = username => ((username && username.charAt(0) === '@') ? username.substr(1) : username);
 
 const userExists = async (username) => {
@@ -48,6 +54,7 @@ module.exports = {
   contentExists,
   isAsset,
   isEmpty,
+  normalizeAsset,
   normalizeUsername,
   userExists,
 };
