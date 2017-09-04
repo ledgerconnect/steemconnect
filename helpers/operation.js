@@ -120,6 +120,14 @@ const validate = async (type, query) => {
   return errors;
 };
 
+const normalize = async (type, query) => {
+  const snakeCaseType = changeCase.snakeCase(type);
+  if (_.hasIn(helperOperations, snakeCaseType) && typeof helperOperations[snakeCaseType].normalize === 'function') {
+    return await helperOperations[snakeCaseType].normalize(query);
+  }
+  return query;
+};
+
 module.exports = {
   getErrorMessage,
   isOperationAuthor,
@@ -127,5 +135,6 @@ module.exports = {
   getOperation,
   isValid,
   parseQuery,
+  normalize,
   validate,
 };
