@@ -30,8 +30,8 @@ module.exports = [
     params: ['delegator', 'delegatee'],
   },
   {
-    operation: 'update_account',
+    operation: 'profile_update',
     type: 'account_update',
-    params: ['account', 'memo_key'],
+    params: ['account'],
   },
 ];

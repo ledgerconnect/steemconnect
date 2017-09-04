@@ -83,7 +83,7 @@ export default class Sign extends Component {
     const op = getOperation(type);
     let Placeholder = SignPlaceholderDefault;
     Placeholder = (type === 'comment') ? SignPlaceholderComment : Placeholder;
-    Placeholder = (changeCase.snakeCase(type) === 'update_account') ? SignPlaceholderNonFiltered : Placeholder;
+    Placeholder = (changeCase.snakeCase(type) === 'profile_update') ? SignPlaceholderNonFiltered : Placeholder;
     return (
       <div className="Sign">
         <div className="Sign__content container my-2">

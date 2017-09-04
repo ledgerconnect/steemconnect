@@ -1,9 +1,10 @@
 const changeCase = require('change-case');
 const customOperations = require('./custom-operations');
+const steem = require('steem');
 
 const optionalFields = ['account'];
 
-const parse = (query) => {
+const parse = async (query) => {
   const jsonMetadata = { profile: {} };
 
   const op = customOperations.find(o => o.type === 'account_update');
@@ -14,9 +15,12 @@ const parse = (query) => {
     }
   }
 
+  const accounts = await steem.api.getAccountsAsync([query.account]);
+  const account = accounts.find(a => a.name === query.account);
+
   const cQuery = {
     account: query.account,
-    memo_key: query.memo_key,
+    memo_key: account.memo_key,
     json_metadata: JSON.stringify(jsonMetadata),
   };
 
