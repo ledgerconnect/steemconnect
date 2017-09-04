@@ -60,6 +60,10 @@ const normalize = async (query) => {
         ).toFixed(3),
         'SP',
       ], ' ');
+  } else if (amount && symbol === 'SP') {
+    cQuery.vesting_shares = _.join(
+      [parseFloat(amount).toFixed(3), symbol],
+      ' ');
   }
   return cQuery;
 };
