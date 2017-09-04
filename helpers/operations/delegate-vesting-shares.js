@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const steem = require('steem');
+const { formatter } = require('steem');
 const { isAsset, isEmpty, userExists, normalizeUsername } = require('../validation-utils');
 
 const optionalFields = ['delegator'];
@@ -45,7 +46,30 @@ const validate = async (query, errors) => {
   }
 };
 
+const normalize = async (query) => {
+  const cQuery = _.cloneDeep(query);
+  const [amount, symbol] = cQuery.vesting_shares.split(' ');
+  if (amount && symbol === 'VESTS') {
+    const globalProps = await steem.api.getDynamicGlobalPropertiesAsync();
+    cQuery.vesting_shares = _.join(
+      [
+        formatter.vestToSteem(
+          cQuery.vesting_shares,
+          globalProps.total_vesting_shares,
+          globalProps.total_vesting_fund_steem
+        ).toFixed(3),
+        'SP',
+      ], ' ');
+  } else if (amount && symbol === 'SP') {
+    cQuery.vesting_shares = _.join(
+      [parseFloat(amount).toFixed(3), symbol],
+      ' ');
+  }
+  return cQuery;
+};
+
 module.exports = {
+  normalize,
   optionalFields,
   parse,
   validate,
