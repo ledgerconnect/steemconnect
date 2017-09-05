@@ -1,12 +1,12 @@
 const changeCase = require('change-case');
+const { userExists, isEmpty, normalizeUsername } = require('../validation-utils');
 const customOperations = require('./custom-operations');
 const steem = require('steem');
 
-const optionalFields = ['account'];
-
 const parse = async (query) => {
-  const accounts = await steem.api.getAccountsAsync([query.account]);
-  const account = accounts.find(a => a.name === query.account);
+  const username = normalizeUsername(query.account);
+  const accounts = await steem.api.getAccountsAsync([username]);
+  const account = accounts.find(a => a.name === username);
   let jsonMetadata = {};
 
   if (account.json_metadata) {
@@ -25,7 +25,7 @@ const parse = async (query) => {
   }
 
   const cQuery = {
-    account: query.account,
+    account: username,
     memo_key: account.memo_key,
     json_metadata: JSON.stringify(jsonMetadata),
   };
@@ -33,7 +33,13 @@ const parse = async (query) => {
   return cQuery;
 };
 
+const validate = async (query, errors) => {
+  if (!isEmpty(query.account) && !await userExists(query.account)) {
+    errors.push(`the user ${query.account} doesn't exist`);
+  }
+};
+
 module.exports = {
-  optionalFields,
   parse,
+  validate,
 };
