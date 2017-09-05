@@ -19,12 +19,15 @@ export default class Sign extends Component {
     const { cb } = this.props;
     return (
       <div>
-        <h2><Icon name="check" className="text-success" lg /> Success</h2>
-        <h5 className="mb-4">The operation has been successfully broadcasted.</h5>
+        <div className="Sign__error-title-bg">
+          <object data="/img/signin/success.svg" type="image/svg+xml" id="success-icon" />
+        </div>
+        <h2>Congratulations</h2>
+        <h5>The operation has been successfully broadcasted.</h5>
         {cb &&
           <p>
-            If you are not redirected within 10 seconds{' '}
-            <a href={cb} target="_blank" rel="noopener noreferrer">click here</a>.
+            If you are not redirected within 10 seconds{' '}<br />
+            <a className="signin-button" href={cb} target="_blank" rel="noopener noreferrer">click here</a>.
           </p>
         }
       </div>
