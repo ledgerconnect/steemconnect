@@ -91,25 +91,31 @@ export default class Sign extends Component {
     Placeholder = (changeCase.snakeCase(type) === 'profile_update') ? SignPlaceholderNonFiltered : Placeholder;
     return (
       <div className="Sign">
-        <div className="Sign__content container my-2">
-          {step === 'validationErrors' && <SignValidationErrors errors={validationErrors} />}
-          {step === 'form' &&
-            <div>
-              <Placeholder type={type} query={normalizedQuery} params={op.params} />
-              <div className="form-group my-4">
-                <button
-                  onClick={() => this.setState({ step: 'signin' })}
-                  className="btn btn-success"
-                >
-                  Continue
-                </button>
+        <div className="Sign__content">
+          <div className="Sign__wrapper">
+            {step === 'validationErrors' && <SignValidationErrors errors={validationErrors} />}
+            {step === 'form' &&
+              <div>
+                <Placeholder type={type} query={normalizedQuery} params={op.params} />
+                <div className="form-group my-4">
+                  <button
+                    onClick={() => this.setState({ step: 'signin' })}
+                    className="btn btn-success"
+                  >
+                    Continue
+                  </button>
+                </div>
               </div>
-            </div>
-          }
-          {step === 'signin' && <SignForm roles={op.roles} sign={this.sign} />}
-          {step === 'loading' && <Loading />}
-          {step === 'result' && success && <SignSuccess result={success} cb={normalizedQuery.cb} />}
-          {step === 'result' && error && <SignError error={error} resetForm={this.resetForm} />}
+            }
+            {step === 'signin' && <SignForm roles={op.roles} sign={this.sign} title="Log in to confirm the operation" />}
+            {step === 'signin' && <button className="button-link" onClick={() => this.setState({ step: 'form' })}>Cancel</button>}
+            {step === 'loading' && <Loading />}
+            {step === 'result' && success && <SignSuccess result={success} cb={normalizedQuery.cb} />}
+            {step === 'result' && error && <SignError error={error} resetForm={this.resetForm} />}
+          </div>
+          {step === 'signin' && <div className="signin-footer">
+            <a href="http://v2.steemconnect.com" target="_blank" rel="noopener noreferrer">About SteemConnect</a>
+          </div>}
         </div>
       </div>
     );
