@@ -29,4 +29,9 @@ module.exports = [
     type: 'delegate_vesting_shares',
     params: ['delegator', 'delegatee'],
   },
+  {
+    operation: 'profile_update',
+    type: 'account_update',
+    params: ['account'],
+  },
 ];

@@ -1,3 +1,4 @@
+const profileUpdate = require('./profile-update');
 const comment = require('./comment');
 const delegateVestingShares = require('./delegate-vesting-shares');
 const follow = require('./follow');
@@ -19,5 +20,6 @@ module.exports = {
   undelegate_vesting_shares: undelegateVestingShares,
   unfollow,
   unmute,
+  profile_update: profileUpdate,
   vote,
 };
