@@ -9,7 +9,11 @@ const parse = (query) => {
     cQuery.required_auths = JSON.parse(cQuery.required_auths);
   }
   if (cQuery.required_posting_auths) {
-    cQuery.required_posting_auths = JSON.parse(cQuery.required_posting_auths);
+    try {
+      cQuery.required_posting_auths = JSON.parse(cQuery.required_posting_auths);
+    } catch (err) {
+      // do nothing, try to parse in case this is not the default value
+    }
   }
   return cQuery;
 };
