@@ -1,11 +1,8 @@
 {
   "signup":"Inscription",
   "email_address":"Entrer votre email",
-  "about_us":"Qui sommes-nous ?",
-  "terms":"Conditions d’utilisation",
   "error_invalid_email":"Veuillez entrer votre adresse e-mail",
   "error_empty_email":"Veuillez entrer une adresse email valide",
-  "privacy":"Confidentialité",
   "lp_hero_title":"Votre accès sécurisé à l’écosystème Steem",
   "lp_hero_description":"Gérez votre portefeuille, vérifier votre activité et connectez-vous aux applications Steem sans renoncer à la sécurité de votre mot de passe.",
   "lp_follow_us":"Nous suivre",
@@ -30,5 +27,6 @@
   "lp_developers_button":"Commencez maintenant",
   "lp_subscribe_title":"Restez à jour",
   "lp_subscribe_description":"Entrez votre email pour obtenir un accès aux mises à jour du projet SteemConnect.",
-  "lp_subscribe_button":"Je m'inscris"
+  "lp_subscribe_button":"Je m'inscris",
+  "lp_footer": "Un projet Steemit Inc + Busy"
 }
