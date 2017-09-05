@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import steem from 'steem';
+import { Form, Button } from 'antd';
 import changeCase from 'change-case';
 import SignForm from './Form/Sign';
 import SignSuccess from './Sign/Success';
@@ -92,19 +93,20 @@ export default class Sign extends Component {
     return (
       <div className="Sign">
         <div className="Sign__content">
+          {step === 'form' && <div className="signin-header">
+            <object data="/img/signin/s-clogo.svg" type="image/svg+xml" id="sclogo" />
+            <object data="/img/signin/biglogo.svg" type="image/svg+xml" id="biglogo" />
+          </div>}
           <div className="Sign__wrapper">
             {step === 'validationErrors' && <SignValidationErrors errors={validationErrors} />}
             {step === 'form' &&
               <div>
                 <Placeholder type={type} query={normalizedQuery} params={op.params} />
-                <div className="form-group my-4">
-                  <button
-                    onClick={() => this.setState({ step: 'signin' })}
-                    className="btn btn-success"
-                  >
+                <Form.Item>
+                  <Button type="primary" onClick={() => this.setState({ step: 'signin' })} className="SignForm__button">
                     Continue
-                  </button>
-                </div>
+                  </Button>
+                </Form.Item>
               </div>
             }
             {step === 'signin' && <SignForm roles={op.roles} sign={this.sign} title="Log in to confirm the operation" />}
@@ -113,7 +115,7 @@ export default class Sign extends Component {
             {step === 'result' && success && <SignSuccess result={success} cb={normalizedQuery.cb} />}
             {step === 'result' && error && <SignError error={error} resetForm={this.resetForm} />}
           </div>
-          {step === 'signin' && <div className="signin-footer">
+          {['signin', 'form'].includes(step) && <div className="signin-footer">
             <a href="http://v2.steemconnect.com" target="_blank" rel="noopener noreferrer">About SteemConnect</a>
           </div>}
         </div>

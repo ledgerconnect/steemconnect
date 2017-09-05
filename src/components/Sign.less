@@ -8,9 +8,19 @@
 
 .Sign__wrapper {
   padding: 50px;
+
+  .ant-row, .ant-form-item-control-wrapper, .ant-form-item-control {
+    width: 100%;
+  }
+
+  .ant-btn {
+    text-transform: uppercase;
+    box-shadow: 0 1px 5px 0 #d7dde3;
+  }
 }
 
 .Sign__content {
+  position: relative;
   min-height: 520px;
   border-radius: 10px;
   background-color: #ffffff;
@@ -42,6 +52,39 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+}
+
+.Signin__placeholder {
+  h2 {
+    font-size: 20px;
+  }
+
+  .operation-container {
+    text-align: center;
+    border-radius: 5px;
+    background-color: #ffffff;
+    border: solid 1px #e5e8eb;
+    margin: 20px 0;
+    width: 100%;
+
+    h5.operation-title {
+      text-transform: uppercase;
+      background-color: rgba(240, 242, 244, 0.3);
+      color: #898989;
+      width: 100%;
+    }
+
+    .operation-content {
+      padding: 20px 30px;
+      table {
+        table-layout: fixed;
+        word-wrap: break-word;
+        td {
+          border-top: none;
+        }
+      }
+    }
   }
 }
 
@@ -79,10 +122,30 @@
   margin-top: 10px;
 }
 
+.signin-header {
+  height: 60px;
+  background-color: rgba(240, 242, 244, 0.3);
+  flex-direction: row !important;
+  justify-content: space-between;
+
+  #sclogo {
+    width: 174px;
+    height: 30px;
+    margin-left: 17px;
+  }
+
+  #biglogo {
+    width: 258px;
+    height: 60px;
+  }
+}
+
 .signin-footer {
   background-color: rgba(240, 242, 244, 0.3);
   height: 40px;
   width: 100%;
+  position: absolute;
+  bottom: 0px;
 
   a {
     font-size: 12px;

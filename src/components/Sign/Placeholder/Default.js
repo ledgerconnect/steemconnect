@@ -6,12 +6,15 @@ const SignPlaceholderDefault = ({
   query,
   params,
 }) =>
-  <div>
-    <h2>{ changeCase.titleCase(type) }</h2>
-    <table className="table text-left">
-      <tbody>
-        {params.map((param, key) =>
-          query[param] &&
+  <div className="Signin__placeholder">
+    <h2>Do you want to confirm this operation ?</h2>
+    <div className="operation-container">
+      <h5 className="operation-title">{ changeCase.titleCase(type) }</h5>
+      <div className="operation-content">
+        <table className="table text-left">
+          <tbody>
+          {params.map((param, key) =>
+            query[param] &&
             <tr key={key}>
               <td className="label">
                 <b>{changeCase.titleCase(param)}</b>
@@ -20,9 +23,11 @@ const SignPlaceholderDefault = ({
                 {query[param]}
               </td>
             </tr>
-        )}
-      </tbody>
-    </table>
+          )}
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 ;
 
