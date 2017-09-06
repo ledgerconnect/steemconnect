@@ -100,14 +100,18 @@ export default class Sign extends Component {
           <div className="Sign__wrapper">
             {step === 'validationErrors' && <SignValidationErrors errors={validationErrors} />}
             {step === 'form' &&
-              <div>
-                <Placeholder type={type} query={normalizedQuery} params={op.params} />
-                <Form.Item>
-                  <Button type="primary" onClick={() => this.setState({ step: 'signin' })} className="SignForm__button">
-                    Continue
-                  </Button>
-                </Form.Item>
+            <div className="Signin__placeholder">
+              <h2>Do you want to confirm this operation?</h2>
+              <div className="operation-container">
+                <h5 className="operation-title">{ changeCase.titleCase(type) }</h5>
+                <Placeholder query={normalizedQuery} params={op.params} />
               </div>
+              <Form.Item>
+                <Button type="primary" onClick={() => this.setState({ step: 'signin' })} className="SignForm__button">
+                  Continue
+                </Button>
+              </Form.Item>
+            </div>
             }
             {step === 'signin' && <SignForm roles={op.roles} sign={this.sign} title="Log in to confirm the operation" />}
             {step === 'signin' && <button className="button-link" onClick={() => this.setState({ step: 'form' })}>Cancel</button>}
