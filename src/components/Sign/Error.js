@@ -2,8 +2,8 @@ import React, { PropTypes } from 'react';
 import { getErrorMessage } from '../../../helpers/operation';
 
 const SignError = ({ error, resetForm }) =>
-  <div className="Sign__error-container">
-    <div className="Sign__error-title-bg">
+  <div className="Sign__result-container">
+    <div className="Sign__result-title-bg">
       <object data="/img/signin/fail.svg" type="image/svg+xml" id="error-icon" />
     </div>
     <h2>Error</h2>
