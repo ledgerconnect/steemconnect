@@ -44,7 +44,7 @@ export default class Sign extends Component {
       this.setState({ validationErrors, step: 'validationErrors' });
     } else {
       const normalizedQuery = await normalize(type, query);
-      this.setState({ step: 'form', normalizedQuery });
+      this.setState({ step: 'result', error: 'blabla', normalizedQuery });
     }
   }
 

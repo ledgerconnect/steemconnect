@@ -7,7 +7,9 @@
 }
 
 .Sign__wrapper {
-  padding: 50px;
+  padding: 40px 70px;
+  width: 100%;
+  flex: 1 0 0;
 
   .ant-row, .ant-form-item-control-wrapper, .ant-form-item-control {
     width: 100%;
@@ -34,6 +36,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 
   h2 {
     font-size: 30px;
@@ -48,7 +51,7 @@
     line-height: 1.75;
     text-align: center;
     color: #333333;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
   }
 
   div {
@@ -56,6 +59,11 @@
     flex-direction: column;
     align-items: center;
   }
+}
+
+.Sign__error-container {
+  width: 100%;
+  padding: 25px 15px 10px 15px;
 }
 
 .Signin__placeholder {
@@ -103,6 +111,7 @@
   background-image: url("/img/signin/result-bg.svg");
   background-repeat: no-repeat;
   justify-content: center;
+  margin-bottom: 33px;
 
   #error-icon, #success-icon {
     width: 119px;
@@ -111,6 +120,7 @@
 }
 
 .signin-button {
+  font-family: WhitneyMedium,"Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;;
   text-transform: uppercase;
   color: #4ba2f2 !important;
   background: none;
@@ -122,7 +132,6 @@
   font-weight: bold;
   text-align: center;
   display: block;
-  margin-top: 10px;
 }
 
 .signin-header {
