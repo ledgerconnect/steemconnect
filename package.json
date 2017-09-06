@@ -2,7 +2,8 @@
   "name": "sc2",
   "version": "0.0.1",
   "engines": {
-    "node": "8.1.4"
+    "node": "8.1.4",
+    "npm": "4.6.1"
   },
   "bin": "./bin/www",
   "main": "./bin/www",
