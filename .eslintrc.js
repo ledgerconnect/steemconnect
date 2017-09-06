@@ -8,6 +8,10 @@ module.exports = {
       "experimentalObjectRestSpread": true,
     },
   },
+  "env": {
+    "node": true,
+    "browser": true,
+  },
   "extends": "airbnb",
   "rules": {
     "react/jsx-filename-extension": 0,

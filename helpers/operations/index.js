@@ -1,5 +1,6 @@
 const profileUpdate = require('./profile-update');
 const comment = require('./comment');
+const customJson = require('./custom-json');
 const delegateVestingShares = require('./delegate-vesting-shares');
 const follow = require('./follow');
 const mute = require('./mute');
@@ -12,6 +13,7 @@ const vote = require('./vote');
 
 module.exports = {
   comment,
+  custom_json: customJson,
   delegate_vesting_shares: delegateVestingShares,
   follow,
   mute,
