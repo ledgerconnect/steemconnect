@@ -80,7 +80,7 @@ class Sign extends React.Component {
       <Form onSubmit={this.handleSubmit} className="SignForm">
         <object data="/img/sign/c-logo.svg" type="image/svg+xml" id="sc-icon" />
         <h5>{title}</h5>
-        <p className="key-help">This operation requires your {this.props.roles.join(', ')} key or master password.</p>
+        <p>This operation requires your {this.props.roles.join(', ')} key or master password.</p>
         <Form.Item hasFeedback>
           {getFieldDecorator('username', {
             rules: [

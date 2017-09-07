@@ -90,7 +90,7 @@ export default class Sign extends Component {
     Placeholder = (type === 'comment') ? SignPlaceholderComment : Placeholder;
     Placeholder = (changeCase.snakeCase(type) === 'profile_update') ? SignPlaceholderNonFiltered : Placeholder;
     return (
-      <div className="Sign">
+      <div className={`Sign ${step === 'signin' ? 'Sign__signin-top-wrapper' : ''}`}>
         <div className={`Sign__content ${step === 'signin' ? 'Sign__signin-wrapper' : ''}`}>
           {step === 'signin' &&
           <div className="Sign__signin-warning">Confirm that you are on steemconnect.com before entering your password</div>}
