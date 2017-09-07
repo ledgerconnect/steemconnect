@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import steem from 'steem';
-import { Form, Button } from 'antd';
 import changeCase from 'change-case';
 import SignForm from './Form/Sign';
 import SignSuccess from './Sign/Success';
@@ -92,7 +91,9 @@ export default class Sign extends Component {
     Placeholder = (changeCase.snakeCase(type) === 'profile_update') ? SignPlaceholderNonFiltered : Placeholder;
     return (
       <div className="Sign">
-        <div className="Sign__content">
+        <div className={`Sign__content ${step === 'signin' ? 'signin_wrapper' : null}`}>
+          {step === 'signin' &&
+          <div className="signin-warning">Confirm that you are on steemconnect.com before entering your password</div>}
           {step === 'form' && <div className="signin-header">
             <object data="/img/signin/s-clogo.svg" type="image/svg+xml" id="sclogo" />
             <object data="/img/signin/biglogo.svg" type="image/svg+xml" id="biglogo" />
@@ -106,20 +107,20 @@ export default class Sign extends Component {
                 <h5 className="operation-title">{ changeCase.titleCase(type) }</h5>
                 <Placeholder query={normalizedQuery} params={op.params} />
               </div>
-              <Form.Item>
-                <Button type="primary" onClick={() => this.setState({ step: 'signin' })} className="SignForm__button">
-                  Continue
-                </Button>
-              </Form.Item>
+              <button onClick={() => this.setState({ step: 'signin' })} className="SignForm__button">
+                Continue
+              </button>
             </div>
             }
             {step === 'signin' && <SignForm roles={op.roles} sign={this.sign} title="Log in to confirm the operation" />}
-            {step === 'signin' && <button className="button-link" onClick={() => this.setState({ step: 'form' })}>Cancel</button>}
-            {step === 'loading' && <Loading />}
+            {step === 'signin' && <button className="button-link button-cancel" onClick={() => this.setState({ step: 'form' })}>Cancel</button>}
+            {step === 'loading' && <div className="centered-loading"><Loading /></div>}
             {step === 'result' && success && <SignSuccess result={success} cb={normalizedQuery.cb} />}
             {step === 'result' && error && <SignError error={error} resetForm={this.resetForm} />}
           </div>
           {['signin', 'form'].includes(step) && <div className="signin-footer">
+            <a href="http://v2.steemconnect.com" target="_blank" rel="noopener noreferrer">Terms & Conditions</a>
+            <span className="separator">|</span>
             <a href="http://v2.steemconnect.com" target="_blank" rel="noopener noreferrer">About SteemConnect</a>
           </div>}
         </div>
