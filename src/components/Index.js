@@ -65,6 +65,7 @@ class Index extends React.Component {
                     <ul className="lp-language-select">
                       <LanguageItem locale="en" setLocale={setLocale} />
                       <LanguageItem locale="fr" setLocale={setLocale} />
+                      <LanguageItem locale="ru" setLocale={setLocale} />
                       <LanguageItem locale="ko" setLocale={setLocale} />
                       <LanguageItem locale="zh" setLocale={setLocale} />
                     </ul>
