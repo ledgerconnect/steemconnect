@@ -78,7 +78,7 @@ class Sign extends React.Component {
     const btnTitle = this.props.btnTitle ? this.props.btnTitle : 'Sign In';
     return (
       <Form onSubmit={this.handleSubmit} className="SignForm">
-        <object data="/img/signin/s-clogo-big.svg" type="image/svg+xml" id="sc-icon" />
+        <object data="/img/sign/c-logo.svg" type="image/svg+xml" id="sc-icon" />
         <h5>{title}</h5>
         <p className="key-help">This operation requires your {this.props.roles.join(', ')} key or master password.</p>
         <Form.Item hasFeedback>

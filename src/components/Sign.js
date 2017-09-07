@@ -91,34 +91,34 @@ export default class Sign extends Component {
     Placeholder = (changeCase.snakeCase(type) === 'profile_update') ? SignPlaceholderNonFiltered : Placeholder;
     return (
       <div className="Sign">
-        <div className={`Sign__content ${step === 'signin' ? 'signin_wrapper' : null}`}>
+        <div className={`Sign__content ${step === 'signin' ? 'Sign__signin-wrapper' : ''}`}>
           {step === 'signin' &&
-          <div className="signin-warning">Confirm that you are on steemconnect.com before entering your password</div>}
-          {step === 'form' && <div className="signin-header">
-            <object data="/img/signin/s-clogo.svg" type="image/svg+xml" id="sclogo" />
-            <object data="/img/signin/biglogo.svg" type="image/svg+xml" id="biglogo" />
+          <div className="Sign__signin-warning">Confirm that you are on steemconnect.com before entering your password</div>}
+          {step === 'form' && <div className="Sign__header">
+            <object data="/img/logo.svg" type="image/svg+xml" id="logo" />
+            <object data="/img/sign/header-bg.svg" type="image/svg+xml" id="header-bg" />
           </div>}
           <div className="Sign__wrapper">
             {step === 'validationErrors' && <SignValidationErrors errors={validationErrors} />}
             {step === 'form' &&
-            <div className="Signin__placeholder">
+            <div className="Placeholder">
               <h2>Do you want to confirm this operation?</h2>
-              <div className="operation-container">
-                <h5 className="operation-title">{ changeCase.titleCase(type) }</h5>
+              <div className="Placeholder__operation-container">
+                <h5 className="Placeholder__operation-title">{ changeCase.titleCase(type) }</h5>
                 <Placeholder query={normalizedQuery} params={op.params} />
               </div>
-              <button onClick={() => this.setState({ step: 'signin' })} className="SignForm__button">
+              <button onClick={() => this.setState({ step: 'signin' })} className="Placeholder__button">
                 Continue
               </button>
             </div>
             }
             {step === 'signin' && <SignForm roles={op.roles} sign={this.sign} title="Log in to confirm the operation" />}
-            {step === 'signin' && <button className="button-link button-cancel" onClick={() => this.setState({ step: 'form' })}>Cancel</button>}
-            {step === 'loading' && <div className="centered-loading"><Loading /></div>}
+            {step === 'signin' && <button className="Sign__button-link Sign__button-cancel" onClick={() => this.setState({ step: 'form' })}>Cancel</button>}
+            {step === 'loading' && <div className="Sign__centered-loading"><Loading /></div>}
             {step === 'result' && success && <SignSuccess result={success} cb={normalizedQuery.cb} />}
             {step === 'result' && error && <SignError error={error} resetForm={this.resetForm} />}
           </div>
-          {['signin', 'form'].includes(step) && <div className="signin-footer">
+          {['signin', 'form'].includes(step) && <div className="Sign__footer">
             <a href="http://v2.steemconnect.com" target="_blank" rel="noopener noreferrer">Terms & Conditions</a>
             <span className="separator">|</span>
             <a href="http://v2.steemconnect.com" target="_blank" rel="noopener noreferrer">About SteemConnect</a>

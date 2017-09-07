@@ -4,22 +4,16 @@ import changeCase from 'change-case';
 const SignPlaceholderNonFilterer = ({
   query,
 }) =>
-  <div className="operation-content">
-    <table className="table text-left">
-      <tbody>
-        {Object.keys(query).map(key =>
-          query[key] &&
-          <tr key={key}>
-            <td className="label">
-              <b>{changeCase.titleCase(key)}</b>
-            </td>
-            <td>
-              {query[key]}
-            </td>
-          </tr>
-        )}
-      </tbody>
-    </table>
+  <div className="Placeholder__operation-content">
+    <ul className="Placeholder__operation-params">
+      {Object.keys(query).map(key =>
+        query[key] &&
+        <li key={key}>
+          <strong>{changeCase.titleCase(key)}</strong>
+          <span>{query[key]}</span>
+        </li>
+      )}
+    </ul>
   </div>
 ;
 

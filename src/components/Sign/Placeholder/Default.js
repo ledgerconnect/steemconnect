@@ -5,22 +5,16 @@ const SignPlaceholderDefault = ({
   query,
   params,
 }) =>
-  <div className="operation-content">
-    <table className="table text-left">
-      <tbody>
-        {params.map((param, key) =>
-          query[param] &&
-          <tr key={key}>
-            <td className="label">
-              <b>{changeCase.titleCase(param)}</b>
-            </td>
-            <td>
-              {query[param]}
-            </td>
-          </tr>
-        )}
-      </tbody>
-    </table>
+  <div className="Placeholder__operation-content">
+    <ul className="Placeholder__operation-params">
+      {params.map((param, key) =>
+        query[param] &&
+        <li key={key}>
+          <strong>{changeCase.titleCase(param)}</strong>
+          <span>{query[param]}</span>
+        </li>
+      )}
+    </ul>
   </div>
 ;
 
