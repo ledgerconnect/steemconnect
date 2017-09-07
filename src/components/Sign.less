@@ -1,21 +1,28 @@
 @import "../styles/screen-sizes";
 
 .Sign {
-  align-items: center;
-  background-color: #f0f2f4;
-  padding: 20px 0;
-  height: 100%;
   display: flex;
-  overflow: auto;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.Sign__content {
+  text-align: center;
+  margin: 0 auto;
+  max-width: 480px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .Sign__wrapper {
   padding: 40px 20px;
   width: 100%;
-  margin-bottom: 40px;
 
-  .ant-row, .ant-form-item-control-wrapper, .ant-form-item-control {
-    width: 100%;
+  .ant-row {
+    margin-bottom: 14px;
   }
 
   .ant-btn {
@@ -27,16 +34,7 @@
   }
 }
 
-.Sign__signin-top-wrapper {
-  min-height: 640px !important;
-}
-
-.Sign__signin-wrapper {
-  min-height: 580px !important;
-}
-
-.Sign__content {
-  position: relative;
+.Sign_frame {
   border-radius: 10px;
   background-color: #ffffff;
   box-shadow: 0 1px 5px 0 #d7dde3;
@@ -44,48 +42,20 @@
   margin: 20px auto;
   max-width: 500px;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  h2 {
-    font-size: 30px;
-    font-weight: bold;
-    line-height: 0.87;
-    text-align: center;
-    color: #42474d;
-  }
-
-  h5 {
-    line-height: 1.75;
-    text-align: center;
-    color: #333333;
-    margin-bottom: 0px;
-  }
-
-  div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
 }
 
 .Placeholder {
   width: 100%;
-
-  h2 {
-    font-size: 20px;
-  }
+  max-width: 330px;
+  margin: 0 auto;
 
   .Placeholder__operation-container {
     text-align: center;
     border-radius: 5px;
     background-color: #ffffff;
     border: solid 1px #e5e8eb;
-    margin: 20px 0 27px 0;
+    margin: 20px auto;
     width: 100%;
-    max-width: 330px;
     overflow: auto;
 
     h5.Placeholder__operation-title {
@@ -150,18 +120,11 @@
   font-weight: 700;
   color: white;
   width: 100%;
-  max-width: 330px;
   height: 52px;
   border-radius: 5px;
   border: none;
   background-color: #4ba2f2;
   box-shadow: 0 3px 8px 0 rgba(26, 80, 153, 0.3);
-}
-
-.Sign__form {
-  margin: 0 auto;
-  width: 100%;
-  max-width: 300px;
 }
 
 .Sign__result-container {
@@ -190,7 +153,6 @@
 .SignForm__button {
   font-family: Whitney,"Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   text-transform: uppercase;
-  font-size: 14px;
   font-weight: 700;
   color: white;
   width: 100%;
@@ -199,7 +161,6 @@
   border: none;
   background-color: #4ba2f2;
   box-shadow: 0 3px 8px 0 rgba(26, 80, 153, 0.3);
-  margin-bottom: 22px;
 }
 
 .Sign__button {
@@ -220,35 +181,28 @@
 .Sign__header {
   width: 100%;
   flex: 1 0 60px;
+  display: flex;
   background-color: rgba(240, 242, 244, 0.3);
   flex-direction: row !important;
   justify-content: space-between;
   border-bottom: solid 1px #e4e7ea;
-  border-radius: 10px 10px 0 0;
 
   #logo {
     width: 174px;
     height: 30px;
-    margin-left: 17px;
+    margin: 15px 20px;
   }
 
   #header-bg {
     width: 258px;
     height: 60px;
-    border-radius: 0 10px 0 0;
   }
 }
 
 .Sign__signin-warning {
-  font-family: Whitney,"Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
-  width: 100%;
-  height: 40px;
-  line-height: 40px;
+  padding: 20px;
   background-color: rgba(255, 224, 205, 0.3);
   color: #dc6846;
-  font-size: 13px;
-  font-weight: 700;
-  border-radius: 10px 10px 0 0;
 
   @media (max-width: @screen-xs) {
     line-height: 20px;
@@ -258,17 +212,10 @@
 .Sign__footer {
   border-top: solid 1px #e4e7ea;
   background-color: rgba(240, 242, 244, 0.3);
-  height: 40px;
-  position: absolute;
-  bottom: 0px;
-  flex-direction: row !important;
-  justify-content: center;
-  border-radius: 0 0 10px 10px;
-  width: 100%;
+  line-height: 2em;
 
   a {
     font-size: 12px;
-    line-height: 40px;
     text-align: center;
     color: #a6a6a6;
     text-decoration: none;
@@ -280,23 +227,4 @@
     margin: 0 20px;
     font-size: 12px;
   }
-}
-
-.Sign__button-link {
-  color: #4ba2f2;
-  background: none;
-  border: none;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.Sign__button-cancel {
-  margin-top: -5px;
-  font-weight: bold;
-  margin-bottom: 40px;
-}
-
-.Sign__centered-loading {
-  flex: 1 0 0;
-  justify-content: center;
 }
