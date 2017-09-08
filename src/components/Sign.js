@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import steem from 'steem';
 import changeCase from 'change-case';
 import { Link } from 'react-router';
+import { Button } from 'antd';
 import SignForm from './Form/Sign';
 import SignSuccess from './Sign/Success';
 import SignError from './Sign/Error';
@@ -16,10 +17,8 @@ import './Sign.less';
 
 export default class Sign extends Component {
   static propTypes = {
-    // eslint-disable-next-line react/forbid-prop-types
-    location: PropTypes.object,
-    // eslint-disable-next-line react/forbid-prop-types
-    params: PropTypes.object,
+    location: PropTypes.shape(),
+    params: PropTypes.shape(),
   }
 
   constructor(props) {
@@ -57,8 +56,6 @@ export default class Sign extends Component {
   };
 
   sign = async (auth) => {
-    this.setState({ step: 'loading' });
-
     const { type, query } = this.state;
     const parsedQuery = await parseQuery(type, query, auth.username);
     /* Parse params */
@@ -92,14 +89,15 @@ export default class Sign extends Component {
     Placeholder = (changeCase.snakeCase(type) === 'profile_update') ? SignPlaceholderNonFiltered : Placeholder;
     return (
       <div className="Sign">
-        <div className="Sign__content">
+        {step === 'loading' && <Loading />}
+        {step !== 'loading' && <div className="Sign__content">
           <div className="Sign_frame">
-            {step === 'signin' &&
-            <div className="Sign__signin-warning">Confirm that you are on steemconnect.com before entering your password</div>}
-            {step === 'form' && <div className="Sign__header">
+            <div className="Sign__header">
               <object data="/img/logo.svg" type="image/svg+xml" id="logo" />
               <object data="/img/sign/header-bg.svg" type="image/svg+xml" id="header-bg" />
-            </div>}
+            </div>
+            {step === 'signin' &&
+            <div className="Sign__signin-warning">Confirm that you are on steemconnect.com before entering your password</div>}
             <div className="Sign__wrapper">
               {step === 'validationErrors' && <SignValidationErrors errors={validationErrors} />}
               {step === 'form' &&
@@ -109,24 +107,21 @@ export default class Sign extends Component {
                   <h5 className="Placeholder__operation-title">{ changeCase.titleCase(type) }</h5>
                   <Placeholder query={normalizedQuery} params={op.params} />
                 </div>
-                <button onClick={() => this.setState({ step: 'signin' })} className="Placeholder__button">
+                <Button onClick={() => this.setState({ step: 'signin' })} type="primary" htmlType="button" className="SignForm__button">
                   Continue
-                </button>
+                </Button>
               </div>
               }
               {step === 'signin' && <SignForm roles={op.roles} sign={this.sign} title="Log in to confirm the operation" />}
-              {step === 'signin' && <Link onClick={() => this.setState({ step: 'form' })}>Cancel</Link>}
-              {step === 'loading' && <Loading />}
+              {step === 'signin' && <Link className="cancel-link" onClick={() => this.setState({ step: 'form' })}>Cancel</Link>}
               {step === 'result' && success && <SignSuccess result={success} cb={normalizedQuery.cb} />}
               {step === 'result' && error && <SignError error={error} resetForm={this.resetForm} />}
             </div>
-            {['signin', 'form'].includes(step) && <div className="Sign__footer">
-              <a href="http://v2.steemconnect.com" target="_blank" rel="noopener noreferrer">Terms & Conditions</a>
-              <span className="separator">|</span>
+            <div className="Sign__footer">
               <a href="http://v2.steemconnect.com" target="_blank" rel="noopener noreferrer">About SteemConnect</a>
-            </div>}
+            </div>
           </div>
-        </div>
+        </div>}
       </div>
     );
   }
