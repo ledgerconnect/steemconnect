@@ -6,10 +6,6 @@
   justify-content: center;
   align-items: center;
   height: 100%;
-
-  @media (max-width: @screen-xs) {
-    display: block;
-  }
 }
 
 .Sign__content {
@@ -30,7 +26,8 @@
   width: 100%;
 
   @media (max-width: @screen-xs) {
-    margin: 40px 0;
+    margin: 60px 0 0;
+    background: #fff;
   }
 
   .ant-row {
@@ -56,8 +53,11 @@
   width: 100%;
 
   @media (max-width: @screen-xs) {
-    margin: 0;
-    border-radius: 0;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0px auto;
     height: 100%;
   }
 }
@@ -204,6 +204,7 @@ a.cancel-link {
   @media (max-width: @screen-xs) {
     position: fixed;
     top: 0;
+    z-index: 1;
   }
 
   #logo {
@@ -230,8 +231,6 @@ a.cancel-link {
   line-height: 2em;
 
   @media (max-width: @screen-xs) {
-    position: fixed;
-    bottom: 0;
     width: 100%;
   }
 
