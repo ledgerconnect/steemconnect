@@ -63,15 +63,15 @@
       background-color: rgba(240, 242, 244, 0.3);
       color: #898989;
       width: 100%;
-      font-size: 12px;
+      font-size: 16px;
       font-weight: bold;
       min-height: 30px;
       line-height: 30px;
     }
 
     .Placeholder__operation-content {
-      font-size: 16px;
-      padding: 20px 30px;
+      font-size: 20px;
+      padding: 20px 10px;
       width: 100%;
 
       ul.Placeholder__operation-params {
@@ -79,6 +79,8 @@
 
         li {
           display: flex;
+          word-break: break-word;
+
           @media (max-width: @screen-xs) {
             display: block;
             margin-bottom: 10px;
@@ -98,7 +100,7 @@
           }
           span {
             display: inline-block;
-            flex: 1 0 0;
+            flex: 2 0 0;
             margin-left: 5px;
 
             @media (max-width: @screen-xs) {
