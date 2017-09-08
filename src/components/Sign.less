@@ -6,6 +6,10 @@
   justify-content: center;
   align-items: center;
   height: 100%;
+
+  @media (max-width: @screen-xs) {
+    display: block;
+  }
 }
 
 .Sign__content {
@@ -15,11 +19,19 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: @screen-xs) {
+    height: 100%;
+  }
 }
 
 .Sign__wrapper {
   padding: 40px 20px;
   width: 100%;
+
+  @media (max-width: @screen-xs) {
+    margin: 40px 0;
+  }
 
   .ant-row {
     margin-bottom: 14px;
@@ -42,6 +54,12 @@
   margin: 20px auto;
   max-width: 500px;
   width: 100%;
+
+  @media (max-width: @screen-xs) {
+    margin: 0;
+    border-radius: 0;
+    height: 100%;
+  }
 }
 
 .Placeholder {
@@ -178,10 +196,15 @@ a.cancel-link {
   width: 100%;
   flex: 1 0 60px;
   display: flex;
-  background-color: rgba(240, 242, 244, 0.3);
+  background-color: #fafbfc;
   flex-direction: row !important;
   justify-content: space-between;
   border-bottom: solid 1px #e4e7ea;
+
+  @media (max-width: @screen-xs) {
+    position: fixed;
+    top: 0;
+  }
 
   #logo {
     width: 174px;
@@ -197,13 +220,20 @@ a.cancel-link {
 
   @media (max-width: @screen-xs) {
     line-height: 20px;
+    margin-top: 60px;
   }
 }
 
 .Sign__footer {
   border-top: solid 1px #e4e7ea;
-  background-color: rgba(240, 242, 244, 0.3);
+  background-color: #fafbfc;
   line-height: 2em;
+
+  @media (max-width: @screen-xs) {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
 
   a {
     font-size: 16px;
