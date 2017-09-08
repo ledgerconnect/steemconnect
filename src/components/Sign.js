@@ -94,7 +94,6 @@ export default class Sign extends Component {
           <div className="Sign_frame">
             <div className="Sign__header">
               <object data="/img/logo.svg" type="image/svg+xml" id="logo" />
-              <object data="/img/sign/header-bg.svg" type="image/svg+xml" id="header-bg" />
             </div>
             {step === 'signin' &&
             <div className="Sign__signin-warning">Confirm that you are on steemconnect.com before entering your password</div>}
