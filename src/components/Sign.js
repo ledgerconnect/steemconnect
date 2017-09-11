@@ -12,6 +12,7 @@ import customOperations from '../../helpers/operations/custom-operations';
 import SignPlaceholderDefault from './Sign/Placeholder/Default';
 import SignPlaceholderComment from './Sign/Placeholder/Comment';
 import SignPlaceholderNonFiltered from './Sign/Placeholder/NonFiltered';
+import SignPlaceholderTransferDelegate from './Sign/Placeholder/TransferDelegate';
 import Loading from '../widgets/Loading';
 import './Sign.less';
 
@@ -87,6 +88,7 @@ export default class Sign extends Component {
     let Placeholder = SignPlaceholderDefault;
     Placeholder = (type === 'comment') ? SignPlaceholderComment : Placeholder;
     Placeholder = (changeCase.snakeCase(type) === 'profile_update') ? SignPlaceholderNonFiltered : Placeholder;
+    Placeholder = (['transfer'].includes(changeCase.snakeCase(type))) ? SignPlaceholderTransferDelegate : Placeholder;
     return (
       <div className="Sign">
         {step === 'loading' && <Loading />}

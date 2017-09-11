@@ -1,0 +1,60 @@
+@import "../../../styles/screen-sizes";
+
+.TransferInfo {
+  strong {
+    color:#333333;
+    display: block;
+    font-size: 24px;
+  }
+
+  .TransferInfo__accounts {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+
+    .TransferInfo__dots {
+      border: 1px dashed #4ba2f2;
+      margin-top: -32px;
+      width: 35px;
+      position: absolute;
+      top: 60px;
+      left: 1px;
+      &:last-child {
+        right: 1px;
+        left:inherit;
+      }
+
+      @media (max-width: @screen-xs) {
+        max-width: 20%;
+      }
+    }
+
+    .TransferInfo__account {
+      position: relative;
+      flex: 1px;
+      padding: 0 10px;
+
+      .TransferInfo__avatar {
+        img {
+          border-radius: 50%;
+        }
+      }
+      .TransferInfo__username {
+        font-weight: 700;
+        font-size: 18px;
+        color: #333333;
+      }
+      .TransferInfo__reputation {
+        position: absolute;
+        right: 32px;
+        top: -10px;
+        p {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+  .Placeholder__memo {
+    font-size: 16px;
+  }
+}
