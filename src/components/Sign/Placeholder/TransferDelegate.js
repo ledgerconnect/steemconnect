@@ -19,7 +19,7 @@ const SignPlaceholderDefault = ({
       <div className="TransferInfo__account">
         <span className="TransferInfo__dots" />
         <Avatar username={query.toName} size="60" className="TransferInfo__avatar" />
-        {query.toReputation && <span className="TransferInfo__reputation"><Badge count={query.toReputation} style={{ backgroundColor: '#49a9ee' }} /></span>}
+        {query.toReputation && <span className="TransferInfo__reputation"><Badge count={query.toReputation} style={{ backgroundColor: '#1A5099' }} /></span>}
         <br />
         <span className="TransferInfo__username">
           {query.toName}
