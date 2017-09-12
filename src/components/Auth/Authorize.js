@@ -18,6 +18,7 @@ export default class Authorize extends Component {
         client_id: PropTypes.string,
         scope: PropTypes.string,
         redirect_uri: PropTypes.string,
+        state: PropTypes.string,
       }),
     }),
     // eslint-disable-next-line react/forbid-prop-types
@@ -29,20 +30,22 @@ export default class Authorize extends Component {
     const clientId = this.props.location.query.client_id;
     const redirectUri = this.props.location.query.redirect_uri;
     const scope = this.props.location.query.scope || '';
+    const state = this.props.location.query.state;
     this.state = {
       clientId,
       redirectUri,
       scope,
+      state,
       step: 0,
     };
   }
 
   componentWillReceiveProps = (props) => {
-    const { clientId, scope, redirectUri } = this.state;
+    const { clientId, scope, redirectUri, state } = this.state;
     const { auth } = props;
     if (auth.isAuthenticated && hasAuthority(auth.user, clientId)) {
       authorize({ clientId, scope }, (err, res) => {
-        window.location = `${redirectUri}?${qs.stringify(res)}`;
+        window.location = `${redirectUri}?${qs.stringify({ ...res, state })}`;
       });
     } else if (auth.isLoaded) {
       this.setState({ step: 1 });
@@ -50,12 +53,12 @@ export default class Authorize extends Component {
   };
 
   authorize = (auth) => {
-    const { clientId, redirectUri, scope } = this.state;
+    const { clientId, redirectUri, scope, state } = this.state;
     this.setState({ step: 0 });
     login({ ...auth }, () => {
       addPostingAuthority({ ...auth, clientId }, () => {
         authorize({ clientId, scope }, (errA, resA) => {
-          window.location = `${redirectUri}?${qs.stringify(resA)}`;
+          window.location = `${redirectUri}?${qs.stringify({ ...resA, state })}`;
         });
       });
     });
