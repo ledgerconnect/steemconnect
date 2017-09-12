@@ -53,7 +53,6 @@ const normalize = async (query) => {
     account = accounts && accounts.length > 0 && accounts.find(a => a.name === sUsername);
     if (account) {
       cQuery.fromName = account.name;
-      cQuery.fromReputation = steem.formatter.reputation(account.reputation);
     }
   }
 
