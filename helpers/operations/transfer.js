@@ -17,7 +17,11 @@ const parse = (query) => {
 
 const validate = async (query, errors) => {
   if (!isEmpty(query.to) && !await userExists(query.to)) {
-    errors.push(`the user ${query.following} doesn't exist`);
+    errors.push(`the user ${query.to} doesn't exist`);
+  }
+
+  if (!isEmpty(query.from) && !await userExists(query.from)) {
+    errors.push(`the user ${query.from} doesn't exist`);
   }
 
   if (!isEmpty(query.amount) && !['STEEM', 'SBD'].includes(query.amount.split(' ')[1])) {
