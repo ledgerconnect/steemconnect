@@ -88,7 +88,6 @@ export default class Sign extends Component {
     let Placeholder = SignPlaceholderDefault;
     Placeholder = (type === 'comment') ? SignPlaceholderComment : Placeholder;
     Placeholder = (changeCase.snakeCase(type) === 'profile_update') ? SignPlaceholderNonFiltered : Placeholder;
-    console.log(changeCase.snakeCase(type));
     Placeholder = (['transfer', 'delegate_vesting_shares'].includes(changeCase.snakeCase(type))) ? SignPlaceholderTransferDelegate : Placeholder;
     return (
       <div className="Sign">
