@@ -9,7 +9,7 @@ const SignValidationErrors = ({ errors }) =>
       <tbody>
         {errors.map((error, idx) =>
           <tr key={idx}>
-            <td>{error}</td>
+            <td>{error.error}</td>
           </tr>
         )}
       </tbody>
