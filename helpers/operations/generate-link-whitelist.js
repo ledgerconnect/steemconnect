@@ -3,6 +3,7 @@ account_witness_proxy
 account_witness_vote
 claim_reward_balance
 cancel_transfer_from_savings
+comment
 comment_options
 custom_json
 decline_voting_rights
