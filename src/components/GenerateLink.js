@@ -63,12 +63,18 @@ class Index extends React.Component {
     const operations = [];
 
     for (let i = 0; i < whitelistOperations.length; i += 1) {
-      operations.push(changeCase.camelCase(whitelistOperations[i]));
+      operations.push({
+        name: whitelistOperations[i],
+        mapped: whitelistOperations[i],
+      });
     }
     for (let i = 0; i < customOperations.length; i += 1) {
-      operations.push(changeCase.camelCase(customOperations[i].operation));
+      operations.push({
+        name: customOperations[i].operation,
+        mapped: customOperations[i].type,
+      });
     }
-    operations.sort();
+    operations.sort((a, b) => a.name.localeCompare(b.name));
 
     let fields = [];
     let operation;
@@ -98,9 +104,9 @@ class Index extends React.Component {
                   showSearch
                   onChange={this.handleChangeOperation}
                 >
-                  {operations.map(key =>
-                    <Option value={key} key={`opt_${key}`}>
-                      {key}
+                  {operations.map(op =>
+                    <Option value={op.name} key={`opt_${op.name}`}>
+                      {changeCase.titleCase(op.name)} ({op.mapped})
                     </Option>
                   )}
                 </Select>
