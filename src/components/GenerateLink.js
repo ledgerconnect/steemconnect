@@ -3,6 +3,7 @@ import { Button, Form, Input, Select } from 'antd';
 import changeCase from 'change-case';
 import steemOperations from 'steem/lib/broadcast/operations';
 import customOperations from '../../helpers/operations/custom-operations';
+import helperOperations from '../../helpers/operations';
 import whitelistOperations from '../../helpers/operations/generate-link-whitelist';
 
 const Option = Select.Option;
@@ -32,11 +33,24 @@ class Index extends React.Component {
         const port = window.location.port ? `:${window.location.port}` : '';
         let link = `${window.location.protocol}//${window.location.hostname}${port}/sign/${this.state.operation}?`;
         Object.keys(values).forEach((k) => {
-          link += `${k}=${values[k]}&`;
+          if (values[k]) {
+            link += `${k}=${values[k]}&`;
+          }
         });
         this.setState({ step: 'link', link: link.slice(0, -1) });
       }
     });
+  }
+
+  isRequiredField = (field) => {
+    const { operation } = this.state;
+    if (Object.keys(helperOperations).includes(changeCase.snakeCase(operation))) {
+      const optionalFields = helperOperations[changeCase.snakeCase(operation)].optionalFields;
+      if (optionalFields && optionalFields.includes(field)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   render() {
@@ -52,8 +66,9 @@ class Index extends React.Component {
     operations.sort();
 
     let fields = [];
+    let operation;
     if (this.state.operation) {
-      let operation = customOperations.find(
+      operation = customOperations.find(
         o => o.operation === changeCase.snakeCase(this.state.operation));
       if (!operation) {
         operation = steemOperations.find(
@@ -86,17 +101,20 @@ class Index extends React.Component {
                 </Select>
               )}
             </Form.Item>
-            {fields.map(field =>
-              <Form.Item label={field} key={`f_${field}`}>
-                {getFieldDecorator(field, {
-                  rules: [{
-                    required: true, message: `${field} is required`,
-                  }],
-                })(
-                  <Input id={field} />
-                )}
-              </Form.Item>
-            )}
+            {fields.map((field) => {
+              const isRequired = this.isRequiredField(field);
+              return (
+                <Form.Item label={`${field}${isRequired ? '*' : ''}`} key={`f_${field}`}>
+                  {getFieldDecorator(field, {
+                    rules: [{
+                      required: isRequired, message: `${field} is required`,
+                    }],
+                  })(
+                    <Input id={field} />
+                  )}
+                </Form.Item>
+              );
+            })}
             <Form.Item>
               <Button type="primary" htmlType="submit">Generate</Button>
             </Form.Item>
