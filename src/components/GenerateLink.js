@@ -6,6 +6,7 @@ import customOperations from '../../helpers/operations/custom-operations';
 import helperOperations from '../../helpers/operations';
 import authorOperations from '../../helpers/operation-author.json';
 import whitelistOperations from '../../helpers/operations/generate-link-whitelist';
+import './GenerateLink.less';
 
 const Option = Select.Option;
 
@@ -82,10 +83,10 @@ class Index extends React.Component {
     }
 
     return (
-      <div className="container my-5">
+      <div className="container padding-top-30">
         <h1>Generate hot signing link</h1>
         {this.state.step === 'form' && <div>
-          <Form onSubmit={this.handleSubmit}>
+          <Form onSubmit={this.handleSubmit} className="FormGenerateLink">
             <Form.Item label="Operation">
               {getFieldDecorator('operation', {
                 rules: [{
