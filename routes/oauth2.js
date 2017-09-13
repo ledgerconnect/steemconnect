@@ -2,7 +2,7 @@ const express = require('express');
 const debug = require('debug')('sc2:server');
 const { issueAppToken } = require('../helpers/token');
 const { authenticate } = require('../helpers/middleware');
-// const config = require('../config.json');
+const config = require('../config.json');
 
 const router = express.Router(); // eslint-disable-line new-cap
 
@@ -30,7 +30,7 @@ router.all('/api/oauth2/authorize', authenticate('user'), async (req, res) => {
   const accessToken = issueAppToken(clientId, req.user, scope);
   res.json({
     access_token: accessToken,
-    // expires_in: config.token_expiration,
+    expires_in: config.token_expiration,
     username: req.user,
   });
 });
