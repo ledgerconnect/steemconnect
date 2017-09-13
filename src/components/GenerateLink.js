@@ -21,6 +21,7 @@ class Index extends React.Component {
       step: 'form',
       link: '',
       operation: null,
+      submitting: false,
     };
   }
 
@@ -28,10 +29,30 @@ class Index extends React.Component {
     this.setState({ operation });
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, values) => {
+    const { form } = this.props;
+    if (this.state.submitting) return;
+    this.setState({ submitting: true });
+    await form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
+        const customOp = helperOperations[this.state.operation];
+        if (customOp && typeof customOp.validate === 'function') {
+          const errors = [];
+          await customOp.validate(values, errors);
+          if (errors.length > 0) {
+            for (let i = 0; i < errors.length; i += 1) {
+              const field = {};
+              field[errors[i].field] = {
+                value: form.getFieldValue(errors[i].field),
+                errors: [new Error(errors[i].error)],
+              };
+              form.setFields(field);
+            }
+            this.setState({ submitting: false });
+            return false;
+          }
+        }
         let link = `/sign/${this.state.operation}?`;
         Object.keys(values).forEach((k) => {
           if (k !== 'operation' && values[k]) {
@@ -40,6 +61,8 @@ class Index extends React.Component {
         });
         this.setState({ step: 'link', link: link.slice(0, -1) });
       }
+      this.setState({ submitting: false });
+      return true;
     });
   }
 
@@ -127,7 +150,7 @@ class Index extends React.Component {
               );
             })}
             <Form.Item>
-              <Button type="primary" htmlType="submit">Generate</Button>
+              <Button type="primary" htmlType="submit" loading={this.state.submitting}>Generate</Button>
             </Form.Item>
           </Form>
         </div>}
