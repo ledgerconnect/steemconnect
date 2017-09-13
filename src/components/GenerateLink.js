@@ -124,9 +124,11 @@ class Index extends React.Component {
             {this.state.link}
           </pre>
           <br />
-          <Form.Item>
-            <Button type="primary" htmlType="button" onClick={() => (this.setState({ step: 'form', operation: null }))}>Get a new link</Button>
-          </Form.Item>
+          <Form>
+            <Form.Item>
+              <Button type="primary" htmlType="button" onClick={() => (this.setState({ step: 'form', operation: null }))}>Get a new link</Button>
+            </Form.Item>
+          </Form>
         </div>}
       </div>
     );
