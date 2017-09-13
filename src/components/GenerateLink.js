@@ -4,6 +4,7 @@ import changeCase from 'change-case';
 import steemOperations from 'steem/lib/broadcast/operations';
 import customOperations from '../../helpers/operations/custom-operations';
 import helperOperations from '../../helpers/operations';
+import authorOperations from '../../helpers/operation-author.json';
 import whitelistOperations from '../../helpers/operations/generate-link-whitelist';
 
 const Option = Select.Option;
@@ -46,6 +47,10 @@ class Index extends React.Component {
     if (Object.keys(helperOperations).includes(changeCase.snakeCase(operation))) {
       const optionalFields = helperOperations[changeCase.snakeCase(operation)].optionalFields;
       if (optionalFields && optionalFields.includes(field)) {
+        return false;
+      }
+      const author = authorOperations[changeCase.snakeCase(operation)];
+      if (author && author.includes(field)) {
         return false;
       }
     }
