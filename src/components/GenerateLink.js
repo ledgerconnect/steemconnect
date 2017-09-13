@@ -30,8 +30,7 @@ class Index extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        const port = window.location.port ? `:${window.location.port}` : '';
-        let link = `${window.location.protocol}//${window.location.hostname}${port}/sign/${this.state.operation}?`;
+        let link = `/sign/${this.state.operation}?`;
         Object.keys(values).forEach((k) => {
           if (values[k]) {
             link += `${k}=${values[k]}&`;
