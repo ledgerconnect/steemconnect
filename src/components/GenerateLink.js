@@ -32,8 +32,8 @@ class Index extends React.Component {
       if (!err) {
         let link = `/sign/${this.state.operation}?`;
         Object.keys(values).forEach((k) => {
-          if (values[k]) {
-            link += `${k}=${values[k]}&`;
+          if (k !== 'operation' && values[k]) {
+            link += `${k}=${encodeURIComponent(values[k])}&`;
           }
         });
         this.setState({ step: 'link', link: link.slice(0, -1) });
