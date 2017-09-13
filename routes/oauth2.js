@@ -31,6 +31,7 @@ router.all('/api/oauth2/authorize', authenticate('user'), async (req, res) => {
   res.json({
     access_token: accessToken,
     expires_in: config.token_expiration,
+    username: req.user,
   });
 });
 
