@@ -49,7 +49,7 @@ export default (
     <Route path="/accounts/request-recovery" component={RequestAccountRecovery} />
     <Route path="/login" component={Login} />
     <Route path="/oauth2/authorize" component={Authorize} />
-    <Route path="/sign/generate" component={Generate} />
+    <Route path="/sign" component={Generate} />
     <Route path="/sign/:type" component={Sign} />
     <Route path="/authorize/@:username" component={SignAuthorize} />
     <Route path="/authorize/@:username/:role" component={SignAuthorize} />
