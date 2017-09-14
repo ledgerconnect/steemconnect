@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 import { Button, Form, Input, Select } from 'antd';
 import changeCase from 'change-case';
 import steemOperations from 'steem/lib/broadcast/operations';
@@ -157,12 +158,13 @@ class Index extends React.Component {
           </Form>
         </div>}
         {this.state.step === 'link' && <div>
-          <Form>
+          <Form className="FormGenerateLinkResult">
             <Form.Item>
               <Input value={domainLink + this.state.link} />
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="button" onClick={() => (this.setState({ step: 'form', operation: null }))}>Get a new link</Button>
+              <Link to={this.state.link} className="ant-btn ant-btn-primary ant-btn-lg">Try it</Link>
+              <Button htmlType="button" className="back" onClick={() => (this.setState({ step: 'form', operation: null }))}>Get a new link</Button>
             </Form.Item>
           </Form>
         </div>}
