@@ -155,11 +155,10 @@ class Index extends React.Component {
           </Form>
         </div>}
         {this.state.step === 'link' && <div>
-          <pre>
-            {this.state.link}
-          </pre>
-          <br />
           <Form>
+            <Form.Item>
+              <Input value={this.state.link} />
+            </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="button" onClick={() => (this.setState({ step: 'form', operation: null }))}>Get a new link</Button>
             </Form.Item>
