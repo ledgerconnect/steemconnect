@@ -48,10 +48,28 @@ const validate = async (query, errors) => {
 
 const normalize = async (query) => {
   const cQuery = _.cloneDeep(query);
+
+  let sUsername = normalizeUsername(query.delegatee);
+  let accounts = await steem.api.getAccountsAsync([sUsername]);
+  let account = accounts && accounts.length > 0 && accounts.find(a => a.name === sUsername);
+  if (account) {
+    cQuery.toName = account.name;
+    cQuery.toReputation = steem.formatter.reputation(account.reputation);
+  }
+
+  if (query.delegator) {
+    sUsername = normalizeUsername(query.delegator);
+    accounts = await steem.api.getAccountsAsync([sUsername]);
+    account = accounts && accounts.length > 0 && accounts.find(a => a.name === sUsername);
+    if (account) {
+      cQuery.fromName = account.name;
+    }
+  }
+
   const [amount, symbol] = cQuery.vesting_shares.split(' ');
   if (amount && symbol === 'VESTS') {
     const globalProps = await steem.api.getDynamicGlobalPropertiesAsync();
-    cQuery.vesting_shares = _.join(
+    cQuery.amount = _.join(
       [
         formatter.vestToSteem(
           cQuery.vesting_shares,
@@ -61,7 +79,7 @@ const normalize = async (query) => {
         'SP',
       ], ' ');
   } else if (amount && symbol === 'SP') {
-    cQuery.vesting_shares = _.join(
+    cQuery.amount = _.join(
       [parseFloat(amount).toFixed(3), symbol],
       ' ');
   }

@@ -16,8 +16,20 @@ class Sign extends React.Component {
     btnTitle: PropTypes.string,
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      submitting: false,
+    };
+  }
+
+  componentWillMount() {
+    this.setState({ submitting: false });
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
+    this.setState({ submitting: true });
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
         const { username, password } = values;
@@ -78,7 +90,7 @@ class Sign extends React.Component {
     const btnTitle = this.props.btnTitle ? this.props.btnTitle : 'Sign In';
     return (
       <Form onSubmit={this.handleSubmit} className="SignForm">
-        <center><h2>{title}</h2></center>
+        <h5>{title}</h5>
         <p>This operation requires your {this.props.roles.join(', ')} key or master password.</p>
         <Form.Item hasFeedback>
           {getFieldDecorator('username', {
@@ -100,7 +112,7 @@ class Sign extends React.Component {
           )}
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="SignForm__button">
+          <Button type="primary" htmlType="submit" className="SignForm__button" loading={this.state.submitting}>
             {btnTitle}
           </Button>
         </Form.Item>
