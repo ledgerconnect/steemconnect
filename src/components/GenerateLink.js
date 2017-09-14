@@ -54,7 +54,7 @@ class Index extends React.Component {
             return false;
           }
         }
-        let link = `/sign/${this.state.operation}?`;
+        let link = `/sign/${changeCase.paramCase(this.state.operation)}?`;
         Object.keys(values).forEach((k) => {
           if (k !== 'operation' && values[k]) {
             link += `${k}=${encodeURIComponent(values[k])}&`;
