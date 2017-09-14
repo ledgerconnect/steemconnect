@@ -111,7 +111,8 @@ class Index extends React.Component {
       }
       fields = operation.params;
     }
-
+    const port = window.location.port ? `:${window.location.port}` : '';
+    const domainLink = `${window.location.protocol}//${window.location.hostname}${port}`;
     return (
       <div className="container padding-top-30">
         <h1>Generate hot signing link</h1>
@@ -158,7 +159,7 @@ class Index extends React.Component {
         {this.state.step === 'link' && <div>
           <Form>
             <Form.Item>
-              <Input value={this.state.link} />
+              <Input value={domainLink + this.state.link} />
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="button" onClick={() => (this.setState({ step: 'form', operation: null }))}>Get a new link</Button>
