@@ -73,10 +73,11 @@ class Index extends React.Component {
       if (optionalFields && optionalFields.includes(field)) {
         return false;
       }
-      const author = authorOperations[changeCase.snakeCase(operation)];
-      if (author && author.includes(field)) {
-        return false;
-      }
+    }
+
+    const author = authorOperations[changeCase.snakeCase(operation)];
+    if (author && author.includes(field)) {
+      return false;
     }
     return true;
   }
