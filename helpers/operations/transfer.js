@@ -23,7 +23,7 @@ const validate = async (query, errors) => {
   if (!isEmpty(query.from) && !await userExists(query.from)) {
     errors.push({ field: 'from', error: `the user ${query.from} doesn't exist` });
   }
-  
+
   if (!isEmpty(query.amount) && !['STEEM', 'SBD'].includes(query.amount.split(' ')[1])) {
     errors.push({ field: 'amount', error: 'please select a valid symbol: STEEM or SBD' });
   } else if (!isEmpty(query.amount) && !isAsset(query.amount)) {
