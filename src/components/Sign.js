@@ -59,16 +59,7 @@ export default class Sign extends Component {
     this.setState({ step: 'loading' });
 
     const { type, query } = this.state;
-    const parsedQuery = await parseQuery(type, query, auth.username);
-    /* Parse params */
-    const params = {};
-    Object.keys(parsedQuery).forEach((key) => {
-      if (isNaN(parsedQuery[key]) || parsedQuery[key] === '') {
-        params[key] = parsedQuery[key];
-      } else {
-        params[key] = parseInt(parsedQuery[key], 10);
-      }
-    });
+    const params = await parseQuery(type, query, auth.username);
 
     /* Broadcast */
     const customOp = customOperations.find(o => o.operation === changeCase.snakeCase(type));
