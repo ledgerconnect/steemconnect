@@ -10,21 +10,6 @@ const config = require('../config.json');
 
 const router = express.Router(); // eslint-disable-line new-cap
 
-/** Get my account details */
-router.post('/me', authenticate(), async (req, res) => {
-  const scope = req.scope.length ? req.scope : config.authorized_operations;
-  const accounts = await req.steem.api.getAccountsAsync([req.user]);
-  const userMetadata = req.role === 'app'
-    ? await getUserMetadata(req.proxy, req.user)
-    : undefined;
-  res.json({
-    user: req.user,
-    account: accounts[0],
-    scope,
-    user_metadata: userMetadata,
-  });
-});
-
 /** Update user_metadata */
 router.put('/me', authenticate('app'), async (req, res) => {
   const scope = req.scope.length ? req.scope : config.authorized_operations;
@@ -57,6 +42,21 @@ router.put('/me', authenticate('app'), async (req, res) => {
       error_description: 'User metadata must be an object',
     });
   }
+});
+
+/** Get my account details */
+router.all('/me', authenticate(), async (req, res) => {
+  const scope = req.scope.length ? req.scope : config.authorized_operations;
+  const accounts = await req.steem.api.getAccountsAsync([req.user]);
+  const userMetadata = req.role === 'app'
+    ? await getUserMetadata(req.proxy, req.user)
+    : undefined;
+  res.json({
+    user: req.user,
+    account: accounts[0],
+    scope,
+    user_metadata: userMetadata,
+  });
 });
 
 /** Broadcast transaction */
