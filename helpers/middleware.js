@@ -45,13 +45,11 @@ const strategy = (req, res, next) => {
     /* eslint-enable no-param-reassign */
   } catch (err) {
     // console.log(err);
-    console.log('The token is not valid', err, token, req.body, req.query);
   }
   next();
 };
 
 const authenticate = role => async (req, res, next) => {
-  console.log('Authenticate', role);
   if (!req.role || (role && req.role !== role)) {
     res.status(401).json({
       error: 'invalid_grant',
@@ -76,7 +74,6 @@ const authenticate = role => async (req, res, next) => {
       },
     });
     if (!app) {
-      console.log('The code or secret is not valid', req.proxy, secret);
       res.status(401).json({
         error: 'invalid_grant',
         error_description: 'The code or secret is not valid',
