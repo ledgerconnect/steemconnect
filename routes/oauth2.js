@@ -35,6 +35,13 @@ router.all('/api/oauth2/authorize', authenticate('user'), async (req, res) => {
   });
 });
 
+/** Request app access token */
+router.post('/api/oauth2/token', authenticate('app'), async (req, res) => {
+  // TODO
+  console.log(req.body, req.query);
+  res.json({ success: true });
+});
+
 /** Revoke app access token */
 router.all('/api/oauth2/token/revoke', authenticate('app'), async (req, res) => {
   await req.db.tokens.destroy({ where: { token: req.token } });
