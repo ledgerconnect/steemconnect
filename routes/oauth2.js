@@ -36,7 +36,7 @@ router.all('/api/oauth2/authorize', authenticate('user'), async (req, res) => {
 });
 
 /** Request app access token */
-router.post('/api/oauth2/token', authenticate('app'), async (req, res) => {
+router.post('/api/oauth2/token', (req, res) => {
   // TODO
   console.log(req.body, req.query);
   res.json({ success: true });
