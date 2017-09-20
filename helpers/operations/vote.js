@@ -5,7 +5,7 @@ const optionalFields = ['weight'];
 
 const parse = (query) => {
   const cQuery = _.cloneDeep(query);
-  cQuery.weight = cQuery.weight || 10000;
+  cQuery.weight = cQuery.weight ? parseInt(cQuery.weight, 10) : 10000;
   return cQuery;
 };
 
