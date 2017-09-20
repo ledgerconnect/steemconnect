@@ -16,23 +16,26 @@ export default class Authorize extends Component {
     location: PropTypes.shape({
       query: PropTypes.shape({
         client_id: PropTypes.string,
-        scope: PropTypes.string,
+        response_type: PropTypes.string,
         redirect_uri: PropTypes.string,
+        scope: PropTypes.string,
         state: PropTypes.string,
       }),
     }),
     // eslint-disable-next-line react/forbid-prop-types
     auth: PropTypes.object,
-  }
+  };
 
   constructor(props) {
     super(props);
     const clientId = this.props.location.query.client_id;
+    const responseType = this.props.location.query.response_type || 'token';
     const redirectUri = this.props.location.query.redirect_uri;
     const scope = this.props.location.query.scope || '';
     const state = this.props.location.query.state;
     this.state = {
       clientId,
+      responseType,
       redirectUri,
       scope,
       state,
@@ -41,10 +44,10 @@ export default class Authorize extends Component {
   }
 
   componentWillReceiveProps = (props) => {
-    const { clientId, scope, redirectUri, state } = this.state;
+    const { clientId, responseType, redirectUri, scope, state } = this.state;
     const { auth } = props;
     if (auth.isAuthenticated && hasAuthority(auth.user, clientId)) {
-      authorize({ clientId, scope }, (err, res) => {
+      authorize({ clientId, scope, responseType }, (err, res) => {
         window.location = `${redirectUri}?${qs.stringify({ ...res, state })}`;
       });
     } else if (auth.isLoaded) {
@@ -53,11 +56,11 @@ export default class Authorize extends Component {
   };
 
   authorize = (auth) => {
-    const { clientId, redirectUri, scope, state } = this.state;
+    const { clientId, responseType, redirectUri, scope, state } = this.state;
     this.setState({ step: 0 });
     login({ ...auth }, () => {
       addPostingAuthority({ ...auth, clientId }, () => {
-        authorize({ clientId, scope }, (errA, resA) => {
+        authorize({ clientId, scope, responseType }, (errA, resA) => {
           window.location = `${redirectUri}?${qs.stringify({ ...resA, state })}`;
         });
       });
