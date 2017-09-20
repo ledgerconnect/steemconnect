@@ -25,8 +25,8 @@ router.put('/me', authenticate('app'), async (req, res) => {
       await updateUserMetadata(req.proxy, req.user, user_metadata);
 
       res.json({
-        _id: req.user,
         user: req.user,
+        _id: req.user,
         name: req.user,
         account: accounts[0],
         scope,
@@ -55,6 +55,8 @@ router.all('/me', authenticate(), async (req, res) => {
     : undefined;
   res.json({
     user: req.user,
+    _id: req.user,
+    name: req.user,
     account: accounts[0],
     scope,
     user_metadata: userMetadata,
