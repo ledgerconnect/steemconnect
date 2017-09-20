@@ -65,7 +65,7 @@ const authenticate = role => async (req, res, next) => {
     } else {
       next();
     }
-  } if (req.role === 'code') {
+  } else if (req.role === 'code') {
     const secret = req.query.secret || req.body.secret;
     const app = await apps.findOne({
       where: {
