@@ -71,7 +71,7 @@ class Sign extends React.Component {
           this.props.form.setFields({
             password: {
               value: password,
-              errors: [new Error('Password or WIF is not valid')],
+              errors: [new Error('Password or key is not valid')],
             },
           });
         }
@@ -105,10 +105,10 @@ class Sign extends React.Component {
         <Form.Item hasFeedback>
           {getFieldDecorator('password', {
             rules: [
-              { required: true, message: 'Please input your password or WIF' },
+              { required: true, message: 'Please input your password or key' },
             ],
           })(
-            <Input prefix={<Icon type="lock" size="large" />} type="password" placeholder="Password or WIF" />
+            <Input prefix={<Icon type="lock" size="large" />} type="password" placeholder="Password or key" />
           )}
         </Form.Item>
         <Form.Item>
