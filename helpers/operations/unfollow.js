@@ -21,10 +21,6 @@ const parse = (query) => {
 };
 
 const validate = async (query, errors) => {
-  if (!isEmpty(query.following) && !await userExists(query.following)) {
-    errors.push(`the user ${query.following} doesn't exist`);
-  }
-
   if (!isEmpty(query.follower) && !await userExists(query.follower)) {
     errors.push(`the user ${query.follower} doesn't exist`);
   }

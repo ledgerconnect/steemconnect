@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { tokens } = require('../db/models');
+const { tokens, apps } = require('../db/models');
 
 /**
  * Check if user allow app proxy account to post on his behalf
@@ -28,7 +28,11 @@ const verifyPermissions = async (req, res, next) => {
 };
 
 const strategy = (req, res, next) => {
-  const token = req.get('authorization') || req.query.access_token;
+  const token = req.get('authorization')
+    || req.query.access_token
+    || req.body.access_token
+    || req.query.code
+    || req.body.code;
   let decoded;
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -49,7 +53,7 @@ const authenticate = role => async (req, res, next) => {
   if (!req.role || (role && req.role !== role)) {
     res.status(401).json({
       error: 'invalid_grant',
-      error_description: 'The access_token has invalid role',
+      error_description: 'The token has invalid role',
     });
   } else if (req.role === 'app') {
     const token = await tokens.findOne({ where: { token: req.token } });
@@ -57,6 +61,22 @@ const authenticate = role => async (req, res, next) => {
       res.status(401).json({
         error: 'invalid_grant',
         error_description: 'The access_token has been revoked',
+      });
+    } else {
+      next();
+    }
+  } else if (req.role === 'code') {
+    const secret = req.query.client_secret || req.body.client_secret;
+    const app = await apps.findOne({
+      where: {
+        client_id: req.proxy,
+        secret,
+      },
+    });
+    if (!app) {
+      res.status(401).json({
+        error: 'invalid_grant',
+        error_description: 'The code or secret is not valid',
       });
     } else {
       next();
