@@ -1,6 +1,8 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-import { Button, Form, Input, Select } from 'antd';
+import { Button, Form, Input, Icon, Select, Steps } from 'antd';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import changeCase from 'change-case';
 import steemOperations from 'steem/lib/broadcast/operations';
 import customOperations from '../../helpers/operations/custom-operations';
@@ -14,16 +16,23 @@ const Option = Select.Option;
 class Index extends React.Component {
   static propTypes = {
     form: PropTypes.shape(),
+    intl: PropTypes.shape(),
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      step: 'form',
+      filter: '',
+      step: 'select',
+      stepNumber: 0,
       link: '',
       operation: null,
       submitting: false,
     };
+  }
+
+  filterOperations = (e) => {
+    this.setState({ filter: e.target.value });
   }
 
   handleChangeOperation = (operation) => {
@@ -83,8 +92,14 @@ class Index extends React.Component {
     return true;
   }
 
+  selectOperation = (operation) => {
+    this.setState({ operation, step: 'form', stepNumber: 1 });
+  }
+
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { form: { getFieldDecorator }, intl } = this.props;
+    const { step, stepNumber, filter } = this.state;
+
     const operations = [];
 
     for (let i = 0; i < whitelistOperations.length; i += 1) {
@@ -115,9 +130,27 @@ class Index extends React.Component {
     const port = window.location.port ? `:${window.location.port}` : '';
     const domainLink = `${window.location.protocol}//${window.location.hostname}${port}`;
     return (
-      <div className="container padding-top-30">
+      <div className="GenerateLinkContainer">
         <h1>Generate hot signing link</h1>
-        {this.state.step === 'form' && <div>
+        <h2><FormattedMessage id="gfl_subtitle" /></h2>
+        <Steps progressDot current={stepNumber}>
+          <Steps.Step title={intl.formatMessage({ id: 'gfl_select_operation' })} />
+          <Steps.Step title={intl.formatMessage({ id: 'gfl_information' })} />
+          <Steps.Step title={intl.formatMessage({ id: 'grl_copy_link' })} />
+        </Steps>
+        {step === 'select' && <div className="SelectOperation">
+          <div className="SelectOperation__operation search-operation">
+            <Icon type="search" /><input className="search-input" type="text" onChange={this.filterOperations} placeholder={intl.formatMessage({ id: 'grl_search_placeholder' })} />
+          </div>
+          {operations.filter(op => filter === '' || changeCase.sentenceCase(op.name).includes(filter.toLowerCase())).map(op =>
+            <a key={`op_${op.name}`} href={undefined} className="SelectOperation__operation" onClick={() => { this.selectOperation(op.name); }}>
+              <strong>{changeCase.titleCase(op.name)}</strong>
+              <span className="operation-description"><FormattedMessage id={`${op.name}_description`} /></span>
+              <Icon type="right" />
+            </a>
+          )}
+        </div>}
+        {step === 'form' && <div>
           <Form onSubmit={this.handleSubmit} className="FormGenerateLink">
             <Form.Item label="Operation">
               {getFieldDecorator('operation', {
@@ -173,4 +206,6 @@ class Index extends React.Component {
   }
 }
 
-export default Form.create()(Index);
+export default Form.create()(
+  injectIntl(Index)
+);

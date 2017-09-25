@@ -1,3 +1,113 @@
+.GenerateLinkContainer {
+  padding-top: 115px;
+  max-width: 780px;
+  margin: 0 auto;
+
+  h1 {
+    text-align: center;
+    font-size: 28px;
+    color: #333;
+  }
+
+  h2 {
+    text-align: center;
+    font-size: 18px;
+    font-weight: normal;
+    color: #333;
+    padding-bottom: 40px;
+  }
+
+  .ant-steps-dot {
+    .ant-steps-head-inner {
+      width: 10px;
+      height: 10px;
+      line-height: 10px;
+    }
+    .ant-steps-tail {
+      top: 4px;
+    }
+    .ant-steps-tail > i {
+      height: 1px;
+      width: 80%;
+      margin-left: 10%;
+    }
+    .ant-steps-head-inner {
+      .ant-steps-icon-dot {
+        border-radius: 5px;
+      }
+
+    }
+  }
+
+  .ant-steps {
+    max-width: 500px;
+    margin: 0 auto;
+
+    .ant-steps-title {
+      text-transform: uppercase;
+      color: #767b82;
+      font-size: 12px;
+    }
+
+    .ant-steps-item.ant-steps-status-wait .ant-steps-head-inner > .ant-steps-icon .ant-steps-icon-dot {
+      background-color: #c9ced3;
+    }
+    .ant-steps-item.ant-steps-status-process .ant-steps-title {
+      color: #767b82;
+    }
+    .ant-steps-item.ant-steps-status-wait .ant-steps-title {
+      color: #c9ced3;
+    }
+    .ant-steps-item.ant-steps-status-process .ant-steps-head-inner > .ant-steps-icon .ant-steps-icon-dot {
+      background: #4ba2f2;
+    }
+  }
+
+  .SelectOperation {
+    margin-top: 45px;
+
+    .search-input {
+      border: none;
+      color: #757a81;
+      padding: 10px;
+      width: calc(100% - 20px);
+      &:focus {
+        outline-color: #fff;
+      }
+    }
+
+    .SelectOperation__operation {
+      border-radius: 5px;
+      background-color: #ffffff;
+      padding: 20px 30px;
+      margin-bottom: 10px;
+      display: block;
+
+      &.search-operation {
+        padding: 10px 30px;
+      }
+
+      strong {
+        font-size: 18px;
+        color: #42474d;
+        display: block;
+      }
+
+      .operation-description {
+        font-size: 14px;
+        color: #767b82;
+      }
+    }
+    a.SelectOperation__operation {
+      .anticon {
+        float: right;
+        color: #c9ced3;
+        line-height: 0px;
+      }
+    }
+  }
+}
+
 .FormGenerateLink {
   .ant-form-item-label {
     line-height: 20px;
