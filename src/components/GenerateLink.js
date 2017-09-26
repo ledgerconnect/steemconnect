@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-import { Button, Form, Input, Icon, Steps } from 'antd';
+import { message, Button, Form, Input, Icon, Steps } from 'antd';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import changeCase from 'change-case';
 import steemOperations from 'steem/lib/broadcast/operations';
@@ -29,12 +29,42 @@ class Index extends React.Component {
     };
   }
 
-  filterOperations = (e) => {
-    this.setState({ filter: e.target.value });
+  // eslint-disable-next-line class-methods-use-this
+  componentWillMount() {
+    document.body.style.backgroundColor = '#f0f2f4';
   }
 
-  handleChangeOperation = (operation) => {
-    this.setState({ operation });
+  // eslint-disable-next-line class-methods-use-this
+  componentWillUnmount() {
+    document.body.style.backgroundColor = '#fcfcfc';
+  }
+
+  copyToClipboard = (text) => {
+    if (window.clipboardData && window.clipboardData.setData) {
+      // IE specific code path to prevent textarea being shown while dialog is visible.
+      // eslint-disable-next-line no-undef
+      return clipboardData.setData('Text', text);
+    } else if (document.queryCommandSupported && document.queryCommandSupported('copy')) {
+      const textarea = document.createElement('textarea');
+      textarea.textContent = text;
+      textarea.style.position = 'fixed';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        const res = document.execCommand('copy');
+        message.success(this.props.intl.formatMessage({ id: 'copy_success' }));
+        return res;
+      } catch (ex) {
+        return false;
+      } finally {
+        document.body.removeChild(textarea);
+      }
+    }
+    return false;
+  }
+
+  filterOperations = (e) => {
+    this.setState({ filter: e.target.value });
   }
 
   handleSubmit = async (e) => {
@@ -67,7 +97,7 @@ class Index extends React.Component {
             link += `${k}=${encodeURIComponent(values[k])}&`;
           }
         });
-        this.setState({ step: 'link', link: link.slice(0, -1) });
+        this.setState({ step: 'link', stepNumber: 2, link: link.slice(0, -1) });
       }
       this.setState({ submitting: false });
       return true;
@@ -160,6 +190,7 @@ class Index extends React.Component {
                   <strong>{changeCase.titleCase(operation)}</strong>
                   <span className="operation-description"><FormattedMessage id={`${operation}_description`} /></span>
                   <Icon type="down" />
+                  <Icon type="up" />
                 </div>
                 <ul>
                   <li>
@@ -183,7 +214,7 @@ class Index extends React.Component {
                 <Form.Item label={`${changeCase.titleCase(field)}${isRequired ? '*' : ''}`} key={`f_${field}`}>
                   {getFieldDecorator(field, {
                     rules: [{
-                      required: isRequired, message: `${changeCase.titleCase(field)} is required`,
+                      required: isRequired, message: `${changeCase.titleCase(field)} ${intl.formatMessage({ id: 'is_required' })}`,
                     }],
                   })(
                     <Input id={field} />
@@ -192,23 +223,31 @@ class Index extends React.Component {
               );
             })}
             <Form.Item>
-              <Button className="generate_link" type="primary" htmlType="submit" loading={this.state.submitting}><FormattedMessage id="generate_link" /></Button>
+              <Button className="generate-link" type="primary" htmlType="submit" loading={this.state.submitting}><FormattedMessage id="generate_link" /></Button>
             </Form.Item>
             <Form.Item>
               <Button htmlType="button" className="back" onClick={() => (this.setState({ step: 'select', stepNumber: 0, filter: '' }))}><FormattedMessage id="go_back" /></Button>
             </Form.Item>
           </Form>
         </div>}
-        {this.state.step === 'link' && <div>
-          <Form className="FormGenerateLinkResult">
-            <Form.Item>
-              <Input value={domainLink + this.state.link} />
-            </Form.Item>
-            <Form.Item>
-              <Link to={this.state.link} className="ant-btn ant-btn-primary ant-btn-lg">Try it</Link>
-              <Button htmlType="button" className="back" onClick={() => (this.setState({ step: 'form', operation: null }))}>Get a new link</Button>
-            </Form.Item>
-          </Form>
+        {this.state.step === 'link' && <div className="FormGenerateLinkResult-container">
+          <div className="FormGenerateLinkResult-bg">
+            <Form className="FormGenerateLinkResult">
+              <object data="/img/sign/link-icon.svg" type="image/svg+xml" id="link-icon" />
+              <h1><FormattedMessage id="copy_link" /></h1>
+              <h2><FormattedMessage id="copy_link_subtitle" /></h2>
+              <Form.Item>
+                <div className="link-result">
+                  <div><p>{domainLink + this.state.link}</p></div>
+                  <button type="button" className="copy-link-btn" onClick={() => { this.copyToClipboard(domainLink + this.state.link); }}><FormattedMessage id="copy_link" /></button>
+                </div>
+              </Form.Item>
+              <Form.Item>
+                <Link to={this.state.link} className="try-link"><FormattedMessage id="try_link" /></Link>
+              </Form.Item>
+            </Form>
+          </div>
+          <Button className="generate-link" type="primary" htmlType="button" onClick={() => (this.setState({ step: 'select', stepNumber: 0, operation: null }))}><FormattedMessage id="generate__new_link" /></Button>
         </div>}
       </div>
     );

@@ -1,5 +1,10 @@
+.GenerateLinkBg {
+  background-color: #f0f2f4;
+  height: 100%;
+}
+
 .GenerateLinkContainer {
-  padding-top: 115px;
+  padding: 115px 0;
   max-width: 780px;
   margin: 0 auto;
 
@@ -112,11 +117,26 @@
     font-weight: 600;
   }
 
-  button.generate_link {
+  button.generate-link {
     width: 100%;
     background-color: #4ba2f2;
     font-size: 16px;
     text-transform: uppercase;
+    height: 50px;
+    box-shadow: 0 3px 8px 0 rgba(26, 80, 153, 0.3);
+  }
+
+  a.try-link {
+    width: 100%;
+    background-color: #fff;
+    border: solid 2px #4ba2f2;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    height: 50px;
+    color: #4ba2f2;
+    display: block;
+    border-radius: 5px;
   }
 
   button.back {
@@ -160,6 +180,10 @@
     background: #fff;
     line-height: 27px;
 
+    .anticon-up {
+      display: none;
+    }
+
     ul {
       position: absolute;
       display: none;
@@ -196,6 +220,21 @@
 
     &:hover {
       box-shadow: 0 14px 13px 0 rgba(0, 0, 0, 0.05);
+
+      .anticon-up {
+        display: inline-block;
+      }
+
+      .anticon-down {
+        display: none;
+      }
+
+      .selected-operation {
+        background: #fafbfb;
+        border-bottom: solid 1px #f2f4f5;
+        border-radius: 5px 5px 0 0;
+      }
+
       ul {
         display: block;
         overflow: auto;
@@ -216,12 +255,67 @@
   }
 }
 
-.FormGenerateLinkResult {
-  a.ant-btn {
-    line-height: 50px;
+.FormGenerateLinkResult-container {
+  max-width: 780px;
+  text-align: center;
+  margin-top: 45px;
+
+  .FormGenerateLinkResult-bg {
+    background: #fff;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    padding: 70px 30px 10px 30px;
+
+    .FormGenerateLinkResult {
+      max-width: 450px;
+      margin: 0 auto;
+
+      .link-result {
+        border-radius: 5px;
+        border: solid 1px #e5e8eb;
+        min-height: 60px;
+
+        div {
+          color: #333333;
+          overflow-x: auto;
+          overflow-y: hidden;
+          float: left;
+          height: 60px;
+          max-width: 70%;
+          margin-left: 20px;
+
+          p {
+            width: 100%;
+            text-align: left;
+            white-space: nowrap;
+            color: #333;
+          }
+        }
+
+        button {
+          color: #4ba2f2;
+          float: right;
+          border: none;
+          background: none;
+          line-height: 60px;
+          margin-right: 20px;
+
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+
+      a.ant-btn {
+        line-height: 50px;
+      }
+    }
   }
 }
 
-.padding-top-30 {
-  padding-top: 30px;
+#link-icon {
+  width: 300px;
+  height: 164px;
+  margin-bottom: 30px;
+  margin-bottom: 30px;
 }
