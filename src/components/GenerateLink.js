@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-import { Button, Form, Input, Icon, Select, Steps } from 'antd';
+import { Button, Form, Input, Icon, Steps } from 'antd';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import changeCase from 'change-case';
 import steemOperations from 'steem/lib/broadcast/operations';
@@ -10,8 +10,6 @@ import helperOperations from '../../helpers/operations';
 import authorOperations from '../../helpers/operation-author.json';
 import whitelistOperations from '../../helpers/operations/generate-link-whitelist';
 import './GenerateLink.less';
-
-const Option = Select.Option;
 
 class Index extends React.Component {
   static propTypes = {
