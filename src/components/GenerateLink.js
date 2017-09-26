@@ -92,13 +92,17 @@ class Index extends React.Component {
     return true;
   }
 
-  selectOperation = (operation) => {
-    this.setState({ operation, step: 'form', stepNumber: 1 });
+  selectOperationStep1 = (operation) => {
+    this.setState({ operation, step: 'form', stepNumber: 1, filter: '' });
+  }
+
+  selectOperationStep2 = (operation) => {
+    this.setState({ operation });
   }
 
   render() {
     const { form: { getFieldDecorator }, intl } = this.props;
-    const { step, stepNumber, filter } = this.state;
+    const { step, stepNumber, filter, operation } = this.state;
 
     const operations = [];
 
@@ -117,33 +121,33 @@ class Index extends React.Component {
     operations.sort((a, b) => a.name.localeCompare(b.name));
 
     let fields = [];
-    let operation;
-    if (this.state.operation) {
-      operation = customOperations.find(
-        o => o.operation === changeCase.snakeCase(this.state.operation));
-      if (!operation) {
-        operation = steemOperations.find(
-          o => o.operation === changeCase.snakeCase(this.state.operation));
+    let opt;
+    if (operation) {
+      opt = customOperations.find(
+        o => o.operation === changeCase.snakeCase(operation));
+      if (!opt) {
+        opt = steemOperations.find(
+          o => o.operation === changeCase.snakeCase(operation));
       }
-      fields = operation.params;
+      fields = opt.params;
     }
     const port = window.location.port ? `:${window.location.port}` : '';
     const domainLink = `${window.location.protocol}//${window.location.hostname}${port}`;
     return (
       <div className="GenerateLinkContainer">
-        <h1>Generate hot signing link</h1>
+        <h1><FormattedMessage id="gfl_title" /></h1>
         <h2><FormattedMessage id="gfl_subtitle" /></h2>
         <Steps progressDot current={stepNumber}>
-          <Steps.Step title={intl.formatMessage({ id: 'gfl_select_operation' })} />
-          <Steps.Step title={intl.formatMessage({ id: 'gfl_information' })} />
-          <Steps.Step title={intl.formatMessage({ id: 'grl_copy_link' })} />
+          <Steps.Step title={intl.formatMessage({ id: 'select_operation' })} />
+          <Steps.Step title={intl.formatMessage({ id: 'information' })} />
+          <Steps.Step title={intl.formatMessage({ id: 'copy_link' })} />
         </Steps>
         {step === 'select' && <div className="SelectOperation">
           <div className="SelectOperation__operation search-operation">
-            <Icon type="search" /><input className="search-input" type="text" onChange={this.filterOperations} placeholder={intl.formatMessage({ id: 'grl_search_placeholder' })} />
+            <Icon type="search" /><input className="search-input" type="text" onChange={this.filterOperations} placeholder={intl.formatMessage({ id: 'search_placeholder' })} />
           </div>
           {operations.filter(op => filter === '' || changeCase.sentenceCase(op.name).includes(filter.toLowerCase())).map(op =>
-            <a key={`op_${op.name}`} href={undefined} className="SelectOperation__operation" onClick={() => { this.selectOperation(op.name); }}>
+            <a key={`op_${op.name}`} href={undefined} className="SelectOperation__operation" onClick={() => { this.selectOperationStep1(op.name); }}>
               <strong>{changeCase.titleCase(op.name)}</strong>
               <span className="operation-description"><FormattedMessage id={`${op.name}_description`} /></span>
               <Icon type="right" />
@@ -153,31 +157,35 @@ class Index extends React.Component {
         {step === 'form' && <div>
           <Form onSubmit={this.handleSubmit} className="FormGenerateLink">
             <Form.Item label="Operation">
-              {getFieldDecorator('operation', {
-                rules: [{
-                  required: true, message: 'Operation is required',
-                }],
-              })(
-                <Select
-                  id="operation"
-                  showSearch
-                  onChange={this.handleChangeOperation}
-                >
-                  {operations.map(op =>
-                    <Option value={op.name} key={`opt_${op.name}`}>
-                      {changeCase.titleCase(op.name)} ({op.mapped})
-                    </Option>
+              <div className="SelectOperation operation-select">
+                <div className="SelectOperation__operation selected-operation">
+                  <strong>{changeCase.titleCase(operation)}</strong>
+                  <span className="operation-description"><FormattedMessage id={`${operation}_description`} /></span>
+                  <Icon type="down" />
+                </div>
+                <ul>
+                  <li>
+                    <div className="SelectOperation__operation search-operation">
+                      <Icon type="search" /><input className="search-input" type="text" onChange={this.filterOperations} placeholder={intl.formatMessage({ id: 'search_placeholder' })} />
+                    </div>
+                  </li>
+                  {operations.filter(op => filter === '' || changeCase.sentenceCase(op.name).includes(filter.toLowerCase())).map(op =>
+                    <li className={`SelectOperation__operation ${operation === op.name ? 'selected-operation' : ''}`} value={op.name} key={`li_${op.name}`} onClick={() => { this.selectOperationStep2(op.name); }}>
+                      <strong>{changeCase.titleCase(op.name)}</strong>
+                      <span className="operation-description"><FormattedMessage id={`${op.name}_description`} /></span>
+                      {operation === op.name ? <Icon type="check" /> : null}
+                    </li>
                   )}
-                </Select>
-              )}
+                </ul>
+              </div>
             </Form.Item>
             {fields.map((field) => {
               const isRequired = this.isRequiredField(field);
               return (
-                <Form.Item label={`${field}${isRequired ? '*' : ''}`} key={`f_${field}`}>
+                <Form.Item label={`${changeCase.titleCase(field)}${isRequired ? '*' : ''}`} key={`f_${field}`}>
                   {getFieldDecorator(field, {
                     rules: [{
-                      required: isRequired, message: `${field} is required`,
+                      required: isRequired, message: `${changeCase.titleCase(field)} is required`,
                     }],
                   })(
                     <Input id={field} />
@@ -186,7 +194,10 @@ class Index extends React.Component {
               );
             })}
             <Form.Item>
-              <Button type="primary" htmlType="submit" loading={this.state.submitting}>Generate</Button>
+              <Button className="generate_link" type="primary" htmlType="submit" loading={this.state.submitting}><FormattedMessage id="generate_link" /></Button>
+            </Form.Item>
+            <Form.Item>
+              <Button htmlType="button" className="back" onClick={() => (this.setState({ step: 'select', stepNumber: 0, filter: '' }))}><FormattedMessage id="go_back" /></Button>
             </Form.Item>
           </Form>
         </div>}

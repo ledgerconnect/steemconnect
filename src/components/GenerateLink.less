@@ -102,7 +102,105 @@
       .anticon {
         float: right;
         color: #c9ced3;
-        line-height: 0px;
+        line-height: 0;
+      }
+    }
+  }
+
+  .ant-form-item-label label {
+    color: #42474d;
+    font-weight: 600;
+  }
+
+  button.generate_link {
+    width: 100%;
+    background-color: #4ba2f2;
+    font-size: 16px;
+    text-transform: uppercase;
+  }
+
+  button.back {
+    color: #4ba2f2;
+    background: none;
+    font-size: 14px;
+    width: 100%;
+
+    &:hover {
+      color: #4ba2f2;
+    }
+  }
+
+  .ant-input {
+    border: none;
+  }
+
+  .selected-operation {
+    .anticon {
+      float: right;
+      color: #c9ced3;
+      line-height: 0;
+    }
+  }
+
+  li.selected-operation {
+    .anticon {
+      color: #fff;
+      line-height: 18px;
+      padding: 2px;
+      background: #c9ced3;
+      border-radius: 50%;
+    }
+  }
+
+  .operation-select {
+    margin-top: 0;
+    position: relative;
+    cursor: pointer;
+    display: block;
+    background: #fff;
+    line-height: 27px;
+
+    ul {
+      position: absolute;
+      display: none;
+      z-index: 1;
+      width: 100%;
+      bottom: 0px;
+      transform: translate(0, 100%);
+
+      li {
+        margin-bottom: 0 !important;
+        border-radius: 0 !important;
+        border-bottom: solid 1px #f2f4f5;
+
+        .SelectOperation__operation {
+          border-radius: 0 !important;
+        }
+
+        &.selected-operation {
+          background: #fafbfb;
+        }
+
+        strong {
+          font-size: 18px;
+          color: #42474d;
+          display: block;
+        }
+
+        .operation-description {
+          font-size: 14px;
+          color: #767b82;
+        }
+      }
+    }
+
+    &:hover {
+      box-shadow: 0 14px 13px 0 rgba(0, 0, 0, 0.05);
+      ul {
+        display: block;
+        overflow: auto;
+        height: 400px;
+        box-shadow: 0 14px 13px 0 rgba(0, 0, 0, 0.05);
       }
     }
   }
@@ -116,21 +214,11 @@
   .ant-form-item {
    margin-bottom: 15px;
   }
-
 }
 
 .FormGenerateLinkResult {
   a.ant-btn {
     line-height: 50px;
-  }
-
-  button.back {
-    color:#108ee9;
-    background: none;
-
-    &:hover {
-      color: #49a9ee;
-    }
   }
 }
 
