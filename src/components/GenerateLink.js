@@ -120,7 +120,7 @@ class Index extends React.Component {
   }
 
   toggleActiveSelect = () => {
-    this.setState({ activeSelect: !this.state.activeSelect});
+    this.setState({ activeSelect: !this.state.activeSelect });
   }
 
   render() {
