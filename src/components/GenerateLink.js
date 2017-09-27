@@ -26,17 +26,8 @@ class Index extends React.Component {
       link: '',
       operation: null,
       submitting: false,
+      activeSelect: false,
     };
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  componentWillMount() {
-    document.body.style.backgroundColor = '#f0f2f4';
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  componentWillUnmount() {
-    document.body.style.backgroundColor = '#fcfcfc';
   }
 
   copyToClipboard = (text) => {
@@ -128,9 +119,13 @@ class Index extends React.Component {
     this.setState({ operation });
   }
 
+  toggleActiveSelect = () => {
+    this.setState({ activeSelect: !this.state.activeSelect});
+  }
+
   render() {
     const { form: { getFieldDecorator }, intl } = this.props;
-    const { step, stepNumber, filter, operation } = this.state;
+    const { activeSelect, step, stepNumber, filter, operation } = this.state;
 
     const operations = [];
 
@@ -185,7 +180,7 @@ class Index extends React.Component {
         {step === 'form' && <div>
           <Form onSubmit={this.handleSubmit} className="FormGenerateLink">
             <Form.Item label="Operation">
-              <div className="SelectOperation operation-select">
+              <div className={`SelectOperation operation-select ${activeSelect ? 'active' : ''}`} onClick={this.toggleActiveSelect}>
                 <div className="SelectOperation__operation selected-operation">
                   <strong>{changeCase.titleCase(operation)}</strong>
                   <span className="operation-description"><FormattedMessage id={`${operation}_description`} /></span>
