@@ -23,6 +23,7 @@ class Index extends React.Component {
       filter: '',
       step: 'select',
       stepNumber: 0,
+      maxStep: 0,
       link: '',
       operation: null,
       submitting: false,
@@ -33,6 +34,18 @@ class Index extends React.Component {
   // eslint-disable-next-line class-methods-use-this
   componentWillMount() {
     document.body.style.backgroundColor = '#f0f2f4';
+  }
+
+  setStep = (stepNumber) => {
+    if (this.state.maxStep >= stepNumber) {
+      let step = 'select';
+      if (stepNumber === 1) {
+        step = 'form';
+      } else if (stepNumber === 2) {
+        step = 'link';
+      }
+      this.setState({ stepNumber, step });
+    }
   }
 
   copyToClipboard = (text) => {
@@ -93,7 +106,11 @@ class Index extends React.Component {
             link += `${k}=${encodeURIComponent(values[k])}&`;
           }
         });
-        this.setState({ step: 'link', stepNumber: 2, link: link.slice(0, -1) });
+        let maxStep = 2;
+        if (this.state.maxStep > maxStep) {
+          maxStep = this.state.maxStep;
+        }
+        this.setState({ maxStep, step: 'link', stepNumber: 2, link: link.slice(0, -1) });
       }
       this.setState({ submitting: false });
       return true;
@@ -117,7 +134,11 @@ class Index extends React.Component {
   }
 
   selectOperationStep1 = (operation) => {
-    this.setState({ operation, step: 'form', stepNumber: 1, filter: '' });
+    let maxStep = 1;
+    if (this.state.maxStep > maxStep) {
+      maxStep = this.state.maxStep;
+    }
+    this.setState({ operation, maxStep, step: 'form', stepNumber: 1, filter: '' });
   }
 
   selectOperationStep2 = (operation) => {
@@ -166,9 +187,9 @@ class Index extends React.Component {
         <h1><FormattedMessage id="gfl_title" /></h1>
         <h2><FormattedMessage id="gfl_subtitle" /></h2>
         <Steps progressDot current={stepNumber}>
-          <Steps.Step title={intl.formatMessage({ id: 'select_operation' })} />
-          <Steps.Step title={intl.formatMessage({ id: 'information' })} />
-          <Steps.Step title={intl.formatMessage({ id: 'copy_link' })} />
+          <Steps.Step title={<a href={undefined} onClick={() => { this.setStep(0); }}>{intl.formatMessage({ id: 'select_operation' })}</a>} />
+          <Steps.Step title={<a href={undefined} onClick={() => { this.setStep(1); }}>{intl.formatMessage({ id: 'information' })}</a>} />
+          <Steps.Step title={<a href={undefined} onClick={() => { this.setStep(2); }}>{intl.formatMessage({ id: 'copy_link' })}</a>} />
         </Steps>
         {step === 'select' && <div className="SelectOperation">
           <div className="SelectOperation__operation search-operation">
