@@ -30,6 +30,11 @@ class Index extends React.Component {
     };
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  componentWillMount() {
+    document.body.style.backgroundColor = '#f0f2f4';
+  }
+
   copyToClipboard = (text) => {
     if (window.clipboardData && window.clipboardData.setData) {
       // IE specific code path to prevent textarea being shown while dialog is visible.
