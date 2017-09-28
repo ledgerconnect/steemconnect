@@ -25,16 +25,16 @@ function makePlugins(options) {
         SENTRY_PUBLIC_DSN: isDevelopment
           ? null
           : JSON.stringify(process.env.SENTRY_PUBLIC_DSN),
-        WS: JSON.stringify(
-          process.env.WS ||
-          'wss://steemd.steemit.com'
+        STEEMJS_URL: JSON.stringify(
+          process.env.STEEMJS_URL ||
+          'wss://steemd-int.steemit.com'
         ),
         IS_BROWSER: JSON.stringify(true),
       },
     }),
     new LodashModuleReplacementPlugin({ collections: true, paths: true }),
     new Visualizer({
-      filename: './statistics.html'
+      filename: './statistics.html',
     }),
   ];
 
