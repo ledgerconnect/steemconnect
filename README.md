@@ -6,16 +6,19 @@
 # SteemConnect v2
 
 ## Install
+
 Download and install Node.js >= 7.7.1 then run
 ```
 npm install
 ```
+
 Add config vars
 ```
 BROADCASTER_USERNAME = Main Steem account holding posting permissions e.g 'steemconnect'
 BROADCASTER_POSTING_WIF = Posting wif of the main account
 JWT_SECRET = Random string
 DATABASE_URL = PostgreSQL database URL
+DATABASE_NAME = production
 DEBUG = sc2:*
 ```
 
@@ -26,7 +29,7 @@ npm start
 
 ## Demo
 
-Test demo app here: https://sc2-angular.herokuapp.com
+Test demo app here: https://steemit.github.io/sc2-angular
 
 ## Api
 
