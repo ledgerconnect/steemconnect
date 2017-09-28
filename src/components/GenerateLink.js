@@ -167,7 +167,12 @@ class Index extends React.Component {
         mapped: customOperations[i].type,
       });
     }
-    operations.sort((a, b) => a.name.localeCompare(b.name));
+
+    if (filter === '') {
+      operations.sort((a, b) => a.name.localeCompare(b.name));
+    } else {
+      operations.sort((a, b) => a.name.length - b.name.length || a.name.localeCompare(b.name));
+    }
 
     let fields = [];
     let opt;
