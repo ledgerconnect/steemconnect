@@ -259,7 +259,7 @@ class Index extends React.Component {
               <h2><FormattedMessage id="copy_link_subtitle" /></h2>
               <Form.Item>
                 <div className="link-result">
-                  <div><p>{domainLink + this.state.link}</p></div>
+                  <input value={domainLink + this.state.link} />
                   <button type="button" className="copy-link-btn" onClick={() => { this.copyToClipboard(domainLink + this.state.link); }}><FormattedMessage id="copy_link" /></button>
                 </div>
               </Form.Item>
