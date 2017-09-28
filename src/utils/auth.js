@@ -40,9 +40,9 @@ export const addPostingAuthority = ({ username, wif, clientId }, cb) => {
   });
 };
 
-export const authorize = ({ clientId, scope }, cb) => {
+export const authorize = ({ clientId, scope, responseType = 'token' }, cb) => {
   const token = localStorage.getItem('token');
-  fetch(`/api/oauth2/authorize?client_id=${clientId}&scope=${scope}`, {
+  fetch(`/api/oauth2/authorize?client_id=${clientId}&scope=${scope}&response_type=${responseType}`, {
     headers: new Headers({ Authorization: token }),
   })
     .then(res => res.json())

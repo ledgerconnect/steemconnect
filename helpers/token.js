@@ -29,7 +29,17 @@ const issueAppToken = (proxy, user, scope = []) => {
   return token;
 };
 
+/** Create a new code for application */
+const issueAppCode = (proxy, user, scope = []) =>
+  jwt.sign({
+    role: 'code',
+    proxy,
+    user,
+    scope,
+  }, process.env.JWT_SECRET);
+
 module.exports = {
   issueUserToken,
   issueAppToken,
+  issueAppCode,
 };
