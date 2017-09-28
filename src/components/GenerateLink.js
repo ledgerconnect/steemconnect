@@ -197,8 +197,10 @@ class Index extends React.Component {
           </div>
           {operations.filter(op => filter === '' || changeCase.sentenceCase(op.name).includes(filter.toLowerCase())).map(op =>
             <a key={`op_${op.name}`} href={undefined} className="SelectOperation__operation" onClick={() => { this.selectOperationStep1(op.name); }}>
-              <strong>{changeCase.titleCase(op.name)}</strong>
-              <span className="operation-description"><FormattedMessage id={`${op.name}_description`} /></span>
+              <div>
+                <strong>{changeCase.titleCase(op.name)}</strong>
+                <span className="operation-description"><FormattedMessage id={`${op.name}_description`} /></span>
+              </div>
               <Icon type="right" />
             </a>
           )}
