@@ -193,7 +193,10 @@ class Index extends React.Component {
         </Steps>
         {step === 'select' && <div className="SelectOperation">
           <div className="SelectOperation__operation search-operation">
-            <Icon type="search" /><input className="search-input" type="text" onChange={this.filterOperations} placeholder={intl.formatMessage({ id: 'search_placeholder' })} />
+            <div>
+              <Icon type="search" />
+              <input className="search-input" type="text" onChange={this.filterOperations} placeholder={intl.formatMessage({ id: 'search_placeholder' })} />
+            </div>
           </div>
           {operations.filter(op => filter === '' || changeCase.sentenceCase(op.name).includes(filter.toLowerCase())).map(op =>
             <a key={`op_${op.name}`} href={undefined} className="SelectOperation__operation" onClick={() => { this.selectOperationStep1(op.name); }}>
@@ -210,21 +213,28 @@ class Index extends React.Component {
             <Form.Item label="Operation">
               <div className={`SelectOperation operation-select ${activeSelect ? 'active' : ''}`}>
                 <div className="SelectOperation__operation selected-operation" onClick={this.toggleActiveSelect}>
-                  <strong>{changeCase.titleCase(operation)}</strong>
-                  <span className="operation-description"><FormattedMessage id={`${operation}_description`} /></span>
+                  <div>
+                    <strong>{changeCase.titleCase(operation)}</strong>
+                    <span className="operation-description"><FormattedMessage id={`${operation}_description`} /></span>
+                  </div>
                   <Icon type="down" />
                   <Icon type="up" />
                 </div>
                 <ul>
                   <li>
                     <div className="SelectOperation__operation search-operation">
-                      <Icon type="search" /><input className="search-input" type="text" onChange={this.filterOperations} placeholder={intl.formatMessage({ id: 'search_placeholder' })} />
+                      <div>
+                        <Icon type="search" />
+                        <input className="search-input" type="text" onChange={this.filterOperations} placeholder={intl.formatMessage({ id: 'search_placeholder' })} />
+                      </div>
                     </div>
                   </li>
                   {operations.filter(op => filter === '' || changeCase.sentenceCase(op.name).includes(filter.toLowerCase())).map(op =>
                     <li className={`SelectOperation__operation ${operation === op.name ? 'selected-operation' : ''}`} value={op.name} key={`li_${op.name}`} onClick={() => { this.selectOperationStep2(op.name); this.toggleActiveSelect(); }}>
-                      <strong>{changeCase.titleCase(op.name)}</strong>
-                      <span className="operation-description"><FormattedMessage id={`${op.name}_description`} /></span>
+                      <div>
+                        <strong>{changeCase.titleCase(op.name)}</strong>
+                        <span className="operation-description"><FormattedMessage id={`${op.name}_description`} /></span>
+                      </div>
                       {operation === op.name ? <Icon type="check" /> : null}
                     </li>
                   )}
