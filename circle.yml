@@ -27,9 +27,3 @@ jobs:
       - run:
           name: test
           command: yarn test
-      - run:
-          name: code-coverage
-          command: yarn test:coverage
-      - store_artifacts:
-          path: coverage
-          prefix: coverage
