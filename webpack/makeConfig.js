@@ -119,7 +119,7 @@ function makeConfig(options) {
           loader: 'json',
         },
         {
-          loader: 'url-loader?name=[name].[hash].[ext]&limit=1',
+          loader: 'file-loader?name=[name].[hash].[ext]&limit=1',
           test: /\.(eot|ttf|woff|woff2)(\?.+)?$/,
         }
       ].concat(makeStyleLoaders(options)),
