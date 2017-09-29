@@ -34,7 +34,9 @@ export default class Sign extends Component {
       error: false,
     };
   }
+
   async componentWillMount() {
+    document.body.style.backgroundColor = '#f0f2f4';
     const { type, query } = this.state;
     if (getOperation(type) === '') {
       this.props.router.push('/404');
