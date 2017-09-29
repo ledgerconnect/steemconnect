@@ -69,7 +69,7 @@ function makeStyleLoaders(options) {
         loaders: [
           'style',
           'css?sourceMap?importLoaders=1',
-          'autoprefixer-loader?browsers=last 2 version',
+          'postcss-loader?browsers=last 2 version',
           'sass?sourceMap&sourceMapContents',
           'less-loader',
         ],
@@ -82,7 +82,7 @@ function makeStyleLoaders(options) {
       test: /\.s[ac]ss|.less$/,
       loader: ExtractTextPlugin.extract(
         'style-loader',
-        'css?importLoaders=1!autoprefixer-loader?browsers=last 2 version!sass!less'
+        'css?importLoaders=1!postcss-loader?browsers=last 2 version!sass!less'
       ),
     },
   ];

@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "antd": "^2.10.0",
-    "autoprefixer-loader": "^3.2.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.1",
     "babel-loader": "^6.2.5",
@@ -63,6 +62,7 @@
     "numeral": "^1.5.3",
     "object-assign": "^4.1.0",
     "pg-promise": "^5.6.7",
+    "postcss-loader": "^2.0.6",
     "query-string": "^4.2.3",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
