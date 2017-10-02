@@ -17,6 +17,9 @@
     "build-dev": "webpack --progress -p --config webpack/webpack.config.js",
     "postinstall": "npm run build"
   },
+  "pre-commit": [
+    "test"
+  ],
   "dependencies": {
     "antd": "^2.10.0",
     "babel-core": "^6.26.0",
@@ -63,6 +66,7 @@
     "object-assign": "^4.1.0",
     "pg-promise": "^5.6.7",
     "postcss-loader": "^2.0.6",
+    "pre-commit": "^1.2.2",
     "query-string": "^4.2.3",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
