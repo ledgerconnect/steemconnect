@@ -132,7 +132,7 @@ router.all('/login/challenge', async (req, res) => {
   const role = req.query.role || 'posting';
   const token = issueUserToken(username);
   const accounts = await req.steem.api.getAccountsAsync([username]);
-  const publicWif = accounts[0][role].key_auths[0][0];
+  const publicWif = role === 'memo' ? accounts[0].memo_key : accounts[0][role].key_auths[0][0];
   const code = encode(process.env.BROADCASTER_POSTING_WIF, publicWif, `#${token}`);
   res.json({
     username,
