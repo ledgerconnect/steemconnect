@@ -17,6 +17,9 @@
     "build-dev": "webpack --progress -p --config webpack/webpack.config.js",
     "postinstall": "npm run build"
   },
+  "pre-commit": [
+    "test"
+  ],
   "dependencies": {
     "antd": "^2.10.0",
     "babel-core": "^6.26.0",
@@ -63,6 +66,7 @@
     "object-assign": "^4.1.0",
     "pg-promise": "^5.6.7",
     "postcss-loader": "^2.0.6",
+    "pre-commit": "^1.2.2",
     "query-string": "^4.2.3",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
@@ -79,7 +83,7 @@
     "sc2-sdk": "0.0.1",
     "sequelize": "^3.30.4",
     "serve-favicon": "^2.4.5",
-    "steem": "^0.6.1",
+    "steem": "^0.6.4",
     "store": "^1.3.20",
     "style-loader": "^0.13.1",
     "tether": "^1.3.2",
