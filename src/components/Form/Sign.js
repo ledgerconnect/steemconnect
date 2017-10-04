@@ -14,7 +14,7 @@ class Sign extends React.Component {
     roles: PropTypes.arrayOf(PropTypes.string),
     title: PropTypes.string,
     btnTitle: PropTypes.string,
-  }
+  };
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -35,7 +35,10 @@ class Sign extends React.Component {
         let wifIsValid = false;
         let role;
         for (let i = 0; i < roles.length; i += 1) {
-          if (account[roles[i]].key_auths[0][0] === publicWif) {
+          if (
+            (roles[i] === 'memo' && account.memo_key === publicWif) ||
+            (roles[i] !== 'memo' && account[roles[i]].key_auths[0][0] === publicWif)
+          ) {
             wifIsValid = true;
             role = roles[i];
             break;
