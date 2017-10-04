@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 import steem from 'steem';
 import changeCase from 'change-case';
 import SignForm from './Form/Sign';
@@ -92,7 +93,7 @@ export default class Sign extends Component {
                   onClick={() => this.setState({ step: 'signin' })}
                   className="btn btn-success"
                 >
-                  Continue
+                  <FormattedMessage id="continue" />
                 </button>
               </div>
             </div>

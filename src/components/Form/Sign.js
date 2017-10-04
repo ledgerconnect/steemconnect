@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import steem from 'steem';
 import { Form, Icon, Input, Button } from 'antd';
 import { accountExist } from '../../utils/validator';
@@ -9,8 +10,8 @@ class Sign extends React.Component {
     form: PropTypes.shape({
       validateFields: PropTypes.func,
       getFieldValue: PropTypes.func,
-      getFieldDecorator: PropTypes.func,
     }),
+    intl: intlShape.isRequired,
     roles: PropTypes.arrayOf(PropTypes.string),
     title: PropTypes.string,
     btnTitle: PropTypes.string,
@@ -21,7 +22,7 @@ class Sign extends React.Component {
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
         const { username, password } = values;
-        const { roles } = this.props;
+        const { roles, intl } = this.props;
         const accounts = await steem.api.getAccountsAsync([username]);
         const account = accounts[0];
 
@@ -59,7 +60,7 @@ class Sign extends React.Component {
           this.props.form.setFields({
             password: {
               value: password,
-              errors: [new Error('Password or key is not valid')],
+              errors: [new Error(intl.formatMessage({ id: 'error_password_not_valid' }))],
             },
           });
         }
@@ -73,30 +74,30 @@ class Sign extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const title = this.props.title ? this.props.title : 'Sign In';
-    const btnTitle = this.props.btnTitle ? this.props.btnTitle : 'Sign In';
+    const { form: { getFieldDecorator }, intl } = this.props;
+    const title = this.props.title ? this.props.title : <FormattedMessage id="sign_in" />;
+    const btnTitle = this.props.btnTitle ? this.props.btnTitle : <FormattedMessage id="sign_in" />;
     return (
       <Form onSubmit={this.handleSubmit} className="SignForm">
         <center><h2>{title}</h2></center>
-        <p>This operation requires your {this.props.roles.join(', ')} key or master password.</p>
+        <p><FormattedMessage id="operation_require_roles" values={{ roles: this.props.roles.join(', ') }} /></p>
         <Form.Item hasFeedback>
           {getFieldDecorator('username', {
             rules: [
-              { required: true, message: 'Please input your username' },
+              { required: true, message: intl.formatMessage({ id: 'error_username_sign_required' }) },
               { validator: accountExist },
             ],
           })(
-            <Input prefix={<Icon type="user" size="large" />} placeholder="Username" />
+            <Input prefix={<Icon type="user" size="large" />} placeholder={intl.formatMessage({ id: 'username' })} />
           )}
         </Form.Item>
         <Form.Item hasFeedback>
           {getFieldDecorator('password', {
             rules: [
-              { required: true, message: 'Please input your password or key' },
+              { required: true, message: intl.formatMessage({ id: 'error_password_required' }) },
             ],
           })(
-            <Input prefix={<Icon type="lock" size="large" />} type="password" placeholder="Password or key" />
+            <Input prefix={<Icon type="lock" size="large" />} type="password" placeholder={intl.formatMessage({ id: 'password_or_key' })} />
           )}
         </Form.Item>
         <Form.Item>
@@ -109,4 +110,4 @@ class Sign extends React.Component {
   }
 }
 
-export default Form.create()(Sign);
+export default Form.create()(injectIntl(Sign));

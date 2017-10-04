@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import qs from 'query-string';
@@ -74,10 +75,9 @@ export default class Authorize extends Component {
           {step === 0 && <Loading />}
           {step === 1 &&
             <div>
-              <h2>Authorize</h2>
+              <h2><FormattedMessage id="authorize" /></h2>
               <p>
-                Do you want to authorize the Steem account
-                <b> @{clientId}</b> to use your <b>posting</b> role?
+                <FormattedMessage id="authorize_question" values={{ username: <b> @{clientId}</b>, role: <b>posting</b> }} />
               </p>
               <div className="form-group my-4">
                 <button
@@ -85,7 +85,7 @@ export default class Authorize extends Component {
                   onClick={() => this.setState({ step: 2 })}
                   className="btn btn-success"
                 >
-                  Continue
+                  <FormattedMessage id="continue" />
                 </button>
               </div>
             </div>

@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 import changeCase from 'change-case';
 
 const SignPlaceholderComment = ({
@@ -22,19 +23,19 @@ const SignPlaceholderComment = ({
         <tbody>
           {query.title &&
             <tr>
-              <td className="label"><b>Title</b></td>
+              <td className="label"><b><FormattedMessage id="title" /></b></td>
               <td>{query.title}</td>
             </tr>
           }
           {query.body &&
             <tr>
-              <td className="label"><b>Body</b></td>
+              <td className="label"><b><FormattedMessage id="body" /></b></td>
               <td>{query.body}</td>
             </tr>
           }
           {query.json_metadata &&
             <tr>
-              <td className="label"><b>Json Metadata</b></td>
+              <td className="label"><b><FormattedMessage id="json_metadata" /></b></td>
               <td>
                 <pre>{JSON.stringify(jsonMetadata, null, 2)}</pre>
               </td>

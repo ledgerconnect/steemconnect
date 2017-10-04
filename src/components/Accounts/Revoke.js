@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 import steem from 'steem';
 import SignForm from '../Form/Sign';
 import SignSuccess from '../Sign/Success';
@@ -74,14 +75,12 @@ export default class Revoke extends Component {
         <div className="Sign__content container my-2">
           {step === 0 &&
             <div>
-              <h2>Revoke</h2>
+              <h2><FormattedMessage id="revoke" /></h2>
               <p>
-                Do you want to revoke the Steem account
-                <b>@{ username }</b>
-                to use your <b>posting</b> role?
+                <FormattedMessage id="revoke_posting" values={{ username, role: <b><FormattedMessage id="posting" /></b> }} />
               </p>
               <div className="form-group my-4">
-                <button type="submit" onClick={() => this.setState({ step: 1 })} className="btn btn-success">Continue</button>
+                <button type="submit" onClick={() => this.setState({ step: 1 })} className="btn btn-success"><FormattedMessage id="continue" /></button>
               </div>
             </div>
           }

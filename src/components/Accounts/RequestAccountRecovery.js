@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { Card, notification } from 'antd';
 import steem from 'steem';
 import RequestAccountRecoveryForm from '../Form/RequestAccountRecovery';
@@ -30,20 +31,21 @@ class RecoverAccount extends React.Component {
   };
 
   handleFormSubmitStep2 = async (auth) => {
+    const { intl } = this.props;
     this.setState({ isLoading: true });
     const values = this.state.values;
 
     const onError = (error) => {
       notification.error({
-        message: 'Error',
-        description: getErrorMessage(error) || 'Oops! Something goes wrong, open your console to see the error details.',
+        message: intl.formatMessage({ id: 'error' }),
+        description: getErrorMessage(error) || intl.formatMessage({ id: 'general_error' }),
       });
     };
 
     const onSuccess = () => {
       notification.success({
-        message: 'Success',
-        description: 'Account recovery has been successfully requested',
+        message: intl.formatMessage({ id: 'success' }),
+        description: intl.formatMessage({ id: 'success_account_recovery_request' }),
       });
     };
 
@@ -95,8 +97,8 @@ class RecoverAccount extends React.Component {
           {!isLoading && step === 0 &&
             <div>
               <div className="my-4 text-center">
-                <h2>Request account recovery</h2>
-                <p>This operation require a signature from the account creator.</p>
+                <h2><FormattedMessage id="request_account_recovery" /></h2>
+                <p><FormattedMessage id="operation_require_signature" /></p>
               </div>
               <hr className="mb-5" />
               <RequestAccountRecoveryForm
@@ -120,4 +122,4 @@ class RecoverAccount extends React.Component {
   }
 }
 
-export default RecoverAccount;
+export default injectIntl(RecoverAccount);

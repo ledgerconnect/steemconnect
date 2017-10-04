@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
 import numeral from 'numeral';
 import Loading from '../../widgets/Loading';
@@ -23,11 +24,11 @@ export default class AuthorizedApps extends Component {
     const { user } = this.props.auth;
     return (
       <div className="container py-5">
-        <h2>Authorized Apps</h2>
+        <h2><FormattedMessage id="authorized_apps" /></h2>
         {isLoading && <Loading />}
         {user.posting &&
           <div>
-            <p>Here is a list of authorized application to use your account.</p>
+            <p><FormattedMessage id="authorized_apps_list" /></p>
             <ul className="list-group text-xs-left mb-3">
               {user.posting.account_auths.map((auth, idx) =>
                 <li key={idx} className="list-group-item">
@@ -39,7 +40,7 @@ export default class AuthorizedApps extends Component {
                     to={`/revoke/@${auth[0]}`}
                     className="float-right btn btn-secondary btn-sm ml-1"
                   >
-                    Revoke
+                    <FormattedMessage id="revoke" />
                   </Link>
                 </li>
               )}

@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Form, Input, Button } from 'antd';
 import { accountNotExist, validateAccountName } from '../../utils/validator';
 
@@ -6,8 +7,8 @@ class Internal extends React.Component {
   static propTypes = {
     form: PropTypes.shape({
       validateFieldsAndScroll: PropTypes.func,
-      getFieldDecorator: PropTypes.func,
     }),
+    intl: intlShape.isRequired,
     onSubmit: PropTypes.func,
   }
 
@@ -21,16 +22,16 @@ class Internal extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { form: { getFieldDecorator }, intl } = this.props;
     return (
       <Form onSubmit={this.handleSubmit}>
         <Form.Item
-          label="Choose an username for your application"
+          label={<FormattedMessage id="choose_username" />}
           hasFeedback
         >
           {getFieldDecorator('username', {
             rules: [
-              { required: true, message: 'Please input an username for your application' },
+              { required: true, message: intl.formatMessage({ id: 'error_username_required' }) },
               { validator: validateAccountName },
               { validator: accountNotExist },
             ],
@@ -39,11 +40,11 @@ class Internal extends React.Component {
           )}
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" size="large">Create account</Button>
+          <Button type="primary" htmlType="submit" size="large"><FormattedMessage id="create_account" /></Button>
         </Form.Item>
       </Form>
     );
   }
 }
 
-export default Form.create()(Internal);
+export default Form.create()(injectIntl(Internal));

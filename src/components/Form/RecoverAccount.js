@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Form, Input, Button } from 'antd';
 import { accountExist } from '../../utils/validator';
 
@@ -8,8 +9,8 @@ class RecoverAccountForm extends React.Component {
   static propTypes = {
     form: PropTypes.shape({
       validateFieldsAndScroll: PropTypes.func,
-      getFieldDecorator: PropTypes.func,
     }),
+    intl: intlShape.isRequired,
     onSubmit: PropTypes.func,
   }
 
@@ -23,7 +24,7 @@ class RecoverAccountForm extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { form: { getFieldDecorator }, intl } = this.props;
 
     const formItemLayout = {
       labelCol: {
@@ -52,13 +53,13 @@ class RecoverAccountForm extends React.Component {
       <Form onSubmit={this.handleSubmit}>
         <FormItem
           {...formItemLayout}
-          label="Account to recover"
+          label={<FormattedMessage id="account_to_recover" />}
           hasFeedback
         >
           {getFieldDecorator('account_to_recover', {
             rules: [
               { validator: accountExist },
-              { required: true, message: 'Please input the account to recover' },
+              { required: true, message: intl.formatMessage({ id: 'error_account_recover_required' }) },
             ],
           })(
             <Input />
@@ -66,13 +67,13 @@ class RecoverAccountForm extends React.Component {
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label="Recent password"
+          label={<FormattedMessage id="recent_password" />}
           hasFeedback
           defaultValue="FSDFSF"
         >
           {getFieldDecorator('recent_password', {
             rules: [
-              { required: true, message: 'Please input a recent password' },
+              { required: true, message: intl.formatMessage({ id: 'error_recent_password_required' }) },
             ],
           })(
             <Input />
@@ -80,20 +81,20 @@ class RecoverAccountForm extends React.Component {
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label="New password"
-          help={<p>Write down your password and keep it somewhere very safe and secure.</p>}
+          label={<FormattedMessage id="new_password" />}
+          help={<p><FormattedMessage id="password_tip" /></p>}
           hasFeedback
         >
           {getFieldDecorator('new_password', {
             rules: [
-              { required: true, message: 'Please input a new password' },
+              { required: true, message: intl.formatMessage({ id: 'error_new_password_required' }) },
             ],
           })(
             <Input />
           )}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit" size="large">Recover</Button>
+          <Button type="primary" htmlType="submit" size="large"><FormattedMessage id="recover" /></Button>
         </FormItem>
       </Form>
     );
@@ -114,4 +115,4 @@ const RecoverAccount = Form.create({
   },
 })(RecoverAccountForm);
 
-export default RecoverAccount;
+export default injectIntl(RecoverAccount);

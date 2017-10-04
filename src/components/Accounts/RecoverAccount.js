@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { Card, notification } from 'antd';
 import steem from 'steem';
 import { Link } from 'react-router';
@@ -25,19 +26,20 @@ class RecoverAccount extends React.Component {
   };
 
   handleFormSubmit = async (values) => {
+    const { intl } = this.props;
     this.setState({ values, isLoading: true });
 
     const onError = (error) => {
       notification.error({
-        message: 'Error',
-        description: getErrorMessage(error) || 'Oops! Something goes wrong, open your console to see the error details.',
+        message: intl.formatMessage({ id: 'error' }),
+        description: getErrorMessage(error) || intl.formatMessage({ id: 'general_error' }),
       });
     };
 
     const onSuccess = () => {
       notification.success({
-        message: 'Success',
-        description: `The account @${values.account_to_recover} has been recovered`,
+        message: intl.formatMessage({ id: 'success' }),
+        description: intl.formatMessage({ id: 'account_recovered' }, { account: values.account_to_recover }),
       });
     };
 
@@ -114,8 +116,8 @@ class RecoverAccount extends React.Component {
           {!isLoading &&
             <div>
               <div className="text-center my-4">
-                <h2>Recover account</h2>
-                <p>It's required to <Link to="/accounts/request-recovery">request account recovery</Link> before going further.</p>
+                <h2><FormattedMessage id="recover_account" /></h2>
+                <p><FormattedMessage id="require_account_recovery_text" values={{ link: <Link to="/accounts/request-recovery"><FormattedMessage id="require_account_recovery_link" /></Link> }} /></p>
               </div>
               <hr className="mb-5" />
               <RecoverAccountForm
@@ -131,4 +133,4 @@ class RecoverAccount extends React.Component {
   }
 }
 
-export default RecoverAccount;
+export default injectIntl(RecoverAccount);
