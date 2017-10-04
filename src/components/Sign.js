@@ -16,10 +16,8 @@ import './Sign.less';
 
 export default class Sign extends Component {
   static propTypes = {
-    // eslint-disable-next-line react/forbid-prop-types
-    location: PropTypes.object,
-    // eslint-disable-next-line react/forbid-prop-types
-    params: PropTypes.object,
+    location: PropTypes.shape(),
+    params: PropTypes.shape(),
   }
 
   constructor(props) {

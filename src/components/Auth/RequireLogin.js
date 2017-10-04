@@ -1,4 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
 import React, { PropTypes } from 'react';
 import { browserHistory } from 'react-router';
 import Loading from '../../widgets/Loading';
@@ -19,9 +18,9 @@ const RequireLogin = ({ auth, location, children }) => {
 };
 
 RequireLogin.propTypes = {
-  location: PropTypes.object,
-  auth: PropTypes.object,
-  children: PropTypes.object,
+  location: PropTypes.shape(),
+  auth: PropTypes.shape(),
+  children: PropTypes.shape(),
 };
 
 export default RequireLogin;

@@ -33,8 +33,7 @@ const Method = ({ method }) => {
 };
 
 Method.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  method: PropTypes.object,
+  method: PropTypes.shape(),
 };
 
 const Operation = ({ operation }) => {
@@ -66,8 +65,7 @@ const Operation = ({ operation }) => {
 };
 
 Operation.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  operation: PropTypes.object,
+  operation: PropTypes.shape(),
 };
 
 const Steemjs = () =>

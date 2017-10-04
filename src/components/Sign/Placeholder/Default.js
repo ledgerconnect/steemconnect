@@ -28,8 +28,7 @@ const SignPlaceholderDefault = ({
 
 SignPlaceholderDefault.propTypes = {
   type: PropTypes.string,
-  // eslint-disable-next-line react/forbid-prop-types
-  query: PropTypes.object,
+  query: PropTypes.shape(),
   params: PropTypes.arrayOf(PropTypes.string),
 };
 

@@ -13,8 +13,7 @@ const SignError = ({ error, resetForm }) =>
 
 SignError.propTypes = {
   resetForm: PropTypes.func,
-  // eslint-disable-next-line react/forbid-prop-types
-  error: PropTypes.object,
+  error: PropTypes.shape(),
 };
 
 export default SignError;
