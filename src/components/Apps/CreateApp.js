@@ -13,8 +13,7 @@ import { sleep } from '../../../helpers/utils';
 
 class CreateApp extends React.Component {
   static propTypes = {
-    // eslint-disable-next-line react/forbid-prop-types
-    auth: PropTypes.object,
+    auth: PropTypes.shape(),
   }
 
   state = {

@@ -12,8 +12,7 @@ export default class Authorize extends Component {
       username: PropTypes.string,
       role: PropTypes.string,
     }),
-    // eslint-disable-next-line react/forbid-prop-types
-    location: PropTypes.object,
+    location: PropTypes.shape(),
   }
 
   constructor(props) {

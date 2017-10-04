@@ -5,8 +5,7 @@ import Loading from '../../widgets/Loading';
 
 export default class AuthorizedApps extends Component {
   static propTypes = {
-    // eslint-disable-next-line react/forbid-prop-types
-    auth: PropTypes.object,
+    auth: PropTypes.shape(),
   }
 
   constructor(props) {
