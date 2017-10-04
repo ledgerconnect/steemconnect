@@ -19,10 +19,8 @@ import './styles/common.less';
 )
 export default class Wrapper extends Component {
   static propTypes = {
-    // eslint-disable-next-line react/forbid-prop-types
-    children: PropTypes.object,
-    // eslint-disable-next-line react/forbid-prop-types
-    auth: PropTypes.object,
+    children: PropTypes.shape(),
+    auth: PropTypes.shape(),
     authenticate: PropTypes.func,
     setLocale: PropTypes.func,
     locale: PropTypes.string,

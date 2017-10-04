@@ -13,8 +13,7 @@ const AppPreview = ({ app }) => (
 );
 
 AppPreview.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  app: PropTypes.object,
+  app: PropTypes.shape(),
 };
 
 export default AppPreview;

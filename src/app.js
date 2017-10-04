@@ -5,8 +5,7 @@ import Header from './widgets/Header';
 
 export default class App extends PureComponent {
   static propTypes = {
-    // eslint-disable-next-line react/forbid-prop-types
-    children: PropTypes.object,
+    children: PropTypes.shape(),
     auth: PropTypes.shape({
       user: PropTypes.shape({
         name: PropTypes.string,
