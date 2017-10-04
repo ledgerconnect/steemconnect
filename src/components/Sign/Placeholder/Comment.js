@@ -16,8 +16,8 @@ const SignPlaceholderComment = ({
     <div>
       <h2>{ changeCase.titleCase(type) }</h2>
       {query.parent_author && query.parent_permlink
-        ? <p>Do you want to reply on <b>@{query.parent_author}</b>'s post?</p>
-        : <p>Do you want to add new post?</p>
+        ? <p><FormattedMessage id="reply_post" values={{ author: <b>@{query.parent_author}</b> }} /></p>
+        : <p><FormattedMessage id="add_new_post" /></p>
       }
       <table className="table text-left">
         <tbody>

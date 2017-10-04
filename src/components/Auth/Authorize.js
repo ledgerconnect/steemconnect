@@ -77,7 +77,7 @@ export default class Authorize extends Component {
             <div>
               <h2><FormattedMessage id="authorize" /></h2>
               <p>
-                <FormattedMessage id="authorize_question" values={{ username: <b> @{clientId}</b>, role: <b>posting</b> }} />
+                <FormattedMessage id="authorize_question" values={{ username: <b> @{clientId}</b>, role: <b><FormattedMessage id="posting" /></b> }} />
               </p>
               <div className="form-group my-4">
                 <button
