@@ -1,5 +1,5 @@
 {
-  "token_expiration": 36000,
+  "token_expiration": 604800,
   "authorized_operations": [
     "vote",
     "comment",
