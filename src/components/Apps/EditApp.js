@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from 'react';
+import { injectIntl, intlShape } from 'react-intl';
 import fetch from 'isomorphic-fetch';
 import { notification } from 'antd';
 import AppForm from './AppForm';
 import Loading from '../../widgets/Loading';
 import Avatar from '../../widgets/Avatar';
 
-export default class EditApp extends Component {
+class EditApp extends Component {
   static propTypes = {
     params: PropTypes.shape({
       clientId: PropTypes.string,
@@ -13,6 +14,7 @@ export default class EditApp extends Component {
     auth: PropTypes.shape({
       token: PropTypes.string,
     }),
+    intl: intlShape.isRequired,
   }
 
   constructor(props) {
@@ -47,6 +49,7 @@ export default class EditApp extends Component {
 
   submit = (data) => {
     const { clientId } = this.state;
+    const { intl } = this.props;
     this.setState({ isLoading: true });
     fetch(`/api/apps/@${clientId}`, {
       method: 'PUT',
@@ -61,14 +64,14 @@ export default class EditApp extends Component {
       .then(() => {
         this.setState({ isLoading: false });
         notification.success({
-          message: 'Success',
-          description: 'Your application has been successfully updated',
+          message: intl.formatMessage({ id: 'success' }),
+          description: intl.formatMessage({ id: 'success_app_updated' }),
         });
       })
       .catch(() => {
         notification.error({
-          message: 'Error',
-          description: 'Oops! Something goes wrong.',
+          message: intl.formatMessage({ id: 'error' }),
+          description: intl.formatMessage({ id: 'general_error' }),
         });
       });
   };
@@ -96,3 +99,5 @@ export default class EditApp extends Component {
     );
   }
 }
+
+export default injectIntl(EditApp);

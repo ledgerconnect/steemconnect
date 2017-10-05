@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, intlShape } from 'react-intl';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Form, Input, Button, Popover, Icon } from 'antd';
@@ -34,9 +34,7 @@ LanguageItem.propTypes = {
 class Index extends React.Component {
   static propTypes = {
     form: PropTypes.shape(),
-    intl: PropTypes.shape({
-      formatMessage: PropTypes.func,
-    }),
+    intl: intlShape.isRequired,
     setLocale: PropTypes.func,
     locale: PropTypes.string,
   };
@@ -47,7 +45,7 @@ class Index extends React.Component {
   }
 
   render() {
-    const { form: { getFieldDecorator }, setLocale, locale } = this.props;
+    const { form: { getFieldDecorator }, setLocale, locale, intl } = this.props;
     return (
       <div>
         <div id="header">
@@ -93,12 +91,12 @@ class Index extends React.Component {
                     <input type="hidden" name="b_c8daffe293678b527521abf65_0a6cefe541" />
                     {getFieldDecorator('email', {
                       rules: [
-                        { type: 'email', message: this.props.intl.formatMessage({ id: 'error_invalid_email' }) },
-                        { required: true, message: this.props.intl.formatMessage({ id: 'error_empty_email' }) },
+                        { type: 'email', message: intl.formatMessage({ id: 'error_invalid_email' }) },
+                        { required: true, message: intl.formatMessage({ id: 'error_empty_email' }) },
                       ],
                       className: 'hero_form_item',
                     })(
-                      <Input name="EMAIL" placeholder={this.props.intl.formatMessage({ id: 'email_address' })} />
+                      <Input name="EMAIL" placeholder={intl.formatMessage({ id: 'email_address' })} />
                     )}
                   </Form.Item>
                   <Form.Item>
