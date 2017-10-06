@@ -91,11 +91,8 @@ app.use((err, req, res) => {
   });
 });
 
-if (process.env.WS) {
-  steem.api.setOptions({
-    transport: 'ws',
-    websocket: process.env.WS,
-  });
+if (process.env.STEEMJS_URL) {
+  steem.api.setOptions({ url: process.env.STEEMJS_URL });
 }
 
 module.exports = app;

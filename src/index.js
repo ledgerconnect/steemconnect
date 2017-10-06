@@ -13,11 +13,8 @@ require('isomorphic-fetch');
 // load the stylesheet
 require('./styles/base.sass');
 
-if (process.env.WS) {
-  steem.api.setOptions({
-    transport: 'ws',
-    websocket: process.env.WS,
-  });
+if (process.env.STEEMJS_URL) {
+  steem.api.setOptions({ url: process.env.STEEMJS_URL });
 }
 
 const appHistory = useRouterHistory(createHistory)({ queryKey: false });
