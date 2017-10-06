@@ -12,7 +12,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, '/js'),
     filename: 'app.min.js',
-    publicPath: '/js'
+    publicPath: '/js',
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
@@ -22,9 +22,9 @@ module.exports = {
       'process.env': {
         // This has effect on the react lib size
         NODE_ENV: JSON.stringify('development'),
-        WS: JSON.stringify(process.env.WS || 'wss://steemd-int.steemit.com'),
-      }
-    })
+        STEEMJS_URL: JSON.stringify(process.env.STEEMJS_URL || 'wss://steemd-int.steemit.com'),
+      },
+    }),
   ],
   module: {
     loaders: [
