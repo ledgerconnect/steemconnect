@@ -30,7 +30,10 @@ const issueAppToken = (proxy, user, scope = []) => {
   return token;
 };
 
-/** Create a new code for application */
+/**
+ * Create an authorization code for application. It can be exchanged to an
+ * access_token or refresh_token. Authorization code expire in 10 min.
+ */
 const issueAppCode = (proxy, user, scope = []) => (
   jwt.sign(
     { role: 'code', proxy, user, scope },
@@ -39,8 +42,20 @@ const issueAppCode = (proxy, user, scope = []) => (
   )
 );
 
+/**
+ * Create a refresh token for application, it can be used to obtain a renewed
+ * access token. Refresh tokens never expire
+ */
+const issueAppRefreshToken = (proxy, user, scope = []) => (
+  jwt.sign(
+    { role: 'refresh', proxy, user, scope },
+    process.env.JWT_SECRET,
+  )
+);
+
 module.exports = {
   issueUserToken,
   issueAppToken,
   issueAppCode,
+  issueAppRefreshToken,
 };
