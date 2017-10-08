@@ -31,11 +31,13 @@ const issueAppToken = (proxy, user, scope = []) => {
 };
 
 /** Create a new code for application */
-const issueAppCode = (proxy, user, scope = []) =>
+const issueAppCode = (proxy, user, scope = []) => (
   jwt.sign(
     { role: 'code', proxy, user, scope },
-    process.env.JWT_SECRET
-  );
+    process.env.JWT_SECRET,
+    { expiresIn: 600 }
+  )
+);
 
 module.exports = {
   issueUserToken,
