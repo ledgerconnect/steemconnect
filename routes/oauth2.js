@@ -44,7 +44,7 @@ router.all('/api/oauth2/authorize', authenticate('user'), async (req, res) => {
 });
 
 /** Request app access token */
-router.all('/api/oauth2/token', authenticate('code'), (req, res) => {
+router.all('/api/oauth2/token', authenticate(['code', 'refresh']), (req, res) => {
   debug(`Issue app token for user @${req.user} using @${req.proxy} proxy.`);
   const accessToken = issueAppToken(req.proxy, req.user, req.scope);
   const refreshToken = issueAppRefreshToken(req.proxy, req.user, req.scope);
