@@ -22,7 +22,7 @@ export default class Sign extends Component {
         <div className="Sign__result-title-bg">
           <object data="/img/sign/success.svg" type="image/svg+xml" id="success-icon" />
         </div>
-        <h2>Congratulations</h2>
+        <h2><FormattedMessage id="congratulations" /></h2>
         <h5><FormattedMessage id="success_operation_broadcasted" /></h5>
 
         {cb && <p><FormattedMessage id="redirect_ten_seconds" /></p>}

@@ -92,12 +92,12 @@ export default class Sign extends Component {
               <object data="/img/logo.svg" type="image/svg+xml" id="logo" />
             </div>
             {step === 'signin' &&
-            <div className="Sign__signin-warning">Confirm that you are on steemconnect.com before entering your password</div>}
+            <div className="Sign__signin-warning"><FormattedMessage id="steemconnect_website_confirm" /></div>}
             <div className="Sign__wrapper">
               {step === 'validationErrors' && <SignValidationErrors errors={validationErrors} />}
               {step === 'form' &&
               <div className="Placeholder">
-                <h5>Do you want to confirm this operation?</h5>
+                <h5><FormattedMessage id="confirmation_operation" /></h5>
                 <div className="Placeholder__operation-container">
                   <h5 className="Placeholder__operation-title">{ changeCase.titleCase(type) }</h5>
                   <Placeholder query={normalizedQuery} params={op.params} />
@@ -113,7 +113,7 @@ export default class Sign extends Component {
               {step === 'result' && error && <SignError error={error} resetForm={this.resetForm} />}
             </div>
             <div className="Sign__footer">
-              <Link to="/" target="_blank" rel="noopener noreferrer">About SteemConnect</Link>
+              <Link to="/" target="_blank" rel="noopener noreferrer"><FormattedMessage id="about_steemConnect" /></Link>
             </div>
           </div>
         </div>}
