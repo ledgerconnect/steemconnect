@@ -54,7 +54,7 @@ const strategy = (req, res, next) => {
 const authenticate = roles => async (req, res, next) => {
   let role = roles;
   if (Array.isArray(roles)) {
-    if (req.role && roles.include(req.role)) {
+    if (req.role && roles.includes(req.role)) {
       role = req.role;
     }
   }
