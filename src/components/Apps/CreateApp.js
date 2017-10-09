@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import fetch from 'isomorphic-fetch';
 import steem from 'steem';
 import { notification, Modal } from 'antd';
@@ -13,8 +14,7 @@ import { sleep } from '../../../helpers/utils';
 
 class CreateApp extends React.Component {
   static propTypes = {
-    // eslint-disable-next-line react/forbid-prop-types
-    auth: PropTypes.object,
+    auth: PropTypes.shape(),
   }
 
   state = {
@@ -43,6 +43,7 @@ class CreateApp extends React.Component {
   };
 
   handleSignFormSubmit = async (auth) => {
+    const { intl } = this.props;
     this.hideModal();
     this.setState({ isLoading: true });
     const clientId = this.state.values.username;
@@ -86,14 +87,14 @@ class CreateApp extends React.Component {
             /** Redirect to edit app */
             browserHistory.push(`/apps/@${clientId}/edit`);
             notification.success({
-              message: 'Success',
-              description: `The proxy account @${clientId} has been successfully created`,
+              message: intl.formatMessage({ id: 'success' }),
+              description: intl.formatMessage({ id: 'success_proxy_account' }, { clientId }),
             });
           } else {
             this.setState({ isLoading: false });
             notification.error({
-              message: 'Error',
-              description: data.error || 'Oops! Something goes wrong, open your console to see the error details.',
+              message: intl.formatMessage({ id: 'error' }),
+              description: data.error || intl.formatMessage({ id: 'general_error' }),
             });
           }
         });
@@ -101,7 +102,7 @@ class CreateApp extends React.Component {
       this.setState({ isLoading: false });
       notification.error({
         message: 'Error',
-        description: getErrorMessage(err) || 'Oops! Something goes wrong, open your console to see the error details.',
+        description: getErrorMessage(err) || intl.formatMessage({ id: 'general_error' }),
       });
     });
   };
@@ -109,15 +110,13 @@ class CreateApp extends React.Component {
   render() {
     return (
       <div className="container py-5">
-        <h1>Create App</h1>
+        <h1><FormattedMessage id="create_app" /></h1>
         <div className="block py-4">
           {this.state.isLoading || !this.state.accountCreationFee
             ? <center><Loading /></center>
             : <div>
               <p>
-                You need to create a new Steem account for setup your application on SteemConnect.
-                The current fee for create a new account is <b>{this.state.accountCreationFee}</b>.
-                Make sure you have enough funds on your account before proceed.
+                <FormattedMessage id="create_app_fee" values={{ fee: <b>{this.state.accountCreationFee}</b> }} />
               </p>
               <CreateAppForm onSubmit={this.handleFormSubmit} />
             </div>
@@ -138,4 +137,4 @@ class CreateApp extends React.Component {
   }
 }
 
-export default CreateApp;
+export default injectIntl(CreateApp);

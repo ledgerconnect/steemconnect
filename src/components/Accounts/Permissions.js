@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
 import steem from 'steem';
 import numeral from 'numeral';
@@ -38,11 +39,11 @@ export default class Permissions extends Component {
     const { account, isLoading } = this.state;
     return (
       <div className="container py-5">
-        <h2>Permissions</h2>
+        <h2><FormattedMessage id="permissions" /></h2>
         {isLoading && <Loading />}
         {account.posting &&
           <div>
-            <p>Here is a list of <b>@{this.props.params.username}</b>'s account permissions.</p>
+            <p><FormattedMessage id="permissions_list" values={{ username: <b>@{this.props.params.username}</b> }} /></p>
             {['owner', 'active', 'posting'].map((role, idx) =>
               <div key={idx}>
                 <p><b>{changeCase.titleCase(role)}</b></p>
@@ -58,7 +59,7 @@ export default class Permissions extends Component {
                           to={`/revoke/@${auth[0]}`}
                           className="float-right btn btn-secondary btn-sm ml-1"
                         >
-                          Revoke
+                          <FormattedMessage id="revoke" />
                         </Link>
                       }
                     </li>

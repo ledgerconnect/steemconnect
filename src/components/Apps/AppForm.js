@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
 import Form from '../../widgets/Form';
 
@@ -27,7 +28,7 @@ export default class AppForm extends Form {
       <form onSubmit={this.onSubmit}>
         <div className="block">
           <div className="form-group">
-            <label className="label" htmlFor="appName">App Name</label>
+            <label className="label" htmlFor="appName"><FormattedMessage id="app_name" /></label>
             <input
               id="appName"
               type="text"
@@ -37,11 +38,11 @@ export default class AppForm extends Form {
               defaultValue={data.name}
             />
             <small>
-              Something users will recognize and trust
+              <FormattedMessage id="something_users_trust" />
             </small>
           </div>
           <div className="form-group">
-            <label className="label" htmlFor="appDesc">App Description</label>
+            <label className="label" htmlFor="appDesc"><FormattedMessage id="app_description" /></label>
             <textarea
               id="appDesc"
               className="form-control"
@@ -50,11 +51,11 @@ export default class AppForm extends Form {
               defaultValue={data.description}
             />
             <small>
-              Maximum 400 characters
+              <FormattedMessage id="max_characters" />
             </small>
           </div>
           <div className="form-group">
-            <label className="label" htmlFor="appIcon">App Icon</label>
+            <label className="label" htmlFor="appIcon"><FormattedMessage id="app_icon" /></label>
             <input
               id="appIcon"
               type="text"
@@ -65,7 +66,7 @@ export default class AppForm extends Form {
             />
           </div>
           <div className="form-group">
-            <label className="label" htmlFor="website">Website</label>
+            <label className="label" htmlFor="website"><FormattedMessage id="website" /></label>
             <input
               id="website"
               type="text"
@@ -76,7 +77,7 @@ export default class AppForm extends Form {
             />
           </div>
           <div className="form-group">
-            <label className="label" htmlFor="redirectURI">Redirect URI(s)</label>
+            <label className="label" htmlFor="redirectURI"><FormattedMessage id="redirect_uris" /></label>
             <textarea
               id="redirectURI"
               className="form-control"
@@ -85,19 +86,18 @@ export default class AppForm extends Form {
               defaultValue={redirectUris}
             />
             <small>
-              You must specify at least one URI for authentication to work. If you pass a
-              URI in an OAuth request, it must exactly match one of the URIs you enter here.
+              <FormattedMessage id="auth_uri" />
             </small>
           </div>
         </div>
         <div className="form-group py-3 text-center">
-          <Link to="/apps/me" className="btn btn-secondary">Cancel</Link>
+          <Link to="/apps/me" className="btn btn-secondary"><FormattedMessage id="cancel" /></Link>
           <button
             type="submit"
             className="btn btn-success ml-3"
             disabled={this.props.isLoading}
           >
-            Save
+            <FormattedMessage id="save" />
           </button>
         </div>
       </form>
