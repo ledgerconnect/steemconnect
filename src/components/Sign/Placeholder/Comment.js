@@ -1,8 +1,9 @@
 import React, { PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 const SignPlaceholderComment = ({
-  query,
-}) => {
+                                  query,
+                                }) => {
   let jsonMetadata = {};
   try {
     jsonMetadata = JSON.parse(query.json_metadata);
@@ -12,25 +13,25 @@ const SignPlaceholderComment = ({
   return (
     <div className="Placeholder__operation-content">
       {query.parent_author && query.parent_permlink
-        ? <p>Do you want to reply on <b>@{query.parent_author}</b>'s post?</p>
-        : <p>Do you want to add new post?</p>
+        ? <p><FormattedMessage id="reply_post" values={{ author: <b>@{query.parent_author}</b> }} /></p>
+        : <p><FormattedMessage id="add_new_post" /></p>
       }
       <ul className="Placeholder__operation-params">
         {query.title &&
         <li>
-          <strong>Title</strong>
+          <strong><FormattedMessage id="title" /></strong>
           <span>{query.title}</span>
         </li>
         }
         {query.body &&
         <li>
-          <strong>Body</strong>
+          <strong><FormattedMessage id="body" /></strong>
           <span>{query.body}</span>
         </li>
         }
         {query.json_metadata &&
         <li>
-          <strong>Json Metadata</strong>
+          <strong><FormattedMessage id="json_metadata" /></strong>
           <span>
             <pre>{JSON.stringify(jsonMetadata, null, 2)}</pre>
           </span>

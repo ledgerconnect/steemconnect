@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 export default class Sign extends Component {
   static propTypes = {
@@ -22,11 +23,10 @@ export default class Sign extends Component {
           <object data="/img/sign/success.svg" type="image/svg+xml" id="success-icon" />
         </div>
         <h2>Congratulations</h2>
-        <h5>The operation has been successfully broadcasted.</h5>
+        <h5><FormattedMessage id="success_operation_broadcasted" /></h5>
 
-        {cb && <p>If you are not redirected within 10 seconds{' '}</p>}
-        {cb && <a className="Sign__button" href={cb} target="_blank" rel="noopener noreferrer">click here</a>}
-
+        {cb && <p><FormattedMessage id="redirect_ten_seconds" /></p>}
+        {cb && <a className="Sign__button" href={cb} target="_blank" rel="noopener noreferrer"><FormattedMessage id="click_here" /></a>}
       </div>
     );
   }

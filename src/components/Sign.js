@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 import steem from 'steem';
 import changeCase from 'change-case';
 import { Link } from 'react-router';
@@ -102,7 +103,7 @@ export default class Sign extends Component {
                   <Placeholder query={normalizedQuery} params={op.params} />
                 </div>
                 <Button onClick={() => this.setState({ step: 'signin' })} type="primary" htmlType="button" className="SignForm__button">
-                  Continue
+                  <FormattedMessage id="continue" />
                 </Button>
               </div>
               }

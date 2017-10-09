@@ -285,7 +285,7 @@ class Index extends React.Component {
               </Form.Item>
             </Form>
           </div>
-          <Button className="generate-link" type="primary" htmlType="button" onClick={() => (this.setState({ step: 'select', stepNumber: 0, operation: null }))}><FormattedMessage id="generate__new_link" /></Button>
+          <Button className="generate-link" type="primary" htmlType="button" onClick={() => (this.setState({ step: 'select', stepNumber: 0, operation: null }))}><FormattedMessage id="generate_new_link" /></Button>
         </div>}
       </div>
     );
