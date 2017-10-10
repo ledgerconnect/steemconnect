@@ -32,7 +32,9 @@ const strategy = (req, res, next) => {
     || req.query.access_token
     || req.body.access_token
     || req.query.code
-    || req.body.code;
+    || req.body.code
+    || req.query.refresh_token
+    || req.body.refresh_token;
   let decoded;
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -49,7 +51,14 @@ const strategy = (req, res, next) => {
   next();
 };
 
-const authenticate = role => async (req, res, next) => {
+const authenticate = roles => async (req, res, next) => {
+  let role = roles;
+  if (Array.isArray(roles)) {
+    if (req.role && roles.includes(req.role)) {
+      role = req.role;
+    }
+  }
+
   if (!req.role || (role && req.role !== role)) {
     res.status(401).json({
       error: 'invalid_grant',
@@ -65,7 +74,7 @@ const authenticate = role => async (req, res, next) => {
     } else {
       next();
     }
-  } else if (req.role === 'code') {
+  } else if (req.role === 'code' || req.role === 'refresh') {
     const secret = req.query.client_secret || req.body.client_secret;
     const app = await apps.findOne({
       where: {
