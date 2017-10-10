@@ -1,6 +1,6 @@
 const express = require('express');
 const debug = require('debug')('sc2:server');
-const { issueAppToken, issueAppCode } = require('../helpers/token');
+const { issueAppToken, issueAppCode, issueAppRefreshToken } = require('../helpers/token');
 const { authenticate } = require('../helpers/middleware');
 const config = require('../config.json');
 
@@ -44,14 +44,18 @@ router.all('/api/oauth2/authorize', authenticate('user'), async (req, res) => {
 });
 
 /** Request app access token */
-router.all('/api/oauth2/token', authenticate('code'), (req, res) => {
+router.all('/api/oauth2/token', authenticate(['code', 'refresh']), (req, res) => {
   debug(`Issue app token for user @${req.user} using @${req.proxy} proxy.`);
   const accessToken = issueAppToken(req.proxy, req.user, req.scope);
-  res.json({
+  const payload = {
     access_token: accessToken,
     expires_in: config.token_expiration,
     username: req.user,
-  });
+  };
+  if (req.scope.includes('offline')) {
+    payload.refresh_token = issueAppRefreshToken(req.proxy, req.user, req.scope);
+  }
+  res.json(payload);
 });
 
 /** Revoke app access token */
