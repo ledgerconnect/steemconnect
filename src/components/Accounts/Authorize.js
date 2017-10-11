@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 import steem from 'steem';
 import SignForm from '../Form/Sign';
 import SignSuccess from '../Sign/Success';
@@ -12,8 +13,7 @@ export default class Authorize extends Component {
       username: PropTypes.string,
       role: PropTypes.string,
     }),
-    // eslint-disable-next-line react/forbid-prop-types
-    location: PropTypes.object,
+    location: PropTypes.shape(),
   }
 
   constructor(props) {
@@ -83,12 +83,23 @@ export default class Authorize extends Component {
         <div className="Sign__content container my-2">
           {step === 0 &&
             <div>
-              <h2>Authorize</h2>
+              <h2><FormattedMessage id="authorize" /></h2>
               <p>
-                Do you want to authorize the Steem account
-                <b> @{username}</b> to use your <b>{role}</b> role
-                {weight !== 1 && <span> with a weight of <b>{weight}</b></span>}
-                ?
+                {weight !== 1 && <FormattedMessage
+                  id="authorize_question_weight"
+                  values={{
+                    username: <b> @{username}</b>,
+                    role: <b>{role}</b>,
+                    weight: <b>{weight}</b>,
+                  }}
+                />}
+                {weight === 1 && <FormattedMessage
+                  id="authorize_question"
+                  values={{
+                    username: <b> @{username}</b>,
+                    role: <b>{role}</b>,
+                  }}
+                />}
               </p>
               <div className="form-group my-4">
                 <button
@@ -96,7 +107,7 @@ export default class Authorize extends Component {
                   onClick={() => this.setState({ step: 1 })}
                   className="btn btn-success"
                 >
-                  Continue
+                  <FormattedMessage id="continue" />
                 </button>
               </div>
             </div>

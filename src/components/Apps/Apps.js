@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import fetch from 'isomorphic-fetch';
 import Loading from '../../widgets/Loading';
 import AppPreview from './AppPreview';
@@ -31,7 +32,7 @@ export default class MyApps extends Component {
     const { apps, isLoading, isLoaded } = this.state;
     return (
       <div className="container my-5">
-        <h2>Apps</h2>
+        <h2><FormattedMessage id="apps" /></h2>
         {isLoading && <Loading />}
         {isLoaded &&
           <div>

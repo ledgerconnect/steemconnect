@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 import Icon from '../../widgets/Icon';
 
 const SignValidationErrors = ({ errors }) =>
   <div>
-    <h2><Icon name="close" className="text-danger" lg /> Error</h2>
-    <h5 className="mb-4">Validation errors in your request!</h5>
+    <h2><Icon name="close" className="text-danger" lg /> <FormattedMessage id="error" /></h2>
+    <h5 className="mb-4"><FormattedMessage id="error_request_validation" /></h5>
     <table className="table text-center">
       <tbody>
         {errors.map((error, idx) =>

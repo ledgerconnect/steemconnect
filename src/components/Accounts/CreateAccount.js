@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import steem from 'steem';
 import { notification } from 'antd';
 import AccountForm from '../Form/AccountForm';
@@ -6,7 +7,11 @@ import SignForm from '../Form/Sign';
 import Loading from '../../widgets/Loading';
 import { getErrorMessage } from '../../../helpers/operation';
 
-export default class CreateAccount extends Component {
+class CreateAccount extends Component {
+  static propTypes = {
+    intl: intlShape.isRequired,
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -25,6 +30,7 @@ export default class CreateAccount extends Component {
 
   sign = (auth) => {
     const { account } = this.state;
+    const { intl } = this.props;
     const publicKeys = steem.auth.generateKeys(account.name, account.password, ['owner', 'active', 'posting', 'memo']);
     const owner = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.owner, 1]] };
     const active = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.active, 1]] };
@@ -49,13 +55,13 @@ export default class CreateAccount extends Component {
         this.setState({ step: 0 });
         if (err) {
           notification.error({
-            message: 'Error',
-            description: getErrorMessage(err) || 'Oops! Something goes wrong, open your console to see the error details.',
+            message: intl.formatMessage({ id: 'error' }),
+            description: getErrorMessage(err) || intl.formatMessage({ id: 'general_error' }),
           });
         } else {
           notification.success({
-            message: 'Success',
-            description: `The account @${account.name} has been successfully created`,
+            message: intl.formatMessage({ id: 'success' }),
+            description: intl.formatMessage({ id: 'success_account_create' }, { account: account.name }),
           });
         }
       }
@@ -70,7 +76,7 @@ export default class CreateAccount extends Component {
         <div className="Sign__content container text-left my-2">
           {step === 0 &&
             <div>
-              <h2 className="text-center">Create Account</h2>
+              <h2 className="text-center"><FormattedMessage id="create_account" /></h2>
               <AccountForm submit={this.submit} />
             </div>
           }
@@ -89,3 +95,5 @@ export default class CreateAccount extends Component {
     );
   }
 }
+
+export default injectIntl(CreateAccount);

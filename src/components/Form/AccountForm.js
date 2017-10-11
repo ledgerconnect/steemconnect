@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import Form from '../../widgets/Form';
 import { createSuggestedPassword } from '../../utils/auth';
 
@@ -23,7 +24,7 @@ export default class AccountForm extends Form {
       <form onSubmit={this.onSubmit}>
         <div className="block">
           <div className={this.getClasses('name', 'form-group')}>
-            <label className="label" htmlFor="username">Username</label>
+            <label className="label" htmlFor="username"><FormattedMessage id="username" /></label>
             <input
               id="username"
               type="text"
@@ -36,7 +37,7 @@ export default class AccountForm extends Form {
             />
           </div>
           <div className="form-group">
-            <label className="label" htmlFor="password">Password</label>
+            <label className="label" htmlFor="password"><FormattedMessage id="password" /></label>
             <input
               id="password"
               type="text"
@@ -45,10 +46,10 @@ export default class AccountForm extends Form {
               onChange={this.onChange}
               defaultValue={data.password}
             />
-            <small>Write down your password and keep it somewhere very safe and secure.</small>
+            <small><FormattedMessage id="password_tip" /></small>
           </div>
           <div className="form-group">
-            <label className="label" htmlFor="steem">Steem</label>
+            <label className="label" htmlFor="steem"><FormattedMessage id="steem" /></label>
             <input
               id="steem"
               type="text"
@@ -59,7 +60,7 @@ export default class AccountForm extends Form {
             />
           </div>
           <div className="form-group">
-            <label className="label" htmlFor="vests">Vests</label>
+            <label className="label" htmlFor="vests"><FormattedMessage id="vests" /></label>
             <input
               id="vests"
               type="text"
@@ -76,7 +77,7 @@ export default class AccountForm extends Form {
             className="btn btn-success"
             disabled={this.props.isLoading}
           >
-            Continue
+            <FormattedMessage id="continue" />
           </button>
         </div>
       </form>

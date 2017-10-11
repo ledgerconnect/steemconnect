@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
 import fetch from 'isomorphic-fetch';
 import Icon from '../../widgets/Icon';
@@ -44,8 +45,8 @@ export default class MyApps extends Component {
     const { apps, isLoading, isLoaded } = this.state;
     return (
       <div className="container my-5">
-        <h2>My Apps</h2>
-        <p>These are your apps.</p>
+        <h2><FormattedMessage id="my_apps" /></h2>
+        <p><FormattedMessage id="your_apps" /></p>
         {isLoading && <Loading />}
         {isLoaded &&
           <div>
@@ -54,7 +55,7 @@ export default class MyApps extends Component {
             )}
             <div className="list-group-item">
               <Link to="/apps/create">
-                <Icon name="add" /> New App
+                <Icon name="add" /> <FormattedMessage id="new_apps" />
               </Link>
             </div>
           </div>

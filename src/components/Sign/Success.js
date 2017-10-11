@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 import Icon from '../../widgets/Icon';
 
 export default class Sign extends Component {
@@ -19,12 +20,11 @@ export default class Sign extends Component {
     const { cb } = this.props;
     return (
       <div>
-        <h2><Icon name="check" className="text-success" lg /> Success</h2>
-        <h5 className="mb-4">The operation has been successfully broadcasted.</h5>
+        <h2><Icon name="check" className="text-success" lg /> <FormattedMessage id="success" /></h2>
+        <h5 className="mb-4"><FormattedMessage id="success_operation_broadcasted" /></h5>
         {cb &&
           <p>
-            If you are not redirected within 10 seconds{' '}
-            <a href={cb} target="_blank" rel="noopener noreferrer">click here</a>.
+            <FormattedMessage id="redirect_ten_seconds" values={{ link: <a href={cb} target="_blank" rel="noopener noreferrer"><FormattedMessage id="click_here" /></a> }} />
           </p>
         }
       </div>

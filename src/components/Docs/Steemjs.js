@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 import changeCase from 'change-case';
 import pkg from 'steem/package.json';
 import methods from 'steem/lib/api/methods';
@@ -32,8 +33,7 @@ const Method = ({ method }) => {
 };
 
 Method.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  method: PropTypes.object,
+  method: PropTypes.shape(),
 };
 
 const Operation = ({ operation }) => {
@@ -52,7 +52,7 @@ const Operation = ({ operation }) => {
           {changeCase.titleCase(operation.operation)}
         </a>
       </h4>
-      <p><b>Required authority:</b> {inlineRoles}. <a href={signLink} target="_blank" rel="noopener noreferrer">Try it</a></p>
+      <p><b><FormattedMessage id="required_authority" />:</b> {inlineRoles}. <a href={signLink} target="_blank" rel="noopener noreferrer"><FormattedMessage id="try_it" /></a></p>
       <pre>
         <code>
           {`steem.broadcast.${changeCase.camelCase(operation.operation)}(wif, ${inlineParams}function(err, result) {
@@ -65,19 +65,23 @@ const Operation = ({ operation }) => {
 };
 
 Operation.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  operation: PropTypes.object,
+  operation: PropTypes.shape(),
 };
 
 const Steemjs = () =>
   <div className="container my-5">
-    <h1>Steem.js</h1>
+    <h1><FormattedMessage id="steemjs" /></h1>
     <p>
-        This documentation is generated from Steem.js v{pkg.version} <a href="https://github.com/steemit/steem-js">source code</a>.
-        It include every <a href="#api">API methods</a> and every <a href="#broadcast">operations</a>.
-        You can click on "Try it" link and change default values
-        with appropriate parameters to test them.
-      </p>
+      <FormattedMessage
+        id="steemjs_doc"
+        values={{
+          version: pkg.version,
+          source: <a href="https://github.com/steemit/steem-js"><FormattedMessage id="source_code" /></a>,
+          api: <a href="#api"><FormattedMessage id="api_methods" /></a>,
+          operations: <a href="#broadcast"><FormattedMessage id="api_methods" /></a>,
+        }}
+      />
+    </p>
     <h2><a href="#api" name="api">API</a></h2>
     {methods.map((method, key) =>
       <Method key={key} method={method} />
