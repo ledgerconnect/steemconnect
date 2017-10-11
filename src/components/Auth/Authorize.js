@@ -59,16 +59,23 @@ export default class Authorize extends Component {
     const { clientId, responseType, redirectUri, scope, state } = this.state;
     this.setState({ step: 0 });
     login({ ...auth }, () => {
-      addPostingAuthority({ ...auth, clientId }, () => {
+      if (scope === 'login') {
         authorize({ clientId, scope, responseType }, (errA, resA) => {
           window.location = `${redirectUri}?${qs.stringify({ ...resA, state })}`;
         });
-      });
+      } else {
+        addPostingAuthority({ ...auth, clientId }, () => {
+          authorize({ clientId, scope, responseType }, (errA, resA) => {
+            window.location = `${redirectUri}?${qs.stringify({ ...resA, state })}`;
+          });
+        });
+      }
     });
   };
 
   render() {
-    const { clientId, step } = this.state;
+    const { clientId, scope, step } = this.state;
+    const requiredRoles = (scope === 'login') ? ['memo', 'posting'] : ['owner', 'active'];
     return (
       <div className="Sign">
         <div className="Sign__content container my-2 Sign__authorize">
@@ -77,7 +84,21 @@ export default class Authorize extends Component {
             <div>
               <h2><FormattedMessage id="authorize" /></h2>
               <p>
-                <FormattedMessage id="authorize_question" values={{ username: <b> @{clientId}</b>, role: <b><FormattedMessage id="posting" /></b> }} />
+                {scope === 'login'
+                  ? <FormattedMessage
+                    id="authorize_login_question"
+                    values={{
+                      username: <b> @{clientId}</b>,
+                    }}
+                  />
+                  : <FormattedMessage
+                    id="authorize_question"
+                    values={{
+                      username: <b> @{clientId}</b>,
+                      role: <b><FormattedMessage id="posting" /></b>,
+                    }}
+                  />
+                }
               </p>
               <div className="form-group my-4">
                 <button
@@ -90,7 +111,7 @@ export default class Authorize extends Component {
               </div>
             </div>
           }
-          {step === 2 && <SignForm roles={['owner', 'active']} sign={this.authorize} />}
+          {step === 2 && <SignForm roles={requiredRoles} sign={this.authorize} />}
         </div>
       </div>
     );
