@@ -109,7 +109,7 @@ class RecoverAccount extends React.Component {
             </div>
           }
           {!isLoading && step === 1 &&
-            <div className="text-center mt-4">
+            <div className="text-center mt-4 Sign__authorize">
               <SignForm
                 roles={['owner']}
                 sign={this.handleFormSubmitStep2}

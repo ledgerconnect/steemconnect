@@ -71,7 +71,7 @@ export default class Authorize extends Component {
     const { clientId, step } = this.state;
     return (
       <div className="Sign">
-        <div className="Sign__content container my-2">
+        <div className="Sign__content container my-2 Sign__authorize">
           {step === 0 && <Loading />}
           {step === 1 &&
             <div>

@@ -73,7 +73,7 @@ class CreateAccount extends Component {
     const { step } = this.state;
     return (
       <div className="Sign">
-        <div className="Sign__content container text-left my-2">
+        <div className="Sign__content container text-left my-2 Sign__authorize">
           {step === 0 &&
             <div>
               <h2 className="text-center"><FormattedMessage id="create_account" /></h2>
