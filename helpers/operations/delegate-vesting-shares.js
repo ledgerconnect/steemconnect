@@ -31,27 +31,45 @@ const parse = async (query) => {
 
 const validate = async (query, errors) => {
   if (!isEmpty(query.delegatee) && !await userExists(query.delegatee)) {
-    errors.push(`the user ${query.delegatee} doesn't exist`);
+    errors.push({ field: 'delegatee', error: `the user ${query.delegatee} doesn't exist` });
   }
   if (!isEmpty(query.delegator) && !await userExists(query.delegator)) {
-    errors.push(`the user ${query.delegator} doesn't exist`);
+    errors.push({ field: 'delegator', error: `the user ${query.delegator} doesn't exist` });
   }
 
   if (!isEmpty(query.vesting_shares)) {
     if (!['VESTS', 'SP'].includes(query.vesting_shares.split(' ')[1])) {
-      errors.push('please select a valid symbol: VESTS or SP');
+      errors.push({ field: 'vesting_shares', error: 'please select a valid symbol: VESTS or SP' });
     } else if (!isAsset(query.vesting_shares)) {
-      errors.push('please type a valid amount, 12.123 SP or 12.123456 VESTS for example');
+      errors.push({ field: 'vesting_shares', error: 'please type a valid amount, 12.123 SP or 12.123456 VESTS for example' });
     }
   }
 };
 
 const normalize = async (query) => {
   const cQuery = _.cloneDeep(query);
+
+  let sUsername = normalizeUsername(query.delegatee);
+  let accounts = await steem.api.getAccountsAsync([sUsername]);
+  let account = accounts && accounts.length > 0 && accounts.find(a => a.name === sUsername);
+  if (account) {
+    cQuery.toName = account.name;
+    cQuery.toReputation = steem.formatter.reputation(account.reputation);
+  }
+
+  if (query.delegator) {
+    sUsername = normalizeUsername(query.delegator);
+    accounts = await steem.api.getAccountsAsync([sUsername]);
+    account = accounts && accounts.length > 0 && accounts.find(a => a.name === sUsername);
+    if (account) {
+      cQuery.fromName = account.name;
+    }
+  }
+
   const [amount, symbol] = cQuery.vesting_shares.split(' ');
   if (amount && symbol === 'VESTS') {
     const globalProps = await steem.api.getDynamicGlobalPropertiesAsync();
-    cQuery.vesting_shares = _.join(
+    cQuery.amount = _.join(
       [
         formatter.vestToSteem(
           cQuery.vesting_shares,
@@ -61,7 +79,7 @@ const normalize = async (query) => {
         'SP',
       ], ' ');
   } else if (amount && symbol === 'SP') {
-    cQuery.vesting_shares = _.join(
+    cQuery.amount = _.join(
       [parseFloat(amount).toFixed(3), symbol],
       ' ');
   }

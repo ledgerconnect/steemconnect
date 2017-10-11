@@ -9,7 +9,7 @@ const Avatar = ({
 }) => {
   let src;
   if (username) {
-    src = `https://img.steemconnect.com/@${username}?s=${size}`;
+    src = `https://img.busy.org/@${username}?s=${size}`;
   } else if (icon) {
     src = `https://steemitimages.com/${size}x${size}/${icon}`;
   } else {

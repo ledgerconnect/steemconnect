@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { login } from '../../utils/auth';
 import SignForm from '../Form/Sign';
 import Loading from '../../widgets/Loading';
+import './Login.less';
 
 export default class Login extends Component {
   static propTypes = {
@@ -39,7 +40,7 @@ export default class Login extends Component {
     const { step } = this.state;
     return (
       <div className="Sign">
-        <div className="Sign__content container my-2">
+        <div className="Sign__content container my-2 login-form Sign__authorize">
           {step === 1 && <SignForm title="Log In" roles={['memo', 'posting']} sign={this.handleSubmit} />}
           {step === 2 && <Loading />}
         </div>

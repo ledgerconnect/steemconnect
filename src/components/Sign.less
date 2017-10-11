@@ -1,3 +1,5 @@
+@import "../styles/screen-sizes";
+
 .Sign {
   display: flex;
   flex-direction: column;
@@ -13,10 +15,233 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: @screen-sm) {
+    height: 100%;
+    max-width: 768px;
+  }
 }
 
-.Sign__form {
-  margin: 0 auto;
+.Sign__wrapper {
+  padding: 40px 20px;
   width: 100%;
-  max-width: 300px;
+
+  @media (max-width: @screen-sm) {
+    margin: 60px 0 0;
+    background: #fff;
+  }
+
+  .ant-row {
+    margin-bottom: 14px;
+  }
+
+  .ant-btn {
+    text-transform: uppercase;
+    box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+    &:hover {
+      box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08) !important;
+    }
+  }
+}
+
+.Sign_frame {
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 5px 0 #d7dde3;
+  text-align: center;
+  margin: 20px auto;
+  max-width: 500px;
+  width: 100%;
+
+  @media (max-width: @screen-sm) {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0px auto;
+    height: 100%;
+    max-width: 768px;
+  }
+}
+
+.Placeholder {
+  width: 100%;
+  max-width: 330px;
+  margin: 0 auto;
+
+  .Placeholder__operation-container {
+    text-align: center;
+    border-radius: 5px;
+    background-color: #ffffff;
+    border: solid 1px #e5e8eb;
+    margin: 20px auto;
+    width: 100%;
+    overflow: auto;
+
+    h5.Placeholder__operation-title {
+      text-transform: uppercase;
+      background-color: rgba(240, 242, 244, 0.3);
+      color: #898989;
+      width: 100%;
+      font-size: 16px;
+      font-weight: bold;
+      min-height: 30px;
+      line-height: 30px;
+    }
+
+    .Placeholder__operation-content {
+      font-size: 20px;
+      padding: 20px 10px;
+      width: 100%;
+
+      ul.Placeholder__operation-params {
+        width: 100%;
+
+        li {
+          display: flex;
+          word-break: break-word;
+
+          @media (max-width: @screen-sm) {
+            display: block;
+            margin-bottom: 10px;
+          }
+
+          strong {
+            display: inline-block;
+            flex: 1 0 0;
+            margin-right: 5px;
+            text-align: right;
+
+            @media (max-width: @screen-sm) {
+              width: 100%;
+              text-align: center;
+              margin-right: 0px;
+            }
+          }
+          span {
+            display: inline-block;
+            flex: 2 0 0;
+            margin-left: 5px;
+
+            @media (max-width: @screen-sm) {
+              width: 100%;
+              text-align: center;
+              margin-left: 0px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.Sign__result-container {
+  width: 100%;
+  padding: 25px 15px 10px 15px;
+
+  p {
+    font-size: 16px;
+  }
+}
+
+.Sign__result-title-bg {
+  width: 320px;
+  height: 226px;
+  background-image: url("/img/sign/result-bg.svg");
+  background-repeat: no-repeat;
+  justify-content: center;
+  margin: 0 auto 33px;
+
+  #error-icon, #success-icon {
+    width: 119px;
+    height: 119px;
+    margin-top: 50px;
+  }
+}
+
+a.cancel-link {
+  color: #4ba2f2 !important;
+  &:hover {
+    color: #49a9ee !important;
+  }
+}
+
+.SignForm__button {
+  font-family: Whitney,"Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: white;
+  width: 100%;
+  height: 52px;
+  border-radius: 5px;
+  border: none;
+  background-color: #4ba2f2;
+  box-shadow: 0 3px 8px 0 rgba(26, 80, 153, 0.3);
+}
+
+.Sign__button {
+  font-family: Whitney,"Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+  text-transform: uppercase;
+  color: #4ba2f2 !important;
+  background: none;
+  border: 1px solid #4ba2f2;
+  border-radius: 5px;
+  width: 100%;
+  padding: 15px 0;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  display: block;
+}
+
+.Sign__header {
+  width: 100%;
+  flex: 1 0 60px;
+  display: flex;
+  background-color: #fafbfc;
+  flex-direction: row !important;
+  justify-content: space-between;
+  border-bottom: solid 1px #e4e7ea;
+  border-radius: 10px 10px 0 0;
+
+  @media (max-width: @screen-sm) {
+    position: fixed;
+    top: 0;
+    z-index: 1;
+  }
+
+  #logo {
+    width: 174px;
+    height: 30px;
+    margin: 15px auto;
+  }
+}
+
+.Sign__signin-warning {
+  padding: 20px;
+  background-color: rgba(255, 224, 205, 0.3);
+  color: #dc6846;
+
+  @media (max-width: @screen-sm) {
+    line-height: 20px;
+    margin-top: 60px;
+  }
+}
+
+.Sign__footer {
+  border-top: solid 1px #e4e7ea;
+  border-radius:  0 0 10px 10px;
+  background-color: #fafbfc;
+  line-height: 2em;
+
+  @media (max-width: @screen-sm) {
+    width: 100%;
+  }
+
+  a {
+    font-size: 16px;
+    text-align: center;
+    color: #a6a6a6;
+    text-decoration: none;
+  }
 }
