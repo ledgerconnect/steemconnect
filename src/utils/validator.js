@@ -9,7 +9,7 @@ export const isNotUsername = async username => !await isUsername(username);
 
 export const accountExist = (rule, value, callback) => {
   steem.api.getAccounts([value], (err, result) => {
-    if (result[0]) {
+    if (result && result.find(a => a.name === value)) {
       callback();
     } else {
       callback(['Account name is not found']);
@@ -19,7 +19,7 @@ export const accountExist = (rule, value, callback) => {
 
 export const accountNotExist = (rule, value, callback) => {
   steem.api.getAccounts([value], (err, result) => {
-    if (result[0]) {
+    if (result && result.find(a => a.name === value)) {
       callback(['Account name is not available']);
     } else {
       callback();
