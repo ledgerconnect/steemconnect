@@ -126,6 +126,7 @@ class CreateApp extends React.Component {
           visible={this.state.visible}
           onCancel={this.hideModal}
           footer={false}
+          className="Sign__authorize"
         >
           <SignForm
             roles={['active']}

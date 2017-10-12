@@ -1,14 +1,16 @@
 import React, { PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { getErrorMessage } from '../../../helpers/operation';
-import Icon from '../../widgets/Icon';
 
 const SignError = ({ error, resetForm }) =>
-  <div>
-    <h2><Icon name="close" className="text-danger" lg /> <FormattedMessage id="error" /></h2>
-    <h5 className="mb-4"><FormattedMessage id="general_error_short" /></h5>
+  <div className="Sign__result-container">
+    <div className="Sign__result-title-bg">
+      <object data="/img/sign/fail.svg" type="image/svg+xml" id="error-icon" />
+    </div>
+    <h2><FormattedMessage id="error" /></h2>
+    <h5><FormattedMessage id="general_error_short" /></h5>
     <p><b>{ getErrorMessage(error) }</b></p>
-    <p><FormattedMessage id="do_you_want" values={{ button: <button className="button-link" onClick={() => resetForm()}><FormattedMessage id="try_again" /></button> }} /></p>
+    <button className="Sign__button" onClick={() => resetForm()}><FormattedMessage id="try_again" /></button>
   </div>;
 
 SignError.propTypes = {

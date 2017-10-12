@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
-import Icon from '../../widgets/Icon';
 
 export default class Sign extends Component {
   static propTypes = {
@@ -19,14 +18,15 @@ export default class Sign extends Component {
   render() {
     const { cb } = this.props;
     return (
-      <div>
-        <h2><Icon name="check" className="text-success" lg /> <FormattedMessage id="success" /></h2>
-        <h5 className="mb-4"><FormattedMessage id="success_operation_broadcasted" /></h5>
-        {cb &&
-          <p>
-            <FormattedMessage id="redirect_ten_seconds" values={{ link: <a href={cb} target="_blank" rel="noopener noreferrer"><FormattedMessage id="click_here" /></a> }} />
-          </p>
-        }
+      <div className="Sign__result-container">
+        <div className="Sign__result-title-bg">
+          <object data="/img/sign/success.svg" type="image/svg+xml" id="success-icon" />
+        </div>
+        <h2><FormattedMessage id="congratulations" /></h2>
+        <h5><FormattedMessage id="success_operation_broadcasted" /></h5>
+
+        {cb && <p><FormattedMessage id="redirect_ten_seconds" /></p>}
+        {cb && <a className="Sign__button" href={cb} target="_blank" rel="noopener noreferrer"><FormattedMessage id="click_here" /></a>}
       </div>
     );
   }

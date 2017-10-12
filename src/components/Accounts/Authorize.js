@@ -80,7 +80,7 @@ export default class Authorize extends Component {
     const { step, success, error, username, role, weight, redirectUri } = this.state;
     return (
       <div className="Sign">
-        <div className="Sign__content container my-2">
+        <div className="Sign__content container my-2 Sign__authorize">
           {step === 0 &&
             <div>
               <h2><FormattedMessage id="authorize" /></h2>

@@ -1,11 +1,9 @@
 import React, { PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
-import changeCase from 'change-case';
 
 const SignPlaceholderComment = ({
-  type,
-  query,
-}) => {
+                                  query,
+                                }) => {
   let jsonMetadata = {};
   try {
     jsonMetadata = JSON.parse(query.json_metadata);
@@ -13,42 +11,38 @@ const SignPlaceholderComment = ({
     jsonMetadata = {};
   }
   return (
-    <div>
-      <h2>{ changeCase.titleCase(type) }</h2>
+    <div className="Placeholder__operation-content">
       {query.parent_author && query.parent_permlink
         ? <p><FormattedMessage id="reply_post" values={{ author: <b>@{query.parent_author}</b> }} /></p>
         : <p><FormattedMessage id="add_new_post" /></p>
       }
-      <table className="table text-left">
-        <tbody>
-          {query.title &&
-            <tr>
-              <td className="label"><b><FormattedMessage id="title" /></b></td>
-              <td>{query.title}</td>
-            </tr>
-          }
-          {query.body &&
-            <tr>
-              <td className="label"><b><FormattedMessage id="body" /></b></td>
-              <td>{query.body}</td>
-            </tr>
-          }
-          {query.json_metadata &&
-            <tr>
-              <td className="label"><b><FormattedMessage id="json_metadata" /></b></td>
-              <td>
-                <pre>{JSON.stringify(jsonMetadata, null, 2)}</pre>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
+      <ul className="Placeholder__operation-params">
+        {query.title &&
+        <li>
+          <strong><FormattedMessage id="title" /></strong>
+          <span>{query.title}</span>
+        </li>
+        }
+        {query.body &&
+        <li>
+          <strong><FormattedMessage id="body" /></strong>
+          <span>{query.body}</span>
+        </li>
+        }
+        {query.json_metadata &&
+        <li>
+          <strong><FormattedMessage id="json_metadata" /></strong>
+          <span>
+            <pre>{JSON.stringify(jsonMetadata, null, 2)}</pre>
+          </span>
+        </li>
+        }
+      </ul>
     </div>
   );
 };
 
 SignPlaceholderComment.propTypes = {
-  type: PropTypes.string,
   query: PropTypes.shape(),
 };
 
