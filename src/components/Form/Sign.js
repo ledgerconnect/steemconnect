@@ -72,6 +72,7 @@ class Sign extends React.Component {
             this.props.sign(payload);
           }
         } else {
+          this.setState({ submitting: false });
           this.props.form.setFields({
             password: {
               value: password,
@@ -79,6 +80,8 @@ class Sign extends React.Component {
             },
           });
         }
+      } else {
+        this.setState({ submitting: false });
       }
     });
   };
