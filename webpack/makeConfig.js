@@ -18,17 +18,10 @@ function makePlugins(options) {
     new webpack.DefinePlugin({
       'process.env': {
         // This has effect on the react lib size
-        NODE_ENV: isDevelopment
-          ? JSON.stringify('development')
-          : JSON.stringify('production'),
+        NODE_ENV: isDevelopment ? JSON.stringify('development') : JSON.stringify('production'),
         ENABLE_LOGGER: JSON.stringify(process.env.ENABLE_LOGGER),
-        SENTRY_PUBLIC_DSN: isDevelopment
-          ? null
-          : JSON.stringify(process.env.SENTRY_PUBLIC_DSN),
-        STEEMJS_URL: JSON.stringify(
-          process.env.STEEMJS_URL ||
-          'wss://steemd-int.steemit.com'
-        ),
+        SENTRY_PUBLIC_DSN: isDevelopment ? null : JSON.stringify(process.env.SENTRY_PUBLIC_DSN),
+        STEEMJS_URL: JSON.stringify(process.env.STEEMJS_URL || 'wss://steemd.steemit.com'),
         IS_BROWSER: JSON.stringify(true),
       },
     }),
@@ -51,7 +44,7 @@ function makePlugins(options) {
         minimize: true,
         compress: {
           warnings: false,
-        }
+        },
       }),
       new webpack.optimize.AggressiveMergingPlugin(),
       new ExtractTextPlugin('../css/base.css'),
@@ -70,7 +63,6 @@ function makeStyleLoaders(options) {
           'style',
           'css?sourceMap?importLoaders=1',
           'postcss-loader?browsers=last 2 version',
-          'sass?sourceMap&sourceMapContents',
           'less-loader',
         ],
       },
@@ -99,12 +91,12 @@ function makeConfig(options) {
     entry: (isDevelopment ? [
       'webpack-hot-middleware/client?reload=true',
     ] : []).concat([
-      path.join(options.baseDir, 'src/index.js')
+      path.join(options.baseDir, 'src/index.js'),
     ]),
     output: {
       path: path.join(options.baseDir, '/public/js'),
       filename: 'app.min.js',
-      publicPath: '/js/'
+      publicPath: '/js/',
     },
     plugins: makePlugins(options),
     module: {
@@ -121,7 +113,7 @@ function makeConfig(options) {
         {
           loader: 'file-loader?name=[name].[hash].[ext]&limit=1',
           test: /\.(eot|ttf|woff|woff2)(\?.+)?$/,
-        }
+        },
       ].concat(makeStyleLoaders(options)),
     },
   };
