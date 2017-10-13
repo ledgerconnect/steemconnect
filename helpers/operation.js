@@ -103,7 +103,7 @@ const validateRequired = (type, query) => {
 
     operation.params.forEach((p) => {
       if (!optionalFields.includes(p) && !query[p] && (!authorField || p !== authorField)) {
-        errors.push(`${p} is required`);
+        errors.push({ field: p, error: `${p} is required` });
       }
     });
   }
