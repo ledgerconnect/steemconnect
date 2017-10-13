@@ -58,10 +58,10 @@ function makeStyleLoaders(options) {
   if (options.isDevelopment) {
     return [
       {
-        test: /\.s[ac]ss|.less$/,
+        test: /\.less$/,
         loaders: [
-          'style',
-          'css?sourceMap?importLoaders=1',
+          'style-loader',
+          'css-loader?sourceMap?importLoaders=1',
           'postcss-loader?browsers=last 2 version',
           'less-loader',
         ],
@@ -71,10 +71,10 @@ function makeStyleLoaders(options) {
 
   return [
     {
-      test: /\.s[ac]ss|.less$/,
+      test: /\.less$/,
       loader: ExtractTextPlugin.extract(
         'style-loader',
-        'css?importLoaders=1!postcss-loader?browsers=last 2 version!sass!less'
+        'css-loader?importLoaders=1!postcss-loader?browsers=last 2 version!less-loader'
       ),
     },
   ];
