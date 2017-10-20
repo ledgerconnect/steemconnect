@@ -15,6 +15,7 @@ class Index extends React.Component {
   static propTypes = {
     form: PropTypes.shape(),
     intl: PropTypes.shape(),
+    location: PropTypes.shape(),
   }
 
   constructor(props) {
@@ -34,6 +35,18 @@ class Index extends React.Component {
   // eslint-disable-next-line class-methods-use-this
   componentWillMount() {
     document.body.style.backgroundColor = '#f0f2f4';
+    const { operation } = this.props.location.query;
+    if (operation) {
+      let opt = customOperations.find(
+        o => o.operation === changeCase.snakeCase(operation));
+      if (!opt) {
+        opt = steemOperations.find(
+          o => o.operation === changeCase.snakeCase(operation));
+      }
+      if (opt) {
+        this.selectOperationStep1(opt.operation);
+      }
+    }
   }
 
   setStep = (stepNumber) => {
@@ -150,7 +163,7 @@ class Index extends React.Component {
   }
 
   render() {
-    const { form: { getFieldDecorator }, intl } = this.props;
+    const { form: { getFieldDecorator }, intl, location: { query } } = this.props;
     const { activeSelect, step, stepNumber, filter, operation } = this.state;
 
     const operations = [];
@@ -254,6 +267,10 @@ class Index extends React.Component {
                     rules: [{
                       required: isRequired, message: `${changeCase.titleCase(field)} ${intl.formatMessage({ id: 'is_required' })}`,
                     }],
+                    initialValue:
+                    query[changeCase.camelCase(field)] ||
+                    query[changeCase.paramCase(field)] ||
+                    query[changeCase.snakeCase(field)],
                   })(
                     <Input id={field} />
                   )}
