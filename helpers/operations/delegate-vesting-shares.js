@@ -31,17 +31,17 @@ const parse = async (query) => {
 
 const validate = async (query, errors) => {
   if (!isEmpty(query.delegatee) && !await userExists(query.delegatee)) {
-    errors.push({ field: 'delegatee', error: `the user ${query.delegatee} doesn't exist` });
+    errors.push({ field: 'delegatee', error: 'error_user_exist', values: { user: query.delegatee } });
   }
   if (!isEmpty(query.delegator) && !await userExists(query.delegator)) {
-    errors.push({ field: 'delegator', error: `the user ${query.delegator} doesn't exist` });
+    errors.push({ field: 'delegator', error: 'error_user_exist', values: { user: query.delegator } });
   }
 
   if (!isEmpty(query.vesting_shares)) {
     if (!['VESTS', 'SP'].includes(query.vesting_shares.split(' ')[1])) {
-      errors.push({ field: 'vesting_shares', error: 'please select a valid symbol: VESTS or SP' });
+      errors.push({ field: 'vesting_shares', error: 'error_vests_symbol' });
     } else if (!isAsset(query.vesting_shares)) {
-      errors.push({ field: 'vesting_shares', error: 'please type a valid amount, 12.123 SP or 12.123456 VESTS for example' });
+      errors.push({ field: 'vesting_shares', error: 'error_vests_format' });
     }
   }
 };

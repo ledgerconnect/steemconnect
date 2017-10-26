@@ -17,17 +17,17 @@ const parse = (query) => {
 
 const validate = async (query, errors) => {
   if (!isEmpty(query.to) && !await userExists(query.to)) {
-    errors.push({ field: 'to', error: `the user ${query.to} doesn't exist` });
+    errors.push({ field: 'to', error: 'error_user_exist', values: { user: query.to } });
   }
 
   if (!isEmpty(query.from) && !await userExists(query.from)) {
-    errors.push({ field: 'from', error: `the user ${query.from} doesn't exist` });
+    errors.push({ field: 'from', error: 'error_user_exist', values: { user: query.from } });
   }
 
   if (!isEmpty(query.amount) && !['STEEM', 'SBD'].includes(query.amount.split(' ')[1])) {
-    errors.push({ field: 'amount', error: 'please select a valid symbol: STEEM or SBD' });
+    errors.push({ field: 'amount', error: 'error_amount_symbol' });
   } else if (!isEmpty(query.amount) && !isAsset(query.amount)) {
-    errors.push({ field: 'amount', error: 'please type a valid amount, 12.123 STEEM or 12.123 SBD for example' });
+    errors.push({ field: 'amount', error: 'error_amount_format' });
   }
 
   if (errors.length === 0) {

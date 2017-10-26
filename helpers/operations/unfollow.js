@@ -22,7 +22,7 @@ const parse = (query) => {
 
 const validate = async (query, errors) => {
   if (!isEmpty(query.follower) && !await userExists(query.follower)) {
-    errors.push({ field: 'follower', error: `the user ${query.follower} doesn't exist` });
+    errors.push({ field: 'follower', error: 'error_user_exist', values: { user: query.follower } });
   }
 };
 

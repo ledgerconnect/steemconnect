@@ -15,10 +15,10 @@ const parse = async (query) => {
 
 const validate = async (query, errors) => {
   if (!isEmpty(query.delegatee) && !await userExists(query.delegatee)) {
-    errors.push({ field: 'delegatee', error: `the user ${query.delegatee} doesn't exist` });
+    errors.push({ field: 'delegatee', error: 'error_user_exist', values: { user: query.delegatee } });
   }
   if (!isEmpty(query.delegator) && !await userExists(query.delegator)) {
-    errors.push({ field: 'delegator', error: `the user ${query.delegator} doesn't exist` });
+    errors.push({ field: 'delegator', error: 'error_user_exist', values: { user: query.delegator } });
   }
 };
 
