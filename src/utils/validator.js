@@ -28,44 +28,48 @@ export const accountNotExist = (rule, value, callback) => {
 };
 
 // https://github.com/steemit/condenser/blob/eaf8a02658b8deaef376ec90b81d0866e52582cc/app/utils/ChainValidation.js#L4
-export const validateAccountName = (rule, value, callback) => {
+export const validateAccountName = (rule, value, callback, intl) => {
   let i;
   let label;
   let len;
-  let suffix;
+  let segment = '';
 
-  suffix = 'Account name should ';
   if (!value) {
-    callback([`${suffix}not be empty.`]);
+    return callback(intl.formatMessage({ id: 'error_username_required' }));
   }
+
   const length = value.length;
+
   if (length < 3) {
-    callback([`${suffix}be longer.`]);
+    return callback(intl.formatMessage({ id: 'error_validation_account_min' }));
   }
   if (length > 16) {
-    callback([`${suffix}be shorter.`]);
+    return callback(intl.formatMessage({ id: 'error_validation_account_max' }));
   }
+
   if (/\./.test(value)) {
-    suffix = 'Each account segment should ';
+    segment = '_segment';
   }
+
   const ref = value.split('.');
+
   for (i = 0, len = ref.length; i < len; i += 1) {
     label = ref[i];
     if (!/^[a-z]/.test(label)) {
-      callback([`${suffix}start with a letter.`]);
+      return callback(intl.formatMessage({ id: `error_validation_account${segment}_start` }));
     }
     if (!/^[a-z0-9-]*$/.test(label)) {
-      callback([`${suffix}have only letters, digits, or dashes.`]);
+      return callback(intl.formatMessage({ id: `error_validation_account${segment}_alpha` }));
     }
     if (/--/.test(label)) {
-      callback([`${suffix}have only one dash in a row.`]);
+      return callback(intl.formatMessage({ id: `error_validation_account${segment}_dash` }));
     }
     if (!/[a-z0-9]$/.test(label)) {
-      callback([`${suffix}end with a letter or digit.`]);
+      return callback(intl.formatMessage({ id: `error_validation_account${segment}_end` }));
     }
     if (!(label.length >= 3)) {
-      callback([`${suffix}be longer`]);
+      return callback(intl.formatMessage({ id: `error_validation_account_${segment}_min` }));
     }
   }
-  callback();
+  return callback();
 };
