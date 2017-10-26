@@ -109,7 +109,7 @@ export default class Sign extends Component {
               }
               {step === 'signin' && <SignForm roles={op.roles} sign={this.sign} title={<FormattedMessage id="confirm_operation_log_in" />} />}
               {step === 'signin' && <Link className="cancel-link" onClick={() => this.setState({ step: 'form' })}><FormattedMessage id="cancel" /></Link>}
-              {step === 'result' && success && <SignSuccess result={success} cb={normalizedQuery.cb} />}
+              {step === 'result' && success && <SignSuccess result={success} cb={normalizedQuery.cb || normalizedQuery.redirect_uri} />}
               {step === 'result' && error && <SignError error={error} resetForm={this.resetForm} />}
             </div>
             <div className="Sign__footer">
