@@ -116,7 +116,7 @@
   "recover": "Recover",
   "recover_account": "Recover account",
   "recovery_account": "Recovery account",
-  "redirect_ten_seconds": "If you are not redirected within 10 seconds {link}",
+  "redirect_ten_seconds": "If you are not redirected within 10 seconds",
   "redirect_uris": "Redirect URI(s)",
   "registering_app": "registering a developer application",
   "reply_post": "Do you want to reply to {author}'s post?",
