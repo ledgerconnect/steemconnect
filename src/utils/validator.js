@@ -68,7 +68,7 @@ export const validateAccountName = (rule, value, callback, intl) => {
       return callback(intl.formatMessage({ id: `error_validation_account${segment}_end` }));
     }
     if (!(label.length >= 3)) {
-      return callback(intl.formatMessage({ id: `error_validation_account_${segment}_min` }));
+      return callback(intl.formatMessage({ id: `error_validation_account${segment}_min` }));
     }
   }
   return callback();
