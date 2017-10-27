@@ -14,7 +14,7 @@ function makePlugins(options) {
   const isDevelopment = options.isDevelopment;
 
   let plugins = [
-    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         // This has effect on the react lib size
@@ -33,14 +33,15 @@ function makePlugins(options) {
 
   if (isDevelopment) {
     plugins = plugins.concat([
-      new webpack.optimize.OccurenceOrderPlugin(),
+      new webpack.optimize.OccurrenceOrderPlugin(),
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoErrorsPlugin(),
+      new webpack.NoEmitOnErrorsPlugin(),
     ]);
   } else {
     plugins = plugins.concat([
-      new webpack.optimize.DedupePlugin(),
+      new webpack.optimize.ModuleConcatenationPlugin(),
       new webpack.optimize.UglifyJsPlugin({
+        sourceMap: true,
         minimize: true,
         compress: {
           warnings: false,
@@ -72,10 +73,10 @@ function makeStyleLoaders(options) {
   return [
     {
       test: /\.less$/,
-      loader: ExtractTextPlugin.extract(
-        'style-loader',
-        'css-loader?importLoaders=1!postcss-loader?browsers=last 2 version!less-loader'
-      ),
+      loader: ExtractTextPlugin.extract({
+        fallback: 'style-loader',
+        use: 'css-loader?importLoaders=1!postcss-loader?browsers=last 2 version!less-loader'
+      }),
     },
   ];
 }
@@ -100,15 +101,15 @@ function makeConfig(options) {
     },
     plugins: makePlugins(options),
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.js?$/,
           exclude: /node_modules/,
-          loader: 'babel',
+          loader: 'babel-loader',
         },
         {
           test: /\.json?$/,
-          loader: 'json',
+          loader: 'json-loader',
         },
         {
           loader: 'file-loader?name=[name].[hash].[ext]&limit=1',
