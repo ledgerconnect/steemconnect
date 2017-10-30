@@ -12,6 +12,10 @@ class Internal extends React.Component {
     onSubmit: PropTypes.func,
   }
 
+  validateAccountNameIntl = (rule, value, callback) => {
+    validateAccountName(rule, value, callback, this.props.intl);
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -30,9 +34,10 @@ class Internal extends React.Component {
           hasFeedback
         >
           {getFieldDecorator('username', {
+            validateFirst: true,
             rules: [
               { required: true, message: intl.formatMessage({ id: 'error_username_required' }) },
-              { validator: validateAccountName },
+              { validator: this.validateAccountNameIntl },
               { validator: accountNotExist },
             ],
           })(

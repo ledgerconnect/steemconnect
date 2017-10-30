@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
 import Avatar from './Avatar';
 import './Header.less';
@@ -14,7 +15,7 @@ const Header = ({ username }) =>
       }
       {!username &&
         <div>
-          <Link to="/login">Log In</Link>
+          <Link to="/login"><FormattedMessage id="log_in" /></Link>
         </div>
       }
     </div>

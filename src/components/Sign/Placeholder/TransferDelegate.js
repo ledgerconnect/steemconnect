@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { FormattedNumber } from 'react-intl';
+import { FormattedMessage, FormattedNumber } from 'react-intl';
 import { Badge } from 'antd';
 import Avatar from '../../../widgets/Avatar';
 import './TransferDelegate.less';
@@ -16,7 +16,7 @@ const SignPlaceholderDefault = ({
             <Avatar username={query.fromName} size="60" className="TransferInfo__avatar" />
             <br />
             <span className="TransferInfo__username">
-              {query.fromName || 'You'}
+              {query.fromName || <FormattedMessage id="you" />}
             </span>
             <span className="TransferInfo__dots" />
           </div>

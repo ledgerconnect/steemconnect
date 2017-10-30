@@ -101,7 +101,7 @@ class CreateApp extends React.Component {
     }).catch((err) => {
       this.setState({ isLoading: false });
       notification.error({
-        message: 'Error',
+        message: intl.formatMessage({ id: 'error' }),
         description: getErrorMessage(err) || intl.formatMessage({ id: 'general_error' }),
       });
     });
