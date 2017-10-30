@@ -1,11 +1,17 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import { FormattedMessage } from 'react-intl';
+import { Form, Button } from 'antd';
+import { titleCase } from 'change-case';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import qs from 'query-string';
 import { authorize, login, hasAuthority, addPostingAuthority } from '../../utils/auth';
+import Avatar from '../../widgets/Avatar';
 import Loading from '../../widgets/Loading';
 import SignForm from '../Form/Sign';
+import config from '../../../config.json';
+import './Authorize.less';
 
 @connect(
   dispatch => bindActionCreators({
@@ -40,7 +46,25 @@ export default class Authorize extends Component {
       scope,
       state,
       step: 0,
+      scopes: [],
     };
+  }
+
+  componentWillMount() {
+    const { scope } = this.state;
+    let scopes = [];
+    if (scope !== 'login') {
+      if (scope) {
+        scopes = scope
+          .replace('offline', '')
+          .split(',')
+          .filter(o => config.authorized_operations.includes(o));
+      }
+      if (scopes.length === 0) {
+        scopes = config.authorized_operations;
+      }
+    }
+    this.setState({ scopes });
   }
 
   componentWillReceiveProps = (props) => {
@@ -54,6 +78,7 @@ export default class Authorize extends Component {
       this.setState({ step: 1 });
     }
   };
+
 
   authorize = (auth) => {
     const { clientId, responseType, redirectUri, scope, state } = this.state;
@@ -74,45 +99,82 @@ export default class Authorize extends Component {
   };
 
   render() {
-    const { clientId, scope, step } = this.state;
+    const { clientId, scope, step, scopes } = this.state;
     const requiredRoles = (scope === 'login') ? ['memo', 'posting'] : ['owner', 'active'];
     return (
       <div className="Sign">
-        <div className="Sign__content container my-2 Sign__authorize">
-          {step === 0 && <Loading />}
-          {step === 1 &&
-            <div>
-              <h2><FormattedMessage id="authorize" /></h2>
-              <p>
-                {scope === 'login'
-                  ? <FormattedMessage
-                    id="authorize_login_question"
-                    values={{
-                      username: <b> @{clientId}</b>,
-                    }}
-                  />
-                  : <FormattedMessage
-                    id="authorize_question"
-                    values={{
-                      username: <b> @{clientId}</b>,
-                      role: <b><FormattedMessage id="posting" /></b>,
-                    }}
-                  />
-                }
-              </p>
-              <div className="form-group my-4">
-                <button
-                  type="submit"
-                  onClick={() => this.setState({ step: 2 })}
-                  className="btn btn-success"
-                >
-                  <FormattedMessage id="continue" />
-                </button>
-              </div>
+        {step === 0 && <Loading />}
+        {step !== 0 && <div className="Sign__content">
+          <div className="Sign_frame">
+            <div className="Sign__header">
+              <object data="/img/logo.svg" type="image/svg+xml" id="logo" />
             </div>
-          }
-          {step === 2 && <SignForm roles={requiredRoles} sign={this.authorize} />}
-        </div>
+            <div className="Sign__wrapper">
+              {step === 1 &&
+                <Form onSubmit={this.handleSubmit} className="SignForm AuthorizeForm">
+                  <div className="Avatars">
+                    <div className="Avatar-container">
+                      <span className="Avatar" style={{ height: '40px', width: '40px' }}>
+                        <object
+                          data="/img/logo-c.svg"
+                          type="image/svg+xml"
+                          id="logo-c"
+                          style={{ height: '40px', width: '40px' }}
+                        />
+                      </span>
+                    </div>
+                    <div className="Avatar-link" />
+                    <div className="Avatar-container">
+                      <Avatar username={clientId} size="40" />
+                    </div>
+                  </div>
+                  <p>
+                    {scope === 'login' &&
+                    <FormattedMessage
+                      id="authorize_login_question"
+                      values={{
+                        username: <b> @{clientId}</b>,
+                      }}
+                    />}
+                    {scope.includes('offline') &&
+                    <FormattedMessage id="authorize_offline_question" />}
+                    {!scope &&
+                    <FormattedMessage
+                      id="authorize_question"
+                      values={{
+                        username: <b> @{clientId}</b>,
+                        role: <b><FormattedMessage id="posting" /></b>,
+                      }}
+                    />}
+                  </p>
+                  {scope !== 'login' && !scope.includes('offline') && <p>
+                    <FormattedMessage
+                      id="allow_operations"
+                      values={{ period: parseInt(config.token_expiration, 10) / 24 / 3600 }}
+                    />:
+                    <br />
+                  </p>}
+                  {scopes.length > 0 &&
+                  <ul className="authorize-operations">
+                    {scopes.map(op => <li><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase(op)}</li>)}
+                  </ul>}
+                  <Form.Item>
+                    <Button
+                      type="primary" htmlType="button"
+                      onClick={() => this.setState({ step: 2 })}
+                    >
+                      <FormattedMessage id="continue" />
+                    </Button>
+                  </Form.Item>
+                </Form>
+              }
+              {step === 2 && <SignForm roles={requiredRoles} sign={this.authorize} />}
+            </div>
+            <div className="Sign__footer">
+              <Link to="/" target="_blank" rel="noopener noreferrer"><FormattedMessage id="about_steemConnect" /></Link>
+            </div>
+          </div>
+        </div>}
       </div>
     );
   }
