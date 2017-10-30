@@ -84,7 +84,7 @@
       border: none;
       color: #757a81;
       padding: 10px;
-      width: calc(100% - 20px);
+      width: calc(~"100% - 20px");
       &:focus {
         outline-color: #fff;
       }
@@ -102,6 +102,9 @@
 
       &.search-operation {
         padding: 10px 30px;
+        div {
+          width: 100%;
+        }
       }
 
       strong {

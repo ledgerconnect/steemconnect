@@ -12,7 +12,7 @@ const SignValidationErrors = ({ errors }) =>
       <tbody>
         {errors.map((error, idx) =>
           <tr key={idx}>
-            <td>{error.error}</td>
+            <td><FormattedMessage id={error.error} values={error.values} /></td>
           </tr>
         )}
       </tbody>
