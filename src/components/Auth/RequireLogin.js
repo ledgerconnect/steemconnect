@@ -8,7 +8,7 @@ const RequireLogin = ({ auth, location, children }) => {
     const to = next === '/dashboard' ? '/login' : `/login?next=${next}`;
     browserHistory.push(to);
   }
-  return (auth.isLoaded && auth.user.name)
+  return (auth.isLoaded && auth.user && auth.user.name)
     ? React.cloneElement(children, { auth })
     : <div className="Sign">
       <div className="Sign__content container my-2">
