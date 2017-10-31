@@ -140,4 +140,53 @@ router.all('/login/challenge', async (req, res) => {
   });
 });
 
+router.all('/scope/save', authenticate(), async (req, res) => {
+  if (!req.query.scope) {
+    res.status(400).json({
+      error: 'server_error',
+      error_description: 'error_scope_required',
+    });
+  } else if (!req.query.client_id) {
+    res.status(400).json({
+      error: 'server_error',
+      error_description: 'error_client_required',
+    });
+  } else {
+    const { client_id, scope } = req.query;
+    const scopes = scope.split(',');
+
+    for (let i = 0; i < scopes.length; i += 1) {
+      if (!config.authorized_operations.includes(scopes[i]) && !scopes[i] !== 'offline') {
+        res.status(400).json({
+          error: 'server_error',
+          error_description: 'error_scope_invalid',
+        });
+        return;
+      }
+    }
+
+    const authorization = {
+      client_id,
+      user: req.user,
+      scope: scope.split(','),
+    };
+
+    const scopesDb = await req.db.authorizations.findOne({ where: { client_id, user: req.user } });
+    if (!scopesDb) {
+      req.db.authorizations.create(authorization).then(() => {
+        res.json({ success: true });
+      }).catch((error) => {
+        res.status(400).json({ error });
+      });
+    } else {
+      req.db.authorizations.update(authorization, { where: { client_id, user: req.user } })
+        .then(() => {
+          res.json({ success: true });
+        }).catch((error) => {
+          res.status(400).json({ error });
+        });
+    }
+  }
+});
+
 module.exports = router;
