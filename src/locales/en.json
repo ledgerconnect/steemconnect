@@ -35,7 +35,6 @@
   "account_recovered": "The account @{account} has been recovered",
   "account_to_recover": "Account to recover",
   "add_new_post": "Do you want to add new post?",
-
   "allow_operations": "You are allowing these operations for {period} days",
   "api_methods": "API methods",
   "app_description": "App Description",
@@ -80,7 +79,6 @@
   "error_account_recovery_required": "Please input the recovery account username",
   "error_amount_format": "Please type a valid amount, 12.123 STEEM or 12.123 SBD for example",
   "error_amount_symbol": "Please select a valid symbol: STEEM or SBD",
-  "error_invalid_scope": "You are requesting access to an invalid scope",
   "error_is_required": "{field} is required",
   "error_json_valid": "{field} is not a JSON valid field",
   "error_new_password_required": "Please input a new password",
