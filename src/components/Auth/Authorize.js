@@ -160,7 +160,7 @@ export default class Authorize extends Component {
                   </ul>}
                   <Form.Item>
                     <Button
-                      type="primary" htmlType="button"
+                      type="primary" htmlType="button" className="SignForm__button"
                       onClick={() => this.setState({ step: 2 })}
                     >
                       <FormattedMessage id="continue" />
