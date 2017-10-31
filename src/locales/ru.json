@@ -48,7 +48,6 @@
   "authorize_question": "Do you want to authorize the Steem account {username} to use your {role} role?",
   "authorize_question_weight": "Do you want to authorize the Steem account {username} to use your {role} role with a weight of {weight}?",
   "authorize_login_question": "Do you want to authorize the Steem account {username} to verify your Steem identity?",
-  "authorize_offline_question": "You are giving offline access to app with these permissions",
   "authorized_apps": "Authorized Apps",
   "authorized_apps_list": "Here is a list of authorized application to use your account.",
   "base_auth_url": "Base authorization URL",

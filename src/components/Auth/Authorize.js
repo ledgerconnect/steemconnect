@@ -56,9 +56,8 @@ export default class Authorize extends Component {
     if (scope !== 'login') {
       if (scope) {
         scopes = scope
-          .replace('offline', '')
           .split(',')
-          .filter(o => config.authorized_operations.includes(o));
+          .filter(o => config.authorized_operations.includes(o) || o === 'offline');
       }
       if (scopes.length === 0) {
         scopes = config.authorized_operations;
@@ -70,7 +69,7 @@ export default class Authorize extends Component {
   componentWillReceiveProps = (props) => {
     const { clientId, responseType, redirectUri, scope, state } = this.state;
     const { auth } = props;
-    if (auth.isAuthenticated && hasAuthority(auth.user, clientId)) {
+    if (auth.isAuthenticated && auth.user && hasAuthority(auth.user, clientId)) {
       authorize({ clientId, scope, responseType }, (err, res) => {
         window.location = `${redirectUri}?${qs.stringify({ ...res, state })}`;
       });
@@ -136,9 +135,7 @@ export default class Authorize extends Component {
                         username: <b> @{clientId}</b>,
                       }}
                     />}
-                    {scope.includes('offline') &&
-                    <FormattedMessage id="authorize_offline_question" />}
-                    {!scope &&
+                    {scope !== 'login' &&
                     <FormattedMessage
                       id="authorize_question"
                       values={{
@@ -147,17 +144,17 @@ export default class Authorize extends Component {
                       }}
                     />}
                   </p>
-                  {scope !== 'login' && !scope.includes('offline') && <p>
+                  {scopes.length > 0 &&
+                  <ul className="authorize-operations">
+                    {scopes.map(op => <li><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase(op)}</li>)}
+                  </ul>}
+                  {scope !== 'login' && !scope.includes('offline') && <p className="token-expiration-text">
                     <FormattedMessage
                       id="allow_operations"
                       values={{ period: parseInt(config.token_expiration, 10) / 24 / 3600 }}
                     />:
                     <br />
                   </p>}
-                  {scopes.length > 0 &&
-                  <ul className="authorize-operations">
-                    {scopes.map(op => <li><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase(op)}</li>)}
-                  </ul>}
                   <Form.Item>
                     <Button
                       type="primary" htmlType="button" className="SignForm__button"
