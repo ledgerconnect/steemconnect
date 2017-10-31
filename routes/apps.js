@@ -1,6 +1,6 @@
 const express = require('express');
 const crypto = require('crypto');
-const _ = require('lodash');
+const has = require('lodash/has');
 const { authenticate } = require('../helpers/middleware');
 const config = require('../config.json');
 
@@ -74,7 +74,7 @@ router.post('/@:clientId', authenticate('user'), async (req, res) => {
       }).then(() => {
         res.json({ success: true });
       }).catch((err) => {
-        const error = _.has(err, 'original.detail')
+        const error = has(err, 'original.detail')
           ? err.original.detail
           : err;
         res.status(400).json({ error });

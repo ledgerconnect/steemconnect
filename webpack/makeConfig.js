@@ -1,7 +1,7 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const Visualizer = require('webpack-visualizer-plugin');
-const _ = require('lodash');
+const defaults = require('lodash/defaults');
 const path = require('path');
 const webpack = require('webpack');
 
@@ -83,7 +83,7 @@ function makeStyleLoaders(options) {
 
 function makeConfig(options) {
   if (!options) options = {};
-  _.defaults(options, DEFAULTS);
+  defaults(options, DEFAULTS);
 
   const isDevelopment = options.isDevelopment;
 

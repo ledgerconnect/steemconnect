@@ -1,14 +1,15 @@
-const _ = require('lodash');
+const cloneDeep = require('lodash/cloneDeep');
+const join = require('lodash/join');
 const { isEmpty, userExists, normalizeUsername } = require('../validation-utils');
 
 const optionalFields = ['delegator', 'vesting_shares'];
 
 const parse = async (query) => {
-  const cQuery = _.cloneDeep(query);
+  const cQuery = cloneDeep(query);
 
   cQuery.delegatee = normalizeUsername(cQuery.delegatee);
   cQuery.delegator = normalizeUsername(cQuery.delegator);
-  cQuery.vesting_shares = _.join([parseFloat(0).toFixed(6), 'VESTS'], ' ');
+  cQuery.vesting_shares = join([parseFloat(0).toFixed(6), 'VESTS'], ' ');
 
   return cQuery;
 };
