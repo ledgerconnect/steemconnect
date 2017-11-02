@@ -35,7 +35,6 @@
   "account_recovered": "The account @{account} has been recovered",
   "account_to_recover": "Account to recover",
   "add_new_post": "Do you want to add new post?",
-  "allow_operations": "You are allowing these operations for {period} days",
   "api_methods": "API methods",
   "app_description": "App Description",
   "app_icon": "App Icon",

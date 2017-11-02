@@ -57,7 +57,7 @@ export default class Authorize extends Component {
       if (scope) {
         scopes = scope
           .split(',')
-          .filter(o => config.authorized_operations.includes(o) || o === 'offline');
+          .filter(o => config.authorized_operations.includes(o) || o === 'offline_access');
       }
       if (scopes.length === 0) {
         scopes = config.authorized_operations;
@@ -148,13 +148,6 @@ export default class Authorize extends Component {
                   <ul className="authorize-operations">
                     {scopes.map(op => <li><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase(op)}</li>)}
                   </ul>}
-                  {scope !== 'login' && !scope.includes('offline') && <p className="token-expiration-text">
-                    <FormattedMessage
-                      id="allow_operations"
-                      values={{ period: parseInt(config.token_expiration, 10) / 24 / 3600 }}
-                    />:
-                    <br />
-                  </p>}
                   <Form.Item>
                     <Button
                       type="primary" htmlType="button" className="SignForm__button"
