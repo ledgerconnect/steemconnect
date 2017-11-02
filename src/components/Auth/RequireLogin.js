@@ -3,12 +3,12 @@ import { browserHistory } from 'react-router';
 import Loading from '../../widgets/Loading';
 
 const RequireLogin = ({ auth, location, children }) => {
-  if (auth.isLoaded && !auth.user.name) {
+  if (auth.isLoaded && (!auth.user || (auth.user && !auth.user.name))) {
     const next = location.pathname;
     const to = next === '/dashboard' ? '/login' : `/login?next=${next}`;
     browserHistory.push(to);
   }
-  return (auth.isLoaded && auth.user.name)
+  return (auth.isLoaded && auth.user && auth.user.name)
     ? React.cloneElement(children, { auth })
     : <div className="Sign">
       <div className="Sign__content container my-2">
