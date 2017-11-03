@@ -139,5 +139,15 @@ router.all('/login/challenge', async (req, res) => {
     code,
   });
 });
+router.all('/apps/revoketokens/:appId?', authenticate(), async (req, res) => {
+  if (req.params.appId) {
+    await req.db.tokens.destroy({
+      where: { user: req.user.username, client_id: req.params.appId },
+    });
+  } else {
+    await req.db.tokens.destroy({ where: { user: req.user.username } });
+  }
+  res.json({ success: true });
+});
 
 module.exports = router;

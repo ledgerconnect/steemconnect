@@ -1,12 +1,13 @@
 import React, { Component, PropTypes } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { Popconfirm, notification } from 'antd';
 import { Link } from 'react-router';
 import fetch from 'isomorphic-fetch';
 import { hasAuthority } from '../../utils/auth';
 import Loading from '../../widgets/Loading';
 import Avatar from '../../widgets/Avatar';
 
-export default class MyApps extends Component {
+class MyApps extends Component {
   static propTypes = {
     params: PropTypes.shape({
       clientId: PropTypes.string,
@@ -18,6 +19,7 @@ export default class MyApps extends Component {
         name: PropTypes.string,
       }),
     }),
+    intl: intlShape.isRequired,
   }
 
   constructor(props) {
@@ -51,8 +53,32 @@ export default class MyApps extends Component {
       });
   }
 
+  confirm = () => {
+    const { intl } = this.props;
+    fetch(`/api/apps/revoketokens/${this.state.clientId}`, {
+      headers: new Headers({
+        Authorization: this.props.auth.token,
+      }),
+    })
+      .then(res => res.json())
+      .then((result) => {
+        if (result.success) {
+          notification.success({
+            message: intl.formatMessage({ id: 'success' }),
+            description: intl.formatMessage({ id: 'success_revoke_app_token' }),
+          });
+        } else {
+          notification.error({
+            message: intl.formatMessage({ id: 'error' }),
+            description: intl.formatMessage({ id: 'general_error_short' }),
+          });
+        }
+      });
+  }
+
   render() {
     const { app, clientId, isLoading, isLoaded, revealSecret } = this.state;
+    const { intl } = this.props;
     return (
       <div className="container my-5">
         {isLoaded &&
@@ -69,6 +95,18 @@ export default class MyApps extends Component {
                 <Link to={`/revoke/@${clientId}`} className="btn btn-danger btn-sm ml-2">
                   <FormattedMessage id="revoke" />
                 </Link>
+              }
+              {this.props.auth.isAuthenticated && hasAuthority(this.props.auth.user, clientId) &&
+                <Popconfirm
+                  title={intl.formatMessage({ id: 'are_you_sure' })}
+                  onConfirm={this.confirm}
+                  okText={intl.formatMessage({ id: 'yes' })}
+                  cancelText={intl.formatMessage({ id: 'no' })}
+                >
+                  <button type="button" className="btn btn-danger btn-sm ml-2">
+                    <FormattedMessage id="revoke_access_token" />
+                  </button>
+                </Popconfirm>
               }
             </span>
             <p>@{clientId}</p>
@@ -103,3 +141,5 @@ export default class MyApps extends Component {
     );
   }
 }
+
+export default injectIntl(MyApps);
