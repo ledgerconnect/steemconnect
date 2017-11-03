@@ -101,19 +101,6 @@ router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, re
       (err, result) => {
         /** Save in database the operations broadcasted */
         if (!err) {
-          const opsArray = operations.map(operation => ({
-            client_id: req.proxy,
-            user: req.user,
-            token: req.token,
-            operation_type: operation[0],
-            operation_payload: operation[1],
-            tx_id: result.id,
-          }));
-
-          req.db.operations.bulkCreate(opsArray).catch((errDb) => {
-            debug('Operations failed to be stored on database', errDb);
-          });
-
           res.json({ result });
         } else {
           debug('Transaction broadcast failed', operations, err);
