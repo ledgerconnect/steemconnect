@@ -57,7 +57,7 @@ export default class Authorize extends Component {
       if (scope) {
         scopes = scope
           .split(',')
-          .filter(o => config.authorized_operations.includes(o) || o === 'offline_access');
+          .filter(o => config.authorized_operations.includes(o) || o === 'offline');
       }
       if (scopes.length === 0) {
         scopes = config.authorized_operations;
@@ -146,7 +146,7 @@ export default class Authorize extends Component {
                   </p>
                   {scopes.length > 0 &&
                   <ul className="authorize-operations">
-                    {scopes.map(op => <li><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase(op)}</li>)}
+                    {scopes.map(op => <li><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase(op === 'offline' ? 'offline_access' : op)}</li>)}
                   </ul>}
                   <Form.Item>
                     <Button
