@@ -1,4 +1,5 @@
-const _ = require('lodash');
+const cloneDeep = require('lodash/cloneDeep');
+const join = require('lodash/join');
 const steem = require('steem');
 const { formatter } = require('steem');
 const { isAsset, isEmpty, userExists, normalizeUsername } = require('../validation-utils');
@@ -6,7 +7,7 @@ const { isAsset, isEmpty, userExists, normalizeUsername } = require('../validati
 const optionalFields = ['delegator'];
 
 const parse = async (query) => {
-  const cQuery = _.cloneDeep(query);
+  const cQuery = cloneDeep(query);
   const [amount, symbol] = cQuery.vesting_shares.split(' ');
   const globalProps = await steem.api.getDynamicGlobalPropertiesAsync();
 
@@ -14,7 +15,7 @@ const parse = async (query) => {
   cQuery.delegator = normalizeUsername(cQuery.delegator);
 
   if (symbol === 'SP') {
-    cQuery.vesting_shares = _.join([
+    cQuery.vesting_shares = join([
       (
         (parseFloat(amount) *
         parseFloat(globalProps.total_vesting_shares)) /
@@ -23,7 +24,7 @@ const parse = async (query) => {
       'VESTS',
     ], ' ');
   } else {
-    cQuery.vesting_shares = _.join([parseFloat(amount).toFixed(6), symbol], ' ');
+    cQuery.vesting_shares = join([parseFloat(amount).toFixed(6), symbol], ' ');
   }
 
   return cQuery;
@@ -47,7 +48,7 @@ const validate = async (query, errors) => {
 };
 
 const normalize = async (query) => {
-  const cQuery = _.cloneDeep(query);
+  const cQuery = cloneDeep(query);
 
   let sUsername = normalizeUsername(query.delegatee);
   let accounts = await steem.api.getAccountsAsync([sUsername]);
@@ -69,7 +70,7 @@ const normalize = async (query) => {
   const [amount, symbol] = cQuery.vesting_shares.split(' ');
   if (amount && symbol === 'VESTS') {
     const globalProps = await steem.api.getDynamicGlobalPropertiesAsync();
-    cQuery.amount = _.join(
+    cQuery.amount = join(
       [
         formatter.vestToSteem(
           cQuery.vesting_shares,
@@ -79,7 +80,7 @@ const normalize = async (query) => {
         'SP',
       ], ' ');
   } else if (amount && symbol === 'SP') {
-    cQuery.amount = _.join(
+    cQuery.amount = join(
       [parseFloat(amount).toFixed(3), symbol],
       ' ');
   }

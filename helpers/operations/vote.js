@@ -1,10 +1,10 @@
-const _ = require('lodash');
+const cloneDeep = require('lodash/cloneDeep');
 const { contentExists } = require('../validation-utils');
 
 const optionalFields = ['weight'];
 
 const parse = (query) => {
-  const cQuery = _.cloneDeep(query);
+  const cQuery = cloneDeep(query);
   cQuery.weight = cQuery.weight ? parseInt(cQuery.weight, 10) : 10000;
   return cQuery;
 };
