@@ -1,6 +1,10 @@
 const changeCase = require('change-case');
 const operations = require('steem/lib/broadcast/operations');
-const _ = require('lodash');
+const cloneDeep = require('lodash/cloneDeep');
+const get = require('lodash/get');
+const has = require('lodash/has');
+const hasIn = require('lodash/hasIn');
+const set = require('lodash/set');
 const operationAuthor = require('./operation-author.json');
 const customOperations = require('./operations/custom-operations');
 const helperOperations = require('./operations');
@@ -8,9 +12,9 @@ const helperOperations = require('./operations');
 /** Parse error message from Steemd response */
 const getErrorMessage = (error) => {
   let errorMessage = '';
-  if (_.has(error, 'payload.error.data.stack[0].format')) {
+  if (has(error, 'payload.error.data.stack[0].format')) {
     errorMessage = error.payload.error.data.stack[0].format;
-    if (_.has(error, 'payload.error.data.stack[0].data')) {
+    if (has(error, 'payload.error.data.stack[0].data')) {
       const data = error.payload.error.data.stack[0].data;
       Object.keys(data).forEach((d) => {
         errorMessage = errorMessage.split('${' + d + '}').join(data[d]); // eslint-disable-line prefer-template
@@ -24,17 +28,17 @@ const isOperationAuthor = (operation, query, username) => {
   if (Object.prototype.hasOwnProperty.call(operationAuthor, operation)) {
     const field = operationAuthor[operation];
     if (!field) { return false; }
-    return _.get(query, field) === username;
+    return get(query, field) === username;
   }
   return false;
 };
 
 const setDefaultAuthor = (operation, query, username) => {
-  const cQuery = _.cloneDeep(query);
+  const cQuery = cloneDeep(query);
   if (Object.prototype.hasOwnProperty.call(operationAuthor, operation)) {
     const field = operationAuthor[operation];
     if (!field) { return cQuery; }
-    if (!_.get(cQuery, field)) { _.set(cQuery, field, username); }
+    if (!get(cQuery, field)) { set(cQuery, field, username); }
   }
   return cQuery;
 };
@@ -73,10 +77,10 @@ const isValid = (op, params) => {
 
 const parseQuery = (type, query, username) => {
   const snakeCaseType = changeCase.snakeCase(type);
-  let cQuery = _.cloneDeep(query);
+  let cQuery = cloneDeep(query);
   cQuery = setDefaultAuthor(snakeCaseType, cQuery, username);
 
-  if (_.hasIn(helperOperations, snakeCaseType)) {
+  if (hasIn(helperOperations, snakeCaseType)) {
     return helperOperations[snakeCaseType].parse(cQuery);
   }
 
@@ -97,7 +101,7 @@ const validateRequired = (type, query) => {
       authorField = operationAuthor[type];
     }
 
-    if (_.hasIn(helperOperations, type) && helperOperations[type].optionalFields) {
+    if (hasIn(helperOperations, type) && helperOperations[type].optionalFields) {
       optionalFields = helperOperations[type].optionalFields;
     }
 
@@ -114,7 +118,7 @@ const validateRequired = (type, query) => {
 const validate = async (type, query) => {
   const snakeCaseType = changeCase.snakeCase(type);
   const errors = validateRequired(snakeCaseType, query);
-  if (_.hasIn(helperOperations, snakeCaseType) && typeof helperOperations[snakeCaseType].validate === 'function') {
+  if (hasIn(helperOperations, snakeCaseType) && typeof helperOperations[snakeCaseType].validate === 'function') {
     await helperOperations[snakeCaseType].validate(query, errors);
   }
   return errors;
@@ -122,7 +126,7 @@ const validate = async (type, query) => {
 
 const normalize = async (type, query) => {
   const snakeCaseType = changeCase.snakeCase(type);
-  if (_.hasIn(helperOperations, snakeCaseType) && typeof helperOperations[snakeCaseType].normalize === 'function') {
+  if (hasIn(helperOperations, snakeCaseType) && typeof helperOperations[snakeCaseType].normalize === 'function') {
     return await helperOperations[snakeCaseType].normalize(query);
   }
   return query;

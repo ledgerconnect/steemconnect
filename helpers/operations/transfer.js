@@ -1,15 +1,16 @@
-const _ = require('lodash');
+const cloneDeep = require('lodash/cloneDeep');
+const join = require('lodash/join');
 const steem = require('steem');
 const { isAsset, isEmpty, userExists, normalizeUsername } = require('../validation-utils');
 
 const optionalFields = ['memo'];
 
 const parse = (query) => {
-  const cQuery = _.cloneDeep(query);
+  const cQuery = cloneDeep(query);
   const [amount, symbol] = cQuery.amount.split(' ');
 
   cQuery.to = normalizeUsername(cQuery.to);
-  cQuery.amount = _.join([parseFloat(amount).toFixed(3), symbol], ' ');
+  cQuery.amount = join([parseFloat(amount).toFixed(3), symbol], ' ');
   cQuery.memo = cQuery.memo || '';
 
   return cQuery;
@@ -33,12 +34,12 @@ const validate = async (query, errors) => {
   if (errors.length === 0) {
     const [amount, symbol] = query.amount.split(' ');
     // eslint-disable-next-line no-param-reassign
-    query.amount = _.join([parseFloat(amount).toFixed(3), symbol], ' ');
+    query.amount = join([parseFloat(amount).toFixed(3), symbol], ' ');
   }
 };
 
 const normalize = async (query) => {
-  const cQuery = _.cloneDeep(query);
+  const cQuery = cloneDeep(query);
   let sUsername = normalizeUsername(query.to);
   let accounts = await steem.api.getAccountsAsync([sUsername]);
   let account = accounts && accounts.length > 0 && accounts.find(a => a.name === sUsername);

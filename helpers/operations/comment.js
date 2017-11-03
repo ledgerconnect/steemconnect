@@ -1,4 +1,4 @@
-const _ = require('lodash');
+const cloneDeep = require('lodash/cloneDeep');
 const { formatter } = require('steem');
 const changeCase = require('change-case');
 const diacritics = require('diacritics');
@@ -6,7 +6,7 @@ const diacritics = require('diacritics');
 const optionalFields = ['parent_author', 'parent_permlink', 'title', 'json_metadata'];
 
 const parse = (query) => {
-  const cQuery = _.cloneDeep(query);
+  const cQuery = cloneDeep(query);
   cQuery.parent_author = cQuery.parent_author || '';
   cQuery.parent_permlink = cQuery.parent_permlink || '';
   cQuery.title = cQuery.title || '';
