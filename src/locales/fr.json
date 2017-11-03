@@ -166,6 +166,7 @@
   "success_proxy_account": "Le compte proxy @{clientId} a été créé avec succès",
   "title": "Titre",
   "token_url": "URL Token",
+  "transaction_id": "Id de la transaction",
   "try_again": "essayer à nouveau",
   "try_it": "Essayer",
   "try_link": "Essayer le lien",
