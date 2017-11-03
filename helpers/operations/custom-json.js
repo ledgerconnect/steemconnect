@@ -1,10 +1,10 @@
-const _ = require('lodash');
+const cloneDeep = require('lodash/cloneDeep');
 const { userExists, isEmpty } = require('../validation-utils');
 
 const optionalFields = ['required_auths', 'required_posting_auths'];
 
 const parse = (query) => {
-  const cQuery = _.cloneDeep(query);
+  const cQuery = cloneDeep(query);
   if (cQuery.required_auths) {
     cQuery.required_auths = JSON.parse(cQuery.required_auths);
   }
