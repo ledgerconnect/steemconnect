@@ -7,7 +7,7 @@ import { hasAuthority } from '../../utils/auth';
 import Loading from '../../widgets/Loading';
 import Avatar from '../../widgets/Avatar';
 
-class MyApps extends Component {
+class App extends Component {
   static propTypes = {
     params: PropTypes.shape({
       clientId: PropTypes.string,
@@ -142,4 +142,4 @@ class MyApps extends Component {
   }
 }
 
-export default injectIntl(MyApps);
+export default injectIntl(App);

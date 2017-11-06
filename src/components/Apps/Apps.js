@@ -5,7 +5,7 @@ import fetch from 'isomorphic-fetch';
 import Loading from '../../widgets/Loading';
 import AppPreview from './AppPreview';
 
-class MyApps extends Component {
+class Apps extends Component {
 
   static propTypes = {
     auth: PropTypes.shape({
@@ -91,4 +91,4 @@ class MyApps extends Component {
   }
 }
 
-export default injectIntl(MyApps);
+export default injectIntl(Apps);
