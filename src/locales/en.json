@@ -172,6 +172,7 @@
   "success_revoke_app_tokens": "Tokens have been successfully deleted",
   "title": "Title",
   "token_url": "Token URL",
+  "transaction_id": "Transaction id",
   "try_again": "try again",
   "try_it": "Try it",
   "try_link": "Try link",
