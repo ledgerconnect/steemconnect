@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import { Button, Popconfirm, notification } from 'antd';
+import { Popconfirm, notification } from 'antd';
 import fetch from 'isomorphic-fetch';
 import Loading from '../../widgets/Loading';
 import AppPreview from './AppPreview';
@@ -74,16 +74,22 @@ class Apps extends Component {
             )}
             <br />
             {apps.length > 0 &&
-            <Popconfirm
-              title={intl.formatMessage({ id: 'are_you_sure' })}
-              onConfirm={this.confirm}
-              okText={intl.formatMessage({ id: 'yes' })}
-              cancelText={intl.formatMessage({ id: 'no' })}
-            >
-              <Button type="primary" htmlType="button" className="App__button">
-                <FormattedMessage id="revoke_all_access_tokens" />
-              </Button>
-            </Popconfirm>}
+            <div className="block py-4">
+              <h2><FormattedMessage id="revoke_all_oauth_token" /></h2>
+              <p>
+                <FormattedMessage id="revoke_all_oauth_token_text" />
+              </p>
+              <Popconfirm
+                title={intl.formatMessage({ id: 'are_you_sure' })}
+                onConfirm={this.confirm}
+                okText={intl.formatMessage({ id: 'yes' })}
+                cancelText={intl.formatMessage({ id: 'no' })}
+              >
+                <button type="button" className="btn btn-danger btn-sm ml-2">
+                  <FormattedMessage id="revoke_access_tokens" />
+                </button>
+              </Popconfirm>
+            </div>}
           </div>
         }
       </div>
