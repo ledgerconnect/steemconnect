@@ -96,18 +96,6 @@ class App extends Component {
                   <FormattedMessage id="revoke" />
                 </Link>
               }
-              {this.props.auth.isAuthenticated && hasAuthority(this.props.auth.user, clientId) &&
-                <Popconfirm
-                  title={intl.formatMessage({ id: 'are_you_sure' })}
-                  onConfirm={this.confirm}
-                  okText={intl.formatMessage({ id: 'yes' })}
-                  cancelText={intl.formatMessage({ id: 'no' })}
-                >
-                  <button type="button" className="btn btn-danger btn-sm ml-2">
-                    <FormattedMessage id="revoke_access_token" />
-                  </button>
-                </Popconfirm>
-              }
             </span>
             <p>@{clientId}</p>
             <div className="pt-4">
@@ -134,6 +122,24 @@ class App extends Component {
                 }
               </div>
             </div>
+            <br />
+            {this.props.auth.isAuthenticated && hasAuthority(this.props.auth.user, clientId) &&
+            <div className="block py-4">
+              <h2><FormattedMessage id="revoke_access_token" /></h2>
+              <p>
+                <FormattedMessage id="revoke_access_token_text" />
+              </p>
+              <Popconfirm
+                title={intl.formatMessage({ id: 'are_you_sure' })}
+                onConfirm={this.confirm}
+                okText={intl.formatMessage({ id: 'yes' })}
+                cancelText={intl.formatMessage({ id: 'no' })}
+              >
+                <button type="button" className="btn btn-danger btn-sm ml-2">
+                  <FormattedMessage id="revoke_access_token" />
+                </button>
+              </Popconfirm>
+            </div>}
           </div>
         }
         {isLoading && <Loading />}
