@@ -28,13 +28,17 @@ const verifyPermissions = async (req, res, next) => {
 };
 
 const strategy = (req, res, next) => {
-  const token = req.get('authorization')
+  let token = req.get('authorization')
     || req.query.access_token
     || req.body.access_token
     || req.query.code
     || req.body.code
     || req.query.refresh_token
     || req.body.refresh_token;
+  if (token) {
+    const [tokenPart1, tokenPart2] = token.trim().split(' ');
+    token = tokenPart2 || tokenPart1;
+  }
   let decoded;
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET);
