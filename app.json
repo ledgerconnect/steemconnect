@@ -18,6 +18,9 @@
     "JWT_SECRET": {
       "generator": "secret"
     },
+    "SENTRY_DSN": {
+      "required": true
+    },
     "DEBUG": "sc2:*",
     "DATABASE_NAME": "staging"
   },
