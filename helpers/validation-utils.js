@@ -45,9 +45,9 @@ const userExists = async (username) => {
   return accounts && accounts.length > 0 && accounts.find(a => a.name === nUsername);
 };
 
-const contentExists = async (auhtor, permlink) => {
-  const content = await steem.api.getContent(auhtor, permlink);
-  return parseInt(content.id, 10) !== 0;
+const contentExists = async (author, permlink) => {
+  const content = await steem.api.getContent(author, permlink);
+  return content && parseInt(content.id, 10) !== 0;
 };
 
 module.exports = {
