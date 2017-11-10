@@ -4,7 +4,6 @@ import steem from 'steem';
 import changeCase from 'change-case';
 import { Link } from 'react-router';
 import { Button } from 'antd';
-import union from 'lodash/union';
 import SignForm from './Form/Sign';
 import SignSuccess from './Sign/Success';
 import SignError from './Sign/Error';
@@ -112,6 +111,50 @@ export default class Sign extends Component {
     return Placeholder;
   }
 
+  getRoleName = (value) => {
+    if (value === 4) {
+      return 'owner';
+    } else if (value === 3) {
+      return 'active';
+    } else if (value === 2) {
+      return 'posting';
+    }
+    return 'memo';
+  }
+
+  getRoleValue = (role) => {
+    if (role === 'owner') {
+      return 4;
+    } else if (role === 'active') {
+      return 3;
+    } else if (role === 'posting') {
+      return 2;
+    }
+    return 1;
+  }
+
+  getMinRoleOperation = (roles) => {
+    let minRole = 4;
+    for (let i = 0; i < roles.length; i += 1) {
+      minRole = Math.min(minRole, this.getRoleValue(roles[i]));
+    }
+    return minRole;
+  }
+
+  getMergedRoles = (roles, newRoles) => {
+    if (!roles) {
+      return newRoles;
+    }
+    const minRole = this.getMinRoleOperation(roles);
+    const minNewRole = this.getMinRoleOperation(newRoles);
+    const requiredRole = Math.max(minNewRole, minRole);
+    const mergedRoles = [];
+    for (let i = 4; i >= requiredRole; i -= 1) {
+      mergedRoles.push(this.getRoleName(i));
+    }
+    return mergedRoles;
+  }
+
   resetForm = () => {
     this.setState({
       step: 'form',
@@ -122,34 +165,73 @@ export default class Sign extends Component {
 
   sign = async (auth) => {
     const { type, query } = this.state;
-    const params = await parseQuery(type, query, auth.username);
-
-    /* Broadcast */
-    const customOp = customOperations.find(o => o.operation === changeCase.snakeCase(type));
-    const mappedType = customOp ? customOp.type : type;
-    steem.broadcast[`${changeCase.camelCase(mappedType)}With`](auth.wif, params, (err, result) => {
-      if (!err) {
-        this.setState({ success: result });
-      } else {
-        this.setState({ error: err });
+    if (type === 'tx') {
+      const operationsToSend = [];
+      const { base64 } = this.state;
+      const operationsDecoded = atob(base64);
+      const operationsParsed = JSON.parse(operationsDecoded);
+      for (let i = 0; i < operationsParsed.length; i += 1) {
+        const operation = operationsParsed[i].operation;
+        const operationParams = operationsParsed[i].params;
+        const params = await parseQuery(operation, operationParams, auth.username);
+        const customOp = customOperations.find(
+          o => o.operation === changeCase.snakeCase(operation)
+        );
+        const mappedType = customOp ? customOp.type : operation;
+        operationsToSend.push(
+          [
+            mappedType,
+            params,
+          ]
+        );
       }
-      this.setState({ step: 'result' });
-    });
+      steem.broadcast.send(
+        {
+          extensions: [],
+          operations: operationsToSend,
+        },
+        [auth.wif],
+        (err, result) => {
+          if (!err) {
+            this.setState({ success: result });
+          } else {
+            this.setState({ error: err });
+          }
+          this.setState({ step: 'result' });
+        }
+      );
+    } else {
+      const params = await parseQuery(type, query, auth.username);
+
+      /* Broadcast */
+      const customOp = customOperations.find(o => o.operation === changeCase.snakeCase(type));
+      const mappedType = customOp ? customOp.type : type;
+      steem.broadcast[`${changeCase.camelCase(mappedType)}With`](auth.wif, params, (err, result) => {
+        if (!err) {
+          this.setState({ success: result });
+        } else {
+          this.setState({ error: err });
+        }
+        this.setState({ step: 'result' });
+      });
+    }
   };
 
   render() {
     const {
-      step, success, error, validationErrors, normalizedQuery, normalizedQueries, type,
+      step, success, error, validationErrors, normalizedQuery, normalizedQueries, query, type,
     } = this.state;
     let op;
-    let roles = [];
+    let roles;
     let Placeholder;
     if (normalizedQuery) {
       op = getOperation(type);
       roles = op.roles;
       Placeholder = this.getPlaceholder(type);
     } else if (normalizedQueries) {
-      normalizedQueries.map(query => (roles = union(roles, getOperation(query.operation).roles)));
+      normalizedQueries.map(nquery => (
+        roles = this.getMergedRoles(roles, getOperation(nquery.operation).roles)
+      ));
     }
     return (
       <div className="Sign">
@@ -178,13 +260,13 @@ export default class Sign extends Component {
               {step === 'form' && normalizedQueries &&
               <div className="Placeholder">
                 <h5><FormattedMessage id="confirmation_operations" /></h5>
-                {normalizedQueries.map((query, idx) => {
-                  const opMulti = getOperation(query.operation);
-                  Placeholder = this.getPlaceholder(query.operation);
+                {normalizedQueries.map((nquery, idx) => {
+                  const opMulti = getOperation(nquery.operation);
+                  Placeholder = this.getPlaceholder(nquery.operation);
                   return (
-                    <div className="Placeholder__operation-container" key={`operation_${query.operation}_${idx}`}>
-                      <h5 className="Placeholder__operation-title">{ changeCase.titleCase(query.operation) }</h5>
-                      <Placeholder query={query.normalizedQuery} params={opMulti.params} />
+                    <div className="Placeholder__operation-container" key={`operation_${nquery.operation}_${idx}`}>
+                      <h5 className="Placeholder__operation-title">{ changeCase.titleCase(nquery.operation) }</h5>
+                      <Placeholder query={nquery.normalizedQuery} params={opMulti.params} />
                     </div>
                   );
                 })}
@@ -194,7 +276,7 @@ export default class Sign extends Component {
               </div>}
               {step === 'signin' && <SignForm roles={roles} sign={this.sign} title={<FormattedMessage id="confirm_operation_log_in" />} />}
               {step === 'signin' && <Link className="cancel-link" onClick={() => this.setState({ step: 'form' })}><FormattedMessage id="cancel" /></Link>}
-              {step === 'result' && success && <SignSuccess result={success} cb={normalizedQuery.cb || normalizedQuery.redirect_uri} />}
+              {step === 'result' && success && <SignSuccess result={success} cb={query.cb || query.redirect_uri} />}
               {step === 'result' && error && <SignError error={error} resetForm={this.resetForm} />}
             </div>
             <div className="Sign__footer">
