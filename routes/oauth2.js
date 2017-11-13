@@ -30,7 +30,7 @@ router.all('/api/oauth2/authorize', authenticate('user'), async (req, res) => {
   const authorization = {
     client_id: clientId,
     user: req.user,
-    scope,
+    scope: scope.length > 0 ? scope : config.authorized_operations,
   };
   const scopesDb = await req.db.authorizations.findOne({
     where: { client_id: clientId, user: req.user },
