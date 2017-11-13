@@ -27,7 +27,25 @@ router.all('/api/oauth2/authorize', authenticate('user'), async (req, res) => {
   const clientId = req.query.client_id;
   const responseType = req.query.response_type;
   const scope = req.query.scope ? req.query.scope.split(',') : [];
+  const authorization = {
+    client_id: clientId,
+    user: req.user,
+    scope,
+  };
+  const scopesDb = await req.db.authorizations.findOne({
+    where: { client_id: clientId, user: req.user },
+  });
 
+  if (!scopesDb) {
+    await req.db.authorizations.create(authorization);
+  } else {
+    await req.db.authorizations.update(
+      authorization,
+      {
+        where: { client_id: clientId, user: req.user },
+      }
+    );
+  }
   if (responseType === 'code') {
     debug(`Issue app code for user @${req.user} using @${clientId} proxy.`);
     const code = issueAppCode(clientId, req.user, scope);
