@@ -1,5 +1,6 @@
 const express = require('express');
 const debug = require('debug')('sc2:server');
+const union = require('lodash/union');
 const { issueAppToken, issueAppCode, issueAppRefreshToken } = require('../helpers/token');
 const { authenticate } = require('../helpers/middleware');
 const config = require('../config.json');
@@ -39,6 +40,7 @@ router.all('/api/oauth2/authorize', authenticate('user'), async (req, res) => {
   if (!scopesDb) {
     await req.db.authorizations.create(authorization);
   } else {
+    authorization.scope = union(authorization.scope, scopesDb.scope);
     await req.db.authorizations.update(
       authorization,
       {
