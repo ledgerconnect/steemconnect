@@ -5,6 +5,7 @@ import { Form, Button } from 'antd';
 import { titleCase } from 'change-case';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import fetch from 'isomorphic-fetch';
 import qs from 'query-string';
 import { authorize, login, hasAuthority, addPostingAuthority } from '../../utils/auth';
 import Avatar from '../../widgets/Avatar';
@@ -81,6 +82,7 @@ export default class Authorize extends Component {
 
   authorize = (auth) => {
     const { clientId, responseType, redirectUri, scope, state } = this.state;
+    const { auth: { token } } = this.props;
     this.setState({ step: 0 });
     login({ ...auth }, () => {
       if (scope === 'login') {
@@ -89,9 +91,17 @@ export default class Authorize extends Component {
         });
       } else {
         addPostingAuthority({ ...auth, clientId }, () => {
-          authorize({ clientId, scope, responseType }, (errA, resA) => {
-            window.location = `${redirectUri}?${qs.stringify({ ...resA, state })}`;
-          });
+          fetch(`/api/scope/save?client_id=${clientId}&scope=${scope}`, {
+            headers: new Headers({
+              Authorization: token,
+            }),
+          })
+            .then(res => res.json())
+            .then(() => {
+              authorize({ clientId, scope, responseType }, (errA, resA) => {
+                window.location = `${redirectUri}?${qs.stringify({ ...resA, state })}`;
+              });
+            });
         });
       }
     });
