@@ -193,7 +193,7 @@
   "profile_update_description": "Update account profile information.",
   "reblog_description": "Publish in the timeline of one account a selected post of another account.",
   "transfer_description": "Transfer funds from one account to another. STEEM and SBD can be transferred.",
-  "transfer_from_savings_description": "Withdrawing funds from saving, it takes 72 hours from the moment it's initiated for the funds to become available.",
+  "transfer_from_savings_description": "Withdrawing funds from savings, it takes 72 hours from the moment it has been initiated for the funds to become available.",
   "transfer_to_savings_description": "Transfers into savings happen immediately, transfers from savings take 72 hours.",
   "transfer_to_vesting_description": "Transfer STEEM into a vesting fund represented by vesting shares (VESTS). VESTS are required to vesting for a minimum of one coin year and can be withdrawn once a week over a 13 weeks withdraw period. VESTS are protected against dilution up until 90% of STEEM is vesting.",
   "undelegate_vesting_shares_description": "This method retrieve delegated VESTS from one account to another.",
@@ -202,3 +202,4 @@
   "vote_description": "Vote on a comment to be paid STEEM",
   "withdraw_vesting_description": "Set up a vesting withdraw request. The request is fulfilled once a week over the next two year (13 weeks)."
 }
+
