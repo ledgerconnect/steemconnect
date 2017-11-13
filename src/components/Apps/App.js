@@ -125,9 +125,9 @@ class App extends Component {
             <br />
             {this.props.auth.isAuthenticated && hasAuthority(this.props.auth.user, clientId) &&
             <div className="block py-4">
-              <h2><FormattedMessage id="revoke_access_token" /></h2>
+              <h2><FormattedMessage id="revoke_access_tokens" /></h2>
               <p>
-                <FormattedMessage id="revoke_access_token_text" />
+                <FormattedMessage id="revoke_access_tokens_text" />
               </p>
               <Popconfirm
                 title={intl.formatMessage({ id: 'are_you_sure' })}
@@ -136,7 +136,7 @@ class App extends Component {
                 cancelText={intl.formatMessage({ id: 'no' })}
               >
                 <button type="button" className="btn btn-danger btn-sm ml-2">
-                  <FormattedMessage id="revoke_access_token" />
+                  <FormattedMessage id="revoke_access_tokens" />
                 </button>
               </Popconfirm>
             </div>}
