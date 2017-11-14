@@ -8,7 +8,7 @@ import steemOperations from 'steem/lib/broadcast/operations';
 import customOperations from '../../helpers/operations/custom-operations';
 import helperOperations from '../../helpers/operations';
 import authorOperations from '../../helpers/operation-author.json';
-import whitelistOperations from '../../helpers/operations/generate-link-whitelist';
+import whitelistOperations from '../../helpers/operations/hs-operations.json';
 import './GenerateLink.less';
 
 class Index extends React.Component {
@@ -16,7 +16,7 @@ class Index extends React.Component {
     form: PropTypes.shape(),
     intl: PropTypes.shape(),
     location: PropTypes.shape(),
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -181,9 +181,7 @@ class Index extends React.Component {
       });
     }
 
-    if (filter === '') {
-      operations.sort((a, b) => a.name.localeCompare(b.name));
-    } else {
+    if (filter !== '') {
       operations.sort((a, b) => a.name.length - b.name.length || a.name.localeCompare(b.name));
     }
 
