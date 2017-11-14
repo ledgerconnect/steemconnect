@@ -30,7 +30,7 @@ const verifyPermissions = async (req, res, next) => {
 const strategy = (req, res, next) => {
   let authorization = req.get('authorization');
   if (authorization) {
-    authorization = authorization.replace(/^(Bearer|Basic)/, '').trim();
+    authorization = authorization.replace(/^(Bearer|Basic)\s/, '').trim();
   }
   const token = authorization
     || req.query.access_token
