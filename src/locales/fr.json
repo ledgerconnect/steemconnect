@@ -150,6 +150,7 @@
   "revocation_url": "URL de révocation",
   "revoke": "Révoquer",
   "revoke_access_tokens_text": "Vous pouvez révoquer tous les tokens OAuth si vous souhaitez invalider l'accès de cette application Steem. Vous devrez accorder les permissions à nouveau si vous souhaitez la réutiliser.",
+  "revoke_access_tokens_question": "Voulez-vous révoquer les tokens ?",
   "revoke_access_tokens": "Révoquer les tokens",
   "revoke_all_oauth_token": "Révoquer tous les tokens OAuth",
   "revoke_all_oauth_token_text": "Vous pouvez révoquer tous les tokens OAuth si vous souhaitez invalider l'accès des applications Steem. Vous devrez accorder les permissions à nouveau si vous souhaitez les réutiliser.",

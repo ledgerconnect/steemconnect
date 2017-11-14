@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import { Popconfirm, notification } from 'antd';
+import { Modal, notification } from 'antd';
 import { Link } from 'react-router';
 import numeral from 'numeral';
 import Loading from '../../widgets/Loading';
@@ -17,7 +17,20 @@ class AuthorizedApps extends Component {
       error: false,
       isLoading: false,
       isLoaded: false,
+      displayRevokeModal: false,
     };
+  }
+
+  showRevokeModal = () => {
+    this.setState({
+      displayRevokeModal: true,
+    });
+  }
+
+  handleCancel = () => {
+    this.setState({
+      displayRevokeModal: false,
+    });
   }
 
   confirm = () => {
@@ -76,16 +89,19 @@ class AuthorizedApps extends Component {
               <p>
                 <FormattedMessage id="revoke_all_oauth_token_text" />
               </p>
-              <Popconfirm
+              <Modal
                 title={intl.formatMessage({ id: 'are_you_sure' })}
-                onConfirm={this.confirm}
+                visible={this.state.displayRevokeModal}
+                onOk={this.confirm}
+                onCancel={this.handleCancel}
                 okText={intl.formatMessage({ id: 'yes' })}
                 cancelText={intl.formatMessage({ id: 'no' })}
               >
-                <button type="button" className="btn btn-danger btn-sm ml-2">
-                  <FormattedMessage id="revoke_access_tokens" />
-                </button>
-              </Popconfirm>
+                <p><FormattedMessage id="revoke_access_tokens_question" /></p>
+              </Modal>
+              <button type="button" className="btn btn-danger btn-sm ml-2" onClick={this.showRevokeModal}>
+                <FormattedMessage id="revoke_access_tokens" />
+              </button>
             </div>}
           </div>
         }
