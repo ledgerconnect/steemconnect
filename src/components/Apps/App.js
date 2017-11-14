@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import { Popconfirm, notification } from 'antd';
+import { Modal, notification } from 'antd';
 import { Link } from 'react-router';
 import fetch from 'isomorphic-fetch';
 import { hasAuthority } from '../../utils/auth';
@@ -31,6 +31,7 @@ class App extends Component {
       revealSecret: false,
       clientId: this.props.params.clientId,
       app: [],
+      displayRevokeModal: false,
     };
   }
 
@@ -53,6 +54,18 @@ class App extends Component {
       });
   }
 
+  showRevokeModal = () => {
+    this.setState({
+      displayRevokeModal: true,
+    });
+  }
+
+  handleCancel = () => {
+    this.setState({
+      displayRevokeModal: false,
+    });
+  }
+
   confirm = () => {
     const { intl } = this.props;
     fetch(`/api/token/revoke/${this.state.clientId}`, {
@@ -62,6 +75,7 @@ class App extends Component {
     })
       .then(res => res.json())
       .then((result) => {
+        this.handleCancel();
         if (result.success) {
           notification.success({
             message: intl.formatMessage({ id: 'success' }),
@@ -77,7 +91,7 @@ class App extends Component {
   }
 
   render() {
-    const { app, clientId, isLoading, isLoaded, revealSecret } = this.state;
+    const { app, clientId, isLoading, isLoaded, revealSecret, displayRevokeModal } = this.state;
     const { intl } = this.props;
     return (
       <div className="container my-5">
@@ -129,16 +143,19 @@ class App extends Component {
               <p>
                 <FormattedMessage id="revoke_access_tokens_text" />
               </p>
-              <Popconfirm
+              <Modal
                 title={intl.formatMessage({ id: 'are_you_sure' })}
-                onConfirm={this.confirm}
+                visible={displayRevokeModal}
+                onOk={this.confirm}
+                onCancel={this.handleCancel}
                 okText={intl.formatMessage({ id: 'yes' })}
                 cancelText={intl.formatMessage({ id: 'no' })}
               >
-                <button type="button" className="btn btn-danger btn-sm ml-2">
-                  <FormattedMessage id="revoke_access_tokens" />
-                </button>
-              </Popconfirm>
+                <p><FormattedMessage id="revoke_access_tokens_question" /></p>
+              </Modal>
+              <button type="button" className="btn btn-danger btn-sm ml-2" onClick={this.showRevokeModal}>
+                <FormattedMessage id="revoke_access_tokens" />
+              </button>
             </div>}
           </div>
         }

@@ -42,6 +42,7 @@ class AuthorizedApps extends Component {
     })
       .then(res => res.json())
       .then((result) => {
+        this.handleCancel();
         if (result.success) {
           notification.success({
             message: intl.formatMessage({ id: 'success' }),
@@ -57,7 +58,7 @@ class AuthorizedApps extends Component {
   }
 
   render() {
-    const { isLoading } = this.state;
+    const { isLoading, displayRevokeModal } = this.state;
     const { auth: { user }, intl } = this.props;
     return (
       <div className="container py-5">
@@ -91,7 +92,7 @@ class AuthorizedApps extends Component {
               </p>
               <Modal
                 title={intl.formatMessage({ id: 'are_you_sure' })}
-                visible={this.state.displayRevokeModal}
+                visible={displayRevokeModal}
                 onOk={this.confirm}
                 onCancel={this.handleCancel}
                 okText={intl.formatMessage({ id: 'yes' })}
