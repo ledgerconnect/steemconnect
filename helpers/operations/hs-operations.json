@@ -1,0 +1,20 @@
+[
+  "vote",
+  "comment",
+  "delete_comment",
+  "custom_json",
+  "claim_reward_balance",
+  "transfer",
+  "transfer_to_vesting",
+  "transfer_to_savings",
+  "transfer_from_savings",
+  "cancel_transfer_from_savings",
+  "withdraw_vesting",
+  "delegate_vesting_shares",
+  "account_witness_proxy",
+  "account_witness_vote",
+  "escrow_approve",
+  "escrow_dispute",
+  "escrow_release",
+  "escrow_transfer"
+]
