@@ -113,7 +113,7 @@ export default class Sign extends Component {
               {step === 'result' && error && <SignError error={error} resetForm={this.resetForm} />}
             </div>
             <div className="Sign__footer">
-              <Link to="/" target="_blank" rel="noopener noreferrer"><FormattedMessage id="about_steemConnect" /></Link>
+              <Link to="/" target="_blank" rel="noopener noreferrer"><FormattedMessage id="about_steemconnect" /></Link>
             </div>
           </div>
         </div>}
