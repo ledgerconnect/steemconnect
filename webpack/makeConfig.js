@@ -1,7 +1,7 @@
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const Visualizer = require('webpack-visualizer-plugin');
-const _ = require('lodash');
+const defaults = require('lodash/defaults');
 const path = require('path');
 const webpack = require('webpack');
 
@@ -14,7 +14,7 @@ function makePlugins(options) {
   const isDevelopment = options.isDevelopment;
 
   let plugins = [
-    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         // This has effect on the react lib size
@@ -33,14 +33,15 @@ function makePlugins(options) {
 
   if (isDevelopment) {
     plugins = plugins.concat([
-      new webpack.optimize.OccurenceOrderPlugin(),
+      new webpack.optimize.OccurrenceOrderPlugin(),
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoErrorsPlugin(),
+      new webpack.NoEmitOnErrorsPlugin(),
     ]);
   } else {
     plugins = plugins.concat([
-      new webpack.optimize.DedupePlugin(),
+      new webpack.optimize.ModuleConcatenationPlugin(),
       new webpack.optimize.UglifyJsPlugin({
+        sourceMap: true,
         minimize: true,
         compress: {
           warnings: false,
@@ -72,17 +73,17 @@ function makeStyleLoaders(options) {
   return [
     {
       test: /\.less$/,
-      loader: ExtractTextPlugin.extract(
-        'style-loader',
-        'css-loader?importLoaders=1!postcss-loader?browsers=last 2 version!less-loader'
-      ),
+      loader: ExtractTextPlugin.extract({
+        fallback: 'style-loader',
+        use: 'css-loader?importLoaders=1!postcss-loader?browsers=last 2 version!less-loader'
+      }),
     },
   ];
 }
 
 function makeConfig(options) {
   if (!options) options = {};
-  _.defaults(options, DEFAULTS);
+  defaults(options, DEFAULTS);
 
   const isDevelopment = options.isDevelopment;
 
@@ -100,15 +101,15 @@ function makeConfig(options) {
     },
     plugins: makePlugins(options),
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.js?$/,
           exclude: /node_modules/,
-          loader: 'babel',
+          loader: 'babel-loader',
         },
         {
           test: /\.json?$/,
-          loader: 'json',
+          loader: 'json-loader',
         },
         {
           loader: 'file-loader?name=[name].[hash].[ext]&limit=1',

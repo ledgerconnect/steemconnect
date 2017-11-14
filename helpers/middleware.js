@@ -28,13 +28,18 @@ const verifyPermissions = async (req, res, next) => {
 };
 
 const strategy = (req, res, next) => {
-  const token = req.get('authorization')
+  let authorization = req.get('authorization');
+  if (authorization) {
+    authorization = authorization.replace(/^(Bearer|Basic)\s/, '').trim();
+  }
+  const token = authorization
     || req.query.access_token
     || req.body.access_token
     || req.query.code
     || req.body.code
     || req.query.refresh_token
     || req.body.refresh_token;
+
   let decoded;
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET);

@@ -1,4 +1,5 @@
-const _ = require('lodash');
+const cloneDeep = require('lodash/cloneDeep');
+const join = require('lodash/join');
 const steem = require('steem');
 const { formatter } = require('steem');
 const { isAsset, isEmpty, userExists, normalizeUsername } = require('../validation-utils');
@@ -6,7 +7,7 @@ const { isAsset, isEmpty, userExists, normalizeUsername } = require('../validati
 const optionalFields = ['delegator'];
 
 const parse = async (query) => {
-  const cQuery = _.cloneDeep(query);
+  const cQuery = cloneDeep(query);
   const [amount, symbol] = cQuery.vesting_shares.split(' ');
   const globalProps = await steem.api.getDynamicGlobalPropertiesAsync();
 
@@ -14,7 +15,7 @@ const parse = async (query) => {
   cQuery.delegator = normalizeUsername(cQuery.delegator);
 
   if (symbol === 'SP') {
-    cQuery.vesting_shares = _.join([
+    cQuery.vesting_shares = join([
       (
         (parseFloat(amount) *
         parseFloat(globalProps.total_vesting_shares)) /
@@ -23,7 +24,7 @@ const parse = async (query) => {
       'VESTS',
     ], ' ');
   } else {
-    cQuery.vesting_shares = _.join([parseFloat(amount).toFixed(6), symbol], ' ');
+    cQuery.vesting_shares = join([parseFloat(amount).toFixed(6), symbol], ' ');
   }
 
   return cQuery;
@@ -31,23 +32,23 @@ const parse = async (query) => {
 
 const validate = async (query, errors) => {
   if (!isEmpty(query.delegatee) && !await userExists(query.delegatee)) {
-    errors.push({ field: 'delegatee', error: `the user ${query.delegatee} doesn't exist` });
+    errors.push({ field: 'delegatee', error: 'error_user_exist', values: { user: query.delegatee } });
   }
   if (!isEmpty(query.delegator) && !await userExists(query.delegator)) {
-    errors.push({ field: 'delegator', error: `the user ${query.delegator} doesn't exist` });
+    errors.push({ field: 'delegator', error: 'error_user_exist', values: { user: query.delegator } });
   }
 
   if (!isEmpty(query.vesting_shares)) {
     if (!['VESTS', 'SP'].includes(query.vesting_shares.split(' ')[1])) {
-      errors.push({ field: 'vesting_shares', error: 'please select a valid symbol: VESTS or SP' });
+      errors.push({ field: 'vesting_shares', error: 'error_vests_symbol' });
     } else if (!isAsset(query.vesting_shares)) {
-      errors.push({ field: 'vesting_shares', error: 'please type a valid amount, 12.123 SP or 12.123456 VESTS for example' });
+      errors.push({ field: 'vesting_shares', error: 'error_vests_format' });
     }
   }
 };
 
 const normalize = async (query) => {
-  const cQuery = _.cloneDeep(query);
+  const cQuery = cloneDeep(query);
 
   let sUsername = normalizeUsername(query.delegatee);
   let accounts = await steem.api.getAccountsAsync([sUsername]);
@@ -69,7 +70,7 @@ const normalize = async (query) => {
   const [amount, symbol] = cQuery.vesting_shares.split(' ');
   if (amount && symbol === 'VESTS') {
     const globalProps = await steem.api.getDynamicGlobalPropertiesAsync();
-    cQuery.amount = _.join(
+    cQuery.amount = join(
       [
         formatter.vestToSteem(
           cQuery.vesting_shares,
@@ -79,7 +80,7 @@ const normalize = async (query) => {
         'SP',
       ], ' ');
   } else if (amount && symbol === 'SP') {
-    cQuery.amount = _.join(
+    cQuery.amount = join(
       [parseFloat(amount).toFixed(3), symbol],
       ' ');
   }

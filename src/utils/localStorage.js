@@ -1,10 +1,10 @@
-import _ from 'lodash';
+import isEmpty from 'lodash/isEmpty';
 import ls from 'local-storage';
 import { Base64 } from 'js-base64';
 
 export const hasAuth = () => {
   const keys = ls.get('_keys') || {};
-  return !_.isEmpty(keys);
+  return !isEmpty(keys);
 };
 
 export const addAuth = (username, role, wif) => {
