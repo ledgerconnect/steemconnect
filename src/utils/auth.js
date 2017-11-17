@@ -58,7 +58,7 @@ export const createSuggestedPassword = () => {
 };
 
 export const getAccountCreationFee = async () => {
-  const chainConfig = await steem.api.getConfig();
+  const chainConfig = await steem.api.getConfigAsync();
   const chainProps = await steem.api.getChainPropertiesAsync();
   const accountCreationFee = chainProps.account_creation_fee;
   const steemModifier = chainConfig.STEEMIT_CREATE_ACCOUNT_WITH_STEEM_MODIFIER;
