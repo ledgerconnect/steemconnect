@@ -204,3 +204,35 @@ pre {
     color:#49a9ee;
   }
 }
+
+.ant-layout-sider {
+  margin-top: 3rem !important;
+
+  .ant-menu {
+    background: #fcfcfc;
+
+    .ant-menu-item > a {
+      display: flex;
+      align-items: center;
+    }
+  }
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background: none;
+  }
+  .ant-menu-inline .ant-menu-item:after, .ant-menu-vertical .ant-menu-item:after {
+    border: none;
+  }
+  .ant-menu-submenu-selected > div {
+    font-weight: 700;
+    color: #108ee9;
+  }
+  .ant-menu-item-selected > a, .ant-menu-item-selected > a:hover {
+    font-weight: 700;
+  }
+}
+
+.menu-icon {
+  width: 20px;
+  height: auto;
+  margin-right: 20px;
+}
