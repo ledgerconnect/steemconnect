@@ -35,7 +35,7 @@ class AuthorizedApps extends Component {
 
   confirm = () => {
     const { intl } = this.props;
-    fetch('/api/token/revoke', {
+    fetch('/api/token/revoke/user', {
       headers: new Headers({
         Authorization: this.props.auth.token,
       }),

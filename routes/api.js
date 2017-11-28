@@ -131,12 +131,30 @@ router.all('/login/challenge', async (req, res) => {
   Revoke app tokens for a user
   If appId is not provided all the tokens for all the apps are revoked
 */
-router.all('/token/revoke/:clientId?', authenticate('user'), async (req, res) => {
-  const where = { user: req.user.username };
-  if (req.params.clientId) {
-    where.client_id = req.params.clientId;
+router.all('/token/revoke/:type/:clientId?', authenticate('user'), async (req, res) => {
+  const { clientId, type } = req.params;
+  const { user } = req;
+  const where = {};
+
+  if (type === 'app' && clientId) {
+    const app = await req.db.apps.findOne({ where: { client_id: clientId } });
+    if (app.owner === user) {
+      where.client_id = clientId;
+    }
+  } else if (type === 'user') {
+    where.user = user;
+    if (clientId) {
+      where.client_id = clientId;
+    }
   }
-  await req.db.tokens.destroy({ where });
+
+  if (
+    (type === 'user' && (where.user || where.client_id)) ||
+    (type === 'app' && where.client_id)
+  ) {
+    await req.db.tokens.destroy({ where });
+  }
+
   res.json({ success: true });
 });
 
