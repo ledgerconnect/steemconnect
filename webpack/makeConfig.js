@@ -92,7 +92,11 @@ function makeConfig(options) {
     entry: (isDevelopment ? [
       'webpack-hot-middleware/client?reload=true',
       path.join(options.baseDir, 'node_modules/es6-shim/es6-shim.js'),
-    ] : [path.join(options.baseDir, 'node_modules/es6-shim/es6-shim.js')]).concat([
+      path.join(options.baseDir, 'node_modules/intl/dist/Intl.js'),
+    ] : [
+      path.join(options.baseDir, 'node_modules/es6-shim/es6-shim.js'),
+      path.join(options.baseDir, 'node_modules/intl/dist/Intl.js'),
+    ]).concat([
       path.join(options.baseDir, 'src/index.js'),
     ]),
     output: {
