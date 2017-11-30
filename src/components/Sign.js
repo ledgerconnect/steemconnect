@@ -70,6 +70,7 @@ export default class Sign extends Component {
       if (!err) {
         this.setState({ success: result });
       } else {
+        console.log(`${changeCase.camelCase(mappedType)}With`, params);
         this.setState({ error: err });
       }
       this.setState({ step: 'result' });
