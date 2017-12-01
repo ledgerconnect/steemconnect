@@ -97,16 +97,26 @@ export default class AppForm extends Form {
             </small>
           </div>
           <div className="form-group">
+            <label className="label" htmlFor="is_public"><FormattedMessage id="manage_visibility" /></label>
             <label className="label" htmlFor="is_public">
               <input
-                id="is_public"
-                type="checkbox"
+                type="radio"
                 className="form-control"
                 name="is_public"
                 onChange={this.onChangeCheckbox}
                 checked={data.is_public}
               />&nbsp;
-              <FormattedMessage id="public" />
+              <FormattedMessage id="visible" />
+            </label>
+            <label className="label" htmlFor="is_public">
+              <input
+                type="radio"
+                className="form-control"
+                name="is_public"
+                onChange={this.onChangeCheckbox}
+                checked={!data.is_public}
+              />&nbsp;
+              <FormattedMessage id="not_visible" />
             </label>
           </div>
         </div>

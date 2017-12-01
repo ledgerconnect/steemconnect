@@ -21,7 +21,7 @@ router.all('/me', authenticate('user'), async (req, res) => {
 /** Get application details */
 router.get('/@:clientId', async (req, res, next) => {
   const { clientId } = req.params;
-  const app = await req.db.apps.findOne({ where: { client_id: clientId } });
+  const app = await req.db.apps.findOne({ where: { client_id: clientId }, attributes: { exclude: ['is_approved'] } });
   if (!app) {
     next();
   } else {
