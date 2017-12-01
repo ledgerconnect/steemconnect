@@ -29,9 +29,9 @@ module.exports = {
         website: 'https://example.com',
         beneficiaries: JSON.stringify([]),
         is_approved: true,
+        is_public: true,
         created_at: new Date(),
         updated_at: new Date(),
-        is_public: true,
       }
     ], {});
   },

@@ -36,6 +36,14 @@ module.exports = {
     beneficiaries: {
       type: Sequelize.JSONB,
     },
+    is_approved: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: true,
+    },
+    is_public: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
     created_at: {
       allowNull: false,
       type: Sequelize.DATE,
@@ -43,14 +51,6 @@ module.exports = {
     updated_at: {
       allowNull: false,
       type: Sequelize.DATE,
-    },
-    is_public: {
-      type: Sequelize.BOOLEAN,
-      defaultValue: false,
-    },
-    is_approved: {
-      type: Sequelize.BOOLEAN,
-      defaultValue: true,
     },
   }),
   down: (queryInterface, Sequelize) => queryInterface.dropTable('apps'),
