@@ -127,18 +127,4 @@ router.all('/login/challenge', async (req, res) => {
   });
 });
 
-router.all('/apps/authorized', authenticate('user'), async (req, res) => {
-  const accounts = await req.steem.api.getAccountsAsync([req.user]);
-  const userApps = accounts[0].posting.account_auths;
-  const dbApps = await req.db.apps.findAll({
-    where: {
-      client_id: userApps.map(o => o[0]),
-    },
-  });
-
-  const apps = userApps.filter(o => dbApps.find(d => d.client_id === o[0]));
-
-  res.json({ apps });
-});
-
 module.exports = router;
