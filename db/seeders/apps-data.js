@@ -13,9 +13,10 @@ module.exports = {
         icon: 'https://byteball.co/img/logo.jpg',
         website: 'https://busy.org',
         beneficiaries: JSON.stringify([{ account: 'busy.org', weight: 1500 }]),
-        disabled: false,
+        is_approved: true,
         created_at: new Date(),
         updated_at: new Date(),
+        is_public: true,
       },
       {
         client_id: 'simple-app',
@@ -27,9 +28,10 @@ module.exports = {
         icon: 'https://byteball.co/img/logo.jpg',
         website: 'https://example.com',
         beneficiaries: JSON.stringify([]),
-        disabled: false,
+        is_approved: true,
         created_at: new Date(),
         updated_at: new Date(),
+        is_public: true,
       }
     ], {});
   },

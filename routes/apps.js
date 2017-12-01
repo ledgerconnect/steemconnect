@@ -96,6 +96,7 @@ router.put('/@:clientId', authenticate('user'), async (req, res, next) => {
       description: app.description,
       icon: app.icon,
       website: app.website,
+      is_public: app.is_public,
     }, {
       where: {
         client_id: clientId,

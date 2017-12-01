@@ -21,6 +21,13 @@ export default class AppForm extends Form {
     this.setState({ data });
   };
 
+  onChangeCheckbox = (event) => {
+    const { name } = event.target;
+    const { data } = this.state;
+    data[name] = !data[name];
+    this.setState({ data });
+  }
+
   render() {
     const { data } = this.state;
     const redirectUris = data.redirect_uris && data.redirect_uris.join('\n');
@@ -88,6 +95,19 @@ export default class AppForm extends Form {
             <small>
               <FormattedMessage id="auth_uri" />
             </small>
+          </div>
+          <div className="form-group">
+            <label className="label" htmlFor="is_public">
+              <input
+                id="is_public"
+                type="checkbox"
+                className="form-control"
+                name="is_public"
+                onChange={this.onChangeCheckbox}
+                checked={data.is_public}
+              />&nbsp;
+              <FormattedMessage id="public" />
+            </label>
           </div>
         </div>
         <div className="form-group py-3 text-center">

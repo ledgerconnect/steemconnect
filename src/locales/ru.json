@@ -133,6 +133,7 @@
   "permissions": "Permissions",
   "permissions_list": "Here is a list of {username}'s account permissions.",
   "posting": "posting",
+  "public": "Public",
   "recent_password": "Recent password",
   "recover": "Recover",
   "recover_account": "Recover account",

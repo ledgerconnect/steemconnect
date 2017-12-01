@@ -133,6 +133,7 @@
   "permissions": "Permissions",
   "permissions_list": "Voici une liste des permissions du compte {username}.",
   "posting": "posting",
+  "public": "Public",
   "recent_password": "Mot de passe récent",
   "recover": "Récupérer",
   "recover_account": "Récupérer un compte",
