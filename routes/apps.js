@@ -27,10 +27,6 @@ router.get('/@:clientId', async (req, res, next) => {
   } else {
     if (!req.user || app.owner !== req.user) {
       app.secret = undefined;
-      if (!app.is_public) {
-        next();
-        return;
-      }
     }
     res.json(app);
   }
