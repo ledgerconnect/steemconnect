@@ -8,7 +8,7 @@ const router = express.Router(); // eslint-disable-line new-cap
 
 /** Get applications */
 router.get('/', async (req, res) => {
-  const apps = await req.db.apps.findAll({ attributes: { exclude: ['secret'] } });
+  const apps = await req.db.apps.findAll({ where: { is_public: true }, attributes: { exclude: ['secret'] } });
   res.json(apps);
 });
 
@@ -27,6 +27,10 @@ router.get('/@:clientId', async (req, res, next) => {
   } else {
     if (!req.user || app.owner !== req.user) {
       app.secret = undefined;
+      if (!app.is_public) {
+        next();
+        return;
+      }
     }
     res.json(app);
   }
