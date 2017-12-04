@@ -49,7 +49,7 @@ const issueAppCode = (proxy, user, scope = []) => (
 const issueAppRefreshToken = (proxy, user, scope = []) => (
   jwt.sign(
     { role: 'refresh', proxy, user, scope },
-    process.env.JWT_SECRET,
+    process.env.JWT_SECRET
   )
 );
 
