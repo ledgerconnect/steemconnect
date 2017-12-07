@@ -109,7 +109,7 @@ class Sign extends React.Component {
               { validator: accountExist },
             ],
           })(
-            <Input prefix={<Icon type="user" size="large" />} placeholder={intl.formatMessage({ id: 'username' })} />
+            <Input prefix={<Icon type="user" size="large" />} placeholder={intl.formatMessage({ id: 'username' })} autoCorrect="off" autoCapitalize="none" />
           )}
         </Form.Item>
         <Form.Item hasFeedback>
@@ -118,7 +118,7 @@ class Sign extends React.Component {
               { required: true, message: intl.formatMessage({ id: 'error_password_required' }) },
             ],
           })(
-            <Input prefix={<Icon type="lock" size="large" />} type="password" placeholder={intl.formatMessage({ id: 'password_or_key' })} />
+            <Input prefix={<Icon type="lock" size="large" />} type="password" placeholder={intl.formatMessage({ id: 'password_or_key' })} autoCorrect="off" autoCapitalize="none" />
           )}
         </Form.Item>
         <Form.Item>
