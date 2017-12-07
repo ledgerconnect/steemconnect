@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { Input, Icon } from 'antd';
 import fetch from 'isomorphic-fetch';
 import Loading from '../../widgets/Loading';
 import AppPreview from './AppPreview';
+import './Apps.less';
 
 export default class MyApps extends Component {
   constructor(props) {
@@ -12,6 +14,7 @@ export default class MyApps extends Component {
       isLoading: false,
       isLoaded: false,
       apps: [],
+      filter: '',
     };
   }
 
@@ -28,18 +31,31 @@ export default class MyApps extends Component {
       });
   }
 
+  filterApps = (e) => {
+    this.setState({ filter: e.target.value });
+  }
+
   render() {
-    const { apps, isLoading, isLoaded } = this.state;
+    const { apps, isLoading, isLoaded, filter } = this.state;
+
     return (
       <div className="container my-5">
-        <h2><FormattedMessage id="apps" /></h2>
+        <div className="apps-header">
+          <h2><FormattedMessage id="apps_title" /></h2>
+          <p><FormattedMessage id="apps_subtitle" /></p>
+          <Input
+            placeholder="Search Apps"
+            prefix={<Icon type="search" />}
+            onChange={this.filterApps}
+          />
+        </div>
         {isLoading && <Loading />}
         {isLoaded &&
-          <div>
-            {apps.map((app, key) =>
+          <ul className="steemconnect-apps">
+            {apps.filter(app => filter === '' || !filter || app.client_id.includes(filter)).map((app, key) =>
               <AppPreview app={app} key={key} />
             )}
-          </div>
+          </ul>
         }
       </div>
     );
