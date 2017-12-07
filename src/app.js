@@ -21,18 +21,7 @@ export default class App extends PureComponent {
     }),
   }
 
-  getActiveKey = () => {
-    switch (this.props.location.pathname) {
-      case '/apps/authorized':
-        return '/apps';
-      case '/apps/me':
-        return '/developers';
-      case '/docs/oauth2':
-        return '/developers';
-      default:
-        return this.props.location.pathname;
-    }
-  }
+  getActiveKey = () => this.props.location.pathname;
 
   getSubMenu = (activeKey) => {
     if (['/apps/authorized'].includes(activeKey)) {
@@ -53,7 +42,7 @@ export default class App extends PureComponent {
         <Header style={{ borderBottom: '1px solid #E9E7E7' }}>
           <HeaderWidget username={this.props.auth.user.name} />
         </Header>
-        <Content style={{ width: '860px', margin: '0 auto' }}>
+        <Content style={{ width: '1080px', margin: '0 auto' }}>
           <Layout>
             <Sider style={{ background: '#fcfcfc' }}>
               <Menu
