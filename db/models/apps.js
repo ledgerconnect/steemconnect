@@ -8,8 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT,
     icon: DataTypes.TEXT,
     website: DataTypes.TEXT,
-    beneficiaries: DataTypes.JSONB,
-    disabled: DataTypes.BOOLEAN
+    beneficiaries: DataTypes.JSONB
   }, {
     freezeTableName: true,
     underscored: true,
