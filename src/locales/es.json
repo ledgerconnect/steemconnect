@@ -194,14 +194,14 @@
   "mute_description": "Marca una cuenta como ignorando otra cuenta.",
   "profile_update_description": "Actualizar la información del perfil de la cuenta.",
   "reblog_description": "Publique en la línea de tiempo de una cuenta una publicación seleccionada de otra cuenta.",
-  "transfer_description": "Transfer funds from one account to another. STEEM and SBD can be transferred.",
-  "transfer_from_savings_description": "Al retirar los fondos de los ahorros, se requieren 72 horas desde el momento en que se inició para que los fondos estén disponibles..",
-  "transfer_to_savings_description": "Las transferencias al ahorro suceden inmediatamente, las transferencias de ahorros toman 72 horas.",
-  "transfer_to_vesting_description": "Transfiera STEEM a un fondo de derechos adquiridos representado por acciones de adquisición (VESTS). Se requiere que los VESTS se adjudiquen por un mínimo de una moneda anual y se pueden retirar una vez a la semana durante un período de retiro de 13 semanas. LOS VESTS están protegidos contra la dilución hasta que el 90% de STEEM se está otorgando.",
+  "transfer_description": "Transfiera fondos de una cuenta a otra. STEEM y SBD pueden ser transferidos.",
+  "transfer_from_savings_description": "Al retirar los fondos, se requieren 72 horas desde el momento en que se inició para que los fondos estén disponibles..",
+  "transfer_to_savings_description": "Transfers into savings happen immediately, transfers from savings take 72 hours.",
+  "transfer_to_vesting_description": "Transfiera los fondos STEEM de derechos adquiridos representado por acciones de adquisición (VESTS). Se requiere que los VESTS se adjudiquen por un mínimo de una moneda anual y se pueden retirar una vez a la semana durante un período de retiro de 13 semanas. LOS VESTS están protegidos contra la dilución hasta que el 90% de STEEM se está otorgado.",
   "undelegate_vesting_shares_description": "Este método recupera VESTS delegados de una cuenta a otra.",
-  "unfollow_description": "Desmarca una cuenta como siguiendo a otra cuenta.",
+  "unfollow_description": "Desmarca una cuenta como las siguientes otras cuenta.",
   "unmute_description": "Desmarca una cuenta como ignorando otra cuenta.",
-  "vote_description": "Vote por un comentario a pagar STEEM",
-  "withdraw_vesting_description": "Configure una solicitud de retirada de consolidación. La solicitud se realiza una vez a la semana durante los próximos dos años (13 weeks)."
+  "vote_description": "Vote por un comentario para pagar con STEEM",
+  "withdraw_vesting_description": "Set up a vesting withdraw request. The request is fulfilled once a week over the next two year (13 weeks)."
 }
 
