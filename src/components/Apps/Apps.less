@@ -36,6 +36,7 @@
 
 ul.steemconnect-apps {
   li.steemconnect-app {
+    position: relative;
     display: block;
     float: left;
     width: calc(~"50% - 20px");
@@ -56,10 +57,12 @@ ul.steemconnect-apps {
       img {
         height: 60px;
         width: 60px;
+        display: block;
       }
 
       .app-title {
         display: block;
+        height: 50px;
         text-transform: capitalize;
         font-size: 18px;
         font-weight: 600;
@@ -71,6 +74,18 @@ ul.steemconnect-apps {
         color: #757a81;
       }
     }
+
+    a.install-btn {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      border-radius: 3px;
+      background-color: #4ba2f2;
+      color: #fff;
+      font-size: 16px;
+      padding: 5px 20px;
+    }
+
     &:nth-child(2n) {
        margin-left: 20px;
     }

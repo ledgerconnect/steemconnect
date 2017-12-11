@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Input, Icon } from 'antd';
 import fetch from 'isomorphic-fetch';
@@ -7,6 +7,12 @@ import AppPreview from './AppPreview';
 import './Apps.less';
 
 export default class MyApps extends Component {
+  static propTypes = {
+    auth: PropTypes.shape({
+      token: PropTypes.string,
+    }),
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -17,10 +23,13 @@ export default class MyApps extends Component {
       filter: '',
     };
   }
-
   componentWillMount() {
     this.setState({ isLoading: true });
-    fetch('/api/apps')
+    fetch('/api/apps', {
+      headers: new Headers({
+        Authorization: this.props.auth.token,
+      }),
+    })
       .then(res => res.json())
       .then((apps) => {
         this.setState({

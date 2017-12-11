@@ -8,7 +8,19 @@ const router = express.Router(); // eslint-disable-line new-cap
 
 /** Get applications */
 router.get('/', async (req, res) => {
-  const apps = await req.db.apps.findAll({ attributes: { exclude: ['secret'] } });
+  let apps = await req.db.apps.findAll({ attributes: { exclude: ['secret'] } });
+  if (req.user) {
+    const accounts = await req.steem.api.getAccountsAsync([req.user]);
+    const authorizedApps = accounts[0].posting.account_auths;
+    apps = apps.map((app) => {
+      const jsonApp = app.toJSON();
+      if (authorizedApps.find(authorizedApp => app.client_id.includes(authorizedApp[0]))) {
+        // eslint-disable-next-line no-param-reassign
+        jsonApp.installed = true;
+      }
+      return jsonApp;
+    });
+  }
   res.json(apps);
 });
 
