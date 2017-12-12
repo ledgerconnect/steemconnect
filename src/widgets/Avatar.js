@@ -20,7 +20,7 @@ const Avatar = ({
       className={`Avatar ${className}`}
       style={{ height: `${size}px`, width: `${size}px` }}
     >
-      <img src={src} alt="avatar" />
+      <img src={src} alt="avatar" onError={event => event.target.setAttribute('src', '/img/default-avatar.png')} />
     </span>
   );
 };
