@@ -14,9 +14,9 @@ module.exports = {
         website: 'https://busy.org',
         beneficiaries: JSON.stringify([{ account: 'busy.org', weight: 1500 }]),
         is_approved: true,
+        is_public: true,
         created_at: new Date(),
         updated_at: new Date(),
-        is_public: true,
       },
       {
         client_id: 'simple-app',
