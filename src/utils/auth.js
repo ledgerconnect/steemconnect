@@ -1,7 +1,7 @@
-import steem from 'steem';
+import steem from '@steemit/steem-js';
 import fetch from 'isomorphic-fetch';
-import { decode } from 'steem/lib/auth/memo';
-import { key_utils } from 'steem/lib/auth/ecc'; // eslint-disable-line camelcase
+import { decode } from '@steemit/steem-js/lib/auth/memo';
+import { key_utils } from '@steemit/steem-js/lib/auth/ecc'; // eslint-disable-line camelcase
 
 export const login = ({ username, wif, role = 'posting' }, cb) => {
   fetch(`/api/login/challenge?username=${username}&role=${role}`)
