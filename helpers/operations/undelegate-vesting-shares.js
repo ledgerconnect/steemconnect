@@ -1,6 +1,6 @@
 const cloneDeep = require('lodash/cloneDeep');
 const join = require('lodash/join');
-const steem = require('steem');
+const steem = require('@steemit/steem-js');
 const { isEmpty, userExists, normalizeUsername } = require('../validation-utils');
 
 const optionalFields = ['delegator', 'vesting_shares'];
