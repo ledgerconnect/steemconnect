@@ -64,8 +64,8 @@ export default class Sign extends Component {
           for (let i = 0; i < operationsParsed.length; i += 1) {
             validationErrors = validationErrors.concat(
               await validate(
-                operationsParsed[i].operation,
-                operationsParsed[i].params || {}
+                operationsParsed[i][0],
+                operationsParsed[i][1] || {}
                 )
             );
           }
@@ -75,11 +75,11 @@ export default class Sign extends Component {
             const normalizedQueries = [];
             for (let i = 0; i < operationsParsed.length; i += 1) {
               normalizedQueries.push({
-                operation: operationsParsed[i].operation,
-                params: operationsParsed[i].params,
+                operation: operationsParsed[i][0],
+                params: operationsParsed[i][1],
                 normalizedQuery: await normalize(
-                  operationsParsed[i].operation,
-                  operationsParsed[i].params
+                  operationsParsed[i][0],
+                  operationsParsed[i][1]
                 ),
               });
             }
@@ -171,8 +171,8 @@ export default class Sign extends Component {
       const operationsDecoded = atob(base64);
       const operationsParsed = JSON.parse(operationsDecoded);
       for (let i = 0; i < operationsParsed.length; i += 1) {
-        const operation = operationsParsed[i].operation;
-        const operationParams = operationsParsed[i].params;
+        const operation = operationsParsed[i][0];
+        const operationParams = operationsParsed[i][1];
         const params = await parseQuery(operation, operationParams, auth.username);
         const customOp = customOperations.find(
           o => o.operation === changeCase.snakeCase(operation)
