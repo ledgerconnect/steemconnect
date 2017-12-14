@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
-import numeral from 'numeral';
 import fetch from 'isomorphic-fetch';
 import Loading from '../../widgets/Loading';
 
@@ -44,10 +43,7 @@ export default class AuthorizedApps extends Component {
             <ul className="list-group text-xs-left mb-3">
               {apps.map((app, idx) =>
                 <li key={idx} className="list-group-item">
-                  <b><Link to={`/apps/@${app[0]}`}>{app[0]}</Link></b>
-                  <span className="ml-1">
-                    {numeral((100 / user.posting.weight_threshold) * (app[1] / 100)).format('0%')}
-                  </span>
+                  <b><Link to={`/apps/@${app.client_id}`}>{app.client_id}</Link></b>
                   <Link
                     to={`/revoke/@${app.client_id}`}
                     className="float-right btn btn-secondary btn-sm ml-1"
