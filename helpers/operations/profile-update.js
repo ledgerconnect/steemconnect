@@ -1,7 +1,7 @@
 const changeCase = require('change-case');
 const { userExists, isEmpty, normalizeUsername } = require('../validation-utils');
 const customOperations = require('./custom-operations');
-const steem = require('steem');
+const steem = require('@steemit/steem-js');
 
 const parse = async (query) => {
   const username = normalizeUsername(query.account);
