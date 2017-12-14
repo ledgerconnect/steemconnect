@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
-import steem from 'steem';
+import steem from '@steemit/steem-js';
 import changeCase from 'change-case';
 import { Link } from 'react-router';
 import { Button } from 'antd';
