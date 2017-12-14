@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
-import steem from 'steem';
+import steem from '@steemit/steem-js';
 import SignForm from '../Form/Sign';
 import SignSuccess from '../Sign/Success';
 import SignError from '../Sign/Error';
