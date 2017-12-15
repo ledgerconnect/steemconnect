@@ -8,7 +8,7 @@ const router = express.Router(); // eslint-disable-line new-cap
 
 /** Get applications */
 router.get('/', async (req, res) => {
-  let apps = await req.db.apps.findAll({ attributes: { exclude: ['secret'] } });
+  let apps = await req.db.apps.findAll({ where: { is_public: true }, attributes: { exclude: ['secret'] } });
   if (req.user) {
     const accounts = await req.steem.api.getAccountsAsync([req.user]);
     const authorizedApps = accounts[0].posting.account_auths;
@@ -33,7 +33,7 @@ router.all('/me', authenticate('user'), async (req, res) => {
 /** Get application details */
 router.get('/@:clientId', async (req, res, next) => {
   const { clientId } = req.params;
-  const app = await req.db.apps.findOne({ where: { client_id: clientId } });
+  const app = await req.db.apps.findOne({ where: { client_id: clientId }, attributes: { exclude: ['is_approved'] } });
   if (!app) {
     next();
   } else {
@@ -108,6 +108,7 @@ router.put('/@:clientId', authenticate('user'), async (req, res, next) => {
       description: app.description,
       icon: app.icon,
       website: app.website,
+      is_public: app.is_public,
     }, {
       where: {
         client_id: clientId,

@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import steem from 'steem';
+import steem from '@steemit/steem-js';
 import { Form, Icon, Input, Button } from 'antd';
 import { accountExist } from '../../utils/validator';
 import './Sign.less';

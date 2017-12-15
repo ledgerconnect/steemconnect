@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Card, notification } from 'antd';
-import steem from 'steem';
+import steem from '@steemit/steem-js';
 import RequestAccountRecoveryForm from '../Form/RequestAccountRecovery';
 import Loading from '../../widgets/Loading';
 import SignForm from '../Form/Sign';
