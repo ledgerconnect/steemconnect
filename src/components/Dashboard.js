@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Progress } from 'antd';
 import { connect } from 'react-redux';
-import { api, formatter } from 'steem';
+import { api, formatter } from '@steemit/steem-js';
 import Avatar from '../widgets/Avatar';
 import './Dashboard.less';
 
