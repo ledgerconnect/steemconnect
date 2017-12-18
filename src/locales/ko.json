@@ -75,6 +75,7 @@
   "developers": "Developers",
   "do_you_want": "Do you want to {button}?",
   "edit": "Edit",
+  "edit_information": "Edit information",
   "error": "Error",
   "error_404": "Looks like you followed a bad link. If you think this is a problem with SteemConnect, please tell us. Here's a link to the {link}.",
   "error_account_not_found": "Account name is not found",

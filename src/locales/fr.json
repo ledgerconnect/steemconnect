@@ -75,6 +75,7 @@
   "developers": "Développeurs",
   "do_you_want": "Voulez-vous {button}?",
   "edit": "Éditer",
+  "edit_information": "Éditer les informations",
   "error": "Erreur",
   "error_404": "On dirait que vous avez suivi un mauvais lien. Si vous pensez qu'il s'agit d'un problème de SteemConnect, indiquez le nous. Voici le lien vers {link}.",
   "error_account_not_found": "Le compte est introuvable",
