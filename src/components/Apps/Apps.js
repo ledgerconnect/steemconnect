@@ -58,7 +58,7 @@ export default class MyApps extends Component {
             onChange={this.filterApps}
           />
         </div>
-        {isLoading && <Loading />}
+        {isLoading && <div className="centered-loading"><Loading /></div>}
         {isLoaded &&
           <ul className="steemconnect-apps">
             {apps.filter(app => filter === '' || !filter || app.client_id.includes(filter)).map((app, key) =>
