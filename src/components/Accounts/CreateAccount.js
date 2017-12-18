@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
-import steem from 'steem';
+import steem from '@steemit/steem-js';
 import { notification } from 'antd';
 import AccountForm from '../Form/AccountForm';
 import SignForm from '../Form/Sign';
