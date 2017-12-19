@@ -5,6 +5,7 @@ import fetch from 'isomorphic-fetch';
 import { hasAuthority } from '../../utils/auth';
 import Loading from '../../widgets/Loading';
 import Avatar from '../../widgets/Avatar';
+import './App.less';
 
 export default class MyApps extends Component {
   static propTypes = {
@@ -56,49 +57,59 @@ export default class MyApps extends Component {
     return (
       <div className="container my-5">
         {isLoaded &&
-          <div>
-            <Avatar icon={app.icon} size="80" className="float-left mr-3" />
-            <h2 className="d-inline">{clientId}</h2>
-            <span className="float-right">
-              {isLoaded && app.owner === this.props.auth.user.name &&
-                <Link to={`/apps/@${clientId}/edit`} className="btn btn-secondary btn-sm ml-2">
-                  <FormattedMessage id="edit" />
-                </Link>
-              }
-              {this.props.auth.isAuthenticated && hasAuthority(this.props.auth.user, clientId) &&
-                <Link to={`/revoke/@${clientId}`} className="btn btn-danger btn-sm ml-2">
-                  <FormattedMessage id="revoke" />
-                </Link>
-              }
-            </span>
-            <p>@{clientId}</p>
-            <div className="pt-4">
-              <p><FormattedMessage id="app_secured_by" /></p>
-              <div className="list-group">
-                <div className="list-group-item">
-                  <b className="mr-1"><FormattedMessage id="client_id" />:</b> {app.client_id}
-                </div>
-                {app.secret &&
-                  <div className="list-group-item">
-                    <b className="mr-1"><FormattedMessage id="client_secret" />:</b>
-                    {revealSecret
-                      ? <div>
-                        {`${app.secret} `}
-                        <button className="button-link" onClick={() => this.setState({ revealSecret: false })}>
-                          <FormattedMessage id="hide" />
-                        </button>
-                      </div>
-                      : <button className="button-link" onClick={() => this.setState({ revealSecret: true })}>
-                        <FormattedMessage id="click_to_reveal" />
-                      </button>
-                    }
-                  </div>
-                }
+          <div className="AppView">
+            <div className="AppView__app-header">
+              <div className="AppView__Avatar">
+                <Avatar icon={app.icon} size="140" className="float-left mr-3" />
               </div>
+              <div className="AppView__information">
+                <h2>@{clientId}</h2>
+                {app.secret &&
+                <div className="list-group-item">
+                  <b className="mr-1"><FormattedMessage id="client_secret" />:</b>
+                  {revealSecret
+                    ? <div>
+                      {`${app.secret} `}
+                      <button className="button-link" onClick={() => this.setState({ revealSecret: false })}>
+                        <FormattedMessage id="hide" />
+                      </button>
+                    </div>
+                    : <button className="button-link" onClick={() => this.setState({ revealSecret: true })}>
+                      <FormattedMessage id="click_to_reveal" />
+                    </button>
+                  }
+                </div>
+                }
+                <div className="app-footer">
+                  {isLoaded && app.owner === this.props.auth.user.name &&
+                  <Link to={`/apps/@${clientId}/edit`} className="btn btn-secondary btn-sm ml-2">
+                    <FormattedMessage id="edit" />
+                  </Link>}
+                  {this.props.auth.isAuthenticated &&
+                  hasAuthority(this.props.auth.user, clientId) &&
+                  <Link to={`/revoke/@${clientId}`} className="btn btn-danger btn-sm ml-2">
+                    <FormattedMessage id="revoke" />
+                  </Link>}
+                  <span className="users-stats">
+                    <strong>{app.users}</strong> <FormattedMessage id="active_users" />
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="AppView__app-content">
+              <h2><FormattedMessage id="description" /></h2>
+              <p>
+                {app.description}
+              </p>
+              {app.website &&
+              <p>
+                <FormattedMessage id="visit_us" />: <a href={app.website} target="_blank" rel="noopener noreferrer">{app.website}</a>
+              </p>}
+              <p className="secured-by"><FormattedMessage id="app_secured_by" /></p>
             </div>
           </div>
         }
-        {isLoading && <Loading />}
+        {isLoading && <div className="centered-loading"><Loading /></div>}
       </div>
     );
   }

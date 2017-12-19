@@ -37,10 +37,12 @@ router.get('/@:clientId', async (req, res, next) => {
   if (!app) {
     next();
   } else {
-    if (!req.user || app.owner !== req.user) {
-      app.secret = undefined;
+    const jsonApp = app.toJSON();
+    jsonApp.users = await req.db.tokens.count({ where: { client_id: clientId }, distinct: true, col: 'user' });
+    if (!req.user || jsonApp.owner !== req.user) {
+      jsonApp.secret = undefined;
     }
-    res.json(app);
+    res.json(jsonApp);
   }
 });
 

@@ -1,4 +1,4 @@
-/* eslint-disable react/prefer-stateless-function */
+/* eslint-disable react/prefer-stateless-function,class-methods-use-this */
 import React, { PureComponent, PropTypes } from 'react';
 import { Link } from 'react-router';
 import { FormattedMessage } from 'react-intl';
@@ -19,6 +19,10 @@ export default class App extends PureComponent {
     location: PropTypes.shape({
       pathname: PropTypes.string,
     }),
+  }
+
+  componentWillMount() {
+    document.getElementById('app').style.background = '#f0f2f4';
   }
 
   getActiveKey = () => this.props.location.pathname;
@@ -44,7 +48,7 @@ export default class App extends PureComponent {
         </Header>
         <Content style={{ width: '1080px', margin: '0 auto' }}>
           <Layout>
-            <Sider style={{ background: '#fcfcfc' }}>
+            <Sider>
               <Menu
                 mode="inline"
                 defaultSelectedKeys={[activeKey]}
