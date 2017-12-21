@@ -79,7 +79,7 @@ class App extends Component {
         if (result.success) {
           notification.success({
             message: intl.formatMessage({ id: 'success' }),
-            description: intl.formatMessage({ id: 'success_revoke_app_token' }),
+            description: intl.formatMessage({ id: 'success_revoke_app_tokens' }),
           });
         } else {
           notification.error({

@@ -175,7 +175,6 @@
   "success_app_updated": "Votre application a été mise à jour avec succès",
   "success_operation_broadcasted": "L'opération a été envoyée avec succès.",
   "success_proxy_account": "Le compte proxy @{clientId} a été créé avec succès",
-  "success_revoke_app_token": "Le token a été supprimé avec succès",
   "success_revoke_app_tokens": "Les tokens ont été supprimés avec succès",
   "title": "Titre",
   "token_url": "URL Token",
