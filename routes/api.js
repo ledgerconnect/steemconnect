@@ -1,7 +1,7 @@
 const express = require('express');
 const debug = require('debug')('sc2:server');
 const { authenticate, verifyPermissions } = require('../helpers/middleware');
-const { encode } = require('steem/lib/auth/memo');
+const { encode } = require('@steemit/steem-js/lib/auth/memo');
 const { issueUserToken } = require('../helpers/token');
 const { getUserMetadata, updateUserMetadata } = require('../helpers/metadata');
 const { getErrorMessage } = require('../helpers/operation');

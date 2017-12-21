@@ -58,6 +58,7 @@ export default class AccountForm extends Form {
               onChange={this.onChange}
               defaultValue={data.steem}
             />
+            <small><FormattedMessage id="steem_tip" /></small>
           </div>
           <div className="form-group">
             <label className="label" htmlFor="vests"><FormattedMessage id="vests" /></label>
@@ -69,6 +70,7 @@ export default class AccountForm extends Form {
               onChange={this.onChange}
               defaultValue={data.vests}
             />
+            <small><FormattedMessage id="vests_tip" /></small>
           </div>
         </div>
         <div className="form-group py-3 text-center">

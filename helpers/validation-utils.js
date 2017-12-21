@@ -1,4 +1,4 @@
-const steem = require('steem');
+const steem = require('@steemit/steem-js');
 
 const isEmpty = value => value === undefined || value === null || value === '';
 
@@ -46,8 +46,8 @@ const userExists = async (username) => {
 };
 
 const contentExists = async (auhtor, permlink) => {
-  const content = await steem.api.getContent(auhtor, permlink);
-  return parseInt(content.id, 10) !== 0;
+  const content = await steem.api.getContentAsync(auhtor, permlink);
+  return content && parseInt(content.id, 10) !== 0;
 };
 
 module.exports = {

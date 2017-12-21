@@ -62,6 +62,13 @@ class AppForm extends Form {
     this.setState({ data });
   };
 
+  onChangeCheckbox = (event) => {
+    const { name } = event.target;
+    const { data } = this.state;
+    data[name] = !data[name];
+    this.setState({ data });
+  }
+
   render() {
     const { data, displayRevokeModal } = this.state;
     const { auth, intl } = this.props;
@@ -131,6 +138,29 @@ class AppForm extends Form {
             <small>
               <FormattedMessage id="auth_uri" />
             </small>
+          </div>
+          <div className="form-group">
+            <label className="label" htmlFor="is_public"><FormattedMessage id="manage_visibility" /></label>
+            <label className="label" htmlFor="is_public">
+              <input
+                type="radio"
+                className="form-control"
+                name="is_public"
+                onChange={this.onChangeCheckbox}
+                checked={data.is_public}
+              />&nbsp;
+              <FormattedMessage id="visible" />
+            </label>
+            <label className="label" htmlFor="is_public">
+              <input
+                type="radio"
+                className="form-control"
+                name="is_public"
+                onChange={this.onChangeCheckbox}
+                checked={!data.is_public}
+              />&nbsp;
+              <FormattedMessage id="not_visible" />
+            </label>
           </div>
         </div>
         <div className="form-group py-3 text-center">
