@@ -50,16 +50,17 @@ export default class Sign extends Component {
         try {
           operationsDecoded = atob(base64);
         } catch (err) {
-          this.setState({ validationErrors: [{ error: 'error_base64_encode' }], step: 'validationErrors' });
+          this.setState({ validationErrors: [{ error: 'error_tx_base64_encode' }], step: 'validationErrors' });
           return;
         }
         try {
           operationsParsed = JSON.parse(operationsDecoded);
+          console.log(typeof operationsParsed);
         } catch (err) {
-          this.setState({ validationErrors: [{ error: 'error_base64_json' }], step: 'validationErrors' });
+          this.setState({ validationErrors: [{ error: 'error_tx_base64_json' }], step: 'validationErrors' });
           return;
         }
-        if (Array.isArray(operationsParsed)) {
+        if (this.isTransactionFormatValid(operationsParsed)) {
           let validationErrors = [];
           for (let i = 0; i < operationsParsed.length; i += 1) {
             validationErrors = validationErrors.concat(
@@ -86,7 +87,7 @@ export default class Sign extends Component {
             this.setState({ step: 'form', normalizedQueries });
           }
         } else {
-          this.setState({ validationErrors: [{ error: 'error_base64_encode' }], step: 'validationErrors' });
+          this.setState({ validationErrors: [{ error: 'error_tx_base64_json' }], step: 'validationErrors' });
         }
       }
     } else {
@@ -153,6 +154,18 @@ export default class Sign extends Component {
       mergedRoles.push(this.getRoleName(i));
     }
     return mergedRoles;
+  }
+
+  isTransactionFormatValid = (transaction) => {
+    if (Array.isArray(transaction)) {
+      for (let i = 0; i < transaction.length; i += 1) {
+        if (!Array.isArray(transaction[i]) || transaction[i].length < 2) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
   }
 
   resetForm = () => {
