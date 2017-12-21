@@ -116,6 +116,7 @@ router.all('/authorized', authenticate('user'), async (req, res) => {
     where: {
       client_id: postingAccountAuths.map(accountAuth => accountAuth[0]),
     },
+    attributes: { exclude: ['secret'] },
   });
 
   res.json({ apps });
