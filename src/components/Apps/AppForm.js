@@ -73,7 +73,6 @@ class AppForm extends Form {
     const { data, displayRevokeModal } = this.state;
     const { auth, intl } = this.props;
     const redirectUris = data.redirect_uris && data.redirect_uris.join('\n');
-    console.log(data, auth);
     return (
       <form onSubmit={this.onSubmit}>
         <div className="block">
