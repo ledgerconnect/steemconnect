@@ -35,14 +35,14 @@ router.all('/api/oauth2/authorize', authenticate('user'), async (req, res) => {
     user: req.user,
     scope: scope.length > 0 ? scope : config.authorized_operations,
   };
-  const scopesDb = await req.db.authorizations.findOne({
+  const authorizations = await req.db.authorizations.findOne({
     where: { client_id: clientId, user: req.user },
   });
 
-  if (!scopesDb) {
+  if (!authorizations) {
     await req.db.authorizations.create(authorization);
   } else {
-    authorization.scope = union(authorization.scope, scopesDb.scope);
+    authorization.scope = union(authorization.scope, authorizations.scope);
     await req.db.authorizations.update(
       authorization,
       {
