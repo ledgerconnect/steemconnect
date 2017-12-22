@@ -1,13 +1,54 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import { Modal, notification } from 'antd';
 import { Link } from 'react-router';
 import Form from '../../widgets/Form';
 
-export default class AppForm extends Form {
+class AppForm extends Form {
   constructor(props) {
     super(props);
     const data = this.props.data || {};
-    this.state = { data };
+    this.state = {
+      data,
+      displayRevokeModal: false,
+    };
+  }
+
+  showRevokeModal = () => {
+    this.setState({
+      displayRevokeModal: true,
+    });
+  }
+
+  handleCancel = () => {
+    this.setState({
+      displayRevokeModal: false,
+    });
+  }
+
+  confirm = () => {
+    const { intl } = this.props;
+    const { data } = this.state;
+    fetch(`/api/token/revoke/app/${data.client_id}`, {
+      headers: new Headers({
+        Authorization: this.props.auth.token,
+      }),
+    })
+      .then(res => res.json())
+      .then((result) => {
+        this.handleCancel();
+        if (result.success) {
+          notification.success({
+            message: intl.formatMessage({ id: 'success' }),
+            description: intl.formatMessage({ id: 'success_revoke_app_tokens' }),
+          });
+        } else {
+          notification.error({
+            message: intl.formatMessage({ id: 'error' }),
+            description: intl.formatMessage({ id: 'general_error_short' }),
+          });
+        }
+      });
   }
 
   onChange = (event) => {
@@ -29,8 +70,10 @@ export default class AppForm extends Form {
   }
 
   render() {
-    const { data } = this.state;
+    const { data, displayRevokeModal } = this.state;
+    const { auth, intl } = this.props;
     const redirectUris = data.redirect_uris && data.redirect_uris.join('\n');
+    console.log(data, auth);
     return (
       <form onSubmit={this.onSubmit}>
         <div className="block">
@@ -121,16 +164,33 @@ export default class AppForm extends Form {
           </div>
         </div>
         <div className="form-group py-3 text-center">
+          <Modal
+            title={intl.formatMessage({ id: 'are_you_sure' })}
+            visible={displayRevokeModal}
+            onOk={this.confirm}
+            onCancel={this.handleCancel}
+            okText={intl.formatMessage({ id: 'yes' })}
+            cancelText={intl.formatMessage({ id: 'no' })}
+          >
+            <p><FormattedMessage id="revoke_access_tokens_question_app" /></p>
+          </Modal>
           <Link to="/apps/me" className="btn btn-secondary"><FormattedMessage id="cancel" /></Link>
+          {auth.isAuthenticated && data.owner === auth.user.name &&
           <button
             type="submit"
             className="btn btn-success ml-3"
             disabled={this.props.isLoading}
           >
             <FormattedMessage id="save" />
-          </button>
+          </button>}
+          {auth.isAuthenticated && data.owner === auth.user.name &&
+          <button type="button" className="btn btn-danger ml-3" onClick={this.showRevokeModal}>
+            <FormattedMessage id="revoke_access_tokens" />
+          </button>}
         </div>
       </form>
     );
   }
 }
+
+export default injectIntl(AppForm);

@@ -78,6 +78,7 @@ class EditApp extends Component {
 
   render() {
     const { app, clientId, isLoading, isLoaded } = this.state;
+    const { auth } = this.props;
     return (
       <div className="container my-5">
         {isLoading && <Loading />}
@@ -90,6 +91,7 @@ class EditApp extends Component {
             </div>
             <AppForm
               data={app}
+              auth={auth}
               isLoading={isLoading}
               submit={this.submit}
             />
