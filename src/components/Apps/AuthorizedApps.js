@@ -13,7 +13,7 @@ export default class AuthorizedApps extends Component {
     super(props);
     this.state = {
       error: false,
-      isLoading: false,
+      isLoading: true,
       isLoaded: false,
       apps: [],
     };
@@ -27,7 +27,7 @@ export default class AuthorizedApps extends Component {
     })
     .then(res => res.json());
 
-    this.setState({ apps: result.apps });
+    this.setState({ apps: result.apps, isLoading: false });
   }
 
   render() {
@@ -36,10 +36,10 @@ export default class AuthorizedApps extends Component {
     return (
       <div className="container py-5">
         <h2><FormattedMessage id="authorized_apps" /></h2>
-        {isLoading && <Loading />}
         {user.posting &&
           <div>
             <p><FormattedMessage id="authorized_apps_list" /></p>
+            {isLoading && <div className="text-center"><Loading /></div>}
             <ul className="list-group text-xs-left mb-3">
               {apps.map((app, idx) =>
                 <li key={idx} className="list-group-item">
