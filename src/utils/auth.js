@@ -1,7 +1,7 @@
-import steem from 'steem';
+import steem from '@steemit/steem-js';
 import fetch from 'isomorphic-fetch';
-import { decode } from 'steem/lib/auth/memo';
-import { key_utils } from 'steem/lib/auth/ecc'; // eslint-disable-line camelcase
+import { decode } from '@steemit/steem-js/lib/auth/memo';
+import { key_utils } from '@steemit/steem-js/lib/auth/ecc'; // eslint-disable-line camelcase
 
 export const login = ({ username, wif, role = 'posting' }, cb) => {
   fetch(`/api/login/challenge?username=${username}&role=${role}`)
@@ -58,7 +58,7 @@ export const createSuggestedPassword = () => {
 };
 
 export const getAccountCreationFee = async () => {
-  const chainConfig = await steem.api.getConfig();
+  const chainConfig = await steem.api.getConfigAsync();
   const chainProps = await steem.api.getChainPropertiesAsync();
   const accountCreationFee = chainProps.account_creation_fee;
   const steemModifier = chainConfig.STEEMIT_CREATE_ACCOUNT_WITH_STEEM_MODIFIER;

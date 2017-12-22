@@ -1,7 +1,7 @@
 const express = require('express');
 const debug = require('debug')('sc2:server');
 const { authenticate, verifyPermissions } = require('../helpers/middleware');
-const { encode } = require('steem/lib/auth/memo');
+const { encode } = require('@steemit/steem-js/lib/auth/memo');
 const { issueUserToken } = require('../helpers/token');
 const { getUserMetadata, updateUserMetadata } = require('../helpers/metadata');
 const { getErrorMessage } = require('../helpers/operation');
@@ -125,6 +125,37 @@ router.all('/login/challenge', async (req, res) => {
     username,
     code,
   });
+});
+
+/**
+  Revoke app tokens for a user
+  If appId is not provided all the tokens for all the apps are revoked
+*/
+router.all('/token/revoke/:type/:clientId?', authenticate('user'), async (req, res) => {
+  const { clientId, type } = req.params;
+  const { user } = req;
+  const where = {};
+
+  if (type === 'app' && clientId) {
+    const app = await req.db.apps.findOne({ where: { client_id: clientId } });
+    if (app.owner === user) {
+      where.client_id = clientId;
+    }
+  } else if (type === 'user') {
+    where.user = user;
+    if (clientId) {
+      where.client_id = clientId;
+    }
+  }
+
+  if (
+    (type === 'user' && (where.user || where.client_id)) ||
+    (type === 'app' && where.client_id)
+  ) {
+    await req.db.tokens.destroy({ where });
+  }
+
+  res.json({ success: true });
 });
 
 module.exports = router;

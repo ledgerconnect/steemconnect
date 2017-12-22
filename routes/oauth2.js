@@ -1,11 +1,13 @@
 const express = require('express');
 const debug = require('debug')('sc2:server');
+const Sequelize = require('sequelize');
 const union = require('lodash/union');
 const { issueAppToken, issueAppCode, issueAppRefreshToken } = require('../helpers/token');
 const { authenticate } = require('../helpers/middleware');
 const config = require('../config.json');
 
 const router = express.Router(); // eslint-disable-line new-cap
+const Op = Sequelize.Op;
 
 router.get('/oauth2/authorize', async (req, res) => {
   const redirectUri = req.query.redirect_uri;
@@ -13,7 +15,7 @@ router.get('/oauth2/authorize', async (req, res) => {
   const app = await req.db.apps.findOne({
     where: {
       client_id: clientId,
-      redirect_uris: { $contains: [redirectUri] },
+      redirect_uris: { [Op.contains]: [redirectUri] },
     },
   });
   if (!app) {

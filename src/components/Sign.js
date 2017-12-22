@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
-import steem from 'steem';
+import steem from '@steemit/steem-js';
 import changeCase from 'change-case';
 import { Link } from 'react-router';
 import { Button } from 'antd';
@@ -70,6 +70,7 @@ export default class Sign extends Component {
       if (!err) {
         this.setState({ success: result });
       } else {
+        console.log(`${changeCase.camelCase(mappedType)}With`, params);
         this.setState({ error: err });
       }
       this.setState({ step: 'result' });
@@ -113,7 +114,7 @@ export default class Sign extends Component {
               {step === 'result' && error && <SignError error={error} resetForm={this.resetForm} />}
             </div>
             <div className="Sign__footer">
-              <Link to="/" target="_blank" rel="noopener noreferrer"><FormattedMessage id="about_steemConnect" /></Link>
+              <Link to="/" target="_blank" rel="noopener noreferrer"><FormattedMessage id="about_steemconnect" /></Link>
             </div>
           </div>
         </div>}
