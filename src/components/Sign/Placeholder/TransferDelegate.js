@@ -7,7 +7,11 @@ import './TransferDelegate.less';
 const SignPlaceholderDefault = ({
   query,
 }) => {
-  const [amount, symbol] = query.amount.split(' ');
+  let amount;
+  let symbol;
+  if (query.amount) {
+    [amount, symbol] = query.amount.split(' ');
+  }
   return (
     <div className="Placeholder__operation-content">
       <div className="TransferInfo">
@@ -30,6 +34,7 @@ const SignPlaceholderDefault = ({
             </span>
           </div>
         </div>
+        {amount &&
         <strong>
           <FormattedNumber
             value={amount}
@@ -37,7 +42,7 @@ const SignPlaceholderDefault = ({
             minimumFractionDigits={3}
             maximumFractionDigits={3}
           /> {symbol}
-        </strong>
+        </strong>}
         {query.memo && <span className="Placeholder__memo">{query.memo}</span>}
       </div>
     </div>

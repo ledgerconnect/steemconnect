@@ -1,5 +1,6 @@
 const cloneDeep = require('lodash/cloneDeep');
 const join = require('lodash/join');
+const steem = require('@steemit/steem-js');
 const { isEmpty, userExists, normalizeUsername } = require('../validation-utils');
 
 const optionalFields = ['delegator', 'vesting_shares'];
@@ -23,7 +24,31 @@ const validate = async (query, errors) => {
   }
 };
 
+const normalize = async (query) => {
+  const cQuery = cloneDeep(query);
+
+  let sUsername = normalizeUsername(query.delegatee);
+  let accounts = await steem.api.getAccountsAsync([sUsername]);
+  let account = accounts && accounts.length > 0 && accounts.find(a => a.name === sUsername);
+  if (account) {
+    cQuery.toName = account.name;
+    cQuery.toReputation = steem.formatter.reputation(account.reputation);
+  }
+
+  if (query.delegator) {
+    sUsername = normalizeUsername(query.delegator);
+    accounts = await steem.api.getAccountsAsync([sUsername]);
+    account = accounts && accounts.length > 0 && accounts.find(a => a.name === sUsername);
+    if (account) {
+      cQuery.fromName = account.name;
+    }
+  }
+
+  return cQuery;
+};
+
 module.exports = {
+  normalize,
   optionalFields,
   parse,
   validate,
