@@ -42,42 +42,33 @@ export default class App extends PureComponent {
     const { children, auth } = this.props;
     const activeKey = this.getActiveKey();
     return (
+      (auth.isAuthenticated &&
       <Layout>
-        <Header style={{ borderBottom: '1px solid #E9E7E7' }}>
+        <Header>
           <HeaderWidget username={this.props.auth.user.name} />
         </Header>
         <Content style={{ width: '1080px', margin: '0 auto' }}>
           <Layout>
-            <Sider>
+            <Sider
+              width={250}
+            >
               <Menu
                 mode="inline"
                 defaultSelectedKeys={[activeKey]}
                 defaultOpenKeys={[this.getSubMenu(activeKey)]}
                 style={{ height: '100%', borderRight: 0 }}
               >
-                <Menu.Item key="/dashboard">
-                  <Link to="/dashboard">
+                <Menu.Item key="/">
+                  <Link to="/">
                     <object data={`/img/menu/dashboard${this.isSelected('/dashboard') ? '-selected' : ''}.svg`} type="image/svg+xml" className="menu-icon" />
                     <FormattedMessage id="dashboard" />
                   </Link>
                 </Menu.Item>
-                <SubMenu key="/apps" title={<span><object data={`/img/menu/apps${this.isSelected('/apps') ? '-selected' : ''}.svg`} type="image/svg+xml" className="menu-icon" /><FormattedMessage id="applications" /></span>}>
+                <SubMenu key="/apps" title={<span className="sc-submenu"><object data={`/img/menu/apps${this.isSelected('/apps') ? '-selected' : ''}.svg`} type="image/svg+xml" className="menu-icon" /><FormattedMessage id="applications" /></span>}>
                   <Menu.Item key="/apps"><Link to="/apps"><FormattedMessage id="apps" /></Link></Menu.Item>
                   <Menu.Item key="/apps/authorized"><Link to="/apps/authorized"><FormattedMessage id="authorized_apps" /></Link></Menu.Item>
                 </SubMenu>
-                <Menu.Item key="/wallet">
-                  <Link to="/wallet">
-                    <object data={`/img/menu/wallet${this.isSelected('/wallet') ? '-selected' : ''}.svg`} type="image/svg+xml" className="menu-icon" />
-                    <FormattedMessage id="wallet" />
-                  </Link>
-                </Menu.Item>
-                <Menu.Item key="/activity">
-                  <Link to="/activity">
-                    <object data={`/img/menu/activity${this.isSelected('/activity') ? '-selected' : ''}.svg`} type="image/svg+xml" className="menu-icon" />
-                    <FormattedMessage id="activity" />
-                  </Link>
-                </Menu.Item>
-                <SubMenu key="/developers" title={<span><object data={`/img/menu/developers${this.isSelected('/developers') ? '-selected' : ''}.svg`} type="image/svg+xml" className="menu-icon" /><FormattedMessage id="developers" /></span>}>
+                <SubMenu key="/developers" title={<span className="sc-submenu"><object data={`/img/menu/developers${this.isSelected('/developers') ? '-selected' : ''}.svg`} type="image/svg+xml" className="menu-icon" /><FormattedMessage id="developers" /></span>}>
                   <Menu.Item key="/apps/me"><Link to="/apps/me"><FormattedMessage id="my_apps" /></Link></Menu.Item>
                   <Menu.Item key="/docs/oauth2"><Link to="/docs/oauth2"><FormattedMessage id="oauth2" /></Link></Menu.Item>
                 </SubMenu>
@@ -89,7 +80,11 @@ export default class App extends PureComponent {
             )}
           </Layout>
         </Content>
-      </Layout>
+      </Layout>) ||
+      React.cloneElement(
+        children,
+        { auth }
+      )
     );
   }
 }

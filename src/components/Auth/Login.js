@@ -33,7 +33,7 @@ export default class Login extends Component {
     const { next } = this.props.location.query;
     this.setState({ step: 2 });
     login({ ...auth }, () => {
-      window.location = next || '/dashboard';
+      window.location = next || '/';
     });
   };
 

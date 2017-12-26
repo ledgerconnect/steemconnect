@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
-import numeral from 'numeral';
 import Avatar from '../../widgets/Avatar';
 import Loading from '../../widgets/Loading';
 
@@ -33,11 +32,8 @@ export default class AuthorizedApps extends Component {
               {user.posting.account_auths.map((auth, idx) =>
                 <li key={idx} className="authorized-apps-list-item">
                   <div className="app-item-name">
-                    <Avatar username={auth[0]} size="60" />
+                    <Link to={`/apps/@${auth[0]}`} className="AppAvatar"><Avatar username={auth[0]} size="60" /></Link>
                     <Link to={`/apps/@${auth[0]}`}>{auth[0]}</Link>
-                    <span className="ml-1">
-                      {numeral((100 / user.posting.weight_threshold) * (auth[1] / 100)).format('0%')}
-                    </span>
                   </div>
                   <div className="app-item-action">
                     <Link

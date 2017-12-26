@@ -216,13 +216,25 @@ pre {
 
 .ant-layout-sider {
   margin-top: 3rem !important;
-
+  width: 250px;
   .ant-menu {
     background: #fcfcfc;
 
+    .sc-submenu {
+      display: flex;
+    }
     .ant-menu-item > a {
       display: flex;
       align-items: center;
+      font-weight: bold;
+      color: #757a81;
+    }
+    .ant-menu-item-selected > a, .ant-menu-item-selected > a:hover {
+      color: #108ee9;
+    }
+    .ant-menu-submenu-title {
+      font-weight: bold;
+      color: #757a81;
     }
   }
   .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {

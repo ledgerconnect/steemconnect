@@ -1,9 +1,8 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Route } from 'react-router';
 import Wrapper from './wrapper';
 import Layout from './app';
 import Index from './components/Index';
-import Dashboard from './components/Dashboard';
 import App from './components/Apps/App';
 import Apps from './components/Apps/Apps';
 import MyApps from './components/Apps/MyApps';
@@ -26,11 +25,12 @@ import Revoke from './components/Accounts/Revoke';
 import Error404 from './components/Error404';
 
 export default (
-  <Route path="/" component={Wrapper}>
-    <IndexRoute component={Index} />
+  <Route component={Wrapper}>
+    <Route component={Layout}>
+      <Route path="/" component={Index} />
+    </Route>
     <Route component={RequireLogin}>
       <Route component={Layout}>
-        <Route path="/dashboard" component={Dashboard} />
         <Route path="/apps/me" component={MyApps} />
         <Route path="/apps/create" component={CreateApp} />
         <Route path="/apps/authorized" component={AuthorizedApps} />

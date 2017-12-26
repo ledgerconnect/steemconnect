@@ -30,7 +30,9 @@ export default class Header extends Component {
     const { username } = this.props;
     return (
       <div className="Header">
-        <object data="/img/logo.svg" type="image/svg+xml" id="logo" />
+        <Link to="/" className="logo">
+          <object data="/img/logo.svg" type="image/svg+xml" id="logo" />
+        </Link>
         <div className="Header__log">
           {username &&
           <Dropdown
