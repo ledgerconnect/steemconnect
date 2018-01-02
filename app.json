@@ -21,6 +21,9 @@
     "SENTRY_DSN": {
       "required": true
     },
+    "STEEMJS_URL": {
+      "required": true
+    },
     "DEBUG": "sc2:*",
     "DATABASE_NAME": "staging"
   },

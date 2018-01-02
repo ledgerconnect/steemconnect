@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
 import changeCase from 'change-case';
-import pkg from 'steem/package.json';
-import methods from 'steem/lib/api/methods';
-import operations from 'steem/lib/broadcast/operations';
+import pkg from '@steemit/steem-js/package.json';
+import methods from '@steemit/steem-js/lib/api/methods';
+import operations from '@steemit/steem-js/lib/broadcast/operations';
 
 const Method = ({ method }) => {
   const inlineParams = method.params
