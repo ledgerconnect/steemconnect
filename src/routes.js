@@ -50,7 +50,7 @@ export default (
     <Route path="/login" component={Login} />
     <Route path="/oauth2/authorize" component={Authorize} />
     <Route path="/sign" component={Generate} />
-    <Route path="/sign/:type" component={Sign} />
+    <Route path="/sign/:type(/:base64)" component={Sign} />
     <Route path="/authorize/@:username" component={SignAuthorize} />
     <Route path="/authorize/@:username/:role" component={SignAuthorize} />
     <Route path="/revoke/@:username" component={Revoke} />

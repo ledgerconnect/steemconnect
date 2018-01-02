@@ -6,7 +6,7 @@ import Loading from '../../widgets/Loading';
 import AppPreview from './AppPreview';
 import './Apps.less';
 
-export default class MyApps extends Component {
+export default class Apps extends Component {
   static propTypes = {
     auth: PropTypes.shape({
       token: PropTypes.string,
