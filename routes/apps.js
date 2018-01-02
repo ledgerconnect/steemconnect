@@ -109,4 +109,17 @@ router.put('/@:clientId', authenticate('user'), async (req, res, next) => {
   }
 });
 
+router.all('/authorized', authenticate('user'), async (req, res) => {
+  const accounts = await req.steem.api.getAccountsAsync([req.user]);
+  const postingAccountAuths = accounts[0].posting.account_auths;
+  const apps = await req.db.apps.findAll({
+    where: {
+      client_id: postingAccountAuths.map(accountAuth => accountAuth[0]),
+    },
+    attributes: { exclude: ['secret'] },
+  });
+
+  res.json({ apps });
+});
+
 module.exports = router;
