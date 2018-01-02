@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Modal, notification } from 'antd';
 import { Link } from 'react-router';
-import numeral from 'numeral';
+import fetch from 'isomorphic-fetch';
 import Loading from '../../widgets/Loading';
 
 class AuthorizedApps extends Component {
@@ -15,10 +15,22 @@ class AuthorizedApps extends Component {
     super(props);
     this.state = {
       error: false,
-      isLoading: false,
+      isLoading: true,
       isLoaded: false,
       displayRevokeModal: false,
+      apps: [],
     };
+  }
+
+  async componentWillMount() {
+    const result = await fetch('/api/apps/authorized', {
+      headers: new Headers({
+        Authorization: this.props.auth.token,
+      }),
+    })
+    .then(res => res.json());
+
+    this.setState({ apps: result.apps, isLoading: false });
   }
 
   showRevokeModal = () => {
@@ -58,24 +70,21 @@ class AuthorizedApps extends Component {
   }
 
   render() {
-    const { isLoading, displayRevokeModal } = this.state;
+    const { isLoading, apps, displayRevokeModal } = this.state;
     const { auth: { user }, intl } = this.props;
     return (
       <div className="container py-5">
         <h2><FormattedMessage id="authorized_apps" /></h2>
-        {isLoading && <Loading />}
         {user.posting &&
           <div>
             <p><FormattedMessage id="authorized_apps_list" /></p>
+            {isLoading && <div className="text-center"><Loading /></div>}
             <ul className="list-group text-xs-left mb-3">
-              {user.posting.account_auths.map((auth, idx) =>
+              {apps.map((app, idx) =>
                 <li key={idx} className="list-group-item">
-                  <b><Link to={`/apps/@${auth[0]}`}>{auth[0]}</Link></b>
-                  <span className="ml-1">
-                    {numeral((100 / user.posting.weight_threshold) * (auth[1] / 100)).format('0%')}
-                  </span>
+                  <b><Link to={`/apps/@${app.client_id}`}>{app.client_id}</Link></b>
                   <Link
-                    to={`/revoke/@${auth[0]}`}
+                    to={`/revoke/@${app.client_id}`}
                     className="float-right btn btn-secondary btn-sm ml-1"
                   >
                     <FormattedMessage id="revoke" />
