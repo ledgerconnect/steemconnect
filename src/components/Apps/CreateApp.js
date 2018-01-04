@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import fetch from 'isomorphic-fetch';
-import steem from 'steem';
+import steem from '@steemit/steem-js';
 import { notification, Modal } from 'antd';
 import { browserHistory } from 'react-router';
 import CreateAppForm from '../Form/CreateApp';

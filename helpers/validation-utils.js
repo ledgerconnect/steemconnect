@@ -1,4 +1,4 @@
-const steem = require('steem');
+const steem = require('@steemit/steem-js');
 
 const isEmpty = value => value === undefined || value === null || value === '';
 

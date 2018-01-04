@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
-import steem from 'steem';
+import steem from '@steemit/steem-js';
 import numeral from 'numeral';
 import changeCase from 'change-case';
 import Loading from '../../widgets/Loading';

@@ -1,6 +1,6 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import steem from 'steem';
+import steem from '@steemit/steem-js';
 import auth from './reducers/auth';
 import appLocale from './reducers/appLocale';
 
