@@ -96,6 +96,16 @@ class App extends Component {
     const { intl } = this.props;
     return (
       <div className="container my-5">
+        <Modal
+          title={intl.formatMessage({ id: 'are_you_sure' })}
+          visible={displayRevokeModal}
+          onOk={this.confirm}
+          onCancel={this.handleCancel}
+          okText={intl.formatMessage({ id: 'yes' })}
+          cancelText={intl.formatMessage({ id: 'no' })}
+        >
+          <p><FormattedMessage id="revoke_access_tokens_question" /></p>
+        </Modal>
         {isLoaded &&
           <div className="AppView">
             <div className="AppView__app-header">
@@ -127,9 +137,9 @@ class App extends Component {
                   </Link>}
                   {this.props.auth.isAuthenticated &&
                   hasAuthority(this.props.auth.user, clientId) &&
-                  <Link to={`/revoke/@${clientId}`} className="btn btn-danger btn-sm ml-2">
-                    <FormattedMessage id="revoke" />
-                  </Link>}
+                  <button type="button" className="btn btn-danger btn-sm ml-2" onClick={this.showRevokeModal}>
+                    <FormattedMessage id="revoke_access_tokens" />
+                  </button>}
                   <span className="users-stats">
                     <strong>{app.users}</strong> <FormattedMessage id="active_users" />
                   </span>
@@ -147,27 +157,6 @@ class App extends Component {
               </p>}
               <p className="secured-by"><FormattedMessage id="app_secured_by" /></p>
             </div>
-            <br />
-            {this.props.auth.isAuthenticated && hasAuthority(this.props.auth.user, clientId) &&
-            <div className="block py-4">
-              <h2><FormattedMessage id="revoke_access_tokens" /></h2>
-              <p>
-                <FormattedMessage id="revoke_access_tokens_text" />
-              </p>
-              <Modal
-                title={intl.formatMessage({ id: 'are_you_sure' })}
-                visible={displayRevokeModal}
-                onOk={this.confirm}
-                onCancel={this.handleCancel}
-                okText={intl.formatMessage({ id: 'yes' })}
-                cancelText={intl.formatMessage({ id: 'no' })}
-              >
-                <p><FormattedMessage id="revoke_access_tokens_question" /></p>
-              </Modal>
-              <button type="button" className="btn btn-danger btn-sm ml-2" onClick={this.showRevokeModal}>
-                <FormattedMessage id="revoke_access_tokens" />
-              </button>
-            </div>}
           </div>
         }
         {isLoading && <div className="centered-loading"><Loading /></div>}

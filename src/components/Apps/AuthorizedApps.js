@@ -21,6 +21,7 @@ class AuthorizedApps extends Component {
       isLoading: true,
       isLoaded: false,
       displayRevokeModal: false,
+      clientId: null,
       apps: [],
     };
   }
@@ -36,9 +37,10 @@ class AuthorizedApps extends Component {
     this.setState({ apps: result.apps, isLoading: false });
   }
 
-  showRevokeModal = () => {
+  showRevokeModal = (clientId) => {
     this.setState({
       displayRevokeModal: true,
+      clientId,
     });
   }
 
@@ -50,7 +52,8 @@ class AuthorizedApps extends Component {
 
   confirm = () => {
     const { intl } = this.props;
-    fetch('/api/token/revoke/user', {
+    const { clientId } = this.state;
+    fetch(clientId ? `/api/token/revoke/user/${clientId}` : '/api/token/revoke/user', {
       headers: new Headers({
         Authorization: this.props.auth.token,
       }),
@@ -73,7 +76,7 @@ class AuthorizedApps extends Component {
   }
 
   render() {
-    const { isLoading, apps, displayRevokeModal } = this.state;
+    const { isLoading, displayRevokeModal } = this.state;
     const { auth: { user }, intl } = this.props;
     return (
       <div className="container py-5">
@@ -88,12 +91,12 @@ class AuthorizedApps extends Component {
                     <Link to={`/apps/@${auth[0]}`}>{auth[0]}</Link>
                   </div>
                   <div className="app-item-action">
-                    <Link
-                      to={`/revoke/@${auth[0]}`}
-                      className="float-right btn btn-secondary btn-sm ml-1"
+                    <button
+                      className="float-right btn btn-revoke btn-sm ml-1"
+                      onClick={() => { this.showRevokeModal(auth[0]); }}
                     >
                       <FormattedMessage id="revoke" />
-                    </Link>
+                    </button>
                   </div>
                 </li>
               )}
