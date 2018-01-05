@@ -13,7 +13,14 @@ const router = express.Router(); // eslint-disable-line new-cap
 /** Update user_metadata */
 router.put('/me', authenticate('app'), async (req, res) => {
   const scope = req.scope.length ? req.scope : config.authorized_operations;
-  const accounts = await req.steem.api.getAccountsAsync([req.user]);
+  let accounts;
+  try {
+    accounts = await req.steem.api.getAccountsAsync([req.user]);
+  } catch (err) {
+    debug('me: SteemAPI request failed', req.user, err);
+    res.status(501).send('SteemAPI request failed');
+    return;
+  }
   const { user_metadata } = req.body;
 
   if (typeof user_metadata === 'object') { // eslint-disable-line camelcase
@@ -22,7 +29,13 @@ router.put('/me', authenticate('app'), async (req, res) => {
     if (bytes <= config.user_metadata.max_size) {
       /** Save user_metadata object on database */
       debug(`Store object for ${req.user} (size ${bytes} bytes)`);
-      await updateUserMetadata(req.proxy, req.user, user_metadata);
+      try {
+        await updateUserMetadata(req.proxy, req.user, user_metadata);
+      } catch (err) {
+        debug('me: updateMetadata failed', req.user, err);
+        res.status(501).send('request failed');
+        return;
+      }
 
       res.json({
         user: req.user,
@@ -32,27 +45,42 @@ router.put('/me', authenticate('app'), async (req, res) => {
         scope,
         user_metadata,
       });
-    } else {
-      res.status(413).json({
-        error: 'invalid_request',
-        error_description: `User metadata object must not exceed ${config.user_metadata.max_size / 1000000} MB`,
-      });
+      return;
     }
-  } else {
-    res.status(400).json({
+    res.status(413).json({
       error: 'invalid_request',
-      error_description: 'User metadata must be an object',
+      error_description: `User metadata object must not exceed ${config.user_metadata.max_size / 1000000} MB`,
     });
+    return;
   }
+  res.status(400).json({
+    error: 'invalid_request',
+    error_description: 'User metadata must be an object',
+  });
+  return;
 });
 
 /** Get my account details */
 router.all('/me', authenticate(), async (req, res) => {
   const scope = req.scope.length ? req.scope : config.authorized_operations;
-  const accounts = await req.steem.api.getAccountsAsync([req.user]);
-  const userMetadata = req.role === 'app'
+  let accounts;
+  try {
+    accounts = await req.steem.api.getAccountsAsync([req.user]);
+  } catch (err) {
+    debug('me: SteemAPI request failed', req.user, err);
+    res.status(501).send('SteemAPI request failed');
+    return;
+  }
+  let userMetadata;
+  try {
+    userMetadata = req.role === 'app'
     ? await getUserMetadata(req.proxy, req.user)
     : undefined;
+  } catch (err) {
+    debug('me: couldnt parse metadata failed', req.user, err);
+    res.status(501).send('request failed');
+    return;
+  }
   res.json({
     user: req.user,
     _id: req.user,
@@ -61,6 +89,7 @@ router.all('/me', authenticate(), async (req, res) => {
     scope,
     user_metadata: userMetadata,
   });
+  return;
 });
 
 /** Broadcast transaction */
@@ -118,13 +147,21 @@ router.all('/login/challenge', async (req, res) => {
   const username = req.query.username;
   const role = req.query.role || 'posting';
   const token = issueUserToken(username);
-  const accounts = await req.steem.api.getAccountsAsync([username]);
+  let accounts;
+  try {
+    accounts = await req.steem.api.getAccountsAsync([username]);
+  } catch (err) {
+    debug('challenge: SteemAPI request failed', username, err);
+    res.status(501).send('SteemAPI request failed');
+    return;
+  }
   const publicWif = role === 'memo' ? accounts[0].memo_key : accounts[0][role].key_auths[0][0];
   const code = encode(process.env.BROADCASTER_POSTING_WIF, publicWif, `#${token}`);
   res.json({
     username,
     code,
   });
+  return;
 });
 
 /**
