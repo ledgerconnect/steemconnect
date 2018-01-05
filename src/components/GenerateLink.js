@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { message, Button, Form, Input, Icon, Steps } from 'antd';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import changeCase from 'change-case';
-import steemOperations from 'steem/lib/broadcast/operations';
+import steemOperations from '@steemit/steem-js/lib/broadcast/operations';
 import customOperations from '../../helpers/operations/custom-operations';
 import helperOperations from '../../helpers/operations';
 import authorOperations from '../../helpers/operation-author.json';

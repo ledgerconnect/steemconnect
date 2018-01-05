@@ -9,14 +9,21 @@ module.exports = (sequelize, DataTypes) => {
     icon: DataTypes.TEXT,
     website: DataTypes.TEXT,
     beneficiaries: DataTypes.JSONB,
-    disabled: DataTypes.BOOLEAN
+    is_approved: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
+    is_public: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   }, {
     freezeTableName: true,
     underscored: true,
     classMethods: {
       associate: (models) => {
         // associations can be defined here
-      }
-    }
+      },
+    },
   });
 };

@@ -4,7 +4,7 @@ import fetch from 'isomorphic-fetch';
 import Loading from '../../widgets/Loading';
 import AppPreview from './AppPreview';
 
-export default class MyApps extends Component {
+export default class Apps extends Component {
   constructor(props) {
     super(props);
     this.state = {
