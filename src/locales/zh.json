@@ -219,5 +219,5 @@
   "unfollow_description": "Unmarks one account as following another account.",
   "unmute_description": "Unmarks one account as ignoring another account.",
   "vote_description": "Vote on a comment to be paid STEEM",
-  "withdraw_vesting_description": "Set up a vesting withdraw request. The request is fulfilled once a week over the next two year (13 weeks)."
+  "withdraw_vesting_description": "Set up a vesting withdraw request. The request is fulfilled once a week over the next 13 weeks."
 }
