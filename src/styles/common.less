@@ -271,6 +271,7 @@ pre {
 }
 
 .ant-layout-sider {
+  background: none;
   .ant-menu{
     background: @sc-bg;
   }
@@ -291,3 +292,63 @@ pre {
 .ant-popover-message > .anticon {
   line-height: 24px;
 }
+
+
+.sc-layout {
+  .sc-header {
+    background: white;
+    padding: 0;
+    height: 57px;
+    line-height: 57px;
+  }
+  .sc-content {
+    width: 1080px;
+    margin: 0px auto;
+    flex: auto;
+    display: flex;
+
+    .sc-side-nav {
+      width: 250px;
+      margin-top: 3rem;
+      color: #757a81;
+      font-weight: 600;
+      li {
+        line-height: 30px;
+        span {
+          display: flex;
+        }
+        .anticon {
+          line-height: 30px;
+          font-size: 10px;
+          margin-left: 5px;
+        }
+        .sc-submenu {
+          ul {
+            display: none;
+            margin-left: 50px;
+            &.opened {
+              display: block;
+            }
+          }
+        }
+        &.active {
+          color: #4ba2f2;
+          .sc-submenu {
+            ul {
+              display: block;
+            }
+          }
+        }
+      }
+      a {
+        color: #757a81;
+        display: block;
+        text-decoration: none;
+      }
+      a.active{
+        color: #4ba2f2;
+      }
+    }
+  }
+}
+

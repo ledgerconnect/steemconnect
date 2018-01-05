@@ -28,20 +28,16 @@ export default (
   <Route component={Wrapper}>
     <Route component={Layout}>
       <Route path="/" component={Index} />
-    </Route>
-    <Route component={RequireLogin}>
-      <Route component={Layout}>
+      <Route path="/apps" component={Apps} />
+      <Route path="/docs/oauth2" component={OAuth2} />
+      <Route path="/@:username/permissions" component={Permissions} />
+      <Route path="/apps/@:clientId" component={App} />
+      <Route component={RequireLogin}>
         <Route path="/apps/me" component={MyApps} />
         <Route path="/apps/create" component={CreateApp} />
         <Route path="/apps/authorized" component={AuthorizedApps} />
         <Route path="/apps/@:clientId/edit" component={EditApp} />
       </Route>
-    </Route>
-    <Route component={Layout}>
-      <Route path="/apps" component={Apps} />
-      <Route path="/docs/oauth2" component={OAuth2} />
-      <Route path="/@:username/permissions" component={Permissions} />
-      <Route path="/apps/@:clientId" component={App} />
     </Route>
     <Route path="/docs/steemjs" component={Steemjs} />
     <Route path="/accounts/create" component={CreateAccount} />
