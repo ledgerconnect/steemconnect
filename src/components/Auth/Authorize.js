@@ -129,7 +129,7 @@ export default class Authorize extends Component {
                     <div className="Avatar-link" />
                     <div className="Avatar-container">
                       {!app &&
-                      <SteemitAvatar username={clientId} size="40" type="small" />}
+                      <SteemitAvatar username={clientId} size="40" />}
                       {app &&
                       <img
                         src={app.icon}

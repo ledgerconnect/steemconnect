@@ -10,7 +10,7 @@ const Header = ({ username }) =>
       {username &&
         <Link to="/dashboard">
           <span className="mr-2">{username}</span>
-          <div className="float-right"><SteemitAvatar username={username} type="small" /></div>
+          <div className="float-right"><SteemitAvatar username={username} /></div>
         </Link>
       }
       {!username &&
