@@ -1,6 +1,6 @@
 {
   "name": "sc2",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "engines": {
     "node": ">=8.1.4",
     "npm": "4.6.1"
