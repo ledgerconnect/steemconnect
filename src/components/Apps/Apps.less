@@ -1,0 +1,93 @@
+.apps-header {
+  text-align: center;
+  border-radius: 5px;
+  max-height: 350px;
+  width: calc(~"100% - 20px");
+  background: rgb(56, 136, 202); /* Old browsers */
+  background: -moz-linear-gradient(-45deg, rgb(56, 136, 202) 0%, rgb(56, 202, 195) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, rgb(56, 136, 202) 0%, rgb(56, 202, 195) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, rgb(56, 136, 202) 0%, rgb(56, 202, 195) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3888CA', endColorstr='#38CAC3',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+  box-shadow: 0 14px 13px 0 rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  padding: 80px 150px;
+
+  h2 {
+    color: #fff;
+    font-size: 40px;
+  }
+
+  p {
+    color: #fff;
+    font-size: 20px;
+  }
+
+  .ant-input-affix-wrapper {
+    max-width: 400px;
+
+    input {
+      padding: 20px;
+      font-size: 16px;
+      color: #757a81;
+    }
+  }
+
+}
+
+ul.steemconnect-apps {
+  li.steemconnect-app {
+    position: relative;
+    display: block;
+    float: left;
+    width: calc(~"50% - 20px");
+    height: 150px;
+    border-radius: 5px;
+    background-color: #fff;
+    margin-bottom: 20px;
+    padding: 20px 30px;
+    box-shadow: 0 14px 13px 0 rgba(0, 0, 0, 0.05);
+
+    a {
+      display: flex;
+
+      div {
+        margin-left: 25px;
+      }
+
+      img {
+        height: 60px;
+        width: 60px;
+        display: block;
+      }
+
+      .app-title {
+        display: block;
+        height: 50px;
+        text-transform: capitalize;
+        font-size: 18px;
+        font-weight: 600;
+        color: #42474d;
+      }
+
+      .app-desc {
+        font-size: 16px;
+        color: #757a81;
+      }
+    }
+
+    a.install-btn {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      border-radius: 3px;
+      background-color: #4ba2f2;
+      color: #fff;
+      font-size: 16px;
+      padding: 5px 20px;
+    }
+
+    &:nth-child(2n) {
+       margin-left: 20px;
+    }
+  }
+}

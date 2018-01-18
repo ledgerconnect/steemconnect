@@ -55,7 +55,6 @@ export default class Sign extends Component {
         }
         try {
           operationsParsed = JSON.parse(operationsDecoded);
-          console.log(typeof operationsParsed);
         } catch (err) {
           this.setState({ validationErrors: [{ error: 'error_tx_base64_json' }], step: 'validationErrors' });
           return;

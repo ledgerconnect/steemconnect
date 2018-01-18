@@ -1,38 +1,188 @@
+/* eslint-disable camelcase */
 import React, { Component, PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { bindActionCreators } from 'redux';
+import { Progress } from 'antd';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
-import { logout } from '../actions/auth';
+import { api, formatter } from '@steemit/steem-js';
+import Avatar from '../widgets/Avatar';
+import './Dashboard.less';
 
 @connect(
   state => ({
     auth: state.auth,
   }),
-  dispatch => bindActionCreators({
-    logout,
-  }, dispatch)
+  null
 )
-export default class Login extends Component {
+export default class Dashboard extends Component {
   static propTypes = {
-    logout: PropTypes.func,
+    auth: PropTypes.shape({}),
   }
 
-  handleLogoutClick = () => {
-    this.props.logout();
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      globalProps: {},
+    };
+  }
+
+  async componentWillMount() {
+    const globalProps = await api.getDynamicGlobalPropertiesAsync();
+    this.setState({ globalProps });
+  }
+
+  getAccountEstimatedValue = () => {
+    const { globalProps: { total_vesting_shares, total_vesting_fund_steem } } = this.state;
+    const {
+      auth: {
+        user: {
+          balance, sbd_balance,
+          vesting_shares, savings_balance, savings_sbd_balance,
+        },
+      },
+    } = this.props;
+    const steemPower = formatter.vestToSteem(
+      vesting_shares,
+      total_vesting_shares,
+      total_vesting_fund_steem
+    );
+    return (
+      parseFloat(1.2) * (parseFloat(balance) + parseFloat(savings_balance) + parseFloat(steemPower))
+      ) +
+      parseFloat(sbd_balance) + parseFloat(savings_sbd_balance);
+  }
 
   render() {
+    const {
+      auth: {
+        user: {
+          name, voting_power, last_vote_time, balance, sbd_balance,
+          vesting_shares, savings_balance, savings_sbd_balance,
+        },
+      },
+    } = this.props;
+    const { globalProps: { total_vesting_shares, total_vesting_fund_steem } } = this.state;
+    const secondsAgo = (new Date().getTime() - new Date(`${last_vote_time}Z`).getTime()) / 1000;
+    const votingPower = Math.min(10000, voting_power + ((10000 * secondsAgo) / 432000));
+
     return (
       <div className="container my-5">
-        <h4><FormattedMessage id="account" /></h4>
-        <p><Link onClick={this.handleLogoutClick}><FormattedMessage id="log_out" /></Link></p>
-        <h4><FormattedMessage id="applications" /></h4>
-        <p><Link to="/apps"><FormattedMessage id="apps" /></Link></p>
-        <p><Link to="/apps/authorized"><FormattedMessage id="authorized_apps" /></Link></p>
-        <h4><FormattedMessage id="developers" /></h4>
-        <p><Link to="/apps/me"><FormattedMessage id="my_apps" /></Link></p>
-        <p><Link to="/docs/oauth2"><FormattedMessage id="oauth2" /></Link></p>
+        <div className="row">
+          <div className="col-6">
+            <div className="dashboard-box">
+              <div className="dashboard-box-content text-center">
+                <Avatar username={name} size="80" />
+                <br />
+                <span className="username">
+                  <FormattedMessage id="welcome" />,&nbsp;{name}
+                </span>
+              </div>
+              <div className="dashboard-box-footer">
+                <div className="row">
+                  <div className="col-6 footer-box">
+                    <div className="row">
+                      <div className="col-4">
+                        <Progress
+                          strokeWidth={10}
+                          width={40}
+                          type="circle"
+                          percent={0}
+                          format={() => ''}
+                        />
+                      </div>
+                      <div className="col-8">
+                        <span className="box-value">{0}%</span><br />
+                        <span className="box-text"><FormattedMessage id="bandwidth" /></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-6 footer-box">
+                    <div className="row">
+                      <div className="col-4">
+                        <Progress
+                          strokeWidth={10}
+                          width={40}
+                          type="circle"
+                          percent={votingPower / 100}
+                          format={() => ''}
+                        />
+                      </div>
+                      <div className="col-8">
+                        <span className="box-value">{parseFloat(votingPower / 100).toFixed(2)}%</span><br />
+                        <span className="box-text"><FormattedMessage id="voting_power" /></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-6">
+            <div className="dashboard-box">
+              <div className="dashboard-box-content">
+                <div className="row">
+                  <div className="col-6">
+                    <div className="row">
+                      <div className="col-4">
+                        <object data="img/dashboard/steem.svg" type="image/svg+xml" />
+                      </div>
+                      <div className="col-8">
+                        <span className="box-value">{parseFloat(balance).toFixed(3)}</span><br />
+                        <span className="box-text">Steem</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <div className="row">
+                      <div className="col-4">
+                        <object data="img/dashboard/steem-dollar.svg" type="image/svg+xml" />
+                      </div>
+                      <div className="col-8">
+                        <span className="box-value">{parseFloat(sbd_balance).toFixed(3)}</span><br />
+                        <span className="box-text">Steem Dollars</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-6">
+                    <div className="row">
+                      <div className="col-4">
+                        <object data="img/dashboard/steem-power.svg" type="image/svg+xml" />
+                      </div>
+                      <div className="col-8">
+                        <span className="box-value">
+                          {formatter.vestToSteem(
+                            vesting_shares,
+                            total_vesting_shares,
+                            total_vesting_fund_steem
+                          ).toFixed(3)}
+                        </span><br />
+                        <span className="box-text">Steem Power</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <div className="row">
+                      <div className="col-4">
+                        <object data="img/dashboard/savings.svg" type="image/svg+xml" />
+                      </div>
+                      <div className="col-8">
+                        <span className="box-value">{parseFloat(savings_balance).toFixed(3)}</span><br />
+                        <span className="box-text">Steem</span><br />
+                        <span className="box-value">{parseFloat(savings_sbd_balance).toFixed(3)}</span><br />
+                        <span className="box-text">Steem Dollars</span><br />
+                        <span className="box-text">Savings</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="dashboard-box-footer">
+                TODO
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

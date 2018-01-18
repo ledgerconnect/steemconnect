@@ -1,9 +1,37 @@
 .Header {
   line-height: 36px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding: 10px 0 10px 8px;
+  max-width: 1050px;
+  margin: 0 auto;
+
+  .logo {
+    position: relative;
+    display: inline-block;
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+  }
 }
 
 .Header__log {
   float: right;
+  a {
+    display: flex;
+    align-items: center;
+  }
+
+  .anticon-down {
+    font-size: 12px !important;
+    margin-left: 5px;
+  }
+
+  .Avatar {
+    border-radius: 50%;
+  }
 }

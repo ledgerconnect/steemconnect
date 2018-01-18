@@ -13,7 +13,10 @@ class Sign extends React.Component {
     }),
     intl: intlShape.isRequired,
     roles: PropTypes.arrayOf(PropTypes.string),
-    title: PropTypes.string,
+    title: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.shape({}),
+    ]),
     btnTitle: PropTypes.string,
   };
 

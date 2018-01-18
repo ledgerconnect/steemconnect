@@ -125,7 +125,11 @@ b {
   background-color: #f3f3f3;
   color: rgba(0, 0, 0, 0.3);
 }
-
+.btn-revoke {
+  background: #fff;
+  color: #4ba2f2;
+  border: solid 2px #c8e2f9 !important;
+}
 .form-group {
   label.label {
     width: 100%;
@@ -172,7 +176,7 @@ li {
 }
 
 .container {
-  max-width: 660px;
+  max-width: 880px;
 }
 
 .block {
@@ -214,6 +218,65 @@ pre {
   }
 }
 
+.ant-layout-sider {
+  margin-top: 3rem !important;
+  width: 250px;
+  .ant-menu {
+    background: #fcfcfc;
+
+    .sc-submenu {
+      display: flex;
+    }
+    .ant-menu-item > a {
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      color: #757a81;
+    }
+    .ant-menu-item-selected > a, .ant-menu-item-selected > a:hover {
+      color: #108ee9;
+    }
+    .ant-menu-submenu-title {
+      font-weight: bold;
+      color: #757a81;
+    }
+  }
+  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+    background: none;
+  }
+  .ant-menu-inline .ant-menu-item:after, .ant-menu-vertical .ant-menu-item:after {
+    border: none;
+  }
+  .ant-menu-submenu-selected > div {
+    font-weight: 700;
+    color: #108ee9;
+  }
+  .ant-menu-item-selected > a, .ant-menu-item-selected > a:hover {
+    font-weight: 700;
+  }
+}
+
+.menu-icon {
+  width: 20px;
+  height: auto;
+  margin-right: 20px;
+}
+
+.centered-loading {
+  text-align: center;
+}
+
+.ant-layout {
+  background: @sc-bg;
+}
+
+.ant-layout-sider {
+  background: none;
+  .ant-menu{
+    background: @sc-bg;
+  }
+}
+
 .App__button {
   font-family: Whitney,"Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
   text-transform: uppercase;
@@ -229,3 +292,63 @@ pre {
 .ant-popover-message > .anticon {
   line-height: 24px;
 }
+
+
+.sc-layout {
+  .sc-header {
+    background: white;
+    padding: 0;
+    height: 57px;
+    line-height: 57px;
+  }
+  .sc-content {
+    width: 1080px;
+    margin: 0px auto;
+    flex: auto;
+    display: flex;
+
+    .sc-side-nav {
+      width: 250px;
+      margin-top: 3rem;
+      color: #757a81;
+      font-weight: 600;
+      li {
+        line-height: 30px;
+        span {
+          display: flex;
+        }
+        .anticon {
+          line-height: 30px;
+          font-size: 10px;
+          margin-left: 5px;
+        }
+        .sc-submenu {
+          ul {
+            display: none;
+            margin-left: 50px;
+            &.opened {
+              display: block;
+            }
+          }
+        }
+        &.active {
+          color: #4ba2f2;
+          .sc-submenu {
+            ul {
+              display: block;
+            }
+          }
+        }
+      }
+      a {
+        color: #757a81;
+        display: block;
+        text-decoration: none;
+      }
+      a.active{
+        color: #4ba2f2;
+      }
+    }
+  }
+}
+

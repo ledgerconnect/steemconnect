@@ -3,7 +3,10 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Modal, notification } from 'antd';
 import { Link } from 'react-router';
 import fetch from 'isomorphic-fetch';
+import Avatar from '../../widgets/Avatar';
 import Loading from '../../widgets/Loading';
+
+import './AuthorizedApps.less';
 
 class AuthorizedApps extends Component {
   static propTypes = {
@@ -18,6 +21,7 @@ class AuthorizedApps extends Component {
       isLoading: true,
       isLoaded: false,
       displayRevokeModal: false,
+      clientId: null,
       apps: [],
     };
   }
@@ -33,9 +37,10 @@ class AuthorizedApps extends Component {
     this.setState({ apps: result.apps, isLoading: false });
   }
 
-  showRevokeModal = () => {
+  showRevokeModal = (clientId) => {
     this.setState({
       displayRevokeModal: true,
+      clientId,
     });
   }
 
@@ -47,7 +52,8 @@ class AuthorizedApps extends Component {
 
   confirm = () => {
     const { intl } = this.props;
-    fetch('/api/token/revoke/user', {
+    const { clientId } = this.state;
+    fetch(clientId ? `/api/token/revoke/user/${clientId}` : '/api/token/revoke/user', {
       headers: new Headers({
         Authorization: this.props.auth.token,
       }),
@@ -70,25 +76,28 @@ class AuthorizedApps extends Component {
   }
 
   render() {
-    const { isLoading, apps, displayRevokeModal } = this.state;
+    const { isLoading, displayRevokeModal } = this.state;
     const { auth: { user }, intl } = this.props;
     return (
       <div className="container py-5">
-        <h2><FormattedMessage id="authorized_apps" /></h2>
+        {isLoading && <Loading />}
         {user.posting &&
           <div>
-            <p><FormattedMessage id="authorized_apps_list" /></p>
-            {isLoading && <div className="text-center"><Loading /></div>}
-            <ul className="list-group text-xs-left mb-3">
-              {apps.map((app, idx) =>
-                <li key={idx} className="list-group-item">
-                  <b><Link to={`/apps/@${app.client_id}`}>{app.client_id}</Link></b>
-                  <Link
-                    to={`/revoke/@${app.client_id}`}
-                    className="float-right btn btn-secondary btn-sm ml-1"
-                  >
-                    <FormattedMessage id="revoke" />
-                  </Link>
+            <ul className="authorized-apps-list">
+              {user.posting.account_auths.map((auth, idx) =>
+                <li key={idx} className="authorized-apps-list-item">
+                  <div className="app-item-name">
+                    <Link to={`/apps/@${auth[0]}`} className="AppAvatar"><Avatar username={auth[0]} size="60" /></Link>
+                    <Link to={`/apps/@${auth[0]}`}>{auth[0]}</Link>
+                  </div>
+                  <div className="app-item-action">
+                    <button
+                      className="float-right btn btn-revoke btn-sm ml-1"
+                      onClick={() => { this.showRevokeModal(auth[0]); }}
+                    >
+                      <FormattedMessage id="revoke" />
+                    </button>
+                  </div>
                 </li>
               )}
             </ul>
