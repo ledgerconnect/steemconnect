@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT,
     icon: DataTypes.TEXT,
     website: DataTypes.TEXT,
-    beneficiaries: DataTypes.TEXT,
+    beneficiaries: DataTypes.JSONB,
     is_approved: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,

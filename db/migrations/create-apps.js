@@ -34,7 +34,7 @@ module.exports = {
       type: Sequelize.TEXT,
     },
     beneficiaries: {
-      type: Sequelize.TEXT,
+      type: Sequelize.JSONB,
     },
     is_approved: {
       type: Sequelize.BOOLEAN,

@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       scope: {
-        type: Sequelize.TEXT,
+        type: Sequelize.JSONB,
       },
       created_at: {
         allowNull: false,
