@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   return sequelize.define('authorizations', {
     client_id: DataTypes.STRING,
     user: DataTypes.STRING,
-    scope: DataTypes.JSONB,
+    scope: DataTypes.TEXT,
   }, {
     freezeTableName: true,
     underscored: true,

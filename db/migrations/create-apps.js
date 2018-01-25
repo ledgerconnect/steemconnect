@@ -19,7 +19,7 @@ module.exports = {
       type: Sequelize.STRING,
     },
     redirect_uris: {
-      type: Sequelize.JSONB,
+      type: Sequelize.TEXT,
     },
     name: {
       type: Sequelize.STRING,
@@ -34,7 +34,7 @@ module.exports = {
       type: Sequelize.TEXT,
     },
     beneficiaries: {
-      type: Sequelize.JSONB,
+      type: Sequelize.TEXT,
     },
     is_approved: {
       type: Sequelize.BOOLEAN,
