@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   return sequelize.define('metadata', {
     client_id: DataTypes.STRING,
     user: DataTypes.STRING,
-    user_metadata: DataTypes.JSONB,
+    user_metadata: DataTypes.TEXT,
   }, {
     freezeTableName: true,
     underscored: true,
