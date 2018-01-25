@@ -4,7 +4,10 @@ const debug = require('debug')('sc2:server');
 /** Get user_metadata */
 const getUserMetadata = async (proxy, user) => {
   try {
-    const userMetadata = await metadata.findOne({ where: { client_id: proxy, user } });
+    const userMetadata = await metadata.findOne({
+      attributes: ['user_metadata'],
+      where: { client_id: proxy, user },
+    });
     if (userMetadata) {
       return userMetadata.user_metadata;
     }
