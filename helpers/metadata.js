@@ -1,4 +1,5 @@
 const { metadata } = require('../db/models');
+const debug = require('debug')('sc2:server');
 
 /** Get user_metadata */
 const getUserMetadata = async (proxy, user) => {
@@ -8,6 +9,7 @@ const getUserMetadata = async (proxy, user) => {
       return userMetadata.user_metadata;
     }
   } catch (error) {
+    debug('getUserMetadata failed', error);
     throw new Error(error);
   }
   return {};
@@ -28,6 +30,7 @@ const updateUserMetadata = async (proxy, user, newMetadata) => {
       });
     }
   } catch (error) {
+    debug('updateUserMetadata failed', error);
     throw new Error(error);
   }
 };
