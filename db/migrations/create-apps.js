@@ -19,7 +19,7 @@ module.exports = {
       type: Sequelize.STRING,
     },
     redirect_uris: {
-      type: Sequelize.TEXT,
+      type: Sequelize.JSONB,
     },
     name: {
       type: Sequelize.STRING,

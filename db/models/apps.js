@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     client_id: DataTypes.STRING,
     secret: DataTypes.STRING,
     owner: DataTypes.STRING,
-    redirect_uris: DataTypes.TEXT,
+    redirect_uris: DataTypes.JSONB,
     name: DataTypes.STRING,
     description: DataTypes.TEXT,
     icon: DataTypes.TEXT,
