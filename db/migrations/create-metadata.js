@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       user_metadata: {
-        type: Sequelize.JSONB
+        type: Sequelize.TEXT
       },
       created_at: {
         allowNull: false,
