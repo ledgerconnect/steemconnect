@@ -52,6 +52,9 @@ module.exports = {
       allowNull: false,
       type: Sequelize.DATE,
     },
-  }),
-  down: (queryInterface, Sequelize) => queryInterface.dropTable('apps'),
+  })
+    .then(() => queryInterface.addIndex('apps', { fields: ['client_id'], unique: true }))
+    .then(() => queryInterface.addIndex('apps', { fields: ['client_id', 'secret'], unique: true }))
+    .then(() => queryInterface.addIndex('apps', { fields: ['client_id', 'redirect_uris'], unique: true })),
+  down: queryInterface => queryInterface.dropTable('apps'),
 };
