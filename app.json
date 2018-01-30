@@ -25,7 +25,8 @@
       "required": true
     },
     "DEBUG": "sc2:*",
-    "DATABASE_NAME": "staging"
+    "DATABASE_NAME": "staging",
+    "LOG_LEVEL": "info"
   },
   "formation": {
   },
