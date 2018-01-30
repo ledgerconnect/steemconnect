@@ -10,6 +10,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon --ignore src ./bin/www",
+    "start-dev": "nodemon --ignore src ./bin/www | bunyan -o short",
     "eslint-autofix": "eslint --fix \"src/**/*.js\" \"*.js\"",
     "test": "npm run lint && nsp check --output summary",
     "lint": "eslint \"src/**/*.js\" \"routes/**/*.js\" \"helpers/**/*.js\"",
@@ -39,6 +40,7 @@
     "bluebird": "^3.5.0",
     "body-parser": "^1.18.2",
     "bootstrap": "^4.0.0-alpha.2",
+    "bunyan": "1.8.12",
     "change-case": "^2.3.1",
     "cors": "^2.8.3",
     "crypto-js": "^3.1.9-1",
