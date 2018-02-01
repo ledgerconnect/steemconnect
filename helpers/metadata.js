@@ -21,23 +21,7 @@ const getUserMetadata = async (proxy, user) => {
 /** Update user_metadata */
 const updateUserMetadata = async (proxy, user, newMetadata) => {
   try {
-    const userMetadata = await metadata.findOne({
-      attributes: ['user_metadata'],
-      where: { client_id: proxy, user },
-    });
-    if (userMetadata) {
-      /** Update */
-      await metadata.update(
-        { user_metadata: JSON.stringify(newMetadata) },
-        { where: { client_id: proxy, user } },
-      );
-    } else {
-      await metadata.create({
-        client_id: proxy,
-        user,
-        user_metadata: JSON.stringify(newMetadata),
-      });
-    }
+    await metadata.upsert({ user_metadata: JSON.stringify(newMetadata), client_id: proxy, user });
   } catch (error) {
     debug('updateUserMetadata failed', error);
     throw new Error(error);
