@@ -1,12 +1,11 @@
 {
   "development": {
+    "url": "DATABASE_URL",
+    "logging": false,
     "operatorsAliases": false,
-    "username": "postgres",
-    "password": null,
-    "database": "sc2",
-    "host": "localhost",
-    "dialect": "postgres",
-    "port": 5432
+    "dialectOptions": {
+      "ssl": true
+    }
   },
   "staging": {
     "use_env_variable": "STAGING_DATABASE_URL",
@@ -14,6 +13,11 @@
     "operatorsAliases": false,
     "dialectOptions": {
       "ssl": true
+    },
+    "pool": {
+      "max": 100,
+      "min": 0,
+      "idle": 10000
     }
   },
   "production": {
@@ -22,6 +26,11 @@
     "operatorsAliases": false,
     "dialectOptions": {
       "ssl": true
+    },
+    "pool": {
+      "max": 100,
+      "min": 0,
+      "idle": 10000
     }
   }
 }

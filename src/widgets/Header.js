@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
-import Avatar from './Avatar';
+import SteemitAvatar from './SteemitAvatar';
 import './Header.less';
 
 const Header = ({ username }) =>
@@ -10,7 +10,7 @@ const Header = ({ username }) =>
       {username &&
         <Link to="/dashboard">
           <span className="mr-2">{username}</span>
-          <div className="float-right"><Avatar username={username} /></div>
+          <div className="float-right"><SteemitAvatar username={username} /></div>
         </Link>
       }
       {!username &&
