@@ -7,15 +7,11 @@
   <meta id="viewport" name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="/css/base.css" type="text/css" media="all"/>
-  <script type="text/javascript"><!--
-  if (self != top)
-  {
-     if (document.images)
-        top.location.replace(window.location.href);
-     else
-        top.location.href = window.location.href;
-  }
-  // --></script>
+  <script type="text/javascript">
+    if (self != top) {
+        top.location = self.location;
+    }
+  </script>
 </head>
 <body>
   <div id="app"></div>
