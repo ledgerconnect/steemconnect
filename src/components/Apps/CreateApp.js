@@ -118,6 +118,9 @@ class CreateApp extends React.Component {
               <p>
                 <FormattedMessage id="create_app_fee" values={{ fee: <b>{this.state.accountCreationFee}</b> }} />
               </p>
+              <p>
+                <FormattedMessage id="create_app_keys_1" /> <strong><FormattedMessage id="create_app_keys_2" /></strong>
+              </p>
               <CreateAppForm onSubmit={this.handleFormSubmit} />
             </div>
           }

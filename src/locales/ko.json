@@ -69,6 +69,8 @@
   "create_account": "Create account",
   "create_app": "Create App",
   "create_app_fee": "You need to create a new Steem account for setup your application on SteemConnect. The current fee for create a new account is {fee}. Make sure you have enough funds on your account before proceed.",
+  "create_app_keys_1": "Be careful, the newly created Steem account will be managed by SteemConnect and",
+  "create_app_keys_2": "you will not have access to the account's password or other keys.",
   "developers": "Developers",
   "do_you_want": "Do you want to {button}?",
   "edit": "Edit",
