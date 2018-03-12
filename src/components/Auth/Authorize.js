@@ -143,14 +143,14 @@ export default class Authorize extends Component {
                     <FormattedMessage
                       id="authorize_login_question"
                       values={{
-                        username: <b> @{clientId}</b>,
+                        username: <b> {(app && app.name) || `@${clientId}`}</b>,
                       }}
                     />}
                     {scope !== 'login' &&
                     <FormattedMessage
                       id="authorize_question"
                       values={{
-                        username: <b> @{clientId}</b>,
+                        username: <b> {(app && `${app.name} (@${clientId})`) || `@${clientId}`}</b>,
                         role: <b><FormattedMessage id="posting" /></b>,
                       }}
                     />}
