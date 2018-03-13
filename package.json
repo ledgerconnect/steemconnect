@@ -9,7 +9,7 @@
   "main": "./bin/www",
   "private": true,
   "scripts": {
-    "start": "nodemon --ignore src ./bin/www",
+    "start": "./bin/www",
     "start-dev": "nodemon --ignore src ./bin/www | bunyan -o short",
     "eslint-autofix": "eslint --fix \"src/**/*.js\" \"*.js\"",
     "test": "npm run lint && nsp check --output summary",
