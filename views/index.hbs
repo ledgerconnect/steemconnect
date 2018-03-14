@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script type=”text/javascript”>
-    if(window.top!==window.self || top != self){window.top.location=window.self.location;top.location.replace(location);}
-  </script>
   <title>{{title}}</title>
   <meta charset="UTF-8">
   <meta name="description" content="{{description}}">
@@ -14,5 +11,13 @@
 <body>
   <div id="app"></div>
   <script type="text/javascript" src="/js/app.min.js"></script>
+  <script>
+    if(window.top !== window.self || top != self){
+      document.getElementById('app').remove();
+      var msg = document.createElement("div");
+      msg.innerHTML = 'Oops! SteemConnect can not be used within an iframe. <br /> Please <a href="'+window.self.location.href+'" target="_blank">click here</a> to open SteemConnect on a new page.';
+      document.body.appendChild(msg);
+    }
+  </script>
 </body>
 </html>
