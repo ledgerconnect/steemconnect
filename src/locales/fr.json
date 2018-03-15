@@ -90,6 +90,7 @@
   "error_post_exist": "L'article n'existe pas",
   "error_recent_password_required": "Veuillez saisir un mot de passe récent",
   "error_request_validation": "Il y a des erreurs de validation dans votre requête !",
+  "error_required": "Le champ est obligatoire",
   "error_user_exist": "L'utilisateur {user} n'existe pas",
   "error_username_required": "Veuillez saisir un nom d'utilisateur pour votre application",
   "error_username_sign_required": "Veuillez saisir votre nom d'utilisateur",
