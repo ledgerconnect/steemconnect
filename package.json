@@ -50,6 +50,7 @@
     "diacritics": "^1.3.0",
     "es6-shim": "^0.35.3",
     "express": "^4.16.0",
+    "express-csp-header": "2.2.0",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^0.11.2",
     "hbs": "^4.0.1",
