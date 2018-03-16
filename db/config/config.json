@@ -1,6 +1,6 @@
 {
   "development": {
-    "use_env_variable": "DATABASE_URL",
+    "url": "DATABASE_URL",
     "logging": false,
     "operatorsAliases": false,
     "dialectOptions": {
@@ -8,7 +8,7 @@
     }
   },
   "staging": {
-    "use_env_variable": "DATABASE_URL",
+    "use_env_variable": "STAGING_DATABASE_URL",
     "logging": false,
     "operatorsAliases": false,
     "dialectOptions": {
