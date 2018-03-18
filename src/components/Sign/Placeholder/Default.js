@@ -11,7 +11,7 @@ const SignPlaceholderDefault = ({
         query[param] &&
         <li key={key}>
           <strong>{changeCase.titleCase(param)}</strong>
-          <span>{query[param]}</span>
+          <span>{query[param].toString()}</span>
         </li>
       )}
     </ul>
