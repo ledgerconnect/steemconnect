@@ -4,6 +4,9 @@ const Visualizer = require('webpack-visualizer-plugin');
 const defaults = require('lodash/defaults');
 const path = require('path');
 const webpack = require('webpack');
+const availableLocales = require('../helpers/locales.json');
+
+const localeRegex = new RegExp(Object.keys(availableLocales).join('|'));
 
 const DEFAULTS = {
   isDevelopment: process.env.NODE_ENV !== 'production',
@@ -26,6 +29,10 @@ function makePlugins(options) {
       },
     }),
     new LodashModuleReplacementPlugin({ collections: true, paths: true }),
+    new webpack.ContextReplacementPlugin(
+      /react-intl[/\\]locale-data$/,
+      localeRegex,
+    ),
     new Visualizer({
       filename: './statistics.html',
     }),
@@ -75,13 +82,14 @@ function makeStyleLoaders(options) {
       test: /\.less$/,
       loader: ExtractTextPlugin.extract({
         fallback: 'style-loader',
-        use: 'css-loader?importLoaders=1!postcss-loader?browsers=last 2 version!less-loader'
+        use: 'css-loader?importLoaders=1!postcss-loader?browsers=last 2 version!less-loader',
       }),
     },
   ];
 }
 
 function makeConfig(options) {
+  // eslint-disable-next-line no-param-reassign
   if (!options) options = {};
   defaults(options, DEFAULTS);
 
