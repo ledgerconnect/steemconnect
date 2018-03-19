@@ -1,5 +1,5 @@
-module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('apps', {
+module.exports = (sequelize, DataTypes) => sequelize.define('apps',
+  {
     client_id: DataTypes.STRING,
     secret: DataTypes.STRING,
     owner: DataTypes.STRING,
@@ -17,13 +17,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-  }, {
+  },
+  {
     freezeTableName: true,
     underscored: true,
-    classMethods: {
-      associate: (models) => {
-        // associations can be defined here
-      },
-    },
+    indexes: [
+        { unique: true, fields: ['client_id'] },
+        { unique: true, fields: ['client_id', 'secret'] },
+        { unique: true, fields: ['client_id', 'redirect_uris'] },
+    ],
   });
-};

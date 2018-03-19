@@ -6,8 +6,9 @@ import { titleCase } from 'change-case';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import qs from 'query-string';
+import fetch from 'isomorphic-fetch';
 import { authorize, login, hasAuthority, addPostingAuthority } from '../../utils/auth';
-import Avatar from '../../widgets/Avatar';
+import SteemitAvatar from '../../widgets/SteemitAvatar';
 import Loading from '../../widgets/Loading';
 import SignForm from '../Form/Sign';
 import config from '../../../config.json';
@@ -47,11 +48,12 @@ export default class Authorize extends Component {
       state,
       step: 0,
       scopes: [],
+      app: null,
     };
   }
 
-  componentWillMount() {
-    const { scope } = this.state;
+  async componentWillMount() {
+    const { scope, clientId } = this.state;
     let scopes = [];
     if (scope !== 'login') {
       if (scope) {
@@ -63,7 +65,9 @@ export default class Authorize extends Component {
         scopes = config.authorized_operations;
       }
     }
-    this.setState({ scopes });
+    const app = await fetch(`/api/apps/@${clientId}`)
+      .then(res => res.json());
+    this.setState({ scopes, app });
   }
 
   componentWillReceiveProps = (props) => {
@@ -98,7 +102,7 @@ export default class Authorize extends Component {
   };
 
   render() {
-    const { clientId, scope, step, scopes } = this.state;
+    const { clientId, scope, step, scopes, app } = this.state;
     const requiredRoles = (scope === 'login') ? ['memo', 'posting'] : ['owner', 'active'];
     return (
       <div className="Sign">
@@ -124,7 +128,14 @@ export default class Authorize extends Component {
                     </div>
                     <div className="Avatar-link" />
                     <div className="Avatar-container">
-                      <Avatar username={clientId} size="40" />
+                      {!app &&
+                      <SteemitAvatar username={clientId} size="40" />}
+                      {app &&
+                      <img
+                        src={app.icon}
+                        style={{ height: '40px', width: '40px' }}
+                        alt="icon"
+                      />}
                     </div>
                   </div>
                   <p>
