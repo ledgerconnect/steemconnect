@@ -9,7 +9,7 @@
     "BROADCASTER_USERNAME": {
       "required": true
     },
-    "STAGING_DATABASE_URL": {
+    "DATABASE_URL": {
       "required": true
     },
     "NODE_MODULES_CACHE": {
@@ -25,7 +25,6 @@
       "required": true
     },
     "DEBUG": "sc2:*",
-    "DATABASE_NAME": "staging",
     "LOG_LEVEL": "info"
   },
   "formation": {
