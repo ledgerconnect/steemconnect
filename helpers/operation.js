@@ -11,7 +11,6 @@ const helperOperations = require('./operations');
 
 /** Parse error message from Steemd response */
 const getErrorMessage = (error) => {
-  console.error(error);
   let errorMessage = '';
   if (has(error, 'data.stack[0].format')) {
     errorMessage = error.data.stack[0].format;
