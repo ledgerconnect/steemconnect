@@ -55,7 +55,6 @@ export default class Sign extends Component {
         }
         try {
           operationsParsed = JSON.parse(operationsDecoded);
-          console.log(typeof operationsParsed);
         } catch (err) {
           this.setState({ validationErrors: [{ error: 'error_tx_base64_json' }], step: 'validationErrors' });
           return;
@@ -208,6 +207,7 @@ export default class Sign extends Component {
           if (!err) {
             this.setState({ success: result });
           } else {
+            console.error(err);
             this.setState({ error: err });
           }
           this.setState({ step: 'result' });
@@ -223,6 +223,7 @@ export default class Sign extends Component {
         if (!err) {
           this.setState({ success: result });
         } else {
+          console.error(err);
           this.setState({ error: err });
         }
         this.setState({ step: 'result' });
