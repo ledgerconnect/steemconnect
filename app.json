@@ -9,7 +9,7 @@
     "BROADCASTER_USERNAME": {
       "required": true
     },
-    "STAGING_DATABASE_URL": {
+    "DATABASE_URL": {
       "required": true
     },
     "NODE_MODULES_CACHE": {
