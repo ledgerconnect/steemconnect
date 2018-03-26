@@ -229,3 +229,54 @@ pre {
 .ant-popover-message > .anticon {
   line-height: 24px;
 }
+
+.switch-account-menu {
+  margin-top: 14px;
+  background: #f5f5f5;
+  .ant-dropdown-menu-item {
+    border-top: 1px solid #ccc;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    &:first-child {
+      border-top: 0;
+    }
+    &.active {
+      background: #fff;
+      .username {
+        margin-left: 10px;
+        font-size: 20px;
+      }
+      &:hover {
+        background-color: #fff;
+      }
+    }
+    &.actions {
+      display: flex;
+      a {
+        border-radius: 0;
+        margin: 0 20px;
+        color: #666;
+        background: #f8f8f8;
+        border: 1px solid #c6c6c6;
+        font-size: 13px;
+        &:hover {
+          background-color: #eee;
+        }
+      }
+    }
+    &:hover {
+      background-color: #eee;
+    }
+    &:last-child {
+      cursor: default;
+      &:hover {
+        background-color: initial;
+      }
+    }
+    .username {
+      margin-left: 10px;
+      font-size: 16px;
+    }
+  }
+}
