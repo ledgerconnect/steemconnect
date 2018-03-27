@@ -18,9 +18,6 @@
     "JWT_SECRET": {
       "generator": "secret"
     },
-    "SENTRY_DSN": {
-      "required": true
-    },
     "STEEMJS_URL": {
       "required": true
     },
