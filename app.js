@@ -1,9 +1,10 @@
-/* eslint-disable no-param-reassign */
+/* eslint-disable no-param-reassign,new-cap */
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const http = require('http');
 const https = require('https');
+const csp = require('express-csp-header');
 const cors = require('cors');
 const steem = require('@steemit/steem-js');
 const db = require('./db/models');
@@ -18,6 +19,25 @@ http.globalAgent.maxSockets = Infinity;
 https.globalAgent.maxSockets = Infinity;
 const app = express();
 const server = http.Server(app);
+
+// iframe header
+app.use((req, res, next) => {
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  next();
+});
+
+// Content security policies
+app.use(csp({
+  policies: {
+    'default-src': (process.env.CSP_DEFAULT || "'self'").split(','),
+    'script-src': (process.env.CSP_SCRIPT_SRC || "'self','unsafe-eval','unsafe-inline'").split(','),
+    'connect-src': (process.env.CSP_CONNECT_SRC || "'self'").split(','),
+    'frame-src': (process.env.CSP_FRAME_SRC || "'self'").split(','),
+    'style-src': (process.env.CSP_STYLE_SRC || "'self'").split(','),
+    'img-src': (process.env.CSP_IMG_SRC || "'self'").split(','),
+    'font-src': (process.env.CSP_FONT_SRC || "'self'").split(','),
+  },
+}));
 
 // logging middleware
 app.use((req, res, next) => {
