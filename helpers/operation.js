@@ -12,10 +12,10 @@ const helperOperations = require('./operations');
 /** Parse error message from Steemd response */
 const getErrorMessage = (error) => {
   let errorMessage = '';
-  if (has(error, 'payload.error.data.stack[0].format')) {
-    errorMessage = error.payload.error.data.stack[0].format;
-    if (has(error, 'payload.error.data.stack[0].data')) {
-      const data = error.payload.error.data.stack[0].data;
+  if (has(error, 'data.stack[0].format')) {
+    errorMessage = error.data.stack[0].format;
+    if (has(error, 'data.stack[0].data')) {
+      const data = error.data.stack[0].data;
       Object.keys(data).forEach((d) => {
         errorMessage = errorMessage.split('${' + d + '}').join(data[d]); // eslint-disable-line prefer-template
       });

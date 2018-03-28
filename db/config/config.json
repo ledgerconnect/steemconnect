@@ -1,36 +1,13 @@
 {
-  "development": {
-    "url": "DATABASE_URL",
-    "logging": false,
-    "operatorsAliases": false,
-    "dialectOptions": {
-      "ssl": true
-    }
+  "use_env_variable": "DATABASE_URL",
+  "logging": false,
+  "operatorsAliases": false,
+  "dialectOptions": {
+    "ssl": true
   },
-  "staging": {
-    "use_env_variable": "STAGING_DATABASE_URL",
-    "logging": false,
-    "operatorsAliases": false,
-    "dialectOptions": {
-      "ssl": true
-    },
-    "pool": {
-      "max": 100,
-      "min": 0,
-      "idle": 10000
-    }
-  },
-  "production": {
-    "use_env_variable": "DATABASE_URL",
-    "logging": false,
-    "operatorsAliases": false,
-    "dialectOptions": {
-      "ssl": true
-    },
-    "pool": {
-      "max": 100,
-      "min": 0,
-      "idle": 10000
-    }
+  "pool": {
+    "max": 100,
+    "min": 0,
+    "idle": 10000
   }
 }
