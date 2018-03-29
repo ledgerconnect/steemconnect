@@ -64,7 +64,7 @@ export default class Header extends Component {
                 )}
                 <Menu.Item key="switch-account-actions" className="actions" disabled>
                   <Link to="/login">
-                    Add an account
+                    <FormattedMessage id="add_account" />
                   </Link>
                   <Link onClick={this.handleLogoutClick}>
                     <FormattedMessage id="log_out" />

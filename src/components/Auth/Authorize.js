@@ -7,10 +7,11 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import qs from 'query-string';
 import fetch from 'isomorphic-fetch';
-import { authorize, login, hasAuthority, addPostingAuthority } from '../../utils/auth';
+import { authorize, login, addPostingAuthority } from '../../utils/auth';
 import SteemitAvatar from '../../widgets/SteemitAvatar';
 import Loading from '../../widgets/Loading';
 import SignForm from '../Form/Sign';
+import ChooseAccountForm from '../Form/ChooseAccount';
 import config from '../../../config.json';
 import './Authorize.less';
 
@@ -30,7 +31,6 @@ export default class Authorize extends Component {
         state: PropTypes.string,
       }),
     }),
-    auth: PropTypes.shape(),
   };
 
   constructor(props) {
@@ -70,18 +70,9 @@ export default class Authorize extends Component {
     this.setState({ scopes, app });
   }
 
-  componentWillReceiveProps = (props) => {
-    const { clientId, responseType, redirectUri, scope, state } = this.state;
-    const { auth } = props;
-    if (auth.isAuthenticated && auth.user && hasAuthority(auth.user, clientId)) {
-      authorize({ clientId, scope, responseType }, (err, res) => {
-        window.location = `${redirectUri}?${qs.stringify({ ...res, state })}`;
-      });
-    } else if (auth.isLoaded) {
-      this.setState({ step: 1 });
-    }
+  componentWillReceiveProps = () => {
+    this.setState({ step: 1 });
   };
-
 
   authorize = (auth) => {
     const { clientId, responseType, redirectUri, scope, state } = this.state;
@@ -100,6 +91,27 @@ export default class Authorize extends Component {
       }
     });
   };
+
+  selectNextStep = () => {
+    if (localStorage && localStorage.getItem('accounts')) {
+      const accounts = JSON.parse(localStorage.getItem('accounts'));
+      if (accounts && accounts.length > 0) {
+        return 2;
+      }
+    }
+    return 3;
+  }
+
+  addAccount = () => {
+    this.setState({ step: 3 });
+  }
+
+  changeAccount = () => {
+    const { clientId, responseType, redirectUri, scope, state } = this.state;
+    authorize({ clientId, scope, responseType }, (err, res) => {
+      window.location = `${redirectUri}?${qs.stringify({ ...res, state })}`;
+    });
+  }
 
   render() {
     const { clientId, scope, step, scopes, app } = this.state;
@@ -162,14 +174,19 @@ export default class Authorize extends Component {
                   <Form.Item>
                     <Button
                       type="primary" htmlType="button" className="SignForm__button"
-                      onClick={() => this.setState({ step: 2 })}
+                      onClick={() => this.setState({ step: this.selectNextStep() })}
                     >
                       <FormattedMessage id="continue" />
                     </Button>
                   </Form.Item>
                 </Form>
               }
-              {step === 2 && <SignForm roles={requiredRoles} sign={this.authorize} />}
+              {step === 2 &&
+              <ChooseAccountForm
+                addAccount={this.addAccount}
+                callback={this.changeAccount}
+              />}
+              {step === 3 && <SignForm roles={requiredRoles} sign={this.authorize} />}
             </div>
             <div className="Sign__footer">
               <Link to="/" target="_blank" rel="noopener noreferrer"><FormattedMessage id="about_steemconnect" /></Link>
