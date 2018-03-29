@@ -1,29 +1,46 @@
-import React from 'react';
-import { FormattedMessage, injectIntl } from 'react-intl';
-import { Modal, notification } from 'antd';
+import React, { Component, PropTypes } from 'react';
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+import { Form, Modal, Input, Radio, notification } from 'antd';
 import { Link } from 'react-router';
-import Form from '../../widgets/Form';
 
-class AppForm extends Form {
+class AppForm extends Component {
+  static propTypes = {
+    form: PropTypes.shape({}),
+    data: PropTypes.shape({}),
+    auth: PropTypes.shape({
+      token: PropTypes.string.isRequired,
+    }),
+    intl: intlShape.isRequired,
+    submit: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+  };
+
   constructor(props) {
     super(props);
     const data = this.props.data || {};
     this.state = {
       data,
+      submitting: false,
       displayRevokeModal: false,
     };
   }
 
-  showRevokeModal = () => {
-    this.setState({
-      displayRevokeModal: true,
-    });
-  }
+  onChange = (event) => {
+    const { name } = event.target;
+    let { value } = event.target;
+    const { data } = this.state;
+    if (name === 'redirect_uris') {
+      value = value.split('\n');
+    }
+    data[name] = value;
+    this.setState({ data });
+  };
 
-  handleCancel = () => {
-    this.setState({
-      displayRevokeModal: false,
-    });
+  onChangeCheckbox = (event) => {
+    const { name } = event.target;
+    const { data } = this.state;
+    data[name] = !data[name];
+    this.setState({ data });
   }
 
   confirm = () => {
@@ -51,117 +68,132 @@ class AppForm extends Form {
       });
   }
 
-  onChange = (event) => {
-    const { name } = event.target;
-    let { value } = event.target;
-    const { data } = this.state;
-    if (name === 'redirect_uris') {
-      value = value.split('\n');
-    }
-    data[name] = value;
-    this.setState({ data });
-  };
-
-  onChangeCheckbox = (event) => {
-    const { name } = event.target;
-    const { data } = this.state;
-    data[name] = !data[name];
-    this.setState({ data });
+  handleCancel = () => {
+    this.setState({
+      displayRevokeModal: false,
+    });
   }
 
+  showRevokeModal = () => {
+    this.setState({
+      displayRevokeModal: true,
+    });
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    if (this.state.submitting) return;
+    this.setState({ submitting: true });
+    const { form: { validateFieldsAndScroll }, submit } = this.props;
+    validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        // eslint-disable-next-line no-param-reassign
+        values.redirect_uris = values.redirect_uris.split('\n');
+        submit(values);
+      }
+      this.setState({ submitting: false });
+    });
+  };
+
   render() {
+    const radioStyle = {
+      display: 'block',
+      height: '30px',
+      lineHeight: '30px',
+    };
     const { data, displayRevokeModal } = this.state;
-    const { auth, intl } = this.props;
+    const { form: { getFieldDecorator }, auth, intl } = this.props;
     const redirectUris = data.redirect_uris && data.redirect_uris.join('\n');
     return (
-      <form onSubmit={this.onSubmit}>
-        <div className="block">
-          <div className="form-group">
-            <label className="label" htmlFor="appName"><FormattedMessage id="app_name" /></label>
-            <input
-              id="appName"
-              type="text"
-              className="form-control"
-              name="name"
-              onChange={this.onChange}
-              defaultValue={data.name}
-            />
-            <small>
-              <FormattedMessage id="something_users_trust" />
-            </small>
-          </div>
-          <div className="form-group">
-            <label className="label" htmlFor="appDesc"><FormattedMessage id="app_description" /></label>
-            <textarea
-              id="appDesc"
-              className="form-control"
-              name="description"
-              onChange={this.onChange}
-              defaultValue={data.description}
-            />
-            <small>
-              <FormattedMessage id="max_characters" />
-            </small>
-          </div>
-          <div className="form-group">
-            <label className="label" htmlFor="appIcon"><FormattedMessage id="app_icon" /></label>
-            <input
-              id="appIcon"
-              type="text"
-              className="form-control"
-              name="icon"
-              onChange={this.onChange}
-              defaultValue={data.icon}
-            />
-          </div>
-          <div className="form-group">
-            <label className="label" htmlFor="website"><FormattedMessage id="website" /></label>
-            <input
-              id="website"
-              type="text"
-              className="form-control"
-              name="website"
-              onChange={this.onChange}
-              defaultValue={data.website}
-            />
-          </div>
-          <div className="form-group">
-            <label className="label" htmlFor="redirectURI"><FormattedMessage id="redirect_uris" /></label>
-            <textarea
-              id="redirectURI"
-              className="form-control"
-              name="redirect_uris"
-              onChange={this.onChange}
-              defaultValue={redirectUris}
-            />
-            <small>
-              <FormattedMessage id="auth_uri" />
-            </small>
-          </div>
-          <div className="form-group">
-            <label className="label" htmlFor="is_public"><FormattedMessage id="manage_visibility" /></label>
-            <label className="label" htmlFor="is_public">
-              <input
-                type="radio"
-                className="form-control"
-                name="is_public"
-                onChange={this.onChangeCheckbox}
-                checked={data.is_public}
-              />&nbsp;
-              <FormattedMessage id="visible" />
-            </label>
-            <label className="label" htmlFor="is_public">
-              <input
-                type="radio"
-                className="form-control"
-                name="is_public"
-                onChange={this.onChangeCheckbox}
-                checked={!data.is_public}
-              />&nbsp;
-              <FormattedMessage id="not_visible" />
-            </label>
-          </div>
-        </div>
+      <Form onSubmit={this.handleSubmit} className="steemconnect-form">
+        <Form.Item
+          label={<FormattedMessage id="app_name" />}
+        >
+          {getFieldDecorator('name', {
+            rules: [{ required: true, message: intl.formatMessage({ id: 'error_required' }) }],
+            initialValue: data.name,
+          })(
+            <Input
+              placeholder={intl.formatMessage({ id: 'app_name' })}
+            />,
+          )}
+          <small>
+            <FormattedMessage id="something_users_trust" />
+          </small>
+        </Form.Item>
+        <Form.Item
+          label={<FormattedMessage id="app_description" />}
+        >
+          {getFieldDecorator('description', {
+            rules: [
+              { required: true, message: intl.formatMessage({ id: 'error_required' }) },
+              { max: 400 },
+            ],
+            initialValue: data.description,
+          })(
+            <Input.TextArea
+              placeholder={intl.formatMessage({ id: 'app_description' })}
+            />,
+          )}
+          <small>
+            <FormattedMessage id="max_characters" />
+          </small>
+        </Form.Item>
+        <Form.Item
+          label={<FormattedMessage id="app_icon" />}
+        >
+          {getFieldDecorator('icon', {
+            rules: [{ required: true, message: intl.formatMessage({ id: 'error_required' }) }],
+            initialValue: data.icon,
+          })(
+            <Input
+              placeholder={intl.formatMessage({ id: 'app_icon' })}
+            />,
+          )}
+        </Form.Item>
+        <Form.Item
+          label={<FormattedMessage id="website" />}
+        >
+          {getFieldDecorator('website', {
+            rules: [{ required: true, message: intl.formatMessage({ id: 'error_required' }) }],
+            initialValue: data.website,
+          })(
+            <Input
+              placeholder={intl.formatMessage({ id: 'website' })}
+            />,
+          )}
+        </Form.Item>
+        <Form.Item
+          label={<FormattedMessage id="redirect_uris" />}
+        >
+          {getFieldDecorator('redirect_uris', {
+            rules: [
+              { required: true, message: intl.formatMessage({ id: 'error_required' }) },
+              { max: 400 },
+            ],
+            initialValue: redirectUris,
+          })(
+            <Input.TextArea
+              placeholder={intl.formatMessage({ id: 'redirect_uris' })}
+            />,
+          )}
+          <small>
+            <FormattedMessage id="auth_uri" />
+          </small>
+        </Form.Item>
+        <Form.Item
+          label={<FormattedMessage id="manage_visibility" />}
+        >
+          {getFieldDecorator('is_public', {
+            rules: [{ required: true, message: intl.formatMessage({ id: 'error_required' }) }],
+            initialValue: data.is_public,
+          })(
+            <Radio.Group>
+              <Radio style={radioStyle} value><FormattedMessage id="visible" /></Radio>
+              <Radio style={radioStyle} value={false}><FormattedMessage id="not_visible" /></Radio>
+            </Radio.Group>
+          )}
+        </Form.Item>
         <div className="form-group py-3 text-center">
           <Modal
             title={intl.formatMessage({ id: 'are_you_sure' })}
@@ -187,9 +219,9 @@ class AppForm extends Form {
             <FormattedMessage id="revoke_access_tokens" />
           </button>}
         </div>
-      </form>
+      </Form>
     );
   }
 }
 
-export default injectIntl(AppForm);
+export default Form.create()(injectIntl(AppForm));

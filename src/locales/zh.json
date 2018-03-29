@@ -27,5 +27,6 @@
   "lp_developers_button":"开始构建",
   "lp_subscribe_title":"获取最新消息",
   "lp_subscribe_description":"SteemConnect 刚刚启动。输入您的电子邮件，抢先了解项目动态和 SteemConnect 的最新信息！",
-  "lp_subscribe_button":"注册接收"
+  "lp_subscribe_button":"注册接收",
+  "lp_footer": "A Steemit Inc + Busy project"
 }
