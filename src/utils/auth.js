@@ -9,7 +9,8 @@ export const login = ({ username, wif, role = 'posting' }, cb) => {
     .then((data) => {
       const token = decode(wif, data.code).substring(1);
       localStorage.setItem('token', token);
-      const accounts = JSON.parse(localStorage.getItem('accounts')) || [];
+      let accounts = JSON.parse(localStorage.getItem('accounts')) || [];
+      accounts = accounts.filter(account => account.username !== username);
       accounts.push({
         username,
         token,
