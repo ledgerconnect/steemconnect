@@ -25,7 +25,14 @@ export default class Header extends Component {
   };
 
   handleLogoutClick = () => {
-    this.props.logout();
+    // eslint-disable-next-line no-shadow
+    const { logout, username } = this.props;
+    if (localStorage && localStorage.getItem('accounts')) {
+      let accounts = JSON.parse(localStorage.getItem('accounts'));
+      accounts = accounts.filter(acc => acc.username !== username);
+      localStorage.setItem('accounts', JSON.stringify(accounts));
+    }
+    logout();
   };
 
   changeAccount = ({ key }) => {
