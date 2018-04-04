@@ -17,7 +17,6 @@ export default class ChooseAccount extends Component {
       accounts = JSON.parse(localStorage.getItem('accounts'));
     }
     this.state = {
-      mode: 'select',
       accounts,
     };
   }
@@ -43,40 +42,28 @@ export default class ChooseAccount extends Component {
   }
   render() {
     const { addAccount } = this.props;
-    const { mode, accounts } = this.state;
+    const { accounts } = this.state;
     return (
       <div className="SignForm">
-        <h5>
-          {mode === 'select' && <FormattedMessage id="choose_account" />}
-          {mode === 'delete' && <FormattedMessage id="delete_account" />}
-        </h5>
+        <h6 className="choose-account-title">
+          <FormattedMessage id="choose_account" />
+        </h6>
         <ul className="accounts-list">
           {accounts.map(account =>
             <li key={`acc_${account.username}`}>
               <a href={undefined} onClick={() => this.changeAccount(account.username)}>
-                <SteemitAvatar username={account.username} size="60" /><span className="username">{account.username}</span>
+                <SteemitAvatar username={account.username} size="50" /><span className="username">{account.username}</span>
               </a>
-              {mode === 'delete' &&
-              <Icon type="close" onClick={() => this.removeAccount(account.username)} />}
+              <Icon type="close" onClick={() => this.removeAccount(account.username)} />
             </li>
           )}
         </ul>
-        {mode === 'select' &&
         <div>
-          <h5 className="choice-or"><FormattedMessage id="or" /></h5>
+          <h6 className="choice-or"><FormattedMessage id="or" /></h6>
           <Button type="primary" className="SignForm__button" onClick={addAccount}>
-            <FormattedMessage id="add_account" />
+            <FormattedMessage id="use_another_account" />
           </Button>
-          <br />
-          {accounts.length > 1 && <a onClick={() => this.setState({ mode: 'delete' })}><FormattedMessage id="delete_account" /></a>}
-        </div>}
-        {mode === 'delete' &&
-        <div>
-          <h5 className="choice-or"><FormattedMessage id="or" /></h5>
-          <Button type="primary" className="SignForm__button" onClick={() => this.setState({ mode: 'select' })}>
-            <FormattedMessage id="choose_account" />
-          </Button>
-        </div>}
+        </div>
       </div>
     );
   }

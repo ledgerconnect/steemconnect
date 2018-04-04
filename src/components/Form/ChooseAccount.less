@@ -1,24 +1,63 @@
 ul.accounts-list {
   li {
-    padding: 10px 5px;
+    padding: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-radius: 5px;
+    border: 1px solid #F0F0F0;
+    margin-bottom: 10px;
     &:hover {
-      background: #F5F5F5;
+      background: none;
     }
     a {
-      display: block;
+      display: flex;
+      align-items: center;
+      font-weight: 700;
+      color: #000 !important;
+      .username {
+        margin-left: 15px;
+      }
     }
     i {
       cursor: pointer;
+      display: none;
+    }
+    &:hover {
+      i {
+        display: block;
+      }
     }
     .SteemitAvatar {
-      margin-right: 15px;
+      margin-right: 20px;
     }
   }
 }
-h5.choice-or {
+h6.choose-account-title {
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 40px;
+}
+h6.choice-or {
   text-transform: uppercase;
-  margin-bottom: 10px;
+  margin: 15px 0;
+  color: #A1A1A1;
+  font-size: 14px;
+  &:before, &:after {
+    background-color: #A1A1A1;
+    content: "";
+    display: inline-block;
+    height: 1px;
+    position: relative;
+    vertical-align: super;
+    width: 40%;
+  }
+  &:before {
+    right: 1.5em;
+    margin-left: -50%;
+  }
+  &:after {
+    left: 1.5em;
+    margin-right: -50%;
+  }
 }
