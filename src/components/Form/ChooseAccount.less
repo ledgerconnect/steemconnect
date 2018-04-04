@@ -1,12 +1,14 @@
 ul.accounts-list {
+  border-radius: 5px;
+  border: 1px solid #F0F0F0;
   li {
     padding: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: 5px;
-    border: 1px solid #F0F0F0;
-    margin-bottom: 10px;
+    &:not(:last-child) {
+      border-bottom: 1px solid #F0F0F0;
+    }
     &:hover {
       background: none;
     }
