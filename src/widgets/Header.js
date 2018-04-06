@@ -22,6 +22,7 @@ export default class Header extends Component {
     username: PropTypes.string.isRequired,
     logout: PropTypes.func.isRequired,
     authenticate: PropTypes.func.isRequired,
+    auth: PropTypes.shape({}).isRequired,
   };
 
   handleLogoutClick = () => {
@@ -47,10 +48,21 @@ export default class Header extends Component {
   }
 
   render() {
-    const { username } = this.props;
+    const { username, auth } = this.props;
     let accounts = [];
     if (localStorage && localStorage.getItem('accounts')) {
       accounts = JSON.parse(localStorage.getItem('accounts'));
+    }
+    let user = '';
+    if (auth && auth.user && auth.user.json_metadata) {
+      try {
+        const metadata = JSON.parse(auth.user.json_metadata);
+        if (metadata && metadata.profile && metadata.profile.name) {
+          user = metadata.profile.name;
+        }
+      } catch (e) {
+        // Do nothing
+      }
     }
     return (
       <div className="Header container">
@@ -62,26 +74,30 @@ export default class Header extends Component {
             overlay={
               <Menu className="switch-account-menu" onClick={this.changeAccount}>
                 <Menu.Item key="switch-account-active" className="active">
-                  <SteemitAvatar username={username} size="72" /><span className="username">{username}</span>
+                  <SteemitAvatar username={username} size="72" />
+                  <div className="account-information">
+                    <span className="account-name">{user}</span>
+                    <span className="username">@{username}</span>
+                    <Link onClick={this.handleLogoutClick} className="logout">
+                      <FormattedMessage id="log_out" />
+                    </Link>
+                  </div>
                 </Menu.Item>
                 {accounts.filter(account => account.username !== username).map(account =>
                   <Menu.Item key={account.username}>
-                    <SteemitAvatar username={account.username} size="36" /><span className="username">{account.username}</span>
+                    <SteemitAvatar username={account.username} size="36" /><span className="username">@{account.username}</span>
                   </Menu.Item>
                 )}
                 <Menu.Item key="switch-account-actions" className="actions" disabled>
                   <Link to="/login">
-                    <FormattedMessage id="add_account" />
-                  </Link>
-                  <Link onClick={this.handleLogoutClick}>
-                    <FormattedMessage id="log_out" />
+                    <FormattedMessage id="use_another_account" />
                   </Link>
                 </Menu.Item>
               </Menu>
             }
           >
             <a className="ant-dropdown-link" href={undefined}>
-              <SteemitAvatar username={username} />
+              <span className="account-name">{user}</span>&nbsp;<SteemitAvatar username={username} />
             </a>
           </Dropdown>
           }
