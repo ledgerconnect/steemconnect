@@ -127,7 +127,7 @@
   "log_out": "Se déconnecter",
   "json_metadata": "Json Metadata",
   "manage_visibility": "Manage the visibility of your application in SteemConnect App Store.",
-  "max_characters": "Maximum 400 caractères",
+  "max_characters": "Maximum {characters} caractères",
   "next": "Suivant",
   "new_apps": "Nouvelle application",
   "new_password": "Nouveau mot de passe",

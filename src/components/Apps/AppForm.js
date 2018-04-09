@@ -154,7 +154,7 @@ class AppForm extends Component {
             />,
           )}
           <small>
-            <FormattedMessage id="max_characters" />
+            <FormattedMessage id="max_characters" values={{ characters: 2000 }} />
           </small>
         </Form.Item>
         <Form.Item
