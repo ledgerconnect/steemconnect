@@ -59,6 +59,8 @@ export default class Header extends Component {
         const metadata = JSON.parse(auth.user.json_metadata);
         if (metadata && metadata.profile && metadata.profile.name) {
           user = metadata.profile.name;
+        } else {
+          user = username;
         }
       } catch (e) {
         // Do nothing
@@ -97,7 +99,7 @@ export default class Header extends Component {
             }
           >
             <a className="ant-dropdown-link" href={undefined}>
-              <span className="account-name">{user}</span>&nbsp;<SteemitAvatar username={username} />
+              <span className="account-name">{username}</span>&nbsp;<SteemitAvatar username={username} />
             </a>
           </Dropdown>
           }
