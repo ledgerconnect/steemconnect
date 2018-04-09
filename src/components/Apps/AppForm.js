@@ -145,7 +145,7 @@ class AppForm extends Component {
           {getFieldDecorator('description', {
             rules: [
               { required: true, message: intl.formatMessage({ id: 'error_required' }) },
-              { max: 2000 },
+              { max: 400 },
             ],
             initialValue: data.description,
           })(
@@ -154,7 +154,7 @@ class AppForm extends Component {
             />,
           )}
           <small>
-            <FormattedMessage id="max_characters" values={{ characters: 2000 }} />
+            <FormattedMessage id="max_characters" values={{ characters: 400 }} />
           </small>
         </Form.Item>
         <Form.Item
@@ -186,7 +186,7 @@ class AppForm extends Component {
           {getFieldDecorator('redirect_uris', {
             rules: [
               { required: true, message: intl.formatMessage({ id: 'error_required' }) },
-              { max: 400 },
+              { max: 2000 },
               { validator: this.redirectUriValidator },
             ],
             initialValue: redirectUris,
