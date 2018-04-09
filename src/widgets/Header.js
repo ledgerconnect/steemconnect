@@ -87,7 +87,7 @@ export default class Header extends Component {
                 </Menu.Item>
                 {accounts.filter(account => account.username !== username).map(account =>
                   <Menu.Item key={account.username}>
-                    <SteemitAvatar username={account.username} size="36" /><span className="username">@{account.username}</span>
+                    <SteemitAvatar username={account.username} size="36" /><span className="other-account">{account.username}</span>
                   </Menu.Item>
                 )}
                 <Menu.Item key="switch-account-actions" className="actions" disabled>
