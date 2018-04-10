@@ -20,9 +20,8 @@ const issueAppToken = async (proxy, user, scope = []) => {
   );
 
   try {
-    await tokens.create({ client_id: proxy, user, token }).then(() => {
-      debug(`A token for user @${user} with ${proxy} as proxy has been saved on database.`);
-    });
+    await tokens.create({ client_id: proxy, user, token });
+    debug(`A token for user @${user} with ${proxy} as proxy has been saved on database.`);
   } catch (error) {
     throw new Error(error);
   }
