@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import qs from 'query-string';
 import fetch from 'isomorphic-fetch';
-import { authorize, login, addPostingAuthority } from '../../utils/auth';
+import { authorize, login, hasAuthority, addPostingAuthority } from '../../utils/auth';
 import SteemitAvatar from '../../widgets/SteemitAvatar';
 import Loading from '../../widgets/Loading';
 import SignForm from '../Form/Sign';
@@ -31,6 +31,7 @@ export default class Authorize extends Component {
         state: PropTypes.string,
       }),
     }),
+    auth: PropTypes.shape(),
   };
 
   constructor(props) {
@@ -108,9 +109,14 @@ export default class Authorize extends Component {
 
   changeAccount = () => {
     const { clientId, responseType, redirectUri, scope, state } = this.state;
-    authorize({ clientId, scope, responseType }, (err, res) => {
-      window.location = `${redirectUri}?${qs.stringify({ ...res, state })}`;
-    });
+    const { auth } = this.props;
+    if (auth.isAuthenticated && auth.user && hasAuthority(auth.user, clientId)) {
+      authorize({ clientId, scope, responseType }, (err, res) => {
+        window.location = `${redirectUri}?${qs.stringify({ ...res, state })}`;
+      });
+    } else {
+      this.setState({ step: 3 });
+    }
   }
 
   render() {
