@@ -27,6 +27,28 @@ module.exports = {
       type: Sequelize.DATE,
     },
   })
-    .then(() => queryInterface.addIndex('tokens', { fields: ['token'], unique: true })),
-  down: queryInterface => queryInterface.dropTable('tokens'),
+    .then(() => {
+      queryInterface.addIndex('tokens', { fields: ['token'], unique: true });
+      queryInterface.sequelize.query('CREATE FUNCTION public.delete_expired_tokens_func()\n' +
+      'RETURNS trigger\n' +
+      'LANGUAGE \'plpgsql\'\n' +
+      'COST 100\n' +
+      'VOLATILE NOT LEAKPROOF\n' +
+      'AS $BODY$\n' +
+      'BEGIN\n' +
+      'DELETE FROM tokens WHERE created_at < NOW() - INTERVAL \'8 days\';\n' +
+      'RETURN NULL;\n' +
+      'END;\n' +
+      '$BODY$;');
+      queryInterface.sequelize.query('CREATE TRIGGER delete_expired_tokens_trigger\n' +
+        'AFTER INSERT\n' +
+        'ON public.tokens\n' +
+        'FOR EACH ROW\n' +
+        'EXECUTE PROCEDURE public.delete_expired_tokens_func();');
+    }),
+  down: (queryInterface) => {
+    queryInterface.dropTable('tokens');
+    queryInterface.sequelize.query('DROP TRIGGER delete_expired_tokens_trigger ON public.tokens;');
+    queryInterface.sequelize.query('DROP FUNCTION public.delete_expired_tokens_func();');
+  },
 };
