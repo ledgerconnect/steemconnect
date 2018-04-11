@@ -36,7 +36,7 @@ router.all('/api/oauth2/authorize', authenticate('user'), async (req, res) => {
     res.json({ code });
   } else {
     debug(`Issue app token for user @${req.user} using @${clientId} proxy.`);
-    const accessToken = issueAppToken(clientId, req.user, scope);
+    const accessToken = await issueAppToken(clientId, req.user, scope);
     res.json({
       access_token: accessToken,
       expires_in: config.token_expiration,
@@ -46,9 +46,9 @@ router.all('/api/oauth2/authorize', authenticate('user'), async (req, res) => {
 });
 
 /** Request app access token */
-router.all('/api/oauth2/token', authenticate(['code', 'refresh']), (req, res) => {
+router.all('/api/oauth2/token', authenticate(['code', 'refresh']), async (req, res) => {
   debug(`Issue app token for user @${req.user} using @${req.proxy} proxy.`);
-  const accessToken = issueAppToken(req.proxy, req.user, req.scope);
+  const accessToken = await issueAppToken(req.proxy, req.user, req.scope);
   const payload = {
     access_token: accessToken,
     expires_in: config.token_expiration,
