@@ -12,7 +12,7 @@ const issueUserToken = user => (
 );
 
 /** Create a new access token for application and store it on the database */
-const issueAppToken = (proxy, user, scope = []) => {
+const issueAppToken = async (proxy, user, scope = []) => {
   const token = jwt.sign(
     { role: 'app', proxy, user, scope },
     process.env.JWT_SECRET,
@@ -20,9 +20,8 @@ const issueAppToken = (proxy, user, scope = []) => {
   );
 
   try {
-    tokens.create({ client_id: proxy, user, token }).then(() => {
-      debug(`A token for user @${user} with ${proxy} as proxy has been saved on database.`);
-    });
+    await tokens.create({ client_id: proxy, user, token });
+    debug(`A token for user @${user} with ${proxy} as proxy has been saved on database.`);
   } catch (error) {
     throw new Error(error);
   }
