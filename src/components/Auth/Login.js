@@ -4,6 +4,7 @@ import { authorize, login } from '../../utils/auth';
 import SignForm from '../Form/Sign';
 import ChooseAccountForm from '../Form/ChooseAccount';
 import Loading from '../../widgets/Loading';
+import { getAccounts } from '../../utils/localStorage';
 import './Login.less';
 
 
@@ -26,11 +27,9 @@ export default class Login extends Component {
 
   componentWillMount() {
     let step = 1;
-    if (localStorage && localStorage.getItem('accounts')) {
-      const accounts = JSON.parse(localStorage.getItem('accounts'));
-      if (accounts && accounts.length > 0) {
-        step = 2;
-      }
+    const accounts = getAccounts();
+    if (accounts.length > 0) {
+      step = 2;
     }
     this.setState({ step });
   }

@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import qs from 'query-string';
 import fetch from 'isomorphic-fetch';
 import { authorize, login, hasAuthority, addPostingAuthority } from '../../utils/auth';
+import { getAccounts } from '../../utils/localStorage';
 import SteemitAvatar from '../../widgets/SteemitAvatar';
 import Loading from '../../widgets/Loading';
 import SignForm from '../Form/Sign';
@@ -94,11 +95,9 @@ export default class Authorize extends Component {
   };
 
   selectNextStep = () => {
-    if (localStorage && localStorage.getItem('accounts')) {
-      const accounts = JSON.parse(localStorage.getItem('accounts'));
-      if (accounts && accounts.length > 0) {
-        return 2;
-      }
+    const accounts = getAccounts();
+    if (accounts.length > 0) {
+      return 2;
     }
     return 3;
   }

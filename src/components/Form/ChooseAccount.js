@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Button, Icon } from 'antd';
 import SteemitAvatar from '../../widgets/SteemitAvatar';
+import { getAccounts } from '../../utils/localStorage';
 import './ChooseAccount.less';
 
 export default class ChooseAccount extends Component {
@@ -12,32 +13,29 @@ export default class ChooseAccount extends Component {
   };
   constructor(props) {
     super(props);
-    let accounts = [];
-    if (localStorage && localStorage.getItem('accounts')) {
-      accounts = JSON.parse(localStorage.getItem('accounts'));
-    }
+    const accounts = getAccounts();
     this.state = {
       accounts,
     };
   }
   changeAccount = (username) => {
-    if (localStorage && localStorage.getItem('accounts')) {
-      const { callback } = this.props;
-      const accounts = JSON.parse(localStorage.getItem('accounts'));
+    const { callback } = this.props;
+    const accounts = getAccounts();
+    if (accounts.length > 0) {
       const account = accounts.find(acc => acc.username === username);
       localStorage.setItem('token', account.token);
-      callback();
     }
+    callback();
   }
   removeAccount = (username) => {
-    if (localStorage && localStorage.getItem('accounts')) {
-      let accounts = JSON.parse(localStorage.getItem('accounts'));
+    let accounts = getAccounts();
+    if (accounts.length > 0) {
       accounts = accounts.filter(acc => acc.username !== username);
       localStorage.setItem('accounts', JSON.stringify(accounts));
       this.setState({ accounts });
-      if (accounts.length === 1) {
-        this.setState({ mode: 'select' });
-      }
+    }
+    if (accounts.length === 1) {
+      this.setState({ mode: 'select' });
     }
   }
   render() {

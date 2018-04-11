@@ -2,6 +2,7 @@ import steem from '@steemit/steem-js';
 import fetch from 'isomorphic-fetch';
 import { decode } from '@steemit/steem-js/lib/auth/memo';
 import { key_utils } from '@steemit/steem-js/lib/auth/ecc'; // eslint-disable-line camelcase
+import { getAccounts } from './localStorage';
 
 export const login = ({ username, wif, role = 'posting' }, cb) => {
   fetch(`/api/login/challenge?username=${username}&role=${role}`)
@@ -9,7 +10,7 @@ export const login = ({ username, wif, role = 'posting' }, cb) => {
     .then((data) => {
       const token = decode(wif, data.code).substring(1);
       localStorage.setItem('token', token);
-      let accounts = JSON.parse(localStorage.getItem('accounts')) || [];
+      let accounts = getAccounts();
       accounts = accounts.filter(account => account.username !== username);
       accounts.push({
         username,

@@ -7,6 +7,7 @@ import { Link } from 'react-router';
 import SteemitAvatar from './SteemitAvatar';
 import './Header.less';
 import { logout, authenticate } from '../actions/auth';
+import { getAccounts } from '../utils/localStorage';
 
 @connect(
   state => ({
@@ -28,8 +29,8 @@ export default class Header extends Component {
   handleLogoutClick = () => {
     // eslint-disable-next-line no-shadow
     const { logout, username } = this.props;
-    if (localStorage && localStorage.getItem('accounts')) {
-      let accounts = JSON.parse(localStorage.getItem('accounts'));
+    let accounts = getAccounts();
+    if (accounts.length > 0) {
       accounts = accounts.filter(acc => acc.username !== username);
       localStorage.setItem('accounts', JSON.stringify(accounts));
     }
@@ -39,8 +40,8 @@ export default class Header extends Component {
   changeAccount = ({ key }) => {
     // eslint-disable-next-line no-shadow
     const { authenticate, username } = this.props;
-    if (key !== username && localStorage && localStorage.getItem('accounts')) {
-      const accounts = JSON.parse(localStorage.getItem('accounts'));
+    const accounts = getAccounts();
+    if (key !== username && accounts.length > 0) {
       const account = accounts.find(acc => acc.username === key);
       localStorage.setItem('token', account.token);
       authenticate();
@@ -49,10 +50,7 @@ export default class Header extends Component {
 
   render() {
     const { username, auth } = this.props;
-    let accounts = [];
-    if (localStorage && localStorage.getItem('accounts')) {
-      accounts = JSON.parse(localStorage.getItem('accounts'));
-    }
+    const accounts = getAccounts();
     let user = '';
     if (auth && auth.user && auth.user.json_metadata) {
       try {
