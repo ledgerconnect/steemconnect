@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Form, Modal, Input, Radio, notification } from 'antd';
 import { Link } from 'react-router';
+import validator from 'validator';
 
 class AppForm extends Component {
   static propTypes = {
@@ -41,6 +42,23 @@ class AppForm extends Component {
     const { data } = this.state;
     data[name] = !data[name];
     this.setState({ data });
+  }
+
+  redirectUriValidator = (rule, value, callback) => {
+    const { intl } = this.props;
+    const uris = value.split('\n');
+    const urlOptions = {
+      require_protocol: true,
+      require_valid_protocol: false,
+      allow_underscores: true,
+    };
+    for (let i = 0; i < uris.length; i += 1) {
+      if (!validator.isURL(uris[i], urlOptions)) {
+        callback(intl.formatMessage({ id: 'error_url_format' }, { url: uris[i] }));
+        return;
+      }
+    }
+    callback();
   }
 
   confirm = () => {
@@ -136,14 +154,13 @@ class AppForm extends Component {
             />,
           )}
           <small>
-            <FormattedMessage id="max_characters" />
+            <FormattedMessage id="max_characters" values={{ characters: 400 }} />
           </small>
         </Form.Item>
         <Form.Item
           label={<FormattedMessage id="app_icon" />}
         >
           {getFieldDecorator('icon', {
-            rules: [{ required: true, message: intl.formatMessage({ id: 'error_required' }) }],
             initialValue: data.icon,
           })(
             <Input
@@ -169,7 +186,8 @@ class AppForm extends Component {
           {getFieldDecorator('redirect_uris', {
             rules: [
               { required: true, message: intl.formatMessage({ id: 'error_required' }) },
-              { max: 400 },
+              { max: 2000 },
+              { validator: this.redirectUriValidator },
             ],
             initialValue: redirectUris,
           })(
