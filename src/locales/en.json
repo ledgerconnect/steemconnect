@@ -83,6 +83,7 @@
   "error_account_recovery_required": "Please input the recovery account username",
   "error_amount_format": "Please type a valid amount, 12.123 STEEM or 12.123 SBD for example",
   "error_amount_symbol": "Please select a valid symbol: STEEM or SBD",
+  "error_invalid_scope": "The parameter scope contains one or more invalid scopes. It must be one of these values: {scopes}",
   "error_tx_base64_encode": "The url parameter must be base64 encoded",
   "error_tx_base64_json": "The url parameter must be an array of operations",
   "error_tx_base64_required": "The url parameter is required",

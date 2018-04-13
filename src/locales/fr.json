@@ -83,6 +83,7 @@
   "error_account_recovery_required": "Veuillez saisir le compte de récupération",
   "error_amount_format": "Veuillez saisir un montant valide, 12.123 STEEM ou 12.123 SBD par exemple",
   "error_amount_symbol": "Veuillez choisir un symbole valide: STEEM ou SBD",
+  "error_invalid_scope": "Le paramètre scope contient une ou plusieurs valeurs erronées. Voici la liste des valeurs autorisées: {scopes}",
   "error_tx_base64_encode": "Le paramètre de l'url doit être encodé en base64",
   "error_tx_base64_json": "Le paramètre de l'url doit être un tableau d'opérations",
   "error_tx_base64_required": "Le paramètre de l'url est obligatoire",

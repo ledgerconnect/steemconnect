@@ -7,6 +7,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import qs from 'query-string';
 import fetch from 'isomorphic-fetch';
+import intersection from 'lodash/intersection';
+import difference from 'lodash/difference';
 import { authorize, login, hasAuthority, addPostingAuthority } from '../../utils/auth';
 import { getAccounts } from '../../utils/localStorage';
 import SteemitAvatar from '../../widgets/SteemitAvatar';
@@ -56,39 +58,34 @@ export default class Authorize extends Component {
 
   async componentWillMount() {
     const { scope, clientId } = this.state;
-    let scopes = [];
-    if (scope !== 'login') {
-      if (scope) {
-        scopes = scope
-          .split(',')
-          .filter(o => config.authorized_operations.includes(o) || o === 'offline');
+    if (scope !== '') {
+      if (difference(scope.split(','), config.authorized_operations.concat(['login', 'offline'])).length > 0) {
+        this.setState({ step: 4 });
+        return;
       }
-      if (scopes.length === 0) {
-        scopes = config.authorized_operations;
-      }
+    }
+    let scopes = intersection(scope.split(','), config.authorized_operations);
+    if (scope.split(',').length === 0) {
+      scopes = config.authorized_operations;
     }
     const app = await fetch(`/api/apps/@${clientId}`)
       .then(res => res.json());
-    this.setState({ scopes, app });
+    this.setState({ scopes, app, step: 1 });
   }
 
-  componentWillReceiveProps = () => {
-    this.setState({ step: 1 });
-  };
-
   authorize = (auth) => {
-    const { clientId, responseType, redirectUri, scope, state } = this.state;
+    const { clientId, responseType, redirectUri, scope, state, scopes } = this.state;
     this.setState({ step: 0 });
     login({ ...auth }, () => {
-      if (scope === 'login') {
-        authorize({ clientId, scope, responseType }, (errA, resA) => {
-          window.location = `${redirectUri}?${qs.stringify({ ...resA, state })}`;
-        });
-      } else {
+      if (scope === '' || intersection(scopes, config.authorized_operations).length > 0) {
         addPostingAuthority({ ...auth, clientId }, () => {
           authorize({ clientId, scope, responseType }, (errA, resA) => {
             window.location = `${redirectUri}?${qs.stringify({ ...resA, state })}`;
           });
+        });
+      } else {
+        authorize({ clientId, scope, responseType }, (errA, resA) => {
+          window.location = `${redirectUri}?${qs.stringify({ ...resA, state })}`;
         });
       }
     });
@@ -155,14 +152,16 @@ export default class Authorize extends Component {
                     </div>
                   </div>
                   <p>
-                    {scope === 'login' &&
+                    {scope !== '' &&
+                    intersection(scopes, config.authorized_operations).length === 0 &&
+                    intersection(scope.split(','), ['login', 'offline']).length > 0 &&
                     <FormattedMessage
                       id="authorize_login_question"
                       values={{
                         username: <b> {(app && app.name) || `@${clientId}`}</b>,
                       }}
                     />}
-                    {scope !== 'login' &&
+                    {(scope === '' || intersection(scopes, config.authorized_operations).length > 0) &&
                     <FormattedMessage
                       id="authorize_question"
                       values={{
@@ -191,6 +190,15 @@ export default class Authorize extends Component {
                 callback={this.changeAccount}
               />}
               {step === 3 && <SignForm roles={requiredRoles} sign={this.authorize} />}
+              {step === 4 &&
+              <div>
+                <div className="Sign__result-title-bg">
+                  <object data="/img/sign/fail.svg" type="image/svg+xml" id="error-icon" />
+                </div>
+                <h2><FormattedMessage id="error" /></h2>
+                <FormattedMessage id="error_invalid_scope" values={{ scopes: <b>{config.authorized_operations.concat(['login', 'offline']).join(', ')}</b> }} />
+              </div>
+              }
             </div>
             <div className="Sign__footer">
               <Link to="/" target="_blank" rel="noopener noreferrer"><FormattedMessage id="about_steemconnect" /></Link>
