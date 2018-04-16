@@ -37,6 +37,7 @@ module.exports = {
       'AS $BODY$\n' +
       'BEGIN\n' +
       'DELETE FROM tokens WHERE created_at < NOW() - INTERVAL \'8 days\';\n' +
+      'DELETE FROM tokens WHERE id IN(SELECT id FROM tokens WHERE client_id = new."client_id" AND "user" = new."user" ORDER BY created_at DESC OFFSET 20);\n' +
       'RETURN NULL;\n' +
       'END;\n' +
       '$BODY$;');
