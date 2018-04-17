@@ -25,6 +25,7 @@ const getErrorMessage = (error) => {
 };
 
 const isOperationAuthor = (operation, query, username) => {
+  username = username.toLowerCase();
   if (Object.prototype.hasOwnProperty.call(operationAuthor, operation)) {
     const field = operationAuthor[operation];
     if (!field) { return false; }
@@ -34,6 +35,7 @@ const isOperationAuthor = (operation, query, username) => {
 };
 
 const setDefaultAuthor = (operation, query, username) => {
+  username = username.toLowerCase();
   const cQuery = cloneDeep(query);
   if (Object.prototype.hasOwnProperty.call(operationAuthor, operation)) {
     const field = operationAuthor[operation];
