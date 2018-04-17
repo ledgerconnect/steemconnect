@@ -132,8 +132,7 @@ export default class Authorize extends Component {
                       <SteemitAvatar username={clientId} size="40" />}
                       {app &&
                       <img
-                        src={app.icon}
-                        style={{ height: '40px', width: '40px' }}
+                        src={`https://steemitimages.com/40x40/${app.icon}`}
                         alt="icon"
                       />}
                     </div>
@@ -143,14 +142,14 @@ export default class Authorize extends Component {
                     <FormattedMessage
                       id="authorize_login_question"
                       values={{
-                        username: <b> @{clientId}</b>,
+                        username: <b> {(app && app.name) || `@${clientId}`}</b>,
                       }}
                     />}
                     {scope !== 'login' &&
                     <FormattedMessage
                       id="authorize_question"
                       values={{
-                        username: <b> @{clientId}</b>,
+                        username: <b> {(app && app.name && `${app.name} (@${clientId})`) || `@${clientId}`}</b>,
                         role: <b><FormattedMessage id="posting" /></b>,
                       }}
                     />}
