@@ -106,10 +106,14 @@ export default class Authorize extends Component {
   changeAccount = () => {
     const { clientId, responseType, redirectUri, scope, state } = this.state;
     const { auth } = this.props;
-    if (auth.isAuthenticated && auth.user && hasAuthority(auth.user, clientId)) {
-      authorize({ clientId, scope, responseType }, (err, res) => {
-        window.location = `${redirectUri}?${qs.stringify({ ...res, state })}`;
-      });
+    if (auth.isAuthenticated && auth.user) {
+      if (intersection(scope.split(','), config.authorized_operations).length > 0 && !hasAuthority(auth.user, clientId)) {
+        this.setState({ step: 3 });
+      } else {
+        authorize({ clientId, scope, responseType }, (err, res) => {
+          window.location = `${redirectUri}?${qs.stringify({ ...res, state })}`;
+        });
+      }
     } else {
       this.setState({ step: 3 });
     }
@@ -170,9 +174,14 @@ export default class Authorize extends Component {
                       }}
                     />}
                   </p>
-                  {scopes.length > 0 &&
+                  {(scopes.length > 0 || scope.indexOf('offline') !== -1) &&
                   <ul className="authorize-operations">
-                    {scopes.map(op => <li><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase(op === 'offline' ? 'offline_access' : op)}</li>)}
+                    {scopes.map(op => <li><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase(op)}</li>)}
+                    {scope.indexOf('offline') !== -1 && <li><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase('offline_access')}</li>}
+                  </ul>}
+                  {scope === '' &&
+                  <ul className="authorize-operations">
+                    {config.authorized_operations.map(op => <li><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase(op === 'offline' ? 'offline_access' : op)}</li>)}
                   </ul>}
                   <Form.Item>
                     <Button
