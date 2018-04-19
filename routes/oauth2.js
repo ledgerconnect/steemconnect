@@ -3,6 +3,7 @@ const debug = require('debug')('sc2:server');
 const Sequelize = require('sequelize');
 const { issueAppToken, issueAppCode, issueAppRefreshToken } = require('../helpers/token');
 const { authenticate } = require('../helpers/middleware');
+const { pushAuthorizationScope } = require('../helpers/authorization');
 const config = require('../config.json');
 
 const router = express.Router(); // eslint-disable-line new-cap
@@ -29,7 +30,7 @@ router.all('/api/oauth2/authorize', authenticate('user'), async (req, res) => {
   const clientId = req.query.client_id;
   const responseType = req.query.response_type;
   const scope = req.query.scope ? req.query.scope.split(',') : [];
-
+  await pushAuthorizationScope(req, clientId, scope);
   if (responseType === 'code') {
     debug(`Issue app code for user @${req.user} using @${clientId} proxy.`);
     const code = issueAppCode(clientId, req.user, scope);
