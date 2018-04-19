@@ -25,13 +25,14 @@ export default class Sign extends Component {
         </div>
         <h2><FormattedMessage id="congratulations" /></h2>
         <h5><FormattedMessage id="success_operation_broadcasted" /></h5>
+        {result.id &&
         <h5>
           <br />
           <FormattedMessage id="transaction_id" />:<br />
           <a href={`https://steemd.com/tx/${result.id}`} target="_blank" rel="noreferrer noopener">
             {result.id}
           </a>
-        </h5>
+        </h5>}
         {cb && <p><FormattedMessage id="redirect_ten_seconds" /></p>}
         {cb && <a className="Sign__button" href={cb} target="_blank" rel="noopener noreferrer"><FormattedMessage id="click_here" /></a>}
       </div>
