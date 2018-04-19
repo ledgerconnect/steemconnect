@@ -57,6 +57,21 @@ const strategy = (req, res, next) => {
 };
 
 const authenticate = roles => async (req, res, next) => {
+  if (req.token) {
+    const tokenStatus = await tokens.findOne({ where: { token: req.token } });
+    if (tokenStatus) {
+      const appStatus = await apps.findOne({
+        where: { client_id: tokenStatus.client_id },
+      });
+      if (!appStatus || (appStatus && appStatus.is_disabled)) {
+        res.status(401).json({
+          error: 'application_disabled',
+          error_description: 'This application has been disabled by SteemConnect',
+        });
+        return;
+      }
+    }
+  }
   let role = roles;
   if (Array.isArray(roles)) {
     if (req.role && roles.includes(req.role)) {

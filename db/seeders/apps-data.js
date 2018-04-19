@@ -15,6 +15,7 @@ module.exports = {
         beneficiaries: JSON.stringify([{ account: 'busy.org', weight: 1500 }]),
         is_approved: true,
         is_public: true,
+        is_disabled: false,
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -30,6 +31,7 @@ module.exports = {
         beneficiaries: JSON.stringify([]),
         is_approved: true,
         is_public: true,
+        is_disabled: false,
         created_at: new Date(),
         updated_at: new Date(),
       }
