@@ -176,8 +176,8 @@ export default class Authorize extends Component {
                   </p>
                   {(scopes.length > 0 || scope.indexOf('offline') !== -1) &&
                   <ul className="authorize-operations">
-                    {scopes.map(op => <li><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase(op)}</li>)}
                     {scope.indexOf('offline') !== -1 && <li><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase('offline_access')}</li>}
+                    {scopes.map(op => <li><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase(op)}</li>)}
                   </ul>}
                   {scope === '' &&
                   <ul className="authorize-operations">
