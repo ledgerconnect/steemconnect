@@ -57,9 +57,9 @@ const strategy = (req, res, next) => {
 };
 
 const authenticate = roles => async (req, res, next) => {
-  if (req.token && req.token.proxy) {
+  if (req.proxy) {
     const appStatus = await apps.findOne({
-      where: { client_id: req.token.proxy },
+      where: { client_id: req.proxy },
     });
     if (!appStatus || (appStatus && appStatus.is_disabled)) {
       res.status(401).json({
