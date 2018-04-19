@@ -107,7 +107,7 @@ export default class Authorize extends Component {
     const { clientId, responseType, redirectUri, scope, state } = this.state;
     const { auth } = this.props;
     if (auth.isAuthenticated && auth.user) {
-      if (intersection(scope.split(','), config.authorized_operations).length > 0 && !hasAuthority(auth.user, clientId)) {
+      if ((scope === '' || intersection(scope.split(','), config.authorized_operations).length > 0) && !hasAuthority(auth.user, clientId)) {
         this.setState({ step: 3 });
       } else {
         authorize({ clientId, scope, responseType }, (err, res) => {
