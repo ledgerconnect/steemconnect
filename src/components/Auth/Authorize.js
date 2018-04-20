@@ -6,10 +6,11 @@ import { titleCase } from 'change-case';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import qs from 'query-string';
+import jwt from 'jsonwebtoken';
 import fetch from 'isomorphic-fetch';
 import intersection from 'lodash/intersection';
 import difference from 'lodash/difference';
-import { authorize, login, hasAuthority, addPostingAuthority } from '../../utils/auth';
+import { authorize, login, addPostingAuthority } from '../../utils/auth';
 import { getAccounts } from '../../utils/localStorage';
 import SteemitAvatar from '../../widgets/SteemitAvatar';
 import Loading from '../../widgets/Loading';
@@ -34,7 +35,6 @@ export default class Authorize extends Component {
         state: PropTypes.string,
       }),
     }),
-    auth: PropTypes.shape(),
   };
 
   constructor(props) {
@@ -103,11 +103,19 @@ export default class Authorize extends Component {
     this.setState({ step: 3 });
   }
 
+  hasAuthorityFromStorage = (username, clientId) => {
+    const accounts = getAccounts();
+    const account = accounts.find(acc => acc.username === username);
+    const auths = account.postingAuths.map(auth => auth[0]);
+    return auths.indexOf(clientId) !== -1;
+  }
+
   changeAccount = () => {
     const { clientId, responseType, redirectUri, scope, state } = this.state;
-    const { auth } = this.props;
-    if (auth.isAuthenticated && auth.user) {
-      if ((scope === '' || intersection(scope.split(','), config.authorized_operations).length > 0) && !hasAuthority(auth.user, clientId)) {
+    const accessToken = localStorage.getItem('token');
+    if (accessToken) {
+      const decodedToken = jwt.decode(accessToken);
+      if (decodedToken.user && (scope === '' || intersection(scope.split(','), config.authorized_operations).length > 0) && !this.hasAuthorityFromStorage(decodedToken.user, clientId)) {
         this.setState({ step: 3 });
       } else {
         authorize({ clientId, scope, responseType }, (err, res) => {
@@ -177,7 +185,7 @@ export default class Authorize extends Component {
                   {(scopes.length > 0 || scope.indexOf('offline') !== -1) &&
                   <ul className="authorize-operations">
                     {scope.indexOf('offline') !== -1 && <li><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase('offline_access')}</li>}
-                    {scopes.map(op => <li><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase(op)}</li>)}
+                    {scopes.map(op => <li key={op}><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase(op)}</li>)}
                   </ul>}
                   {scope === '' &&
                   <ul className="authorize-operations">
