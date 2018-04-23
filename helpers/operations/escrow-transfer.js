@@ -53,7 +53,7 @@ const validate = async (query, errors) => {
     errors.push({ field: 'fee', error: 'error_amount_format' });
   }
 
-  if (!isEmpty(query.escrow_id) && !validator.isInt(query.escrow_id)) {
+  if (!validator.isInt(query.escrow_id)) {
     errors.push({ field: 'escrow_id', error: 'error_integer_format' });
   }
 
