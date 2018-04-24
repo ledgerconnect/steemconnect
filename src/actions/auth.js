@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import { browserHistory } from 'react-router';
 import { createAction } from 'redux-actions';
+import { getAccounts } from '../utils/localStorage';
 
 export const AUTHENTICATE_REQUEST = '@auth/AUTHENTICATE_REQUEST';
 export const authenticateRequest = createAction(AUTHENTICATE_REQUEST);
@@ -25,6 +26,18 @@ export const authenticate = () =>
       })
         .then(res => res.json())
         .then((data) => {
+          const accounts = getAccounts();
+          const idx = accounts.findIndex(acc => acc.username === data.name);
+          if (idx >= 0) {
+            accounts[idx].postingAuths = data.account.posting.account_auths;
+          } else {
+            accounts.push({
+              username: data.name,
+              token,
+              postingAuths: data.account.posting.account_auths,
+            });
+          }
+          localStorage.setItem('accounts', JSON.stringify(accounts));
           dispatch(authenticateSuccess({
             user: data.account,
             token,
