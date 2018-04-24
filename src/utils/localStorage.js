@@ -35,3 +35,11 @@ export const setLastUsername = (username) => {
 export const clear = () => {
   ls.clear();
 };
+
+export const getAccounts = () => {
+  let accounts = [];
+  if (localStorage && localStorage.getItem('accounts')) {
+    accounts = JSON.parse(localStorage.getItem('accounts'));
+  }
+  return accounts;
+};

@@ -6,11 +6,16 @@ import { titleCase } from 'change-case';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import qs from 'query-string';
+import jwt from 'jsonwebtoken';
 import fetch from 'isomorphic-fetch';
-import { authorize, login, hasAuthority, addPostingAuthority } from '../../utils/auth';
+import intersection from 'lodash/intersection';
+import difference from 'lodash/difference';
+import { authorize, login, addPostingAuthority } from '../../utils/auth';
+import { getAccounts } from '../../utils/localStorage';
 import SteemitAvatar from '../../widgets/SteemitAvatar';
 import Loading from '../../widgets/Loading';
 import SignForm from '../Form/Sign';
+import ChooseAccountForm from '../Form/ChooseAccount';
 import config from '../../../config.json';
 import './Authorize.less';
 
@@ -30,7 +35,6 @@ export default class Authorize extends Component {
         state: PropTypes.string,
       }),
     }),
-    auth: PropTypes.shape(),
   };
 
   constructor(props) {
@@ -54,52 +58,74 @@ export default class Authorize extends Component {
 
   async componentWillMount() {
     const { scope, clientId } = this.state;
-    let scopes = [];
-    if (scope !== 'login') {
-      if (scope) {
-        scopes = scope
-          .split(',')
-          .filter(o => config.authorized_operations.includes(o) || o === 'offline');
+    if (scope !== '') {
+      if (difference(scope.split(','), config.authorized_operations.concat(['login', 'offline'])).length > 0) {
+        this.setState({ step: 4 });
+        return;
       }
-      if (scopes.length === 0) {
-        scopes = config.authorized_operations;
-      }
+    }
+    let scopes = intersection(scope.split(','), config.authorized_operations);
+    if (scope.split(',').length === 0) {
+      scopes = config.authorized_operations;
     }
     const app = await fetch(`/api/apps/@${clientId}`)
       .then(res => res.json());
-    this.setState({ scopes, app });
+    this.setState({ scopes, app, step: 1 });
   }
 
-  componentWillReceiveProps = (props) => {
-    const { clientId, responseType, redirectUri, scope, state } = this.state;
-    const { auth } = props;
-    if (auth.isAuthenticated && auth.user && hasAuthority(auth.user, clientId)) {
-      authorize({ clientId, scope, responseType }, (err, res) => {
-        window.location = `${redirectUri}?${qs.stringify({ ...res, state })}`;
-      });
-    } else if (auth.isLoaded) {
-      this.setState({ step: 1 });
-    }
-  };
-
-
   authorize = (auth) => {
-    const { clientId, responseType, redirectUri, scope, state } = this.state;
+    const { clientId, responseType, redirectUri, scope, state, scopes } = this.state;
     this.setState({ step: 0 });
     login({ ...auth }, () => {
-      if (scope === 'login') {
-        authorize({ clientId, scope, responseType }, (errA, resA) => {
-          window.location = `${redirectUri}?${qs.stringify({ ...resA, state })}`;
-        });
-      } else {
+      if (scope === '' || intersection(scopes, config.authorized_operations).length > 0) {
         addPostingAuthority({ ...auth, clientId }, () => {
           authorize({ clientId, scope, responseType }, (errA, resA) => {
             window.location = `${redirectUri}?${qs.stringify({ ...resA, state })}`;
           });
         });
+      } else {
+        authorize({ clientId, scope, responseType }, (errA, resA) => {
+          window.location = `${redirectUri}?${qs.stringify({ ...resA, state })}`;
+        });
       }
     });
   };
+
+  selectNextStep = () => {
+    const accounts = getAccounts();
+    if (accounts.length > 0) {
+      return 2;
+    }
+    return 3;
+  }
+
+  addAccount = () => {
+    this.setState({ step: 3 });
+  }
+
+  hasAuthorityFromStorage = (username, clientId) => {
+    const accounts = getAccounts();
+    const account = accounts.find(acc => acc.username === username);
+    const auths = account.postingAuths.map(auth => auth[0]);
+    return auths.indexOf(clientId) !== -1;
+  }
+
+  changeAccount = () => {
+    const { clientId, responseType, redirectUri, scope, state } = this.state;
+    const accessToken = localStorage.getItem('token');
+    if (accessToken) {
+      const decodedToken = jwt.decode(accessToken);
+      if (decodedToken.user && (scope === '' || intersection(scope.split(','), config.authorized_operations).length > 0) && !this.hasAuthorityFromStorage(decodedToken.user, clientId)) {
+        this.setState({ step: 3 });
+      } else {
+        authorize({ clientId, scope, responseType }, (err, res) => {
+          window.location = `${redirectUri}?${qs.stringify({ ...res, state })}`;
+        });
+      }
+    } else {
+      this.setState({ step: 3 });
+    }
+  }
 
   render() {
     const { clientId, scope, step, scopes, app } = this.state;
@@ -138,14 +164,16 @@ export default class Authorize extends Component {
                     </div>
                   </div>
                   <p>
-                    {scope === 'login' &&
+                    {scope !== '' &&
+                    intersection(scopes, config.authorized_operations).length === 0 &&
+                    intersection(scope.split(','), ['login', 'offline']).length > 0 &&
                     <FormattedMessage
                       id="authorize_login_question"
                       values={{
                         username: <b> {(app && app.name) || `@${clientId}`}</b>,
                       }}
                     />}
-                    {scope !== 'login' &&
+                    {(scope === '' || intersection(scopes, config.authorized_operations).length > 0) &&
                     <FormattedMessage
                       id="authorize_question"
                       values={{
@@ -154,21 +182,40 @@ export default class Authorize extends Component {
                       }}
                     />}
                   </p>
-                  {scopes.length > 0 &&
+                  {(scopes.length > 0 || scope.indexOf('offline') !== -1) &&
                   <ul className="authorize-operations">
-                    {scopes.map(op => <li><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase(op === 'offline' ? 'offline_access' : op)}</li>)}
+                    {scope.indexOf('offline') !== -1 && <li><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase('offline_access')}</li>}
+                    {scopes.map(op => <li key={op}><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase(op)}</li>)}
+                  </ul>}
+                  {scope === '' &&
+                  <ul className="authorize-operations">
+                    {config.authorized_operations.map(op => <li><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase(op === 'offline' ? 'offline_access' : op)}</li>)}
                   </ul>}
                   <Form.Item>
                     <Button
                       type="primary" htmlType="button" className="SignForm__button"
-                      onClick={() => this.setState({ step: 2 })}
+                      onClick={() => this.setState({ step: this.selectNextStep() })}
                     >
                       <FormattedMessage id="continue" />
                     </Button>
                   </Form.Item>
                 </Form>
               }
-              {step === 2 && <SignForm roles={requiredRoles} sign={this.authorize} />}
+              {step === 2 &&
+              <ChooseAccountForm
+                addAccount={this.addAccount}
+                callback={this.changeAccount}
+              />}
+              {step === 3 && <SignForm roles={requiredRoles} sign={this.authorize} />}
+              {step === 4 &&
+              <div>
+                <div className="Sign__result-title-bg">
+                  <object data="/img/sign/fail.svg" type="image/svg+xml" id="error-icon" />
+                </div>
+                <h2><FormattedMessage id="error" /></h2>
+                <FormattedMessage id="error_invalid_scope" values={{ scopes: <b>{config.authorized_operations.concat(['login', 'offline']).join(', ')}</b> }} />
+              </div>
+              }
             </div>
             <div className="Sign__footer">
               <Link to="/" target="_blank" rel="noopener noreferrer"><FormattedMessage id="about_steemconnect" /></Link>
