@@ -18,7 +18,7 @@
     "JWT_SECRET": {
       "generator": "secret"
     },
-    "STEEMJS_URL": {
+    "STEEMD_URL": {
       "required": true
     },
     "DEBUG": "sc2:*",
