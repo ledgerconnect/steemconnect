@@ -110,7 +110,7 @@ router.put('/@:clientId', authenticate('user'), async (req, res, next) => {
 });
 
 /** Reset client secret */
-router.put('/@:clientId/reset-secret', async (req, res, next) => {
+router.put('/@:clientId/reset-secret', authenticate('user'), async (req, res, next) => {
   const { clientId } = req.params;
   const secret = crypto.randomBytes(24).toString('hex');
   try {
