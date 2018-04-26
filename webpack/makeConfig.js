@@ -46,6 +46,7 @@ function makePlugins(options) {
   } else {
     plugins = plugins.concat([
       new webpack.optimize.ModuleConcatenationPlugin(),
+      new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, localeRegex),
       new webpack.optimize.UglifyJsPlugin({
         sourceMap: true,
         minimize: true,
