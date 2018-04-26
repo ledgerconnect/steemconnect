@@ -24,6 +24,7 @@ function makePlugins(options) {
         NODE_ENV: isDevelopment ? JSON.stringify('development') : JSON.stringify('production'),
         ENABLE_LOGGER: JSON.stringify(process.env.ENABLE_LOGGER),
         STEEMD_URL: JSON.stringify(process.env.STEEMD_URL || 'https://api.steemit.com'),
+        STEEMD_URL_SERVER: JSON.stringify(process.env.STEEMD_URL_SERVER || 'https://api.steemit.com'),
         IS_BROWSER: JSON.stringify(true),
       },
     }),

@@ -11,7 +11,9 @@ const db = require('./db/models');
 const { strategy } = require('./helpers/middleware');
 const logger = require('./helpers/logger');
 
-if (process.env.STEEMD_URL) {
+if (process.env.STEEMD_URL_SERVER) {
+  steem.api.setOptions({ url: process.env.STEEMD_URL_SERVER });
+} else if (process.env.STEEMD_URL) {
   steem.api.setOptions({ url: process.env.STEEMD_URL });
 }
 
