@@ -109,6 +109,25 @@ router.put('/@:clientId', authenticate('user'), async (req, res, next) => {
   }
 });
 
+/** Reset client secret */
+router.put('/@:clientId/reset-secret', authenticate('user'), async (req, res, next) => {
+  const { clientId } = req.params;
+  const secret = crypto.randomBytes(24).toString('hex');
+  try {
+    await req.db.apps.update({
+      secret,
+    }, {
+      where: {
+        client_id: clientId,
+        owner: req.user,
+      },
+    });
+    res.json({ success: true, secret });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.all('/authorized', authenticate('user'), async (req, res) => {
   const accounts = await req.steem.api.getAccountsAsync([req.user]);
   const postingAccountAuths = accounts[0].posting.account_auths;
