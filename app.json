@@ -18,9 +18,10 @@
     "JWT_SECRET": {
       "generator": "secret"
     },
-    "STEEMJS_URL": {
+    "STEEMD_URL": {
       "required": true
     },
+    "STEEMD_URL_SERVER": "",
     "DEBUG": "sc2:*",
     "DATABASE_NAME": "staging",
     "LOG_LEVEL": "info",
