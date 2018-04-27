@@ -1,4 +1,5 @@
 const steem = require('@steemit/steem-js');
+const moment = require('moment');
 
 const isEmpty = value => value === undefined || value === null || value === '';
 
@@ -50,6 +51,10 @@ const contentExists = async (auhtor, permlink) => {
   return content && parseInt(content.id, 10) !== 0;
 };
 
+const isDate = date => moment(date).isValid();
+const isPassedDate = date => moment().isAfter(date);
+const isDateBeforeDate = (dateA, dateB) => moment(dateA).isBefore(dateB);
+
 module.exports = {
   contentExists,
   isAsset,
@@ -57,4 +62,7 @@ module.exports = {
   normalizeAsset,
   normalizeUsername,
   userExists,
+  isDate,
+  isPassedDate,
+  isDateBeforeDate,
 };

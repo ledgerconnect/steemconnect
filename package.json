@@ -65,6 +65,7 @@
     "local-storage": "^1.4.2",
     "lodash": "^4.0.0",
     "lodash-webpack-plugin": "^0.10.6",
+    "moment": "^2.22.1",
     "morgan": "^1.9.0",
     "nodemon": "^1.12.1",
     "numeral": "^1.5.3",
