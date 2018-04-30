@@ -47,6 +47,23 @@ router.all('/api/oauth2/authorize', authenticate('user'), async (req, res) => {
 
 /** Request app access token */
 router.all('/api/oauth2/token', authenticate(['code', 'refresh']), async (req, res) => {
+  // Is the refresh token blacklisted ?
+  if (req.role === 'refresh') {
+    const refreshToken = await req.db.refresh_tokens.findOne({
+      where: {
+        client_id: req.proxy,
+        user: req.user,
+        token: req.token,
+      },
+    });
+    if (refreshToken) {
+      res.status(401).json({
+        error: 'refresh_token_revoked',
+        error_description: 'The refresh token have been revoked',
+      });
+      return;
+    }
+  }
   debug(`Issue app token for user @${req.user} using @${req.proxy} proxy.`);
   const accessToken = await issueAppToken(req.proxy, req.user, req.scope);
   const payload = {
@@ -61,9 +78,18 @@ router.all('/api/oauth2/token', authenticate(['code', 'refresh']), async (req, r
 });
 
 /** Revoke app access token */
-router.all('/api/oauth2/token/revoke', authenticate('app'), async (req, res) => {
-  await req.db.tokens.destroy({ where: { token: req.token } });
-  res.json({ success: true });
+router.all('/api/oauth2/token/revoke', authenticate(['app', 'refresh']), async (req, res) => {
+  if (req.role === 'refresh') {
+    await req.db.refresh_tokens.create({
+      client_id: req.proxy,
+      user: req.user,
+      token: req.token,
+    });
+    res.json({ success: true });
+  } else {
+    await req.db.tokens.destroy({ where: { token: req.token } });
+    res.json({ success: true });
+  }
 });
 
 module.exports = router;
