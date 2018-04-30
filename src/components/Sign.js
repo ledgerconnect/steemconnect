@@ -205,12 +205,15 @@ export default class Sign extends Component {
         [auth.wif],
         (err, result) => {
           if (!err) {
-            this.setState({ success: result });
+            if (result && (query.cb || query.redirect_uri) && query.auto_return) {
+              window.location.href = query.cb || query.redirect_uri;
+            } else {
+              this.setState({ success: result, step: 'result' });
+            }
           } else {
             console.error(err);
-            this.setState({ error: err });
+            this.setState({ error: err, step: 'result' });
           }
-          this.setState({ step: 'result' });
         }
       );
     } else {
@@ -221,12 +224,15 @@ export default class Sign extends Component {
       const mappedType = customOp ? customOp.type : type;
       steem.broadcast[`${changeCase.camelCase(mappedType)}With`](auth.wif, params, (err, result) => {
         if (!err) {
-          this.setState({ success: result });
+          if (result && (query.cb || query.redirect_uri) && query.auto_return) {
+            window.location.href = query.cb || query.redirect_uri;
+          } else {
+            this.setState({ success: result, step: 'result' });
+          }
         } else {
           console.error(err);
-          this.setState({ error: err });
+          this.setState({ error: err, step: 'result' });
         }
-        this.setState({ step: 'result' });
       });
     }
   };
@@ -290,7 +296,7 @@ export default class Sign extends Component {
               </div>}
               {step === 'signin' && <SignForm roles={roles} sign={this.sign} title={<FormattedMessage id="confirm_operation_log_in" />} />}
               {step === 'signin' && <Link className="cancel-link" onClick={() => this.setState({ step: 'form' })}><FormattedMessage id="cancel" /></Link>}
-              {step === 'result' && success && <SignSuccess result={success} cb={query.cb || query.redirect_uri} />}
+              {step === 'result' && success && <SignSuccess autoReturn={query.auto_return} result={success} cb={query.cb || query.redirect_uri} />}
               {step === 'result' && error && <SignError error={error} resetForm={this.resetForm} />}
             </div>
             <div className="Sign__footer">
