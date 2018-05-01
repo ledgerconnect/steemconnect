@@ -22,7 +22,7 @@
     "test"
   ],
   "dependencies": {
-    "@steemit/steem-js": "^0.6.9",
+    "@steemit/steem-js": "^0.7.1",
     "antd": "^2.13.11",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.1",
@@ -65,6 +65,7 @@
     "local-storage": "^1.4.2",
     "lodash": "^4.0.0",
     "lodash-webpack-plugin": "^0.10.6",
+    "moment": "^2.22.1",
     "morgan": "^1.9.0",
     "nodemon": "^1.12.1",
     "numeral": "^1.5.3",

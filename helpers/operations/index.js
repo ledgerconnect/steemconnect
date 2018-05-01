@@ -2,6 +2,10 @@ const profileUpdate = require('./profile-update');
 const comment = require('./comment');
 const customJson = require('./custom-json');
 const delegateVestingShares = require('./delegate-vesting-shares');
+const escrowApprove = require('./escrow-approve');
+const escrowDispute = require('./escrow-dispute');
+const escrowRelease = require('./escrow-release');
+const escrowTransfer = require('./escrow-transfer');
 const follow = require('./follow');
 const mute = require('./mute');
 const reblog = require('./reblog');
@@ -15,6 +19,10 @@ module.exports = {
   comment,
   custom_json: customJson,
   delegate_vesting_shares: delegateVestingShares,
+  escrow_approve: escrowApprove,
+  escrow_dispute: escrowDispute,
+  escrow_release: escrowRelease,
+  escrow_transfer: escrowTransfer,
   follow,
   mute,
   reblog,
