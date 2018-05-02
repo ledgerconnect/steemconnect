@@ -49,7 +49,7 @@ router.all('/api/oauth2/authorize', authenticate('user'), async (req, res) => {
 router.all('/api/oauth2/token', authenticate(['code', 'refresh']), async (req, res) => {
   // Is the refresh token blacklisted ?
   if (req.role === 'refresh') {
-    const refreshToken = await req.db.refresh_tokens.findOne({
+    const refreshToken = await req.db.blacklisted_refresh_tokens.findOne({
       where: {
         client_id: req.proxy,
         user: req.user,
@@ -80,7 +80,7 @@ router.all('/api/oauth2/token', authenticate(['code', 'refresh']), async (req, r
 /** Revoke app access token */
 router.all('/api/oauth2/token/revoke', authenticate(['app', 'refresh']), async (req, res) => {
   if (req.role === 'refresh') {
-    await req.db.refresh_tokens.create({
+    await req.db.blacklisted_refresh_tokens.create({
       client_id: req.proxy,
       user: req.user,
       token: req.token,

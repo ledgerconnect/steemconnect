@@ -2,7 +2,7 @@
 
 module.exports = {
   up: function (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('refresh_tokens', [
+    return queryInterface.bulkInsert('blacklisted_refresh_tokens', [
       {
         client_id: 'busy.app',
         user: 'guest123',
@@ -14,6 +14,6 @@ module.exports = {
   },
 
   down: function (queryInterface, Sequelize) {
-    return queryInterface.bulkDelete('refresh_tokens', null, {});
+    return queryInterface.bulkDelete('blacklisted_refresh_tokens', null, {});
   }
 };

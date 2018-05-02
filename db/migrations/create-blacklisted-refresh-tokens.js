@@ -1,10 +1,9 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('refresh_tokens', {
-    id: {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('blacklisted_refresh_tokens', {
+    token: {
       allowNull: false,
-      autoIncrement: true,
+      type: Sequelize.TEXT,
       primaryKey: true,
-      type: Sequelize.INTEGER,
     },
     client_id: {
       type: Sequelize.STRING,
@@ -13,10 +12,6 @@ module.exports = {
     user: {
       allowNull: false,
       type: Sequelize.STRING,
-    },
-    token: {
-      allowNull: false,
-      type: Sequelize.TEXT,
     },
     created_at: {
       allowNull: false,
@@ -28,9 +23,9 @@ module.exports = {
     },
   })
     .then(() => {
-      queryInterface.addIndex('refresh_tokens', { fields: ['token'], unique: true });
+      queryInterface.addIndex('blacklisted_refresh_tokens', { fields: ['token'], unique: true });
     }),
   down: (queryInterface) => {
-    queryInterface.dropTable('refresh_tokens');
+    queryInterface.dropTable('blacklisted_refresh_tokens');
   },
 };

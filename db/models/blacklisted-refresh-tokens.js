@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => sequelize.define('refresh_tokens',
+module.exports = (sequelize, DataTypes) => sequelize.define('blacklisted_refresh_tokens',
   {
     client_id: DataTypes.STRING,
     user: DataTypes.STRING,
