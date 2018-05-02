@@ -1,8 +1,11 @@
 module.exports = (sequelize, DataTypes) => sequelize.define('blacklisted_refresh_tokens',
   {
+    token: {
+      type: DataTypes.TEXT,
+      primaryKey: true,
+    },
     client_id: DataTypes.STRING,
     user: DataTypes.STRING,
-    token: DataTypes.TEXT,
   }, {
     freezeTableName: true,
     underscored: true,
