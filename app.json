@@ -23,7 +23,6 @@
     },
     "STEEMD_URL_SERVER": "",
     "DEBUG": "sc2:*",
-    "DATABASE_NAME": "staging",
     "LOG_LEVEL": "info",
     "CSP_DEFAULT": {
       "required": true
