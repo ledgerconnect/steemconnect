@@ -28,7 +28,7 @@ npm start
 
 ## Demo
 
-Test demo app here: https://steemit.github.io/sc2-angular
+Test demo app here: https://steemit.github.io/example-steemconnect-angular/
 
 ## Api
 
