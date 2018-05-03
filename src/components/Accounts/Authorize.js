@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { Component, PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
 import steem from '@steemit/steem-js';
@@ -30,6 +31,7 @@ export default class Authorize extends Component {
   }
 
   onSubmit = (auth) => {
+    const { location: { query: { auto_return, redirect_uri } } } = this.props;
     const { username, role, weight } = this.state;
     this.setState({ step: 2 });
 
@@ -53,12 +55,17 @@ export default class Authorize extends Component {
           accounts[0].json_metadata,
           (errBc, result) => {
             if (!errBc) {
-              this.setState({ success: result });
+              if (redirect_uri && auto_return) {
+                window.location.href = redirect_uri;
+              } else {
+                this.setState({ success: result, step: 3 });
+              }
             } else {
-              this.setState({ error: errBc });
+              this.setState({ error: errBc, step: 3 });
             }
-            this.setState({ step: 3 });
           });
+      } else if (redirect_uri && auto_return) {
+        window.location.href = redirect_uri;
       } else {
         this.setState({
           step: 3,
