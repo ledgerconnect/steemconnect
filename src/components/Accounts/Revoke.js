@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import React, { Component, PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
 import steem from '@steemit/steem-js';
@@ -37,7 +36,14 @@ export default class Revoke extends Component {
   };
 
   revoke = (auth) => {
-    const { location: { query: { auto_return, redirect_uri } } } = this.props;
+    const {
+      location: {
+        query: {
+          auto_return: autoReturn,
+          redirect_uri: redirectUri,
+        },
+      },
+    } = this.props;
     const { username } = this.props.params;
     this.setState({ step: 2 });
 
@@ -60,8 +66,8 @@ export default class Revoke extends Component {
         json_metadata,
         (errBc, resultBc) => {
           if (!errBc) {
-            if (redirect_uri && auto_return) {
-              window.location.href = redirect_uri;
+            if (redirectUri && autoReturn) {
+              window.location.href = redirectUri;
             } else {
               this.setState({ success: resultBc, step: 3 });
             }
