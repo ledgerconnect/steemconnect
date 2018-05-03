@@ -58,7 +58,7 @@ router.all('/api/oauth2/token', authenticate(['code', 'refresh']), async (req, r
     });
     if (refreshToken) {
       res.status(401).json({
-        error: 'refresh_token_revoked',
+        error: 'access_denied',
         error_description: 'The refresh token have been revoked',
       });
       return;
