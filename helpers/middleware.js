@@ -92,6 +92,23 @@ const authenticate = roles => async (req, res, next) => {
       next();
     }
   } else if (req.role === 'code' || req.role === 'refresh') {
+    // Is the refresh token blacklisted ?
+    if (req.role === 'refresh') {
+      const refreshToken = await req.db.blacklisted_refresh_tokens.findOne({
+        where: {
+          client_id: req.proxy,
+          user: req.user,
+          token: req.token,
+        },
+      });
+      if (refreshToken) {
+        res.status(401).json({
+          error: 'access_denied',
+          error_description: 'The refresh token have been revoked',
+        });
+        return;
+      }
+    }
     const secret = req.query.client_secret || req.body.client_secret;
     const app = await apps.findOne({
       where: {
