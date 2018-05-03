@@ -12,7 +12,7 @@ export default class Sign extends Component {
     if (cb) {
       setTimeout(() => {
         window.location.href = this.props.cb;
-      }, 5000);
+      }, 10000);
     }
   };
 

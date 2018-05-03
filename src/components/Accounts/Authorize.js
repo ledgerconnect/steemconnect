@@ -30,6 +30,14 @@ export default class Authorize extends Component {
   }
 
   onSubmit = (auth) => {
+    const {
+      location: {
+          query: {
+            auto_return: autoReturn,
+            redirect_uri: redirectUri,
+          },
+      },
+    } = this.props;
     const { username, role, weight } = this.state;
     this.setState({ step: 2 });
 
@@ -53,12 +61,17 @@ export default class Authorize extends Component {
           accounts[0].json_metadata,
           (errBc, result) => {
             if (!errBc) {
-              this.setState({ success: result });
+              if (redirectUri && autoReturn) {
+                window.location.href = redirectUri;
+              } else {
+                this.setState({ success: result, step: 3 });
+              }
             } else {
-              this.setState({ error: errBc });
+              this.setState({ error: errBc, step: 3 });
             }
-            this.setState({ step: 3 });
           });
+      } else if (redirectUri && autoReturn) {
+        window.location.href = redirectUri;
       } else {
         this.setState({
           step: 3,
