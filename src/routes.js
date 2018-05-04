@@ -24,6 +24,7 @@ import Permissions from './components/Accounts/Permissions';
 import SignAuthorize from './components/Accounts/Authorize';
 import Revoke from './components/Accounts/Revoke';
 import Error404 from './components/Error404';
+import Error from './components/Error';
 
 export default (
   <Route path="/" component={Wrapper}>
@@ -54,6 +55,7 @@ export default (
     <Route path="/authorize/@:username" component={SignAuthorize} />
     <Route path="/authorize/@:username/:role" component={SignAuthorize} />
     <Route path="/revoke/@:username" component={Revoke} />
+    <Route path="/error" component={Error} />
     <Route path="/*" component={Error404} />
   </Route>
 );
