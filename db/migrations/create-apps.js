@@ -36,6 +36,9 @@ module.exports = {
     beneficiaries: {
       type: Sequelize.JSONB,
     },
+    allowed_ips: {
+      type: Sequelize.STRING,
+    },
     is_approved: {
       type: Sequelize.BOOLEAN,
       defaultValue: true,

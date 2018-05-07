@@ -200,6 +200,20 @@ class AppForm extends Component {
           </small>
         </Form.Item>
         <Form.Item
+          label={<FormattedMessage id="allowed_ips" />}
+        >
+          {getFieldDecorator('allowed_ips', {
+            initialValue: data.allowed_ips,
+          })(
+            <Input
+              placeholder={intl.formatMessage({ id: 'allowed_ips' })}
+            />,
+          )}
+          <small>
+            <FormattedMessage id="allowed_ips_tip" />
+          </small>
+        </Form.Item>
+        <Form.Item
           label={<FormattedMessage id="manage_visibility" />}
         >
           {getFieldDecorator('is_public', {
