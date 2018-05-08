@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const intersection = require('lodash/intersection');
 const { tokens, apps } = require('../db/models');
 
 /**
@@ -104,8 +105,16 @@ const authenticate = roles => async (req, res, next) => {
         error: 'invalid_grant',
         error_description: 'The code or secret is not valid',
       });
-    } else {
-      next();
+    } else if (req.role === 'refresh' && app.allowed_ips) {
+      const reqIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+      if (intersection(app.allowed_ips, reqIp.replace(' ', '').split(',')).length > 0) {
+        next();
+      } else {
+        res.status(401).json({
+          error: 'unauthorized_access',
+          error_description: `The IP ${reqIp} is not authorized`,
+        });
+      }
     }
   } else {
     next();
