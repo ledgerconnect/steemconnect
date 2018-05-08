@@ -107,7 +107,6 @@ const authenticate = roles => async (req, res, next) => {
       });
     } else if (req.role === 'refresh' && app.allowed_ips) {
       const reqIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-      console.log(app.allowed_ips);
       if (intersection(app.allowed_ips, reqIp.replace(' ', '').split(',')).length > 0) {
         next();
       } else {
