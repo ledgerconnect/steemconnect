@@ -37,7 +37,7 @@
   "add_account": "Add an account",
   "add_new_post": "Do you want to add new post?",
   "allowed_ips": "Allowed IPs",
-  "allowed_ips_tip": "Type servers IPs, one per line. Ex: 127.0.0.1\n192.168.1.1",
+  "allowed_ips_tip": "Type servers IPs, one per line.",
   "api_methods": "API methods",
   "app_description": "App Description",
   "app_icon": "App Icon",
