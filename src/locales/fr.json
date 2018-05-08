@@ -37,7 +37,7 @@
   "add_account": "Ajouter un compte",
   "add_new_post": "Voulez-vous ajouter un nouveau post ?",
   "allowed_ips": "IPs autorisées",
-  "allowed_ips_tip": "Saisissez les adresses IPs de vos serveurs séparées par une virgule. Ex: 127.0.0.1,192.168.1.1",
+  "allowed_ips_tip": "Saisissez les adresses IPs de vos serveurs, une par ligne. Ex: 127.0.0.1\n192.168.1.1",
   "api_methods": "Méthodes de l'API",
   "app_description": "Description de l'App",
   "app_icon": "Icône de l'App",

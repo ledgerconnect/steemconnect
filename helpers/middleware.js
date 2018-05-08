@@ -51,36 +51,10 @@ const strategy = async (req, res, next) => {
     req.proxy = decoded.proxy;
     req.scope = decoded.scope || [];
     /* eslint-enable no-param-reassign */
-    if (decoded.proxy) {
-      const app = await apps.findOne({
-        where: { client_id: req.proxy },
-      });
-      if (app.toJSON()) {
-        if (app.allowed_ips) {
-          const reqIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-          if (intersection(app.allowed_ips.replace(' ', '').split(','), reqIp.replace(' ', '').split(',')).length > 0) {
-            next();
-          } else {
-            res.status(401).json({
-              error: 'unauthorized_access',
-              error_description: `The IP ${reqIp} is not authorized`,
-            });
-          }
-        } else {
-          next();
-        }
-      } else {
-        res.status(401).json({
-          error: 'application_not_found',
-          error_description: 'This application has been setup by SteemConnect',
-        });
-      }
-    } else {
-      next();
-    }
   } catch (err) {
-    next();
+    // console.log(err);
   }
+  next();
 };
 
 const authenticate = roles => async (req, res, next) => {
@@ -102,6 +76,7 @@ const authenticate = roles => async (req, res, next) => {
       role = req.role;
     }
   }
+
   if (!req.role || (role && req.role !== role)) {
     res.status(401).json({
       error: 'invalid_grant',
@@ -130,8 +105,17 @@ const authenticate = roles => async (req, res, next) => {
         error: 'invalid_grant',
         error_description: 'The code or secret is not valid',
       });
-    } else {
-      next();
+    } else if (req.role === 'refresh' && app.allowed_ips) {
+      const reqIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+      console.log(app.allowed_ips);
+      if (intersection(app.allowed_ips, reqIp.replace(' ', '').split(',')).length > 0) {
+        next();
+      } else {
+        res.status(401).json({
+          error: 'unauthorized_access',
+          error_description: `The IP ${reqIp} is not authorized`,
+        });
+      }
     }
   } else {
     next();
