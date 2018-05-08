@@ -28,7 +28,7 @@ const verifyPermissions = async (req, res, next) => {
   }
 };
 
-const strategy = async (req, res, next) => {
+const strategy = (req, res, next) => {
   let authorization = req.get('authorization');
   if (authorization) {
     authorization = authorization.replace(/^(Bearer|Basic)\s/, '').trim();
