@@ -8,7 +8,7 @@ const router = express.Router(); // eslint-disable-line new-cap
 
 /** Get applications */
 router.get('/', async (req, res) => {
-  const apps = await req.db.apps.findAll({ where: { is_public: true }, attributes: { exclude: ['secret'] } });
+  const apps = await req.db.apps.findAll({ where: { is_public: true }, attributes: { exclude: ['secret', 'allowed_ips'] } });
   res.json(apps);
 });
 
