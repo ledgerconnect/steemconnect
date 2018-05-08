@@ -36,6 +36,14 @@ export default class Revoke extends Component {
   };
 
   revoke = (auth) => {
+    const {
+      location: {
+        query: {
+          auto_return: autoReturn,
+          redirect_uri: redirectUri,
+        },
+      },
+    } = this.props;
     const { username } = this.props.params;
     this.setState({ step: 2 });
 
@@ -58,11 +66,14 @@ export default class Revoke extends Component {
         json_metadata,
         (errBc, resultBc) => {
           if (!errBc) {
-            this.setState({ success: resultBc });
+            if (redirectUri && autoReturn) {
+              window.location.href = redirectUri;
+            } else {
+              this.setState({ success: resultBc, step: 3 });
+            }
           } else {
-            this.setState({ error: errBc });
+            this.setState({ error: errBc, step: 3 });
           }
-          this.setState({ step: 3 });
         });
     });
   };
