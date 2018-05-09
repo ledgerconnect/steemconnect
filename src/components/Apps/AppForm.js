@@ -110,8 +110,10 @@ class AppForm extends Component {
       if (!err) {
         // eslint-disable-next-line no-param-reassign
         values.redirect_uris = values.redirect_uris.split('\n');
-        // eslint-disable-next-line no-param-reassign
-        values.allowed_ips = values.allowed_ips.split('\n');
+        if (values.allowed_ips) {
+          // eslint-disable-next-line no-param-reassign
+          values.allowed_ips = values.allowed_ips.split('\n');
+        }
         submit(values);
       }
       this.setState({ submitting: false });
