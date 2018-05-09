@@ -100,7 +100,7 @@ const authenticate = roles => async (req, res, next) => {
         secret,
       },
     });
-    if (!app) {
+    if (!app.toJSON()) {
       res.status(401).json({
         error: 'invalid_grant',
         error_description: 'The code or secret is not valid',
@@ -115,6 +115,8 @@ const authenticate = roles => async (req, res, next) => {
           error_description: `The IP ${reqIp} is not authorized`,
         });
       }
+    } else {
+      next();
     }
   } else {
     next();
