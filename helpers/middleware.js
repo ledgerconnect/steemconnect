@@ -115,6 +115,8 @@ const authenticate = roles => async (req, res, next) => {
           error_description: `The IP ${reqIp} is not authorized`,
         });
       }
+    } else {
+      next();
     }
   } else {
     next();
