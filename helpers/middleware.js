@@ -100,7 +100,7 @@ const authenticate = roles => async (req, res, next) => {
         secret,
       },
     });
-    if (!app.toJSON()) {
+    if (!app) {
       res.status(401).json({
         error: 'invalid_grant',
         error_description: 'The code or secret is not valid',
