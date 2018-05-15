@@ -36,6 +36,8 @@
   "account_to_recover": "Compte à récupérer",
   "add_account": "Ajouter un compte",
   "add_new_post": "Voulez-vous ajouter un nouveau post ?",
+  "allowed_ips": "IPs autorisées",
+  "allowed_ips_tip": "Saisissez les adresses IPs de vos serveurs, une par ligne.",
   "api_methods": "Méthodes de l'API",
   "app_description": "Description de l'App",
   "app_icon": "Icône de l'App",

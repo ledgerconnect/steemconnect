@@ -16,6 +16,7 @@ module.exports = {
         is_approved: true,
         is_public: true,
         is_disabled: false,
+        allowed_ips: JSON.stringify(['127.0.0.1', '::1']),
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -29,16 +30,16 @@ module.exports = {
         icon: 'https://byteball.co/img/logo.jpg',
         website: 'https://example.com',
         beneficiaries: JSON.stringify([]),
+        allowed_ips: JSON.stringify(['127.0.0.1', '::1']),
         is_approved: true,
         is_public: true,
         is_disabled: false,
         created_at: new Date(),
         updated_at: new Date(),
-      }
+      },
     ], {});
   },
-
   down: function (queryInterface, Sequelize) {
     return queryInterface.bulkDelete('apps', null, {});
-  }
+  },
 };

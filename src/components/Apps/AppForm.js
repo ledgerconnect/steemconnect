@@ -33,6 +33,9 @@ class AppForm extends Component {
     if (name === 'redirect_uris') {
       value = value.split('\n');
     }
+    if (name === 'allowed_ips') {
+      value = value.split('\n');
+    }
     data[name] = value;
     this.setState({ data });
   };
@@ -107,6 +110,8 @@ class AppForm extends Component {
       if (!err) {
         // eslint-disable-next-line no-param-reassign
         values.redirect_uris = values.redirect_uris.split('\n');
+        // eslint-disable-next-line no-param-reassign
+        values.allowed_ips = values.allowed_ips.split('\n');
         submit(values);
       }
       this.setState({ submitting: false });
@@ -122,6 +127,7 @@ class AppForm extends Component {
     const { data, displayRevokeModal } = this.state;
     const { form: { getFieldDecorator }, auth, intl } = this.props;
     const redirectUris = data.redirect_uris && data.redirect_uris.join('\n');
+    const allowedIPs = data.allowed_ips && data.allowed_ips.join('\n');
     return (
       <Form onSubmit={this.handleSubmit} className="steemconnect-form">
         <Form.Item
@@ -197,6 +203,20 @@ class AppForm extends Component {
           )}
           <small>
             <FormattedMessage id="auth_uri" />
+          </small>
+        </Form.Item>
+        <Form.Item
+          label={<FormattedMessage id="allowed_ips" />}
+        >
+          {getFieldDecorator('allowed_ips', {
+            initialValue: allowedIPs,
+          })(
+            <Input.TextArea
+              placeholder={intl.formatMessage({ id: 'allowed_ips' })}
+            />,
+          )}
+          <small>
+            <FormattedMessage id="allowed_ips_tip" />
           </small>
         </Form.Item>
         <Form.Item
