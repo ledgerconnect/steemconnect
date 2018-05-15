@@ -105,7 +105,7 @@ const authenticate = roles => async (req, res, next) => {
         error: 'invalid_grant',
         error_description: 'The code or secret is not valid',
       });
-    } else if (req.role === 'refresh' && app.allowed_ips) {
+    } else if (app.allowed_ips) {
       const reqIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
       if (intersection(app.allowed_ips, reqIp.replace(' ', '').split(',')).length > 0) {
         next();
