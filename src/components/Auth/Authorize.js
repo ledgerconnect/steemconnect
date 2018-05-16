@@ -16,6 +16,7 @@ import SteemitAvatar from '../../widgets/SteemitAvatar';
 import Loading from '../../widgets/Loading';
 import SignForm from '../Form/Sign';
 import ChooseAccountForm from '../Form/ChooseAccount';
+import Error from '../Error';
 import config from '../../../config.json';
 import './Authorize.less';
 
@@ -53,11 +54,12 @@ export default class Authorize extends Component {
       step: 0,
       scopes: [],
       app: null,
+      error: null,
     };
   }
 
   async componentWillMount() {
-    const { scope, clientId } = this.state;
+    const { scope, clientId, redirectUri } = this.state;
     if (scope !== '') {
       if (difference(scope.split(','), config.authorized_operations.concat(['login', 'offline'])).length > 0) {
         this.setState({ step: 4 });
@@ -68,9 +70,23 @@ export default class Authorize extends Component {
     if (scope.split(',').length === 0) {
       scopes = config.authorized_operations;
     }
-    const app = await fetch(`/api/apps/@${clientId}`)
+
+    const result = await fetch(`/api/apps/@${clientId}/verify`, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify({ redirectUri }),
+    })
       .then(res => res.json());
-    this.setState({ scopes, app, step: 1 });
+    if (result.success) {
+      const app = await fetch(`/api/apps/@${clientId}`)
+        .then(res => res.json());
+      this.setState({ scopes, app, step: 1 });
+    } else {
+      this.setState({ error: result.error, step: -1 });
+    }
   }
 
   authorize = (auth) => {
@@ -128,12 +144,13 @@ export default class Authorize extends Component {
   }
 
   render() {
-    const { clientId, scope, step, scopes, app } = this.state;
+    const { clientId, scope, step, scopes, app, error } = this.state;
     const requiredRoles = (scope === 'login') ? ['memo', 'posting'] : ['owner', 'active'];
     return (
       <div className="Sign">
         {step === 0 && <Loading />}
-        {step !== 0 && <div className="Sign__content">
+        {step === -1 && error && <Error error={error} />}
+        {step > 0 && <div className="Sign__content">
           <div className="Sign_frame">
             <div className="Sign__header">
               <object data="/img/logo.svg" type="image/svg+xml" id="logo" />
@@ -189,7 +206,7 @@ export default class Authorize extends Component {
                   </ul>}
                   {scope === '' &&
                   <ul className="authorize-operations">
-                    {config.authorized_operations.map(op => <li><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase(op === 'offline' ? 'offline_access' : op)}</li>)}
+                    {config.authorized_operations.map(op => <li key={op}><object data="/img/authorize/check.svg" type="image/svg+xml" className="check-icon" />{titleCase(op === 'offline' ? 'offline_access' : op)}</li>)}
                   </ul>}
                   <Form.Item>
                     <Button

@@ -6,24 +6,6 @@ const config = require('../config.json');
 
 const router = express.Router(); // eslint-disable-line new-cap
 
-router.get('/oauth2/authorize', async (req, res) => {
-  const redirectUri = req.query.redirect_uri;
-  const clientId = req.query.client_id;
-  const app = await req.db.apps.findOne({
-    where: {
-      client_id: clientId,
-    },
-  });
-  if (!app) {
-    debug(`The app @${clientId} has not been setup.`);
-    res.redirect('/error?error=error_app_not_setup');
-  } else if (app.redirect_uris === null || !app.redirect_uris.includes(redirectUri)) {
-    res.redirect('/error?error=error_redirect_uri_not_authorized');
-  } else {
-    res.render('index', { title: 'SteemConnect' });
-  }
-});
-
 router.all('/api/oauth2/authorize', authenticate('user'), async (req, res) => {
   const clientId = req.query.client_id;
   const responseType = req.query.response_type;

@@ -2,8 +2,8 @@ import React, { PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
 
-const Error = ({ location: { query: { error } } }) =>
-  <div className="Sign">
+const Error = ({ error }) =>
+  <div>
     <div className="Sign_frame">
       <div className="Sign__header">
         <object data="/img/logo.svg" type="image/svg+xml" id="logo" />
@@ -23,7 +23,7 @@ const Error = ({ location: { query: { error } } }) =>
   </div>
 ;
 Error.propTypes = {
-  location: PropTypes.shape({}).isRequired,
+  error: PropTypes.string.isRequired,
 };
 
 export default Error;

@@ -141,4 +141,23 @@ router.all('/authorized', authenticate('user'), async (req, res) => {
   res.json({ apps });
 });
 
+router.post('/@:clientId/verify', async (req, res) => {
+  const { clientId } = req.params;
+  const { redirectUri } = req.body;
+  const app = await req.db.apps.findOne({
+    where: {
+      client_id: clientId,
+    },
+  });
+  if (app) {
+    if (app.redirect_uris === null || !app.redirect_uris.includes(redirectUri)) {
+      res.json({ error: 'error_redirect_uri_not_authorized' });
+    } else {
+      res.json({ success: true });
+    }
+  } else {
+    res.json({ error: 'error_app_not_setup' });
+  }
+});
+
 module.exports = router;
