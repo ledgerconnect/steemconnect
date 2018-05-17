@@ -9,6 +9,7 @@ const escrowTransfer = require('./escrow-transfer');
 const follow = require('./follow');
 const mute = require('./mute');
 const reblog = require('./reblog');
+const setWithdrawVestingRoute = require('./set-withdraw-vesting-route');
 const transfer = require('./transfer');
 const undelegateVestingShares = require('./undelegate-vesting-shares');
 const unfollow = require('./unfollow');
@@ -26,6 +27,7 @@ module.exports = {
   follow,
   mute,
   reblog,
+  set_withdraw_vesting_route: setWithdrawVestingRoute,
   transfer,
   undelegate_vesting_shares: undelegateVestingShares,
   unfollow,
