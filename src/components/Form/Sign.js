@@ -28,6 +28,8 @@ class Sign extends React.Component {
     this.setState({ submitting: false });
   }
 
+  keyAuthsHasPublicWif = (keys, publicWif) => keys.some(key => key[0] === publicWif);
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.setState({ submitting: true });
@@ -50,7 +52,7 @@ class Sign extends React.Component {
         for (let i = 0; i < roles.length; i += 1) {
           if (
             (roles[i] === 'memo' && account.memo_key === publicWif) ||
-            (roles[i] !== 'memo' && account[roles[i]].key_auths[0][0] === publicWif)
+            (roles[i] !== 'memo' && this.keyAuthsHasPublicWif(account[roles[i]].key_auths, publicWif))
           ) {
             wifIsValid = true;
             role = roles[i];
