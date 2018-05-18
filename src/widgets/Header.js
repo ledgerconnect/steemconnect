@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Menu, Dropdown } from 'antd';
+import { Icon, Menu, Dropdown } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -97,7 +97,7 @@ export default class Header extends Component {
             }
           >
             <a className="ant-dropdown-link" href={undefined}>
-              <span className="account-name">{username}</span>&nbsp;<SteemitAvatar username={username} />
+              <span className="account-name">{username}</span>&nbsp;<SteemitAvatar username={username} /><Icon type="down" />
             </a>
           </Dropdown>
           }

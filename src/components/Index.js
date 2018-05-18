@@ -1,8 +1,10 @@
 import React, { PropTypes } from 'react';
 import { injectIntl, FormattedMessage, intlShape } from 'react-intl';
+import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Form, Input, Button, Popover, Icon } from 'antd';
+import { Form, Input, Button, Popover } from 'antd';
+import Header from '../widgets/Header';
 import * as actions from '../actions/appLocale';
 import locales from '../../helpers/locales.json';
 import './Index.less';
@@ -22,6 +24,7 @@ LanguageItem.propTypes = {
 @connect(
   state => ({
     locale: state.appLocale.locale,
+    auth: state.auth,
   }),
   dispatch =>
     bindActionCreators(
@@ -36,7 +39,7 @@ class Index extends React.Component {
     form: PropTypes.shape(),
     intl: intlShape.isRequired,
     setLocale: PropTypes.func,
-    locale: PropTypes.string,
+    auth: PropTypes.shape(),
   };
 
   constructor(props) {
@@ -45,7 +48,7 @@ class Index extends React.Component {
   }
 
   render() {
-    const { form: { getFieldDecorator }, setLocale, locale, intl } = this.props;
+    const { form: { getFieldDecorator }, setLocale, intl, auth } = this.props;
     return (
       <div>
         <div id="header">
@@ -57,6 +60,8 @@ class Index extends React.Component {
                 <object data="img/logo-white.svg" type="image/svg+xml" />
               </div>
               <div className="menu-item">
+                {!auth.isAuthenticated && <Link to="/login"><FormattedMessage id="log_in" /></Link>}
+                {auth.isAuthenticated && <Header username={auth.user.name} />}
                 <Popover
                   placement="bottom"
                   content={
@@ -70,7 +75,7 @@ class Index extends React.Component {
                   }
                   trigger="click"
                 >
-                  <Button>{locales[locale]}<Icon type="down" /></Button>
+                  <Button><i className="iconfont icon-language" /></Button>
                 </Popover>
               </div>
             </div>

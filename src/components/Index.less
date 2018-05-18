@@ -40,18 +40,39 @@
     padding: 0 20px;
 
     .menu-item {
-      align-content: center;
+      display: flex;
+      align-items: center;
 
       button {
         color: #fff;
         font-size: 16px;
         background-color: transparent;
         padding: 0;
-
-        .anticon {
-          font-size: 12px;
+      }
+      a {
+        color: #fff;
+        border: 1px solid white;
+        border-radius: 5px;
+        padding: 5px 10px;
+        margin-right: 10px;
+      }
+      .Header {
+        a {
+          border: none;
+        }
+        .account-name {
+          display: none;
+        }
+        .anticon-down {
+          display: inline-block;
+          font-size: 14px;
+          margin-left: 5px;
+          vertical-align: middle;
         }
       }
+    }
+    .icon-language {
+      font-size: 28px;
     }
   }
 
