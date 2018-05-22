@@ -104,7 +104,7 @@
   "error_request_validation": "Il y a des erreurs de validation dans votre requête !",
   "error_required": "Le champ est obligatoire",
   "error_url_format": "{url} n'est pas une URL valide",
-  "error_user_equals": "Le champ '{field}' doit être égal à {userA} ou {userB}",
+  "error_user_equals": "Le champ '{field}' doit être égal à l'un de ces comptes: {users}",
   "error_user_exist": "L'utilisateur {user} n'existe pas",
   "error_username_required": "Veuillez saisir un nom d'utilisateur pour votre application",
   "error_username_sign_required": "Veuillez saisir votre nom d'utilisateur",
