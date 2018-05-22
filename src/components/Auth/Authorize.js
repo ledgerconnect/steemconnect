@@ -77,7 +77,7 @@ export default class Authorize extends Component {
         'Content-Type': 'application/json',
       },
       method: 'POST',
-      body: JSON.stringify({ redirectUri }),
+      body: JSON.stringify({ redirect_uris: redirectUri }),
     })
       .then(res => res.json());
     if (result.success) {
