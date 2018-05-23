@@ -38,8 +38,8 @@ const validate = async (query, errors) => {
     errors.push({ field: 'who', error: 'error_user_exist', values: { user: query.who } });
   }
 
-  if (query.who !== query.agent && query.who !== query.to) {
-    errors.push({ field: 'who', error: 'error_user_equals', values: { field: 'who', userA: query.agent, userB: query.to } });
+  if (query.who !== query.from && query.who !== query.agent && query.who !== query.to) {
+    errors.push({ field: 'who', error: 'error_user_equals', values: { field: 'who', users: [query.from, query.agent, query.to].join(', ') } });
   }
 
   if (!isEmpty(query.receiver) && !await userExists(query.receiver)) {
@@ -47,7 +47,7 @@ const validate = async (query, errors) => {
   }
 
   if (query.receiver !== query.from && query.receiver !== query.to) {
-    errors.push({ field: 'receiver', error: 'error_user_equals', values: { field: 'receiver', userA: query.from, userB: query.to } });
+    errors.push({ field: 'receiver', error: 'error_user_equals', values: { field: 'receiver', users: [query.from, query.to].join(', ') } });
   }
 
   if (!validator.isInt(query.escrow_id)) {
