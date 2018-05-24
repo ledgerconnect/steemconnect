@@ -1,10 +1,9 @@
 import React, { PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router';
-import './Error.less';
 
 const Error = ({ error }) =>
-  <div>
+  <div className="Sign">
     <div className="Sign_frame Error_frame">
       <div className="Sign__header">
         <object data="/img/logo.svg" type="image/svg+xml" id="logo" />
