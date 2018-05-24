@@ -31,7 +31,7 @@ const validate = async (query, errors) => {
   }
 
   if (query.who !== query.agent && query.who !== query.to) {
-    errors.push({ field: 'who', error: 'error_user_equals', values: { field: 'who', userA: query.agent, userB: query.to } });
+    errors.push({ field: 'who', error: 'error_user_equals', values: { field: 'who', users: [query.agent, query.to].join(', ') } });
   }
 
   if (!validator.isInt(query.escrow_id)) {
