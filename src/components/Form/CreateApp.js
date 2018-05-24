@@ -35,6 +35,7 @@ class Internal extends React.Component {
         >
           {getFieldDecorator('username', {
             validateFirst: true,
+            validateTrigger: 'onBlur',
             rules: [
               { required: true, message: intl.formatMessage({ id: 'error_username_required' }) },
               { validator: this.validateAccountNameIntl },

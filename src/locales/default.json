@@ -104,7 +104,7 @@
   "error_request_validation": "Validation errors in your request!",
   "error_required": "The field is required",
   "error_url_format": "{url} is not a valid URL",
-  "error_user_equals": "The field '{field}' must be equal to either {userA} or {userB}",
+  "error_user_equals": "The field '{field}' must be equal to one of these accounts: {users}",
   "error_user_exist": "The user {user} doesn't exist",
   "error_username_required": "Please input an username for your application",
   "error_username_sign_required": "Please input your username",
