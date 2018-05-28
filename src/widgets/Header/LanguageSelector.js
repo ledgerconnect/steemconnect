@@ -20,7 +20,7 @@ const LanguageSelector = ({ setLocale }) => (
     content={
       <ul className="lp-language-select">
         {Object.keys(locales).map(locale =>
-          <LanguageItem locale={locale} setLocale={setLocale} />)}
+          <LanguageItem key={locale} locale={locale} setLocale={setLocale} />)}
       </ul>
     }
     trigger="click"
