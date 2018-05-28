@@ -1,45 +1,13 @@
 import React, { PropTypes } from 'react';
 import { injectIntl, FormattedMessage, intlShape } from 'react-intl';
-import { Link } from 'react-router';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { Form, Input, Button, Popover } from 'antd';
+import { Form, Input, Button } from 'antd';
 import Header from '../widgets/Header';
-import * as actions from '../actions/appLocale';
-import locales from '../../helpers/locales.json';
 import './Index.less';
 
-const LanguageItem = ({ setLocale, locale }) => (
-  <li>
-    <button onClick={() => setLocale(locale)}>
-      {locales[locale]}
-    </button>
-  </li>
-);
-LanguageItem.propTypes = {
-  setLocale: PropTypes.func,
-  locale: PropTypes.string,
-};
-
-@connect(
-  state => ({
-    locale: state.appLocale.locale,
-    auth: state.auth,
-  }),
-  dispatch =>
-    bindActionCreators(
-      {
-        setLocale: actions.setLocale,
-      },
-      dispatch,
-    ),
-)
 class Index extends React.Component {
   static propTypes = {
     form: PropTypes.shape(),
     intl: intlShape.isRequired,
-    setLocale: PropTypes.func,
-    auth: PropTypes.shape(),
   };
 
   constructor(props) {
@@ -48,37 +16,14 @@ class Index extends React.Component {
   }
 
   render() {
-    const { form: { getFieldDecorator }, setLocale, intl, auth } = this.props;
+    const { form: { getFieldDecorator }, intl } = this.props;
     return (
       <div>
         <div id="header">
+          <Header type="homepage" />
           <img src="/img/macbook.png" id="macbook-img" alt="macbook" />
           <object data="img/hero.svg" type="image/svg+xml" id="header-bg" />
           <div className="lp-container">
-            <div id="menu">
-              <div className="menu-item logo">
-                <object data="img/logo-white.svg" type="image/svg+xml" />
-              </div>
-              <div className="menu-item">
-                {!auth.isAuthenticated && <Link to="/login"><FormattedMessage id="log_in" /></Link>}
-                {auth.isAuthenticated && <Header username={auth.user.name} />}
-                <Popover
-                  placement="bottom"
-                  content={
-                    <ul className="lp-language-select">
-                      <LanguageItem locale="en" setLocale={setLocale} />
-                      <LanguageItem locale="fr" setLocale={setLocale} />
-                      <LanguageItem locale="ru" setLocale={setLocale} />
-                      <LanguageItem locale="ko" setLocale={setLocale} />
-                      <LanguageItem locale="zh" setLocale={setLocale} />
-                    </ul>
-                  }
-                  trigger="click"
-                >
-                  <Button><i className="iconfont icon-language" /></Button>
-                </Popover>
-              </div>
-            </div>
             <div className="hero">
               <h1 className="title"><FormattedMessage id="lp_hero_title" /></h1>
               <p className="sub-title"><FormattedMessage id="lp_hero_description" /></p>

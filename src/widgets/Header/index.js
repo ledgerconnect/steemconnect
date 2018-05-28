@@ -1,13 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Icon, Menu, Dropdown } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import SteemitAvatar from './SteemitAvatar';
+import { Icon, Menu, Dropdown } from 'antd';
+import SteemitAvatar from '../SteemitAvatar';
+import LanguageSelector from './LanguageSelector';
+import { authenticate, logout } from '../../actions/auth';
+import { setLocale } from '../../actions/appLocale';
+import { getAccounts } from '../../utils/localStorage';
 import './Header.less';
-import { logout, authenticate } from '../actions/auth';
-import { getAccounts } from '../utils/localStorage';
 
 @connect(
   state => ({
@@ -16,22 +18,24 @@ import { getAccounts } from '../utils/localStorage';
   dispatch => bindActionCreators({
     logout,
     authenticate,
+    setLocale,
   }, dispatch)
 )
-export default class Header extends Component {
+export default class index extends Component {
   static propTypes = {
-    username: PropTypes.string.isRequired,
     logout: PropTypes.func.isRequired,
     authenticate: PropTypes.func.isRequired,
     auth: PropTypes.shape({}).isRequired,
+    setLocale: PropTypes.func.isRequired,
+    type: PropTypes.string.isRequired,
   };
 
   handleLogoutClick = () => {
     // eslint-disable-next-line no-shadow
-    const { logout, username } = this.props;
+    const { logout, auth: { user: { name } } } = this.props;
     let accounts = getAccounts();
     if (accounts.length > 0) {
-      accounts = accounts.filter(acc => acc.username !== username);
+      accounts = accounts.filter(acc => acc.username !== name);
       localStorage.setItem('accounts', JSON.stringify(accounts));
     }
     logout();
@@ -39,9 +43,9 @@ export default class Header extends Component {
 
   changeAccount = ({ key }) => {
     // eslint-disable-next-line no-shadow
-    const { authenticate, username } = this.props;
+    const { authenticate, auth: { user: { name } } } = this.props;
     const accounts = getAccounts();
-    if (key !== username && accounts.length > 0) {
+    if (key !== name && accounts.length > 0) {
       const account = accounts.find(acc => acc.username === key);
       localStorage.setItem('token', account.token);
       authenticate();
@@ -49,7 +53,8 @@ export default class Header extends Component {
   }
 
   render() {
-    const { username, auth } = this.props;
+    // eslint-disable-next-line no-shadow
+    const { auth, setLocale, type } = this.props;
     const accounts = getAccounts();
     let user = '';
     if (auth && auth.user && auth.user.json_metadata) {
@@ -58,32 +63,36 @@ export default class Header extends Component {
         if (metadata && metadata.profile && metadata.profile.name) {
           user = metadata.profile.name;
         } else {
-          user = username;
+          user = auth.user.name;
         }
       } catch (e) {
         // Do nothing
       }
     }
     return (
-      <div className="Header container">
-        <div className="Header__log">
-          {username &&
+      <div className={`Header ${type}`}>
+        <Link to="/" className="logo">
+          {type === 'homepage' && <object data="img/logo-white.svg" type="image/svg+xml" />}
+          {type !== 'homepage' && <object data="img/logo.svg" type="image/svg+xml" />}
+        </Link>
+        <div className="right-menu">
+          {auth.user.name &&
           <Dropdown
             trigger={['click']}
             placement="bottomRight"
             overlay={
               <Menu className="switch-account-menu" onClick={this.changeAccount}>
                 <Menu.Item key="switch-account-active" className="active">
-                  <SteemitAvatar username={username} size="72" />
+                  <SteemitAvatar username={auth.user.name} size="72" />
                   <div className="account-information">
                     <span className="account-name">{user}</span>
-                    <span className="username">@{username}</span>
+                    <span className="username">@{auth.user.name}</span>
                     <Link onClick={this.handleLogoutClick} className="logout">
                       <FormattedMessage id="log_out" />
                     </Link>
                   </div>
                 </Menu.Item>
-                {accounts.filter(account => account.username !== username).map(account =>
+                {accounts.filter(account => account.username !== auth.user.name).map(account =>
                   <Menu.Item key={account.username}>
                     <SteemitAvatar username={account.username} size="36" /><span className="other-account">{account.username}</span>
                   </Menu.Item>
@@ -97,15 +106,15 @@ export default class Header extends Component {
             }
           >
             <a className="ant-dropdown-link" href={undefined}>
-              <span className="account-name">{username}</span>&nbsp;<SteemitAvatar username={username} /><Icon type="down" />
+              {type !== 'homepage' && <span className="account-name">{auth.user.name}</span>}
+              <SteemitAvatar username={auth.user.name} /><Icon type="down" />
             </a>
           </Dropdown>
           }
-          {!username &&
-          <div>
-            <Link to="/login"><FormattedMessage id="log_in" /></Link>
-          </div>
+          {!auth.user.name &&
+          <Link to="/login" className="login-link"><FormattedMessage id="log_in" /></Link>
           }
+          <LanguageSelector setLocale={setLocale} />
         </div>
       </div>
     );
