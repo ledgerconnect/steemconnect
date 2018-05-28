@@ -72,8 +72,8 @@ export default class index extends Component {
     return (
       <div className={`Header ${type}`}>
         <Link to="/" className="logo">
-          {type === 'homepage' && <object data="img/logo-white.svg" type="image/svg+xml" />}
-          {type !== 'homepage' && <object data="img/logo.svg" type="image/svg+xml" />}
+          {type === 'homepage' && <object data="/img/logo-white.svg" type="image/svg+xml" />}
+          {type !== 'homepage' && <object data="/img/logo.svg" type="image/svg+xml" />}
         </Link>
         <div className="right-menu">
           {auth.user.name &&

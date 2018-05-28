@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { IntlProvider } from 'react-intl';
 import { authenticate } from './actions/auth';
-import { setLocale } from './actions/appLocale';
 import getTranslations, { getAvailableLocale } from './utils/locales';
 import './styles/common.less';
 
@@ -14,7 +13,6 @@ import './styles/common.less';
   }),
   dispatch => bindActionCreators({
     authenticate,
-    setLocale,
   }, dispatch)
 )
 export default class Wrapper extends Component {
@@ -22,7 +20,6 @@ export default class Wrapper extends Component {
     children: PropTypes.shape(),
     auth: PropTypes.shape(),
     authenticate: PropTypes.func,
-    setLocale: PropTypes.func,
     locale: PropTypes.string,
   }
 
@@ -35,7 +32,6 @@ export default class Wrapper extends Component {
 
     const locale = getAvailableLocale(appLocale);
     const translations = getTranslations(appLocale);
-    this.props.setLocale(locale);
 
     return (
       <IntlProvider locale={locale} messages={translations}>
