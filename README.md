@@ -1,7 +1,7 @@
 [![CircleCI Build Status](https://circleci.com/gh/steemit/sc2.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/steemit/sc2)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/steemconnect/localized.svg)](https://crowdin.com/project/steemconnect)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/steemit/sc2/dev/LICENSE)
-[![SteemConnect channel on Discord](https://img.shields.io/badge/chat-discord-738bd7.svg)](https://discord.gg/G95rNZs)
+[![SteemConnect channel on Discord](https://img.shields.io/badge/chat-discord-738bd7.svg)](https://discord.gg/NCZMVev)
 
 # SteemConnect v2
 
