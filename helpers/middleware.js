@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const intersection = require('lodash/intersection');
 const { tokens, apps } = require('../db/models');
 
 /**
@@ -57,6 +58,18 @@ const strategy = (req, res, next) => {
 };
 
 const authenticate = roles => async (req, res, next) => {
+  if (req.proxy) {
+    const appStatus = await apps.findOne({
+      where: { client_id: req.proxy },
+    });
+    if (!appStatus || (appStatus && appStatus.is_disabled)) {
+      res.status(401).json({
+        error: 'application_disabled',
+        error_description: 'This application has been disabled by SteemConnect',
+      });
+      return;
+    }
+  }
   let role = roles;
   if (Array.isArray(roles)) {
     if (req.role && roles.includes(req.role)) {
@@ -92,6 +105,16 @@ const authenticate = roles => async (req, res, next) => {
         error: 'invalid_grant',
         error_description: 'The code or secret is not valid',
       });
+    } else if (app.allowed_ips && app.allowed_ips.length > 0) {
+      const reqIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+      if (intersection(app.allowed_ips, reqIp.replace(' ', '').split(',')).length > 0) {
+        next();
+      } else {
+        res.status(401).json({
+          error: 'unauthorized_access',
+          error_description: `The IP ${reqIp} is not authorized`,
+        });
+      }
     } else {
       next();
     }

@@ -17,6 +17,11 @@ module.exports = (sequelize, DataTypes) => sequelize.define('apps',
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    is_disabled: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    allowed_ips: DataTypes.JSONB,
   },
   {
     freezeTableName: true,

@@ -8,7 +8,7 @@ const router = express.Router(); // eslint-disable-line new-cap
 
 /** Get applications */
 router.get('/', async (req, res) => {
-  const apps = await req.db.apps.findAll({ where: { is_public: true }, attributes: { exclude: ['secret'] } });
+  const apps = await req.db.apps.findAll({ where: { is_public: true }, attributes: { exclude: ['secret', 'allowed_ips'] } });
   res.json(apps);
 });
 
@@ -27,6 +27,7 @@ router.get('/@:clientId', async (req, res, next) => {
   } else {
     if (!req.user || app.owner !== req.user) {
       app.secret = undefined;
+      app.allowed_ips = undefined;
     }
     res.json(app);
   }
@@ -97,6 +98,7 @@ router.put('/@:clientId', authenticate('user'), async (req, res, next) => {
       icon: app.icon,
       website: app.website,
       is_public: app.is_public,
+      allowed_ips: app.allowed_ips,
     }, {
       where: {
         client_id: clientId,
@@ -104,6 +106,25 @@ router.put('/@:clientId', authenticate('user'), async (req, res, next) => {
       },
     });
     res.json({ success: true });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/** Reset client secret */
+router.put('/@:clientId/reset-secret', authenticate('user'), async (req, res, next) => {
+  const { clientId } = req.params;
+  const secret = crypto.randomBytes(24).toString('hex');
+  try {
+    await req.db.apps.update({
+      secret,
+    }, {
+      where: {
+        client_id: clientId,
+        owner: req.user,
+      },
+    });
+    res.json({ success: true, secret });
   } catch (err) {
     next(err);
   }

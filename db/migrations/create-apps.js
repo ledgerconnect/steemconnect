@@ -36,11 +36,18 @@ module.exports = {
     beneficiaries: {
       type: Sequelize.JSONB,
     },
+    allowed_ips: {
+      type: Sequelize.JSONB,
+    },
     is_approved: {
       type: Sequelize.BOOLEAN,
       defaultValue: true,
     },
     is_public: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
+    is_disabled: {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
     },
