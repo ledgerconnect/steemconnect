@@ -42,7 +42,7 @@ export default class Login extends Component {
     return (
       <div className="Sign">
         <div className="Sign__content container my-2 login-form Sign__authorize">
-          {step === 1 && <SignForm title={<FormattedMessage id="log_in" />} roles={['memo', 'posting']} sign={this.handleSubmit} />}
+          {step === 1 && <SignForm title={<FormattedMessage id="log_in" />} roles={['posting']} sign={this.handleSubmit} />}
           {step === 2 && <Loading />}
         </div>
       </div>
