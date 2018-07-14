@@ -6,6 +6,7 @@ import SignSuccess from '../Sign/Success';
 import SignError from '../Sign/Error';
 import Loading from '../../widgets/Loading';
 import { hasAuthority } from '../../utils/auth';
+import '../Sign.less';
 
 export default class Authorize extends Component {
   static propTypes = {
