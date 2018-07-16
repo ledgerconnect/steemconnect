@@ -1,18 +1,36 @@
 <template>
-  <div class="home">
-    <img src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <div>
+      <h2>Trade history</h2>
+      <div>
+        <div
+          v-for="(trade, key, i) in tradeHistory"
+          :key="i"
+        >
+          {{trade.date | date}}
+          {{(parseFloat(trade.current_pays) / parseFloat(trade.open_pays)).toFixed(6)}}
+          {{trade.open_pays}}
+          {{trade.current_pays}}
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
+import { mapActions } from 'vuex';
 
 export default {
-  name: 'home',
-  components: {
-    HelloWorld,
+  computed: {
+    tradeHistory() {
+      return this.$store.state.market.tradeHistory;
+    },
+  },
+  methods: mapActions([
+    'getTradeHistory',
+  ]),
+  created() {
+    this.getTradeHistory();
   },
 };
 </script>
