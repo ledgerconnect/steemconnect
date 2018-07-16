@@ -129,7 +129,7 @@ export default class Authorize extends Component {
 
   render() {
     const { clientId, scope, step, scopes, app } = this.state;
-    const requiredRoles = (scope === 'login') ? ['memo', 'posting'] : ['owner', 'active'];
+    const requiredRoles = (scope === 'login') ? ['posting'] : ['owner', 'active'];
     return (
       <div className="Sign">
         {step === 0 && <Loading />}

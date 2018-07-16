@@ -71,7 +71,7 @@ export default class Login extends Component {
             </div>
             <div className="Sign__wrapper">
               {step === 0 && <Loading />}
-              {step === 1 && <SignForm title={<FormattedMessage id="log_in" />} roles={['memo', 'posting']} sign={this.handleSubmit} />}
+              {step === 1 && <SignForm title={<FormattedMessage id="log_in" />} roles={['posting']} sign={this.handleSubmit} />}
               {step === 2 &&
               <ChooseAccountForm
                 addAccount={this.addAccount}
