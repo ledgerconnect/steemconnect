@@ -4,25 +4,32 @@ import Client from 'lightrpc';
 const client = new Client('https://api.steemit.com');
 
 const state = {
-  tradeHistory: [],
+  recentTrades: [],
+  ticker: {},
 };
 
 const mutations = {
-  saveTradeHistory(_state, result) {
+  saveRecentTrades(_state, result) {
     if (result) {
-      Vue.set(state, 'tradeHistory', result.slice().reverse());
+      Vue.set(state, 'recentTrades', result);
+    }
+  },
+  saveTicker(_state, result) {
+    if (result) {
+      Vue.set(state, 'ticker', result);
     }
   },
 };
 
 const actions = {
-  getTradeHistory: ({ commit }) => {
-    client.call('get_trade_history', [
-      '2018-07-16T20:08:07',
-      '1969-12-31T23:59:59',
-      1000,
-    ], (err, result) => {
-      commit('saveTradeHistory', result);
+  getRecentTrades: ({ commit }) => {
+    client.call('get_recent_trades', [25], (err, result) => {
+      commit('saveRecentTrades', result);
+    });
+  },
+  getTicker: ({ commit }) => {
+    client.call('get_ticker', [], (err, result) => {
+      commit('saveTicker', result);
     });
   },
 };
