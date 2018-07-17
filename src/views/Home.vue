@@ -1,6 +1,7 @@
 <template>
   <div>
     <div>
+      <h3>{{pair}}<sub>/ STEEM</sub></h3>
       <h2>Ticker</h2>
       <div>
         <div>Last price {{ticker.latest}}</div>
@@ -12,44 +13,84 @@
       </div>
       <h2>Order book</h2>
       <div>
-        <h3>Bids (buy orders)</h3>
-        <div
-          v-for="(order, key, i) in orderBook.bids.slice(0, 20)"
-          :key="i"
-        >
-          {{order.created | date}}
-          {{order.sbd / 1000}}
-          {{order.steem / 1000}}
-          {{order.order_price.base}}
-          {{order.order_price.quote}}
-          {{order.real_price}}
-        </div>
+        <h3>Bids (sell {{pair}} orders)</h3>
+        <table class="text-right">
+          <thead>
+            <tr>
+              <!--<th>Sum</th>-->
+              <th>Total</th>
+              <th>Size ({{pair}})</th>
+              <th>Bid (STEEM)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(order, key, i) in orderBook.asks.slice(0, 10)"
+              :key="i"
+            >
+              <!--<td>{{order.created | date}}</td>-->
+              <td>{{order.sbd / 1000}}</td>
+              <td>{{order.steem / 1000}}</td>
+              <!--<td>{{order.order_price.base}}</td>-->
+              <!--<td>{{order.order_price.quote}}</td>-->
+              <td class="text-green">{{parseFloat(order.real_price).toFixed(6)}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div>
-        <h3>Asks (sell orders)</h3>
-        <div
-          v-for="(order, key, i) in orderBook.asks.slice(0, 20)"
-          :key="i"
-        >
-          {{order.created | date}}
-          {{order.sbd / 1000}}
-          {{order.steem / 1000}}
-          {{order.order_price.base}}
-          {{order.order_price.quote}}
-          {{order.real_price}}
-        </div>
+        <h3>Asks (buy {{pair}} orders)</h3>
+        <table class="text-right">
+          <thead>
+            <tr>
+              <!--<th>Sum</th>-->
+              <th>Total</th>
+              <th>Size ({{pair}})</th>
+              <th>Ask (STEEM)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(order, key, i) in orderBook.asks.slice(0, 10)"
+              :key="i"
+            >
+              <!--<td>{{order.created | date}}</td>-->
+              <td>{{order.sbd / 1000}}</td>
+              <td>{{order.steem / 1000}}</td>
+              <!--<td>{{order.order_price.base}}</td>-->
+              <!--<td>{{order.order_price.quote}}</td>-->
+              <td class="text-red">{{parseFloat(order.real_price).toFixed(6)}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <h2>Trade history</h2>
       <div>
-        <div
-          v-for="(trade, key, i) in recentTrades.slice(0, 20)"
-          :key="i"
-        >
-          {{trade.date | date}}
-          {{(parseFloat(trade.current_pays) / parseFloat(trade.open_pays)).toFixed(6)}}
-          {{trade.open_pays}}
-          {{trade.current_pays}}
-        </div>
+        <table class="text-right">
+          <thead>
+          <tr>
+            <!--<th>Sum</th>-->
+            <th class="text-left">Date</th>
+            <th>Price</th>
+            <th>Steem</th>
+            <th>{{pair}}</th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(trade, key, i) in recentTrades.slice(0, 10)"
+              :key="i"
+            >
+              <!--<td>{{order.created | date}}</td>-->
+              <td class="text-left">{{trade.date | date}}</td>
+              <td>{{(parseFloat(trade.current_pays) / parseFloat(trade.open_pays)).toFixed(6)}}</td>
+              <!--<td>{{order.order_price.base}}</td>-->
+              <!--<td>{{order.order_price.quote}}</td>-->
+              <td>{{trade.open_pays}}</td>
+              <td>{{trade.current_pays}}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -59,6 +100,11 @@
 import { mapActions } from 'vuex';
 
 export default {
+  data() {
+    return {
+      pair: 'SBD',
+    };
+  },
   computed: {
     ticker() {
       return this.$store.state.market.ticker;
