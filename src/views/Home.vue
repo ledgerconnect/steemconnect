@@ -25,7 +25,7 @@
           </thead>
           <tbody>
             <tr
-              v-for="(order, key, i) in orderBook.asks.slice(0, 10)"
+              v-for="(order, key, i) in orderBook.bids.slice(0, 10)"
               :key="i"
             >
               <!--<td>{{order.created | date}}</td>-->
