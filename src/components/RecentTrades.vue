@@ -13,6 +13,7 @@
       <tr
         v-for="(trade, key, i) in recentTrades.slice(0, 10)"
         :key="i"
+        class="border-bottom"
       >
         <!--<td>{{order.created | date}}</td>-->
         <td class="text-left">{{trade.date | date}}</td>

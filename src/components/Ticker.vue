@@ -1,8 +1,8 @@
 <template>
-  <div class="columns">
+  <div class="columns m-0">
     <div class="column col-2">
       Last price<br/>
-      {ticker.latest}}
+      {{ticker.latest}}
     </div>
     <div class="column col-2">
       Ask<br/>

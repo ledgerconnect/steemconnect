@@ -12,6 +12,7 @@
       <tr
         v-for="(order, key, i) in bids.slice(0, 10)"
         :key="i"
+        class="border-bottom"
       >
         <!--<td>{{order.created | date}}</td>-->
         <td>{{order.sbd / 1000}}</td>
