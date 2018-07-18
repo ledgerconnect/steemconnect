@@ -1,4 +1,5 @@
 import 'primer/index.scss';
+import '@/styles.less';
 import Vue from 'vue';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
