@@ -1,20 +1,19 @@
 <template>
   <div>
-    <h3>{{pair}}<sub>/ STEEM</sub></h3>
-    <h2>Ticker</h2>
+    <h2>{{asset}} ticker</h2>
     <Ticker :ticker="ticker"/>
-
+    <div class="graph"></div>
     <h2>Order book</h2>
     <div class="columns m-0 bg-gray-dark">
       <div class="column one-third bg-green-light">
-        <h3>Bids (sell {{pair}} orders)</h3>
+        <h3>Bids (sell {{asset}} orders)</h3>
         <OrderBookBids :bids="orderBook.bids" />
       </div>
       <div class="column one-third text-center bg-gray-light">
         Actions
       </div>
       <div class="column one-third bg-red-light">
-        <h3>Asks (buy {{pair}} orders)</h3>
+        <h3>Asks (buy {{asset}} orders)</h3>
         <OrderBookAsks :asks="orderBook.asks" />
       </div>
     </div>
@@ -31,7 +30,7 @@ import { mapActions } from 'vuex';
 export default {
   data() {
     return {
-      pair: 'SBD',
+      asset: this.$route.params.asset,
     };
   },
   computed: {
@@ -57,3 +56,10 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="less">
+.graph {
+  background-color: white;
+  height: 400px;
+}
+</style>
