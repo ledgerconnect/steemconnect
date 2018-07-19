@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="d-flex flex-row">
-    <div id="nav">
+    <div id="nav" class="p-3 border-right">
       <ul>
         <li>
           <router-link to="/">Home</router-link>
@@ -29,6 +29,7 @@
   background-color: white;
   width: 200px;
   ul {
+    list-style: none;
     li {
       clear: both;
     }
