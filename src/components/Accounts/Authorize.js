@@ -23,7 +23,7 @@ export default class Authorize extends Component {
       success: false,
       error: false,
       username: props.params.username,
-      role: props.params.role || 'posting',
+      role: ['posting', 'active', 'owner'].includes(props.params.role) ? props.params.role : 'posting',
       weight: props.location.query.weight || 1,
       redirectUri: props.location.query.redirect_uri,
     };
