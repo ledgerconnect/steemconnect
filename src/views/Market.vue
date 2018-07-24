@@ -19,7 +19,7 @@
     </div>
     <div>
       <h2>Trade history</h2>
-      <RecentTrades :recentTrades="recentTrades"/>
+      <RecentTrades :recentTrades="recentTrades" :asset="asset"/>
     </div>
   </div>
 </template>
@@ -49,10 +49,15 @@ export default {
     'getOrderBook',
     'getRecentTrades',
   ]),
-  created() {
-    this.getTicker();
-    this.getOrderBook();
-    this.getRecentTrades();
+  beforeDestroy () {
+    clearInterval(this.queryInterval)
+  },
+  mounted() {
+    this.queryInterval = setInterval(() => {
+      this.getTicker();
+      this.getOrderBook();
+      this.getRecentTrades();
+    }, 3000);
   },
 };
 </script>

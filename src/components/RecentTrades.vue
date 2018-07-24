@@ -6,7 +6,7 @@
         <th class="text-left">Date</th>
         <th>Price</th>
         <th>Steem</th>
-        <th>{{pair}}</th>
+        <th>{{asset}}</th>
       </tr>
     </thead>
     <tbody>
@@ -29,6 +29,6 @@
 
 <script>
 export default {
-  props: ['recentTrades'],
+  props: ['recentTrades', 'asset'],
 };
 </script>
