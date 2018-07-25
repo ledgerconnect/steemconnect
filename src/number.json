@@ -1,0 +1,11 @@
+{
+  "en-US": {
+    "currency": {
+      "style": "currency",
+      "currency": "USD"
+    },
+    "percent": {
+      "style": "percent"
+    }
+  }
+}

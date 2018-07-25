@@ -1,0 +1,12 @@
+{
+  "en": {
+    "message": {
+      "hello": "hello world"
+    }
+  },
+  "fr": {
+    "message": {
+      "hello": "こんにちは、世界"
+    }
+  }
+}

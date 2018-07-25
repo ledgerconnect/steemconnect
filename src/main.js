@@ -1,12 +1,15 @@
 import 'primer/index.scss';
 import '@/styles.less';
 import Vue from 'vue';
+import VueI18n from 'vue-i18n';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 import moment from 'moment';
-import App from './App.vue';
-import router from './router';
-import store from './store/index';
+import App from '@/App.vue';
+import router from '@/router';
+import store from '@/store/index';
+import messages from '@/translation.json';
+import numberFormats from '@/number.json';
 
 const requireComponent = require.context('./components', true, /[\w-]+\.vue$/);
 requireComponent.keys().forEach((fileName) => {
@@ -17,9 +20,18 @@ requireComponent.keys().forEach((fileName) => {
 
 Vue.filter('date', value => moment.utc(value).local().fromNow());
 
+Vue.use(VueI18n);
+
+const i18n = new VueI18n({
+  locale: 'en',
+  messages,
+  numberFormats,
+});
+
 Vue.config.productionTip = false;
 
 new Vue({
+  i18n,
   router,
   store,
   render: h => h(App),

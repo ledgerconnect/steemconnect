@@ -2,19 +2,19 @@
   <div class="columns m-0">
     <div class="column col-2">
       Last price<br/>
-      {{ticker.latest}}
+      {{$n(ticker.latest)}}
     </div>
     <div class="column col-2">
       Ask<br/>
-      {{ticker.lowest_ask}}
+      {{$n(ticker.lowest_ask)}}
     </div>
     <div class="column col-2">
       Bid<br/>
-      {{ticker.highest_bid}}
+      {{$n(ticker.highest_bid)}}
     </div>
     <div class="column col-2">
       Spread<br/>
-      {{ticker.percent_change}}
+      {{$n(ticker.percent_change, 'percent')}}
     </div>
     <div class="column col-2">
       24h volume STEEM<br/>
