@@ -1,8 +1,12 @@
 <template>
   <div>
-    <h2>{{asset}} ticker</h2>
-    <Ticker :ticker="ticker"/>
-    <div class="graph"></div>
+    <div class="mb-4">
+      <h2>{{asset}}-STEEM</h2>
+      <Ticker :ticker="ticker"/>
+    </div>
+    <div class="mb-4">
+      <div class="graph"></div>
+    </div>
     <h2>Order book</h2>
     <div class="columns">
       <div class="column one-third">
@@ -17,7 +21,7 @@
         <OrderBookAsks :asks="orderBook.asks" />
       </div>
     </div>
-    <div>
+    <div class="mb-4">
       <h2>Trade history</h2>
       <RecentTrades :recentTrades="recentTrades" :asset="asset"/>
     </div>
