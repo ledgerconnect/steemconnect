@@ -10,7 +10,7 @@
         <OrderBookBids :bids="orderBook.bids" />
       </div>
       <div class="column one-third text-center">
-        <h3>Actions</h3>
+        <Actions/>
       </div>
       <div class="column one-third">
         <h3>Asks (buy {{asset}} orders)</h3>
