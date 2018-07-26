@@ -49,8 +49,8 @@ export default {
     'getOrderBook',
     'getRecentTrades',
   ]),
-  beforeDestroy () {
-    clearInterval(this.queryInterval)
+  beforeDestroy() {
+    clearInterval(this.queryInterval);
   },
   mounted() {
     this.queryInterval = setInterval(() => {
