@@ -32,6 +32,7 @@
 
 #logo {
   font-size: 32px;
+  color: @primary-color;
 }
 
 #nav {

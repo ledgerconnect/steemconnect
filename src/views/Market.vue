@@ -4,15 +4,15 @@
     <Ticker :ticker="ticker"/>
     <div class="graph"></div>
     <h2>Order book</h2>
-    <div class="columns m-0 bg-gray-dark">
-      <div class="column one-third bg-green-light">
+    <div class="columns">
+      <div class="column one-third">
         <h3>Bids (sell {{asset}} orders)</h3>
         <OrderBookBids :bids="orderBook.bids" />
       </div>
-      <div class="column one-third text-center bg-gray-light">
-        Actions
+      <div class="column one-third text-center">
+        <h3>Actions</h3>
       </div>
-      <div class="column one-third bg-red-light">
+      <div class="column one-third">
         <h3>Asks (buy {{asset}} orders)</h3>
         <OrderBookAsks :asks="orderBook.asks" />
       </div>
@@ -64,7 +64,7 @@ export default {
 
 <style scoped lang="less">
 .graph {
-  background-color: white;
+  background-color: lightgray;
   height: 400px;
 }
 </style>
