@@ -2,7 +2,7 @@
   <div id="app" class="d-flex flex-row">
     <Sidebar/>
     <TopNav/>
-    <div id="content" class="width-full p-4">
+    <div id="content" class="width-full">
       <router-view/>
     </div>
   </div>

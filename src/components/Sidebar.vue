@@ -21,6 +21,9 @@
         </ul>
       </li>
       <li class="py-2 px-4 border-top">
+        <router-link to="/wallet">Wallet</router-link>
+      </li>
+      <li class="py-2 px-4 border-top">
         <router-link to="/about">About</router-link>
       </li>
     </ul>
