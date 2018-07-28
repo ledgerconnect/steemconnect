@@ -1,5 +1,5 @@
 <template>
-  <div class="columns m-0 border box-shadow mb-4">
+  <div class="columns m-0 border mb-4">
     <div class="column col-2 border-right">
       Last price<br/>
       {{$n(ticker.latest)}}

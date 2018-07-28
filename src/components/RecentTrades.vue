@@ -1,7 +1,7 @@
 <template>
-  <table class="table width-full text-right border box-shadow">
+  <table class="table table-lg width-full text-right border">
     <thead>
-      <tr>
+      <tr class="border-bottom">
         <!--<th>Sum</th>-->
         <th class="text-left">Date</th>
         <th>Price</th>

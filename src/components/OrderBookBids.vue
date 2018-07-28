@@ -1,7 +1,7 @@
 <template>
-  <table class="table width-full text-right border box-shadow">
+  <table class="table width-full text-right border">
     <thead>
-      <tr>
+      <tr class="border-bottom">
         <!--<th>Sum</th>-->
         <th>Total</th>
         <th>Size (SBD)</th>

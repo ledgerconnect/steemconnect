@@ -1,7 +1,9 @@
 <template>
   <div id="nav" class="border-right">
     <div class="p-4">
-      <span id="logo" class="octicon octicon-diff-modified"/>
+      <router-link to="/">
+        <span id="logo" class="octicon octicon-diff-modified"/>
+      </router-link>
     </div>
     <ul>
       <li>
@@ -20,11 +22,15 @@
           <li class="py-1 px-4">...</li>
         </ul>
       </li>
-      <li class="py-2 px-4 border-top">
-        <router-link to="/wallet">Wallet</router-link>
+      <li class="border-top">
+        <router-link to="/wallet" class="py-2 px-4 d-block">
+          Wallet
+        </router-link>
       </li>
-      <li class="py-2 px-4 border-top">
-        <router-link to="/about">About</router-link>
+      <li class="border-top">
+        <router-link to="/about" class="py-2 px-4 d-block">
+          About
+        </router-link>
       </li>
     </ul>
   </div>
@@ -47,8 +53,15 @@
   width: @sidebar-width;
   overflow: auto;
   background-color: @sidebar-bg-color;
+  display: none;
+
+  @media (min-width: 768px){
+    display: block;
+  }
+
   ul {
     list-style: none;
+
     li {
       clear: both;
     }

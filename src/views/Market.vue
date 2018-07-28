@@ -39,13 +39,13 @@ export default {
   },
   computed: {
     ticker() {
-      return this.$store.state.market.ticker;
+      return this.$store.state.market.ticker[this.asset];
     },
     orderBook() {
-      return this.$store.state.market.orderBook;
+      return this.$store.state.market.orderBook[this.asset];
     },
     recentTrades() {
-      return this.$store.state.market.recentTrades;
+      return this.$store.state.market.recentTrades[this.asset];
     },
   },
   methods: mapActions([
@@ -58,9 +58,9 @@ export default {
   },
   mounted() {
     this.queryInterval = setInterval(() => {
-      this.getTicker();
-      this.getOrderBook();
-      this.getRecentTrades();
+      this.getTicker(this.asset);
+      this.getOrderBook(this.asset);
+      this.getRecentTrades(this.asset);
     }, 3000);
   },
 };

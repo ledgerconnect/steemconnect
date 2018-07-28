@@ -4,46 +4,52 @@ import Client from 'lightrpc';
 const client = new Client('https://api.steemit.com');
 
 const state = {
-  ticker: {},
-  orderBook: {
-    bids: [],
-    asks: [],
+  ticker: {
+    SBD: {},
   },
-  recentTrades: [],
+  orderBook: {
+    SBD: {
+      bids: [],
+      asks: [],
+    },
+  },
+  recentTrades: {
+    SBD: [],
+  },
 };
 
 const mutations = {
-  saveTicker(_state, result) {
+  saveTicker(_state, { asset, result }) {
     if (result) {
-      Vue.set(state, 'ticker', result);
+      Vue.set(state.ticker, asset, result);
     }
   },
-  saveOrderBook(_state, result) {
+  saveOrderBook(_state, { asset, result }) {
     if (result) {
-      Vue.set(state, 'orderBook', result);
+      Vue.set(state.orderBook, asset, result);
     }
   },
-  saveRecentTrades(_state, result) {
+  saveRecentTrades(_state, { asset, result }) {
     if (result) {
-      Vue.set(state, 'recentTrades', result);
+      Vue.set(state.recentTrades, asset, result);
     }
   },
 };
 
 const actions = {
-  getTicker: ({ commit }) => {
+  getTicker: ({ commit }, asset) => {
     client.call('get_ticker', [], (err, result) => {
-      commit('saveTicker', result);
+      commit('saveTicker', { asset, result });
     });
   },
-  getOrderBook: ({ commit }) => {
+  getOrderBook: ({ commit }, asset) => {
     client.call('get_order_book', [500], (err, result) => {
-      commit('saveOrderBook', result);
+      commit('saveOrderBook', { asset, result });
     });
   },
-  getRecentTrades: ({ commit }) => {
+  getRecentTrades: ({ commit }, asset) => {
     client.call('get_recent_trades', [25], (err, result) => {
-      commit('saveRecentTrades', result);
+      commit('saveRecentTrades', { asset, result });
     });
   },
 };
