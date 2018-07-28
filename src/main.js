@@ -1,7 +1,9 @@
 import 'primer/index.scss';
+import '@vue/ui/dist/vue-ui.css'
 import '@/styles.less';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
+import VueUi from '@vue/ui';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 import moment from 'moment';
@@ -20,6 +22,7 @@ requireComponent.keys().forEach((fileName) => {
 
 Vue.filter('date', value => moment.utc(value).local().fromNow());
 
+Vue.use(VueUi);
 Vue.use(VueI18n);
 
 const i18n = new VueI18n({

@@ -52,6 +52,15 @@ const actions = {
       commit('saveRecentTrades', { asset, result });
     });
   },
+  cancelOrder: ({ dispatch }, orderId) => (
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        console.log(`Order ${orderId} canceled`);
+        dispatch('getOpenOrders');
+        resolve();
+      }, 2000);
+    })
+  ),
 };
 
 export default {
