@@ -1,5 +1,5 @@
 {
-  "name": "dex",
+  "name": "steem-dex",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -36,5 +36,9 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bonuschain/steem-dex/issues"
+  }
 }

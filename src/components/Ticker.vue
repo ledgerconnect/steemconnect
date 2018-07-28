@@ -1,34 +1,34 @@
 <template>
-  <div class="columns m-0 border mb-4">
-    <div class="column col-2 border-right">
-      Last price<br/>
-      {{$n(ticker.latest)}}
+  <div class="columns m-0 border-bottom">
+    <div class="column col-2 px-4 py-3 border-right">
+      <b>{{asset}}</b>-STEEM<br/>
+      Steem Dollar
     </div>
-    <div class="column col-2 border-right">
-      Ask<br/>
-      {{$n(ticker.lowest_ask)}}
+    <div class="column col-2 px-4 py-3 border-right">
+      {{$n(ticker.latest)}}<br/>
+      Last price
     </div>
-    <div class="column col-2 border-right">
-      Bid<br/>
-      {{$n(ticker.highest_bid)}}
+    <div class="column col-2 px-4 py-3 border-right">
+      {{$n(ticker.lowest_ask)}}<br/>
+      Ask
     </div>
-    <div class="column col-2 border-right">
-      Spread<br/>
-      {{$n(ticker.percent_change, 'percent')}}
+    <div class="column col-2 px-4 py-3 border-right">
+      {{$n(ticker.highest_bid)}}<br/>
+      Bid
     </div>
-    <div class="column col-2 border-right">
-      24h volume STEEM<br/>
-      {{ticker.steem_volume}}
+    <div class="column col-2 px-4 py-3 border-right">
+      {{$n(ticker.percent_change, 'percent')}}<br/>
+      Spread
     </div>
-    <div class="column col-2">
-      24h volume SBD<br/>
-      {{ticker.sbd_volume}}
+    <div class="column col-2 px-4 py-3">
+      {{ticker.steem_volume}}<br/>
+      24h volume
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ['ticker'],
+  props: ['asset', 'ticker'],
 };
 </script>

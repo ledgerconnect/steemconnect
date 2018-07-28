@@ -4,7 +4,7 @@ import store from '@/store';
 import Home from '@/views/Home.vue';
 import Market from '@/views/Market.vue';
 import OpenOrders from '@/views/OpenOrders.vue';
-import Wallet from '@/views/Wallet.vue';
+import Portfolio from '@/views/Portfolio.vue';
 import Settings from '@/views/Settings.vue';
 import About from '@/views/About.vue';
 
@@ -30,10 +30,10 @@ export default new Router({
       component: OpenOrders
     },
     {
-      path: '/wallet',
-      name: 'wallet',
+      path: '/portfolio',
+      name: 'portfolio',
       beforeEnter: requireAuth,
-      component: Wallet,
+      component: Portfolio,
     },
     { path: '/settings', name: 'settings', component: Settings },
     { path: '/about', name: 'about', component: About },

@@ -14,12 +14,17 @@
     <tbody>
       <tr v-for="order in openOrders" class="border-bottom">
         <td class="text-left">{{order.orderid}}</td>
-        <td class="text-left">{{ order.sell_price.base.slice(-6) === ' STEEM' ? 'Sell' : 'Buy'}}</td>
+        <td class="text-left">
+          <span class="text-red" v-if="order.sell_price.base.slice(-6) === ' STEEM'">Sell</span>
+          <span class="text-green" v-else>Buy</span>
+        </td>
         <td class="text-left">{{order.created | date}}</td>
         <td>{{order.sell_price.base}}</td>
         <td>{{order.sell_price.quote}}</td>
         <td>123.456</td>
-        <td class="text-left">Cancel</td>
+        <td class="text-left">
+          <a href="#">Cancel</a>
+        </td>
       </tr>
     </tbody>
   </table>

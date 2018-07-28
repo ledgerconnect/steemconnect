@@ -19,17 +19,16 @@
               SBD
             </router-link>
           </li>
-          <li class="py-1 px-4">...</li>
+          <li v-if="isAuth">
+            <router-link to="/open-orders" class="py-1 px-4 d-block">
+              Open orders <span v-if="openOrders.length > 0" class="Counter Counter--gray">{{openOrders.length}}</span>
+            </router-link>
+          </li>
         </ul>
       </li>
       <li v-if="isAuth">
-        <router-link to="/open-orders" class="py-2 px-4 d-block">
-          Open orders <span class="Counter Counter--gray">{{openOrders.length}}</span>
-        </router-link>
-      </li>
-      <li v-if="isAuth">
-        <router-link to="/wallet" class="py-2 px-4 d-block">
-          Wallet
+        <router-link to="/portfolio" class="py-2 px-4 d-block">
+          Portfolio
         </router-link>
       </li>
       <li>

@@ -1,29 +1,28 @@
 <template>
-  <div class="p-4">
-    <div class="mb-4">
-      <h2>{{asset}}-STEEM</h2>
-      <Ticker :ticker="ticker"/>
-    </div>
-    <div class="mb-4">
-      <div class="graph"></div>
-    </div>
-    <h2>Order book</h2>
-    <div class="columns">
-      <div class="column one-third">
-        <h3>Bids (sell {{asset}} orders)</h3>
-        <OrderBookBids :bids="orderBook.bids" />
+  <div>
+    <Ticker :asset="asset" :ticker="ticker"/>
+    <div class="p-4">
+      <div class="mb-4">
+        <div class="graph"></div>
       </div>
-      <div class="column one-third text-center">
-        <Actions/>
+      <h2>Order book</h2>
+      <div class="columns">
+        <div class="column one-third">
+          <h3>Bids (sell {{asset}} orders)</h3>
+          <OrderBookBids :bids="orderBook.bids" />
+        </div>
+        <div class="column one-third text-center">
+          <Actions/>
+        </div>
+        <div class="column one-third">
+          <h3>Asks (buy {{asset}} orders)</h3>
+          <OrderBookAsks :asks="orderBook.asks" />
+        </div>
       </div>
-      <div class="column one-third">
-        <h3>Asks (buy {{asset}} orders)</h3>
-        <OrderBookAsks :asks="orderBook.asks" />
+      <div class="mb-4">
+        <h2>Trade history</h2>
+        <RecentTrades :recentTrades="recentTrades" :asset="asset"/>
       </div>
-    </div>
-    <div class="mb-4">
-      <h2>Trade history</h2>
-      <RecentTrades :recentTrades="recentTrades" :asset="asset"/>
     </div>
   </div>
 </template>

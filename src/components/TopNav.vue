@@ -1,7 +1,7 @@
 <template>
   <div id="topnav" class="border-bottom py-2 px-4 text-right">
     <Avatar v-if="account.name" :username="account.name"/>
-    <a v-if="!account.name" href="#" @click="login">Log in</a>
+    <a href="#" @click="login" v-else>Log in</a>
   </div>
 </template>
 
