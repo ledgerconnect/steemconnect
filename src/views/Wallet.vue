@@ -7,6 +7,7 @@
         <th>Value, USD</th>
         <th>Price, USD</th>
         <th>24h change</th>
+        <th class="text-left">Action</th>
       </tr>
     </thead>
     <tbody>
@@ -16,6 +17,7 @@
         <td>$432.32</td>
         <td>$1.44</td>
         <td class="text-green">+4.54%</td>
+        <td class="text-left">Send</td>
       </tr>
       <tr class="border-bottom">
         <td class="text-left">Steem Dollar (SBD)</td>
@@ -23,6 +25,7 @@
         <td>$194.32</td>
         <td>$1.21</td>
         <td class="text-red">-2.39%</td>
+        <td class="text-left">Send</td>
       </tr>
     </tbody>
   </table>

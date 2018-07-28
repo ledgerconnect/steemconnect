@@ -11,7 +11,7 @@
           Home
         </router-link>
       </li>
-      <li class="border-top py-3">
+      <li class="border-top border-bottom py-3">
         <div class="pb-1 px-4 text-uppercase text-small">Markets</div>
         <ul>
           <li>
@@ -22,12 +22,22 @@
           <li class="py-1 px-4">...</li>
         </ul>
       </li>
-      <li class="border-top">
+      <li v-if="isAuth">
+        <router-link to="/open-orders" class="py-2 px-4 d-block">
+          Open orders <span class="Counter Counter--gray">{{openOrders.length}}</span>
+        </router-link>
+      </li>
+      <li v-if="isAuth">
         <router-link to="/wallet" class="py-2 px-4 d-block">
           Wallet
         </router-link>
       </li>
-      <li class="border-top">
+      <li>
+        <router-link to="/settings" class="py-2 px-4 d-block">
+          Settings
+        </router-link>
+      </li>
+      <li>
         <router-link to="/about" class="py-2 px-4 d-block">
           About
         </router-link>
@@ -35,6 +45,19 @@
     </ul>
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    isAuth() {
+      return !!this.$store.state.auth.account.name;
+    },
+    openOrders() {
+      return this.$store.state.auth.open_orders;
+    },
+  },
+};
+</script>
 
 <style scoped lang="less">
 @import '../vars';
