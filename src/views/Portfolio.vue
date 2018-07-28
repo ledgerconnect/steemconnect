@@ -15,21 +15,23 @@
         <tr class="border-bottom">
           <td class="text-left">Steem (STEEM)</td>
           <td>{{$n(parseFloat(account.balance))}}</td>
-          <td>$432.32</td>
-          <td>$1.44</td>
-          <td class="text-green">+4.54%</td>
+          <td>{{$n(rate.price_usd * parseFloat(account.balance), 'currency')}}</td>
+          <td>{{$n(rate.price_usd, 'currency')}}</td>
+          <td :class="rate.percent_change_24h > 0 ? 'text-green' : 'text-red'">
+            <span v-if="rate.percent_change_24h > 0">+</span>{{$n(rate.percent_change_24h)}}%
+          </td>
           <td class="text-left">
-            <a href="#" @click="open = true">Send</a>
+            <a href="#" @click="open = true; asset = 'STEEM'">Send</a>
           </td>
         </tr>
         <tr class="border-bottom">
-          <td class="text-left">Steem Dollar (SBD)</td>
+          <td class="text-left">Steem Dollars (SBD)</td>
           <td>{{$n(parseFloat(account.sbd_balance))}}</td>
-          <td>$194.32</td>
-          <td>$1.21</td>
-          <td class="text-red">-2.39%</td>
+          <td>{{$n(rate.price_usd / tickers.SBD.latest * parseFloat(account.sbd_balance), 'currency')}}</td>
+          <td>{{$n(rate.price_usd / tickers.SBD.latest, 'currency')}}</td>
+          <td>?</td>
           <td class="text-left">
-            <a href="#" @click="open = true">Send</a>
+            <a href="#" @click="open = true; asset = 'SBD'">Send</a>
           </td>
         </tr>
       </tbody>
@@ -41,7 +43,7 @@
       class="small"
     >
       <div class="default-body">
-        Send 1.000 STEEM
+        Send 1.000 {{asset}}
       </div>
       <div slot="footer" class="actions">
         <button class="btn btn-large btn-primary" @click="open = false">
@@ -57,16 +59,42 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   data () {
     return {
       open: false,
+      asset: null,
     }
   },
   computed: {
     account() {
       return this.$store.state.auth.account;
     },
+    rate() {
+      return this.$store.state.market.rate;
+    },
+    tickers() {
+      return {
+        SBD: this.$store.state.market.ticker.SBD
+      };
+    },
+  },
+  methods: mapActions([
+    'getRate',
+    'getTicker',
+  ]),
+  beforeDestroy() {
+    clearInterval(this.queryInterval);
+  },
+  mounted() {
+    this.getRate();
+    this.getTicker('SBD');
+    this.queryInterval = setInterval(() => {
+      this.getRate();
+      this.getTicker('SBD');
+    }, 20000);
   },
 };
 </script>

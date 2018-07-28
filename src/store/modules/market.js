@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import axios from 'axios';
 import Client from 'lightrpc';
 
 const client = new Client('https://api.steemit.com');
@@ -16,6 +17,7 @@ const state = {
   recentTrades: {
     SBD: [],
   },
+  rate: {},
 };
 
 const mutations = {
@@ -33,6 +35,10 @@ const mutations = {
     if (result) {
       Vue.set(state.recentTrades, asset, result);
     }
+  },
+  saveRate(_state, result) {
+    console.log(result);
+    Vue.set(state, 'rate', result);
   },
 };
 
@@ -61,6 +67,13 @@ const actions = {
       }, 2000);
     })
   ),
+  getRate: ({ commit }) => {
+    axios.get('https://api.coinmarketcap.com/v1/ticker/steem/').then((response) => {
+      if (response.data && response.data[0] && response.data[0].price_btc) {
+        commit('saveRate', response.data[0]);
+      }
+    }).catch(err => console.log(err));
+  },
 };
 
 export default {

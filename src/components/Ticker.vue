@@ -2,7 +2,7 @@
   <div class="columns m-0 border-bottom">
     <div class="column col-2 px-4 py-3 border-right">
       <b>{{asset}}</b>-STEEM<br/>
-      Steem Dollar
+      Steem Dollars
     </div>
     <div class="column col-2 px-4 py-3 border-right">
       {{$n(ticker.latest)}}<br/>

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@vue/ui": "^0.5.2",
+    "axios": "^0.18.0",
     "express": "^4.16.3",
     "lightrpc": "^1.0.1",
     "lodash": "^4.17.10",

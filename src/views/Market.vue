@@ -56,6 +56,9 @@ export default {
     clearInterval(this.queryInterval);
   },
   mounted() {
+    this.getTicker(this.asset);
+    this.getOrderBook(this.asset);
+    this.getRecentTrades(this.asset);
     this.queryInterval = setInterval(() => {
       this.getTicker(this.asset);
       this.getOrderBook(this.asset);

@@ -30,7 +30,7 @@ export default {
   left: 0;
   right: 0;
   height: @topnav-height;
-  background-color: @sidebar-bg-color;
+  background-color: @bg-color;
 
   @media (min-width: 768px){
     left: @sidebar-width !important;
