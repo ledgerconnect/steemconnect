@@ -1,5 +1,5 @@
 <template>
-  <table class="table table-lg width-full text-right border">
+  <table class="table table-lg width-full text-right mb-4">
     <thead>
       <tr class="border-bottom">
         <!--<th>Sum</th>-->

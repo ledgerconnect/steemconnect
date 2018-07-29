@@ -1,28 +1,27 @@
 <template>
   <div>
     <Ticker :asset="asset" :ticker="ticker"/>
+    <div class="graph border-bottom bg-gray-light"/>
     <div class="p-4">
-      <div class="mb-4">
-        <div class="graph"></div>
-      </div>
-      <h2>Order book</h2>
-      <div class="columns">
+      <div class="columns m-0">
         <div class="column one-third">
-          <h3>Bids (sell {{asset}} orders)</h3>
+          <h4>Bids (sell {{asset}} orders)</h4>
           <OrderBookBids :bids="orderBook.bids" />
         </div>
-        <div class="column one-third text-center">
+        <div class="column one-third text-center p-5">
           <Actions/>
         </div>
         <div class="column one-third">
-          <h3>Asks (buy {{asset}} orders)</h3>
+          <h4>Asks (buy {{asset}} orders)</h4>
           <OrderBookAsks :asks="orderBook.asks" />
         </div>
       </div>
-      <div class="mb-4">
-        <h2>Trade history</h2>
-        <RecentTrades :recentTrades="recentTrades" :asset="asset"/>
-      </div>
+    </div>
+    <div>
+      <h3 class="mx-4">Trade history</h3>
+      <RecentTrades :recentTrades="recentTrades" :asset="asset"/>
+      <h3 class="mx-4">Open orders</h3>
+      <OpenOrders/>
     </div>
   </div>
 </template>
@@ -70,7 +69,6 @@ export default {
 
 <style scoped lang="less">
 .graph {
-  background-color: lightgray;
   height: 400px;
 }
 </style>
