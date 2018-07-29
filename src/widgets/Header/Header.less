@@ -1,17 +1,73 @@
+@import "../../styles/screen-sizes";
+.ant-layout-header {
+  line-height: 0;
+}
 .Header {
-  line-height: 36px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.Header__log {
-  float: right;
-}
-
-.account-name {
-  color: #000;
-  font-weight: 700;
-  margin-right: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: calc(~"100% - 30px");
+  height: 48px;
+  margin: 10px auto 0;
+  .logo {
+    object{
+      pointer-events: none;
+    }
+  }
+  .right-menu {
+    display: flex;
+    justify-content: space-between;
+  }
+  .ant-dropdown-trigger {
+    display: block;
+    float: left;
+  }
+  .account-name {
+    color: #000;
+    font-weight: 700;
+    margin-right: 10px;
+    @media (max-width: (@screen-xs-max)) {
+      display: none;
+    }
+  }
+  button {
+    background: none;
+    font-weight: 500;
+    color: #fff;
+    line-height: 10px;
+    &:hover, &:active, &:focus {
+      background: none;
+      color: #fff;
+    }
+    i.icon-language {
+      font-size: 28px;
+    }
+  }
+  &.dashboard {
+    margin: 0 auto;
+    i.anticon-down {
+      color: #000;
+    }
+    i.icon-language {
+      color: #000;
+    }
+    .ant-dropdown-trigger {
+      line-height: 0;
+    }
+  }
+  .anticon-down {
+    color: #fff;
+    display: block;
+    float: right;
+    margin-top: 10px;
+  }
+  a.login-link {
+    color: #fff;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-right: 10px;
+  }
 }
 
 .switch-account-menu {
@@ -100,3 +156,4 @@
     }
   }
 }
+

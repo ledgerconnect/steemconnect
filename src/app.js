@@ -6,11 +6,7 @@ import Header from './widgets/Header';
 export default class App extends PureComponent {
   static propTypes = {
     children: PropTypes.shape(),
-    auth: PropTypes.shape({
-      user: PropTypes.shape({
-        name: PropTypes.string,
-      }),
-    }),
+    auth: PropTypes.shape({}),
   }
 
   render() {
@@ -18,7 +14,7 @@ export default class App extends PureComponent {
     return (
       <Layout>
         <Layout.Header style={{ borderBottom: '1px solid #E9E7E7' }}>
-          <Header username={this.props.auth.user.name} />
+          <Header type="dashboard" />
         </Layout.Header>
         <Layout.Content>
           {React.cloneElement(
