@@ -110,6 +110,13 @@ h1, h2, h3, h4, b, .btn {
   }
 }
 
+::-webkit-scrollbar-thumb {
+  background-color: @border-color;
+  border: 0;
+  background-clip: padding-box;
+  border-radius: 0;
+}
+
 .vue-ui-modal {
   .backdrop {
     background-color: rgba(0, 0, 0, 0.8);
@@ -135,4 +142,10 @@ h1, h2, h3, h4, b, .btn {
       font-size: 18px;
     }
   }
+}
+
+.container-sm {
+  max-width: 544px;
+  margin-right:auto;
+  margin-left:auto
 }

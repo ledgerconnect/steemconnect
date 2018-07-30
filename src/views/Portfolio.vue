@@ -36,26 +36,8 @@
         </tr>
       </tbody>
     </table>
-    <VueModal
-      v-if="open"
-      @close="open = false"
-      title="Transfer"
-      class="small"
-    >
-      <div class="default-body">
-        Send 1.000 {{asset}}
-      </div>
-      <div slot="footer" class="actions">
-        <button class="btn btn-large btn-primary" @click="open = false">
-          Confirm
-        </button>
-        <button class="btn btn-large btn-plain" @click="open = false">
-          Cancel
-        </button>
-      </div>
-    </VueModal>
+    <ModalSend :open="open" :asset="asset"/>
   </div>
-
 </template>
 
 <script>
@@ -65,7 +47,7 @@ export default {
   data () {
     return {
       open: false,
-      asset: null,
+      asset: 'STEEM',
     }
   },
   computed: {

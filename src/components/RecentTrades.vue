@@ -11,7 +11,7 @@
     </thead>
     <tbody>
       <tr
-        v-for="(trade, key, i) in recentTrades.slice(0, 10)"
+        v-for="(trade, key, i) in recentTrades.slice(0, 5)"
         :key="i"
         class="border-bottom"
       >
