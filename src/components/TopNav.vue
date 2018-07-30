@@ -1,7 +1,6 @@
 <template>
   <div id="topnav" class="border-bottom py-2 px-4 text-right">
-    <Avatar v-if="account.name" :username="account.name"/>
-    <a href="#" @click="login" v-else>Log in</a>
+    <Avatar :username="username"/>
   </div>
 </template>
 
@@ -10,8 +9,8 @@ import { mapActions } from 'vuex';
 
 export default {
   computed: {
-    account() {
-      return this.$store.state.auth.account;
+    username() {
+      return this.$store.state.auth.username;
     },
   },
   methods: mapActions([

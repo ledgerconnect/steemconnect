@@ -1,15 +1,17 @@
 <template>
-  <div
-    id="app"
-    class="d-flex flex-row"
-  >
-    <Sidebar/>
-    <TopNav/>
+  <div id="app">
     <div
-      id="content"
-      class="width-full ml-sm-0"
+      class="d-flex flex-row flex-items-center height-full"
+      v-if="$route.meta.layout === 'light'"
     >
       <router-view/>
+    </div>
+    <div class="d-flex flex-row" v-else>
+      <Sidebar/>
+      <TopNav/>
+      <div id="content" class="width-full ml-sm-0">
+        <router-view/>
+      </div>
     </div>
   </div>
 </template>

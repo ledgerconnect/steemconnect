@@ -19,14 +19,14 @@
               SBD
             </router-link>
           </li>
-          <li v-if="isAuth">
+          <li>
             <router-link to="/open-orders" class="py-1 px-4 d-block">
               Open orders <span v-if="openOrders.length > 0" class="Counter Counter--gray">{{openOrders.length}}</span>
             </router-link>
           </li>
         </ul>
       </li>
-      <li v-if="isAuth">
+      <li>
         <router-link to="/portfolio" class="py-2 px-4 d-block">
           Portfolio
         </router-link>
@@ -48,9 +48,6 @@
 <script>
 export default {
   computed: {
-    isAuth() {
-      return !!this.$store.state.auth.account.name;
-    },
     openOrders() {
       return this.$store.state.auth.open_orders;
     },
