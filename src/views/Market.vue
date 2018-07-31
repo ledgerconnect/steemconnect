@@ -1,18 +1,18 @@
 <template>
   <div>
     <Ticker :asset="asset" :ticker="ticker"/>
-    <div class="graph border-bottom bg-gray-light"/>
-    <div class="p-4">
+    <div class="graph border-bottom bg-gray-light mb-4"/>
+    <div>
       <div class="columns m-0">
-        <div class="column one-third">
-          <h4>Bids (sell {{asset}} orders)</h4>
+        <div class="column px-0 one-third">
+          <h4 class="mx-4">Bids</h4>
           <OrderBookBids :bids="orderBook.bids" />
         </div>
-        <div class="column one-third text-center p-5">
+        <div class="column one-third text-center px-5">
           <Actions/>
         </div>
-        <div class="column one-third">
-          <h4>Asks (buy {{asset}} orders)</h4>
+        <div class="column px-0 one-third">
+          <h4 class="mx-4">Asks</h4>
           <OrderBookAsks :asks="orderBook.asks" />
         </div>
       </div>

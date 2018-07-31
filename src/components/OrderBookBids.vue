@@ -1,5 +1,5 @@
 <template>
-  <table class="table width-full text-right">
+  <table class="table table-lg width-full text-right">
     <thead>
       <tr class="border-bottom">
         <!--<th>Sum</th>-->
@@ -10,7 +10,7 @@
     </thead>
     <tbody>
       <tr
-        v-for="(order, key, i) in bids.slice(0, 10)"
+        v-for="(order, key, i) in bids.slice(0, 5)"
         :key="i"
         class="border-bottom"
       >
