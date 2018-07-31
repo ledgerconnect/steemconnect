@@ -6,12 +6,17 @@
       </router-link>
     </div>
     <ul>
-      <li>
+      <li class="border-bottom">
         <router-link to="/" class="py-2 px-4 d-block">
-          Home
+          {{username}}
         </router-link>
       </li>
-      <li class="border-top border-bottom py-3">
+      <li class="border-bottom">
+        <router-link to="/portfolio" class="py-2 px-4 d-block">
+          Portfolio
+        </router-link>
+      </li>
+      <li class="border-bottom py-3">
         <div class="pb-1 px-4 text-uppercase text-small">Markets</div>
         <ul>
           <li>
@@ -25,11 +30,6 @@
             </router-link>
           </li>
         </ul>
-      </li>
-      <li>
-        <router-link to="/portfolio" class="py-2 px-4 d-block">
-          Portfolio
-        </router-link>
       </li>
       <li>
         <router-link to="/settings" class="py-2 px-4 d-block">
@@ -50,6 +50,9 @@ export default {
   computed: {
     openOrders() {
       return this.$store.state.auth.open_orders;
+    },
+    username() {
+      return this.$store.state.auth.username;
     },
   },
 };

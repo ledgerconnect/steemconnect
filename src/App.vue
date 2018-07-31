@@ -8,7 +8,6 @@
     </div>
     <div class="d-flex flex-row" v-else>
       <Sidebar/>
-      <TopNav/>
       <div id="content" class="width-full ml-sm-0">
         <router-view/>
       </div>
@@ -20,7 +19,6 @@
 @import './vars';
 
 #content {
-  margin-top: @topnav-height;
   margin-left: 0;
 
   @media (min-width: 768px){

@@ -8,8 +8,8 @@
     <div class="default-body">
       <p>Asset</p>
       <select :value="asset" class="form-select input-block mb-2">
-        <option value="STEEM">STEEM</option>
-        <option value="SBD">SBD</option>
+        <option value="STEEM">Steem (STEEM)</option>
+        <option value="SBD">Steem Dollars (SBD)</option>
       </select>
       <p>Recipient</p>
       <input
