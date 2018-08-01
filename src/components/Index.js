@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { injectIntl, FormattedMessage, intlShape } from 'react-intl';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { Form, Input, Button, Popover, Icon } from 'antd';
 import * as actions from '../actions/appLocale';
 import locales from '../../helpers/locales.json';
@@ -177,7 +178,7 @@ class Index extends React.Component {
             <div>
               <h4 className="project-title"><FormattedMessage id="lp_opensource_title" /></h4>
               <p><FormattedMessage id="lp_opensource_description" /></p>
-              <a href="https://github.com/steemit/sc2" target="_blank" rel="noreferrer noopener" className="lp-link">
+              <a href="https://github.com/steemit/steemconnect" target="_blank" rel="noreferrer noopener" className="lp-link">
                 <FormattedMessage id="lp_opensource_button" />
               </a>
             </div>
@@ -187,9 +188,9 @@ class Index extends React.Component {
             <div>
               <h4 className="project-title"><FormattedMessage id="lp_developers_title" /></h4>
               <p><FormattedMessage id="lp_developers_description" /></p>
-              <a href="http://eepurl.com/c1PtNX" rel="noopener noreferrer" target="_blank" className="lp-link">
+              <Link to="/dashboard" className="lp-link">
                 <FormattedMessage id="lp_developers_button" />
-              </a>
+              </Link>
             </div>
           </div>
         </div>
