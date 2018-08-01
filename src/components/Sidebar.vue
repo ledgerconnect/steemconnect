@@ -11,11 +11,6 @@
           {{username}}
         </router-link>
       </li>
-      <li class="border-bottom">
-        <router-link to="/portfolio" class="py-2 px-4 d-block">
-          Portfolio
-        </router-link>
-      </li>
       <li class="border-bottom py-3">
         <div class="pb-1 px-4 text-uppercase text-small">Markets</div>
         <ul>
@@ -30,6 +25,16 @@
             </router-link>
           </li>
         </ul>
+      </li>
+      <li>
+        <router-link to="/portfolio" class="py-2 px-4 d-block">
+          Portfolio
+        </router-link>
+      </li>
+      <li class="border-bottom">
+        <router-link to="/transfer-history" class="py-2 px-4 d-block">
+          Transfer history
+        </router-link>
       </li>
       <li>
         <router-link to="/settings" class="py-2 px-4 d-block">

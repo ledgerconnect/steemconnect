@@ -1,8 +1,7 @@
 <template>
   <div class="columns m-0 border-bottom">
     <div class="column col-4 px-4 py-3">
-      <b>{{asset}}</b><br/>
-      Steem Dollars
+      <h2 class="mb-0">{{asset}}</h2>
     </div>
     <div class="column col-2 px-4 py-3">
       {{$n(ticker.latest)}}<br/>

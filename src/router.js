@@ -6,6 +6,7 @@ import Market from '@/views/Market.vue';
 import Login from '@/views/Login.vue';
 import OpenOrders from '@/views/OpenOrders.vue';
 import Portfolio from '@/views/Portfolio.vue';
+import TransferHistory from '@/views/TransferHistory.vue';
 import Settings from '@/views/Settings.vue';
 import About from '@/views/About.vue';
 
@@ -53,6 +54,12 @@ export default new Router({
       name: 'portfolio',
       beforeEnter: requireAuth,
       component: Portfolio,
+    },
+    {
+      path: '/transfer-history',
+      name: 'transfer-history',
+      beforeEnter: requireAuth,
+      component: TransferHistory,
     },
     {
       path: '/settings',
