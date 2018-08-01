@@ -8,7 +8,7 @@
           <h4 class="mx-4">Bids</h4>
           <OrderBookBids :bids="orderBook.bids" />
         </div>
-        <div class="column one-third text-center px-5">
+        <div class="column one-third text-center px-6">
           <Actions/>
         </div>
         <div class="column px-0 one-third">

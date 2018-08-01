@@ -1,24 +1,20 @@
 <template>
   <div class="columns m-0 border-bottom">
-    <div class="column col-2 px-4 py-3 border-right">
-      <b>{{asset}}</b>-STEEM<br/>
+    <div class="column col-4 px-4 py-3">
+      <b>{{asset}}</b><br/>
       Steem Dollars
     </div>
-    <div class="column col-2 px-4 py-3 border-right">
+    <div class="column col-2 px-4 py-3">
       {{$n(ticker.latest)}}<br/>
       Last price
     </div>
-    <div class="column col-2 px-4 py-3 border-right">
-      {{$n(ticker.lowest_ask)}}<br/>
-      Ask
-    </div>
-    <div class="column col-2 px-4 py-3 border-right">
+    <div class="column col-2 px-4 py-3">
       {{$n(ticker.highest_bid)}}<br/>
       Bid
     </div>
-    <div class="column col-2 px-4 py-3 border-right">
-      {{$n(ticker.percent_change, 'percent')}}<br/>
-      Spread
+    <div class="column col-2 px-4 py-3">
+      {{$n(ticker.lowest_ask)}}<br/>
+      Ask
     </div>
     <div class="column col-2 px-4 py-3">
       {{ticker.steem_volume}}<br/>

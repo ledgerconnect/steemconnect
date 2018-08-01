@@ -1,12 +1,13 @@
 <template>
-  <table class="table table-lg width-full text-right mb-4">
+  <table class="table width-full text-right mb-4">
     <thead>
       <tr class="border-bottom">
         <!--<th>Sum</th>-->
         <th class="text-left">Date</th>
+        <th class="text-left">Type</th>
         <th>Price</th>
-        <th>Steem</th>
-        <th>{{asset}}</th>
+        <th>Total units {{asset}}</th>
+        <th>Total cost (STEEM)</th>
       </tr>
     </thead>
     <tbody>
@@ -15,13 +16,35 @@
         :key="i"
         class="border-bottom"
       >
-        <!--<td>{{order.created | date}}</td>-->
         <td class="text-left">{{trade.date | date}}</td>
-        <td>{{(parseFloat(trade.current_pays) / parseFloat(trade.open_pays)).toFixed(6)}}</td>
-        <!--<td>{{order.order_price.base}}</td>-->
-        <!--<td>{{order.order_price.quote}}</td>-->
-        <td>{{trade.open_pays}}</td>
-        <td>{{trade.current_pays}}</td>
+        <td class="text-left">
+          <span class="text-red" v-if="trade.current_pays.slice(-6) === ' STEEM'">Sell</span>
+          <span class="text-green" v-else>Buy</span>
+        </td>
+        <td>
+          <template v-if="trade.current_pays.slice(-6) === ' STEEM'">
+            {{(parseFloat(trade.open_pays) / parseFloat(trade.current_pays)).toFixed(6)}}
+          </template>
+          <template v-else>
+            {{(parseFloat(trade.current_pays) / parseFloat(trade.open_pays)).toFixed(6)}}
+          </template>
+        </td>
+        <td>
+          <template v-if="trade.current_pays.slice(-6) === ' STEEM'">
+            {{trade.open_pays}}
+          </template>
+          <template v-else>
+            {{trade.current_pays}}
+          </template>
+        </td>
+        <td>
+          <template v-if="trade.current_pays.slice(-6) === ' STEEM'">
+            {{trade.current_pays}}
+          </template>
+          <template v-else>
+            {{trade.open_pays}}
+          </template>
+        </td>
       </tr>
     </tbody>
   </table>

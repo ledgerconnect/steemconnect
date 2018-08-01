@@ -14,19 +14,19 @@
     </div>
     <div class="columns">
       <div class="text-left">
-        <p>Quantity</p>
+        <p>Quantity (SBD)</p>
         <input
           name="quantity"
           v-model="quantity"
           class="form-control input-lg input-block mb-2"
         />
-        <p>Bid price</p>
+        <p>Bid price (STEEM)</p>
         <input
           name="quantity"
           v-model="bid"
           class="form-control input-lg input-block mb-2"
         />
-        <p>Total</p>
+        <p>Total (STEEM)</p>
         <input
           name="quantity"
           v-model="total"
