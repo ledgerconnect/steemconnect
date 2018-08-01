@@ -24,7 +24,7 @@
         <td>{{order.sell_price.quote}}</td>
         <td>123.456</td>
         <td class="text-left">
-          <a href="#" @click="open = true; orderId = order.orderid">Cancel</a>
+          <a @click="open = true; orderId = order.orderid">Cancel</a>
         </td>
       </tr>
       </tbody>

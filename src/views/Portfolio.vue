@@ -21,7 +21,7 @@
             <span v-if="rate.percent_change_24h > 0">+</span>{{$n(rate.percent_change_24h)}}%
           </td>
           <td class="text-left">
-            <a href="#" @click="open = true; asset = 'STEEM'">Send</a>
+            <a @click="open = true; asset = 'STEEM'">Send</a>
           </td>
         </tr>
         <tr class="border-bottom">
@@ -31,7 +31,7 @@
           <td>{{$n(rate.price_usd / tickers.SBD.latest, 'currency')}}</td>
           <td>?</td>
           <td class="text-left">
-            <a href="#" @click="open = true; asset = 'SBD'">Send</a>
+            <a @click="open = true; asset = 'SBD'">Send</a>
           </td>
         </tr>
       </tbody>
