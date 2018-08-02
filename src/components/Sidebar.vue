@@ -21,20 +21,31 @@
           </li>
           <li>
             <router-link to="/open-orders" class="py-1 px-4 d-block">
-              Open orders <span v-if="openOrders.length > 0" class="Counter Counter--gray">{{openOrders.length}}</span>
+              Open orders
+              <span v-if="openOrders.length > 0" class="Counter Counter--gray">{{openOrders.length}}</span>
             </router-link>
           </li>
         </ul>
       </li>
-      <li>
-        <router-link to="/portfolio" class="py-2 px-4 d-block">
-          Portfolio
-        </router-link>
-      </li>
-      <li class="border-bottom">
-        <router-link to="/transfer-history" class="py-2 px-4 d-block">
-          Transfer history
-        </router-link>
+      <li class="border-bottom py-3">
+        <div class="pb-1 px-4 text-uppercase text-small">Account</div>
+        <ul>
+          <li>
+            <router-link to="/portfolio" class="py-1 px-4 d-block">
+              Portfolio
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/transfer-history" class="py-1 px-4 d-block">
+              Transfer history
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/permissions" class="py-1 px-4 d-block">
+              Permissions
+            </router-link>
+          </li>
+        </ul>
       </li>
       <li>
         <router-link to="/settings" class="py-2 px-4 d-block">

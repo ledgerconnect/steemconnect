@@ -1,0 +1,40 @@
+<template>
+  <div>
+    <table class="table table-lg width-full">
+      <thead>
+        <tr class="border-bottom">
+          <th>Type</th>
+          <th>Account / key</th>
+          <th>Weight</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template v-for="authority in ['owner', 'active', 'posting']">
+          <tr v-for="auth in account[authority].key_auths.concat(account[authority].account_auths)" class="border-bottom">
+            <td>{{ authority }}</td>
+            <td>{{ auth[0] }}</td>
+            <td>{{ auth[1] }}</td>
+            <td>Revoke</td>
+          </tr>
+        </template>
+        <tr class="border-bottom">
+          <td>memo</td>
+          <td>{{ account.memo_key }}</td>
+          <td></td>
+          <td>Edit</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<script>
+export default {
+  computed: {
+    account() {
+      return this.$store.state.auth.account;
+    },
+  },
+};
+</script>

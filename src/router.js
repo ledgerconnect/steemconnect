@@ -7,6 +7,7 @@ import Login from '@/views/Login.vue';
 import OpenOrders from '@/views/OpenOrders.vue';
 import Portfolio from '@/views/Portfolio.vue';
 import TransferHistory from '@/views/TransferHistory.vue';
+import Permissions from '@/views/Permissions.vue';
 import Settings from '@/views/Settings.vue';
 import About from '@/views/About.vue';
 
@@ -60,6 +61,12 @@ export default new Router({
       name: 'transfer-history',
       beforeEnter: requireAuth,
       component: TransferHistory,
+    },
+    {
+      path: '/permissions',
+      name: 'permissions',
+      beforeEnter: requireAuth,
+      component: Permissions,
     },
     {
       path: '/settings',
