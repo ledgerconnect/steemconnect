@@ -7,9 +7,20 @@ export const login = ({ username, wif, role = 'posting' }, cb) => {
   fetch(`/api/login/challenge?username=${username}&role=${role}`)
     .then(res => res.json())
     .then((data) => {
-      const token = decode(wif, data.code).substring(1);
-      localStorage.setItem('token', token);
-      cb(null, data);
+      let token;
+      data.codes.forEach((code) => {
+        try {
+          token = decode(wif, code).substring(1);
+        } catch (err) {
+          // console.log(err);
+        }
+      });
+      if (token) {
+        localStorage.setItem('token', token);
+        cb(null, data);
+      } else {
+        cb('Login challenge failed', null);
+      }
     })
     .catch(err => cb(err, null));
 };

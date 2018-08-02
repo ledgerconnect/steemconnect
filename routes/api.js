@@ -144,7 +144,7 @@ router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, re
 
 router.all('/login/challenge', async (req, res) => {
   const username = req.query.username;
-  const role = req.query.role || 'posting';
+  const role = ['posting', 'active', 'owner'].includes(req.query.role) ? req.query.role : 'posting';
   const token = issueUserToken(username);
   let accounts;
   try {
@@ -154,11 +154,13 @@ router.all('/login/challenge', async (req, res) => {
     res.status(501).send('SteemAPI request failed');
     return;
   }
-  const publicWif = role === 'memo' ? accounts[0].memo_key : accounts[0][role].key_auths[0][0];
-  const code = encode(process.env.BROADCASTER_POSTING_WIF, publicWif, `#${token}`);
+  const keyAuths = accounts[0][role].key_auths;
+  const codes = keyAuths.map(keyAuth =>
+    encode(process.env.BROADCASTER_POSTING_WIF, keyAuth[0], `#${token}`)
+  );
   res.json({
     username,
-    code,
+    codes,
   });
   return;
 });
