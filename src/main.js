@@ -1,5 +1,5 @@
 import 'primer/index.scss';
-import '@vue/ui/dist/vue-ui.css'
+import '@vue/ui/dist/vue-ui.css';
 import '@/styles.less';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';

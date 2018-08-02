@@ -22,20 +22,20 @@
       <form class="text-left">
         <p>Quantity (SBD)</p>
         <input
+          v-model="quantity"
           name="quantity"
-          value="0.000"
           class="form-control input-lg input-block mb-2"
         />
         <p>Bid price (STEEM)</p>
         <input
-          name="quantity"
-          value="0.000000"
+          v-model="price"
+          name="price"
           class="form-control input-lg input-block mb-2"
         />
         <p>Total (STEEM)</p>
         <input
-          name="quantity"
-          value="0.000"
+          v-model="total"
+          name="total"
           class="form-control input-lg input-block mb-4"
         />
         <div class="text-uppercase">
@@ -62,7 +62,15 @@ export default {
   data() {
     return {
       tab: 'buy',
+      quantity: '0.000',
+      price: '0.000000',
+      total: '0.000',
     };
   },
+  mounted: function () {
+    this.$root.$on('fillOrder', (price) => {
+      this.price = price;
+    });
+  }
 };
 </script>

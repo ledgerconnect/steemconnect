@@ -22,7 +22,9 @@
           <li>
             <router-link to="/open-orders" class="py-1 px-4 d-block">
               Open orders
-              <span v-if="openOrders.length > 0" class="Counter Counter--gray">{{openOrders.length}}</span>
+              <span v-if="openOrders.length > 0" class="Counter Counter--gray">
+                {{openOrders.length}}
+              </span>
             </router-link>
           </li>
         </ul>

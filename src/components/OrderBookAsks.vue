@@ -19,7 +19,14 @@
         <td>{{order.steem / 1000}}</td>
         <!--<td>{{order.order_price.base}}</td>-->
         <!--<td>{{order.order_price.quote}}</td>-->
-        <td class="text-red">{{parseFloat(order.real_price).toFixed(6)}}</td>
+        <td>
+          <a
+            @click="$root.$emit('fillOrder', parseFloat(order.real_price).toFixed(6))"
+            class="text-red"
+          >
+            {{parseFloat(order.real_price).toFixed(6)}}
+          </a>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -27,6 +34,6 @@
 
 <script>
 export default {
-  props: ['asks'],
+  props: ['asks', 'fillOrder'],
 };
 </script>
