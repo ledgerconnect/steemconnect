@@ -37,7 +37,6 @@ const mutations = {
     }
   },
   saveRate(_state, result) {
-    console.log(result);
     Vue.set(state, 'rate', result);
   },
 };

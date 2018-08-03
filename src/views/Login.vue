@@ -16,6 +16,7 @@
           class="form-control input-lg input-block mb-4"
         />
         <button
+          :disabled="isLoading"
           type="submit"
           class="btn btn-large btn-blue input-block">
           Log in
@@ -29,29 +30,33 @@
 import { mapActions } from 'vuex';
 
 export default {
-  data () {
+  data() {
     return {
       errors: [],
       username: 'hellosteem',
       password: null,
-    }
+      isLoading: false,
+    };
   },
   methods: {
     ...mapActions([
       'login',
     ]),
-    checkForm () {
+    checkForm() {
       this.errors = [];
     },
-    submitForm (e) {
+    submitForm(e) {
       e.preventDefault();
+      this.isLoading = true;
       this.login(this.username, this.password).then(() => {
-        const redirect = this.$route.query.redirect;
+        const { redirect } = this.$route.query;
         this.$router.push(redirect || '/');
+      }).catch((err) => {
+        console.log('Login failed', err);
       });
     },
   },
-}
+};
 </script>
 
 <style scoped lang="less">

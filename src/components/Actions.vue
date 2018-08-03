@@ -39,20 +39,49 @@
           class="form-control input-lg input-block mb-4"
         />
         <div class="text-uppercase">
-          <button
-            class="width-full border-0 bg-green-light p-2 rounded-2"
+          <a
+            @click="open = true"
+            class="text-center border-0 bg-green-light p-2 rounded-2 d-block"
             v-if="tab === 'buy'"
           >
             Buy SBD
-          </button>
-          <button
-            class="width-full border-0 bg-red-light p-2 rounded-2"
+          </a>
+          <a
+            @click="open = true"
+            class="text-center border-0 bg-red-light p-2 rounded-2 d-block"
             v-if="tab === 'sell'"
           >
             Sell SBD
-          </button>
+          </a>
         </div>
       </form>
+      <VueModal
+        v-if="open"
+        @close="open = false"
+        :title="tab === 'buy' ? 'Buy SBD' : 'Sell SBD'"
+        :locked="isLoading"
+        class="small text-left"
+      >
+        <div class="default-body">
+          Are you sure you want to buy <b>{{total}} STEEM</b> for <b>{{quantity}} SBD</b>?
+        </div>
+        <div slot="footer" class="actions">
+          <button
+            :disabled="isLoading"
+            class="btn btn-large btn-primary"
+            @click="isLoading = true; handleCancelOrder(orderId)"
+          >
+            Confirm
+          </button>
+          <button
+            :disabled="isLoading"
+            class="btn btn-large btn-plain"
+            @click="open = false"
+          >
+            Cancel
+          </button>
+        </div>
+      </VueModal>
     </div>
   </div>
 </template>
@@ -65,6 +94,8 @@ export default {
       quantity: '0.000',
       price: '0.000000',
       total: '0.000',
+      open: false,
+      isLoading: false,
     };
   },
   mounted: function () {

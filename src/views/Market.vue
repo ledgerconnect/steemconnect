@@ -6,14 +6,14 @@
       <div class="columns m-0">
         <div class="column px-0 one-third">
           <h4 class="mx-4">Bids</h4>
-          <OrderBookBids :bids="orderBook.bids" :fillOrder="fillOrder" />
+          <OrderBookBids :bids="orderBook.bids"/>
         </div>
         <div class="column one-third text-center px-6">
           <Actions/>
         </div>
         <div class="column px-0 one-third">
           <h4 class="mx-4">Asks</h4>
-          <OrderBookAsks :asks="orderBook.asks" :fillOrder="fillOrder" />
+          <OrderBookAsks :asks="orderBook.asks"/>
         </div>
       </div>
     </div>
