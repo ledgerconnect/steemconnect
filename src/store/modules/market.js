@@ -56,7 +56,7 @@ const actions = {
     });
   },
   cancelOrder: ({ dispatch }, orderId) => (
-    new Promise((resolve, reject) => {
+    new Promise((resolve) => {
       setTimeout(() => {
         console.log(`Order ${orderId} canceled`);
         dispatch('getOpenOrders');

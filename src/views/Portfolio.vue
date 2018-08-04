@@ -27,7 +27,13 @@
         <tr class="border-bottom">
           <td class="text-left">Steem Dollars (SBD)</td>
           <td>{{$n(parseFloat(account.sbd_balance))}}</td>
-          <td>{{$n(rate.price_usd / tickers.SBD.latest * parseFloat(account.sbd_balance), 'currency')}}</td>
+          <td>
+            {{
+              $n(rate.price_usd
+                / tickers.SBD.latest
+                * parseFloat(account.sbd_balance), 'currency')
+            }}
+          </td>
           <td>{{$n(rate.price_usd / tickers.SBD.latest, 'currency')}}</td>
           <td>?</td>
           <td class="text-left">

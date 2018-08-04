@@ -11,7 +11,13 @@
       </thead>
       <tbody>
         <template v-for="authority in ['owner', 'active', 'posting']">
-          <tr v-for="auth in account[authority].key_auths.concat(account[authority].account_auths)" class="border-bottom">
+          <tr
+            v-for="
+              (auth, i) in account[authority].key_auths.concat(account[authority].account_auths)
+             "
+            class="border-bottom"
+            :key="i"
+          >
             <td>{{ authority }}</td>
             <td>{{ auth[0] }}</td>
             <td>{{ auth[1] }}</td>
