@@ -1,8 +1,6 @@
 import Vue from 'vue';
 import axios from 'axios';
-import Client from 'lightrpc';
-
-const client = new Client('https://api.steemit.com');
+import client from '@/helpers/client';
 
 const state = {
   ticker: {
@@ -43,17 +41,17 @@ const mutations = {
 
 const actions = {
   getTicker: ({ commit }, asset) => {
-    client.call('get_ticker', [], (err, result) => {
+    client.callAsync('get_ticker', []).then((result) => {
       commit('saveTicker', { asset, result });
     });
   },
   getOrderBook: ({ commit }, asset) => {
-    client.call('get_order_book', [500], (err, result) => {
+    client.callAsync('get_order_book', [500]).then((result) => {
       commit('saveOrderBook', { asset, result });
     });
   },
   getRecentTrades: ({ commit }, asset) => {
-    client.call('get_recent_trades', [25], (err, result) => {
+    client.callAsync('get_recent_trades', [25]).then((result) => {
       commit('saveRecentTrades', { asset, result });
     });
   },
