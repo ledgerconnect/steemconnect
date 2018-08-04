@@ -14,25 +14,24 @@
     "axios": "^0.18.0",
     "express": "^4.16.3",
     "lightrpc": "^1.0.1",
-    "lodash": "^4.17.10",
     "moment": "^2.22.2",
     "primer": "^10.7.0",
     "serve-static": "^1.13.2",
-    "vue": "^2.5.16",
+    "vue": "^2.5.17",
     "vue-i18n": "^8.0.0",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.0-beta.15",
-    "@vue/cli-plugin-eslint": "^3.0.0-beta.15",
-    "@vue/cli-service": "^3.0.0-beta.15",
-    "@vue/eslint-config-airbnb": "^3.0.0-rc.3",
+    "@vue/cli-plugin-babel": "^3.0.0-rc.10",
+    "@vue/cli-plugin-eslint": "^3.0.0-rc.10",
+    "@vue/cli-service": "^3.0.0-rc.10",
+    "@vue/eslint-config-airbnb": "^3.0.0-rc.10",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
     "node-sass": "^4.9.2",
     "sass-loader": "^7.0.3",
-    "vue-template-compiler": "^2.5.16"
+    "vue-template-compiler": "^2.5.17"
   },
   "browserslist": [
     "> 1%",
