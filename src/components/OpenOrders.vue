@@ -13,7 +13,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="order in openOrders" class="border-bottom">
+      <tr v-for="order in openOrders" class="border-bottom" :key="order.orderId">
         <td class="text-left">{{order.orderid}}</td>
         <td class="text-left">{{order.created | date}}</td>
         <td class="text-left">

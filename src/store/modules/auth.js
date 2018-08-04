@@ -23,7 +23,7 @@ const mutations = {
 
 const actions = {
   login: ({ commit, dispatch }, username) => (
-    new Promise((resolve, reject) => {
+    new Promise((resolve) => {
       client.callAsync('get_accounts', [[username]]).then((result) => {
         commit('saveAccount', result[0]);
         Promise.all([
@@ -40,7 +40,7 @@ const actions = {
     })
   ),
   getOpenOrders: ({ commit }) => (
-    new Promise((resolve, reject) => {
+    new Promise((resolve) => {
       client.callAsync('get_open_orders', [state.username]).then((result) => {
         commit('saveOpenOrders', result);
         resolve();
@@ -48,7 +48,7 @@ const actions = {
     })
   ),
   getTransferHistory: ({ commit }) => (
-    new Promise((resolve, reject) => {
+    new Promise((resolve) => {
       client.callAsync('get_state', [`/@${state.username}/transfers`]).then((result) => {
         const transferHistory = result.accounts[state.username].transfer_history.slice().reverse();
         commit('saveTransferHistory', transferHistory);

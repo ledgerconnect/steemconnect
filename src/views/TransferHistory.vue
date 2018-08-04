@@ -10,7 +10,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="transfer in transferHistory" class="border-bottom">
+        <tr v-for="transfer in transferHistory" class="border-bottom" :key="transfer[1].trx_id">
           <td class="text-left">{{ transfer[1].timestamp | date }}</td>
           <td class="text-left">{{ transfer[1].op[0] }}</td>
           <td>{{ transfer[1].op[1].amount }}</td>
