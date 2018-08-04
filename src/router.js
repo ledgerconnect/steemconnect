@@ -1,15 +1,16 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import store from '@/store';
-import Home from '@/views/Home.vue';
-import Market from '@/views/Market.vue';
-import Login from '@/views/Login.vue';
-import OpenOrders from '@/views/OpenOrders.vue';
-import Portfolio from '@/views/Portfolio.vue';
-import TransferHistory from '@/views/TransferHistory.vue';
-import Permissions from '@/views/Permissions.vue';
-import Settings from '@/views/Settings.vue';
-import About from '@/views/About.vue';
+
+const Home = () => import(/* webpackChunkName: "home" */ '@/views/Home.vue');
+const Market = () => import(/* webpackChunkName: "market" */ '@/views/Market.vue');
+const Login = () => import(/* webpackChunkName: "login" */ '@/views/Login.vue');
+const OpenOrders = () => import(/* webpackChunkName: "open-orders" */ '@/views/OpenOrders.vue');
+const Portfolio = () => import(/* webpackChunkName: "portfolio" */ '@/views/Portfolio.vue');
+const TransferHistory = () => import(/* webpackChunkName: "transfer-history" */ '@/views/TransferHistory.vue');
+const Permissions = () => import(/* webpackChunkName: "permissions" */ '@/views/Permissions.vue');
+const Settings = () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue');
+const About = () => import(/* webpackChunkName: "about" */ '@/views/About.vue');
 
 Vue.use(Router);
 
