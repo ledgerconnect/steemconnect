@@ -59,12 +59,12 @@
 import { mapActions } from 'vuex';
 
 export default {
-  data () {
+  data() {
     return {
       open: false,
       isLoading: false,
       orderId: null,
-    }
+    };
   },
   computed: {
     openOrders() {
@@ -80,10 +80,10 @@ export default {
         this.open = false;
         this.isLoading = false;
         this.orderId = null;
-      }).catch(e => {
+      }).catch((e) => {
         console.log('Cancel order failed', e);
       });
-    }
+    },
   },
 };
 </script>

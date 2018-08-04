@@ -44,11 +44,11 @@
 import { mapActions } from 'vuex';
 
 export default {
-  data () {
+  data() {
     return {
       open: false,
       asset: 'STEEM',
-    }
+    };
   },
   computed: {
     account() {
@@ -59,7 +59,7 @@ export default {
     },
     tickers() {
       return {
-        SBD: this.$store.state.market.ticker.SBD
+        SBD: this.$store.state.market.ticker.SBD,
       };
     },
   },

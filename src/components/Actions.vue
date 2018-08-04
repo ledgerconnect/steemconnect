@@ -98,10 +98,10 @@ export default {
       isLoading: false,
     };
   },
-  mounted: function () {
+  mounted() {
     this.$root.$on('fillOrder', (price) => {
       this.price = price;
     });
-  }
+  },
 };
 </script>
