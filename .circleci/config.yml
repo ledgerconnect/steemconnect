@@ -1,0 +1,27 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore node_modules cache
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Node version
+          command: node --version
+      - run:
+          name: Install packages
+          command: npm install
+      - run:
+          name: Build library
+          command: npm run build
+      - run:
+          name: lint
+          command: npm run lint
+      - save_cache:
+          name: Save node_modules cache
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
