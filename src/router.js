@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import store from '@/store';
+import { isElectron } from '@/helpers/utils';
 
 const Home = () => import(/* webpackChunkName: "home" */ '@/views/Home.vue');
 const Market = () => import(/* webpackChunkName: "market" */ '@/views/Market.vue');
@@ -23,7 +24,7 @@ const requireAuth = (to, from, next) => {
 };
 
 export default new Router({
-  mode: 'history',
+  mode: isElectron() ? 'hash' : 'history',
   routes: [
     {
       path: '/',

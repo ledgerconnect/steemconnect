@@ -2,10 +2,10 @@ const express = require('express');
 const serveStatic = require('serve-static');
 
 const app = express();
-app.use(serveStatic(`${__dirname}/dist`));
+app.use(serveStatic(`${__dirname}/web-dist`));
 
 app.get('*', (req, res) => {
-  res.sendFile(`${__dirname}/dist/index.html`);
+  res.sendFile(`${__dirname}/web-dist/index.html`);
 });
 
 const port = process.env.PORT || 5000;
