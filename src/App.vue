@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" v-show="initialized">
     <div
       class="d-flex flex-row flex-items-center height-full"
       v-if="$route.meta.layout === 'light'"
@@ -14,6 +14,21 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      initialized: false,
+    };
+  },
+  beforeUpdate() {
+    if (this.initialized) return;
+
+    this.initialized = true;
+  },
+};
+</script>
 
 <style scoped lang="less">
 @import './vars';
