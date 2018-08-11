@@ -14,17 +14,14 @@
         :key="i"
         class="border-bottom"
       >
-        <!--<td>{{order.created | date}}</td>-->
         <td>{{order.sbd / 1000}}</td>
         <td>{{order.steem / 1000}}</td>
-        <!--<td>{{order.order_price.base}}</td>-->
-        <!--<td>{{order.order_price.quote}}</td>-->
         <td>
           <a
-            @click="$root.$emit('fillOrder', parseFloat(order.real_price).toFixed(6))"
+            @click="$root.$emit('fillOrder', order.price)"
             class="text-red"
           >
-            {{parseFloat(order.real_price).toFixed(6)}}
+            {{order.price}}
           </a>
         </td>
       </tr>

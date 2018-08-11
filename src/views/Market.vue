@@ -6,14 +6,14 @@
       <div class="columns m-0">
         <div class="column px-0 one-third">
           <h4 class="mx-4">Bids</h4>
-          <OrderBookBids :bids="orderBook.bids"/>
+          <OrderBookBids :bids="bids"/>
         </div>
         <div class="column one-third text-center px-6">
           <Actions/>
         </div>
         <div class="column px-0 one-third">
           <h4 class="mx-4">Asks</h4>
-          <OrderBookAsks :asks="orderBook.asks"/>
+          <OrderBookAsks :asks="asks"/>
         </div>
       </div>
     </div>
@@ -39,8 +39,11 @@ export default {
     ticker() {
       return this.$store.state.market.ticker[this.asset];
     },
-    orderBook() {
-      return this.$store.state.market.orderBook[this.asset];
+    bids() {
+      return Object.values(this.$store.state.market.orderBook[this.asset].bids);
+    },
+    asks() {
+      return Object.values(this.$store.state.market.orderBook[this.asset].asks);
     },
     recentTrades() {
       return this.$store.state.market.recentTrades[this.asset];

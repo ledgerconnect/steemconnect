@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import axios from 'axios';
 import client from '@/helpers/client';
+import { groupByRealPrice } from '@/helpers/market';
 
 const state = {
   ticker: {
@@ -8,8 +9,8 @@ const state = {
   },
   orderBook: {
     SBD: {
-      bids: [],
-      asks: [],
+      bids: {},
+      asks: {},
     },
   },
   recentTrades: {
@@ -26,7 +27,8 @@ const mutations = {
   },
   saveOrderBook(_state, { asset, result }) {
     if (result) {
-      Vue.set(state.orderBook, asset, result);
+      Vue.set(state.orderBook[asset], 'bids', groupByRealPrice(result.bids));
+      Vue.set(state.orderBook[asset], 'asks', groupByRealPrice(result.asks));
     }
   },
   saveRecentTrades(_state, { asset, result }) {
