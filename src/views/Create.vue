@@ -56,7 +56,7 @@
         <div v-if="step === 2">
           <p>Encryption key</p>
           <div
-            v-if="dirty.keyConfirmation && !!errors.key"
+            v-if="dirty.key && !!errors.key"
             class="error mb-2"
           >
             {{ errors.key }}
