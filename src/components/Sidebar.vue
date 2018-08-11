@@ -7,7 +7,7 @@
     </div>
     <ul>
       <li class="border-bottom">
-        <router-link to="/" class="py-2 px-4 d-block">
+        <router-link to="/settings" class="py-2 px-4 d-block">
           {{username}}
         </router-link>
       </li>

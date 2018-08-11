@@ -1,0 +1,225 @@
+<template>
+  <div class="container-xs text-center">
+    <span id="logo" class="octicon octicon-diff-modified mb-4"/>
+    <div class="width-full p-4 mb-6 Box">
+      <form
+        @submit.prevent="submitForm"
+        method="post"
+        class="text-left"
+      >
+        <div v-if="step === 1">
+          <label for="username">Steem username</label>
+          <div
+            v-if="dirty.username && !!errors.username"
+            class="error mb-2"
+          >
+            {{ errors.username }}
+          </div>
+          <input
+            key="username"
+            v-model="username"
+            id="username"
+            type="text"
+            class="form-control input-lg input-block mb-2"
+            @blur="handleBlur('username')"
+          />
+          <label for="password">Steem password or active WIF</label>
+          <div
+            v-if="dirty.password && !!errors.password"
+            class="error mb-2"
+          >
+            {{ errors.password }}
+          </div>
+          <input
+            key="password"
+            v-model="password"
+            id="password"
+            type="password"
+            class="form-control input-lg input-block mb-4"
+            @blur="handleBlur('password')"
+          />
+          <button
+            :disabled="nextDisabled"
+            class="btn btn-large btn-blue input-block mb-2"
+            @click.prevent="submitNext"
+          >
+            Continue
+          </button>
+        </div>
+        <div v-if="step === 2">
+          <p>Encryption key</p>
+          <div
+            v-if="dirty.keyConfirmation && !!errors.key"
+            class="error mb-2"
+          >
+            {{ errors.key }}
+          </div>
+          <input
+            key="key"
+            v-model="key"
+            type="password"
+            class="form-control input-lg input-block mb-2"
+            @blur="handleBlur('key')"
+          />
+          <p>Confirm encryption key</p>
+          <div
+           v-if="dirty.keyConfirmation && !!errors.keyConfirmation"
+           class="error mb-2"
+          >
+            {{ errors.keyConfirmation }}
+          </div>
+          <input
+            key="keyConfirmation"
+            v-model="keyConfirmation"
+            type="password"
+            class="form-control input-lg input-block mb-4"
+            @blur="handleBlur('keyConfirmation')"
+          />
+          <button
+            :disabled="submitDisabled || isLoading"
+            type="submit"
+            class="btn btn-large btn-blue input-block mb-2"
+          >
+            Get started
+          </button>
+        </div>
+        <router-link
+          v-if="hasAccounts"
+          :to="`/?${getRedirectQuery()}`"
+          class="btn btn-large input-block ahref-btn mb-2"
+        >
+          Log in instead
+        </router-link>
+      </form>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapActions } from 'vuex';
+import triplesec from 'triplesec';
+import { addToKeychain, hasAccounts } from '@/helpers/keychain';
+
+export default {
+  data() {
+    return {
+      step: 1,
+      dirty: {
+        username: false,
+        password: false,
+        key: false,
+        keyConfirmation: false,
+      },
+      username: '',
+      password: '',
+      key: '',
+      keyConfirmation: '',
+      isLoading: false,
+    };
+  },
+  computed: {
+    hasAccounts() {
+      return hasAccounts();
+    },
+    errors() {
+      const current = {};
+
+      const username = this.username.trim();
+      const password = this.password.trim();
+      const key = this.key.trim();
+      const keyConfirmation = this.keyConfirmation.trim();
+
+      if (!username) {
+        current.username = 'Username is required.';
+      }
+
+      if (!password) {
+        current.password = 'Password is required.';
+      }
+
+      if (!key) {
+        current.key = 'Encryption key is required.';
+      }
+
+      if (!keyConfirmation) {
+        current.keyConfirmation = 'Encryption key confirmation is required.';
+      } else if (keyConfirmation !== key) {
+        current.keyConfirmation = 'Encryption keys do not match.';
+      }
+
+      return current;
+    },
+    nextDisabled() {
+      return !!this.errors.username || !!this.errors.password;
+    },
+    submitDisabled() {
+      return !!this.errors.key || !!this.errors.keyConfirmation;
+    },
+  },
+  methods: {
+    ...mapActions([
+      'login',
+    ]),
+    getRedirectQuery() {
+      const { redirect } = this.$route.query;
+      if (!redirect) return '';
+
+      return `redirect=${redirect}`;
+    },
+    handleBlur(name) {
+      this.dirty[name] = true;
+    },
+    submitNext() {
+      this.step += 1;
+    },
+    submitForm() {
+      const username = this.username.trim();
+      const password = this.password.trim();
+      const key = this.key.trim();
+
+      this.isLoading = true;
+
+      triplesec.encrypt({
+        data: new triplesec.Buffer(password),
+        key: new triplesec.Buffer(key),
+      }, (encryptError, buff) => {
+        if (encryptError) {
+          this.isLoading = false;
+          console.log('err', encryptError);
+          return;
+        }
+
+        addToKeychain(username, buff.toString('hex'));
+
+        this.login({
+          username,
+          password,
+        }).then(() => {
+          const { redirect } = this.$route.query;
+          this.$router.push(redirect || '/market/SBD');
+          this.isLoading = false;
+        }).catch((err) => {
+          console.log('Login failed', err);
+        });
+      });
+    },
+  },
+};
+</script>
+
+<style scoped lang="less">
+@import '../vars';
+
+#logo {
+  font-size: 64px;
+  color: @primary-color;
+}
+
+.ahref-btn {
+  text-align: center;
+}
+
+.error {
+  color: @error-color;
+}
+</style>

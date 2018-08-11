@@ -1,5 +1,19 @@
 <template>
-  <div class="p-4">
-    <h1>Welcome</h1>
-  </div>
+  <Login v-if="hasAccounts" />
+  <Welcome v-else />
 </template>
+
+<script>
+import { hasAccounts } from '@/helpers/keychain';
+import Welcome from './Welcome.vue';
+import Login from './Login.vue';
+
+export default {
+  computed: {
+    hasAccounts() {
+      return hasAccounts();
+    },
+  },
+  components: { Login, Welcome },
+};
+</script>

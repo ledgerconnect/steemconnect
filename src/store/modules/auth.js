@@ -3,14 +3,16 @@ import client from '@/helpers/client';
 
 const state = {
   username: null,
+  password: null,
   account: {},
   open_orders: [],
   transfer_history: [],
 };
 
 const mutations = {
-  saveAccount(_state, result) {
+  saveAccount(_state, { result, password }) {
     Vue.set(state, 'username', result.name);
+    Vue.set(state, 'password', password);
     Vue.set(state, 'account', result);
   },
   saveOpenOrders(_state, result) {
@@ -22,10 +24,10 @@ const mutations = {
 };
 
 const actions = {
-  login: ({ commit, dispatch }, username) => (
+  login: ({ commit, dispatch }, { username, password }) => (
     new Promise((resolve) => {
       client.callAsync('get_accounts', [[username]]).then((result) => {
-        commit('saveAccount', result[0]);
+        commit('saveAccount', { result: result[0], password });
         Promise.all([
           dispatch('getOpenOrders'),
           dispatch('getTransferHistory'),

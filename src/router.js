@@ -4,7 +4,7 @@ import store from '@/store';
 
 const Home = () => import(/* webpackChunkName: "home" */ '@/views/Home.vue');
 const Market = () => import(/* webpackChunkName: "market" */ '@/views/Market.vue');
-const Login = () => import(/* webpackChunkName: "login" */ '@/views/Login.vue');
+const Create = () => import(/* webpackChunkName: "create" */ '@/views/Create.vue');
 const OpenOrders = () => import(/* webpackChunkName: "open-orders" */ '@/views/OpenOrders.vue');
 const Portfolio = () => import(/* webpackChunkName: "portfolio" */ '@/views/Portfolio.vue');
 const TransferHistory = () => import(/* webpackChunkName: "transfer-history" */ '@/views/TransferHistory.vue');
@@ -16,7 +16,7 @@ Vue.use(Router);
 
 const requireAuth = (to, from, next) => {
   if (!store.state.auth.account.name) {
-    next({ path: '/login', query: { redirect: to.fullPath } });
+    next({ path: '/', query: { redirect: to.fullPath } });
   } else {
     next();
   }
@@ -28,8 +28,10 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      beforeEnter: requireAuth,
       component: Home,
+      meta: {
+        layout: 'light',
+      },
     },
     {
       path: '/market/:asset',
@@ -38,9 +40,9 @@ export default new Router({
       component: Market,
     },
     {
-      path: '/login',
-      name: 'login',
-      component: Login,
+      path: '/create',
+      name: 'create',
+      component: Create,
       meta: {
         layout: 'light',
       },
