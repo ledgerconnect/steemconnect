@@ -35,15 +35,22 @@
             v-model="password"
             id="password"
             type="password"
-            class="form-control input-lg input-block mb-4"
+            class="form-control input-lg input-block mb-2"
             @blur="handleBlur('password')"
           />
+          <label class="mb-4">
+            <input
+              key="storeAccount"
+              v-model="storeAccount"
+              type="checkbox"
+            > Keep the account on this computer
+          </label>
           <button
-            :disabled="nextDisabled"
+            :disabled="nextDisabled || isLoading"
             class="btn btn-large btn-blue input-block mb-2"
             @click.prevent="submitNext"
           >
-            Continue
+            {{ nextText }}
           </button>
         </div>
         <div v-if="step === 2">
@@ -114,6 +121,7 @@ export default {
       password: '',
       key: '',
       keyConfirmation: '',
+      storeAccount: true,
       isLoading: false,
     };
   },
@@ -121,13 +129,23 @@ export default {
     hasAccounts() {
       return hasAccounts();
     },
+    values() {
+      return {
+        username: this.username.trim(),
+        password: this.password.trim(),
+        key: this.key.trim(),
+        keyConfirmation: this.keyConfirmation.trim(),
+      };
+    },
     errors() {
       const current = {};
 
-      const username = this.username.trim();
-      const password = this.password.trim();
-      const key = this.key.trim();
-      const keyConfirmation = this.keyConfirmation.trim();
+      const {
+        username,
+        password,
+        key,
+        keyConfirmation,
+      } = this.values;
 
       if (!username) {
         current.username = 'Username is required.';
@@ -149,6 +167,9 @@ export default {
 
       return current;
     },
+    nextText() {
+      return this.storeAccount ? 'Continue' : 'Get started';
+    },
     nextDisabled() {
       return !!this.errors.username || !!this.errors.password;
     },
@@ -169,13 +190,28 @@ export default {
     handleBlur(name) {
       this.dirty[name] = true;
     },
+    startLogin() {
+      this.isLoading = true;
+
+      const { username, password } = this.values;
+
+      this.login({ username, password }).then(() => {
+        const { redirect } = this.$route.query;
+        this.$router.push(redirect || '/market/SBD');
+        this.isLoading = false;
+      }).catch((err) => {
+        console.log('Login failed', err);
+      });
+    },
     submitNext() {
-      this.step += 1;
+      if (this.storeAccount) {
+        this.step += 1;
+      } else {
+        this.startLogin();
+      }
     },
     submitForm() {
-      const username = this.username.trim();
-      const password = this.password.trim();
-      const key = this.key.trim();
+      const { username, password, key } = this.values;
 
       this.isLoading = true;
 
@@ -191,16 +227,7 @@ export default {
 
         addToKeychain(username, buff.toString('hex'));
 
-        this.login({
-          username,
-          password,
-        }).then(() => {
-          const { redirect } = this.$route.query;
-          this.$router.push(redirect || '/market/SBD');
-          this.isLoading = false;
-        }).catch((err) => {
-          console.log('Login failed', err);
-        });
+        this.startLogin();
       });
     },
   },
