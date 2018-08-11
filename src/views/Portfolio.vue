@@ -42,7 +42,7 @@
         </tr>
       </tbody>
     </table>
-    <ModalSend :open="open" :asset="asset"/>
+    <ModalSend :open="open" :asset="asset" @confirm="handleConfirm" @cancel="handleCancel" />
   </div>
 </template>
 
@@ -69,10 +69,18 @@ export default {
       };
     },
   },
-  methods: mapActions([
-    'getRate',
-    'getTicker',
-  ]),
+  methods: {
+    handleConfirm() {
+      this.open = false;
+    },
+    handleCancel() {
+      this.open = false;
+    },
+    ...mapActions([
+      'getRate',
+      'getTicker',
+    ]),
+  },
   beforeDestroy() {
     clearInterval(this.queryInterval);
   },

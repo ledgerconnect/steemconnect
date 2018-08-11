@@ -1,7 +1,7 @@
 <template>
   <VueModal
     v-if="open"
-    @close="open = false"
+    @close="$emit('cancel')"
     title="Transfer"
     class="small"
   >
@@ -33,10 +33,10 @@
       />
     </div>
     <div slot="footer" class="actions">
-      <button class="btn btn-large btn-primary" @click="open = false">
+      <button class="btn btn-large btn-primary" @click="$emit('confirm')">
         Confirm
       </button>
-      <button class="btn btn-large btn-plain" @click="open = false">
+      <button class="btn btn-large btn-plain" @click="$emit('cancel')">
         Cancel
       </button>
     </div>
