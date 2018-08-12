@@ -1,6 +1,8 @@
 <template>
   <div class="container-xs text-center">
-    <span id="logo" class="octicon octicon-diff-modified mb-4"/>
+    <router-link to="/">
+      <span id="logo" class="octicon octicon-diff-modified mb-4"/>
+    </router-link>
     <div class="width-full p-4 mb-6 Box">
       <form
         @submit.prevent="submitForm"

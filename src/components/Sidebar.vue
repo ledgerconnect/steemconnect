@@ -99,11 +99,19 @@ export default {
     display: block;
   }
 
+  a {
+    text-decoration: none;
+  }
+
   ul {
     list-style: none;
 
     li {
       clear: both;
+
+      .router-link-exact-active {
+        box-shadow: inset 4px 0 0 0 @link-color;
+      }
     }
   }
 }

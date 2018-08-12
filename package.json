@@ -1,7 +1,6 @@
 {
-  "name": "steem-dex",
+  "name": "steemdex",
   "version": "0.1.0",
-  "private": true,
   "main": "electron-entry.js",
   "scripts": {
     "start": "node start.js",
@@ -22,7 +21,7 @@
     "lightrpc": "^1.0.1",
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
-    "primer": "^10.7.0",
+    "primer": "^10.8.1",
     "serve-static": "^1.13.2",
     "triplesec": "^3.0.26",
     "vue": "^2.5.17",
@@ -31,16 +30,16 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.0-rc.10",
-    "@vue/cli-plugin-eslint": "^3.0.0-rc.10",
-    "@vue/cli-service": "^3.0.0-rc.10",
-    "@vue/eslint-config-airbnb": "^3.0.0-rc.10",
+    "@vue/cli-plugin-babel": "^3.0.0",
+    "@vue/cli-plugin-eslint": "^3.0.0",
+    "@vue/cli-service": "^3.0.0",
+    "@vue/eslint-config-airbnb": "^3.0.0",
     "electron": "^2.0.7",
-    "electron-builder": "^20.27.1",
-    "less": "^3.0.4",
+    "electron-builder": "^20.28.0",
+    "less": "^3.8.1",
     "less-loader": "^4.1.0",
-    "node-sass": "^4.9.2",
-    "sass-loader": "^7.0.3",
+    "node-sass": "^4.9.3",
+    "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.17"
   },
   "browserslist": [
@@ -50,6 +49,6 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bonuschain/steem-dex/issues"
+    "url": "https://github.com/bonuschain/steemdex/issues"
   }
 }

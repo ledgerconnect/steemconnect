@@ -1,57 +1,63 @@
 <template>
   <div>
-    <table class="table width-full text-right">
-      <thead>
-      <tr class="border-bottom">
-        <th class="text-left">Order ID</th>
-        <th class="text-left">Time</th>
-        <th class="text-left">Type</th>
-        <th>Price</th>
-        <th>Amount</th>
-        <th>Total</th>
-        <th class="text-left">Action</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="order in openOrders" class="border-bottom" :key="order.orderId">
-        <td class="text-left">{{order.orderid}}</td>
-        <td class="text-left">{{order.created | date}}</td>
-        <td class="text-left">
-          <span class="text-red" v-if="order.sell_price.base.slice(-6) === ' STEEM'">Sell</span>
-          <span class="text-green" v-else>Buy</span>
-        </td>
-        <td>{{order.sell_price.base}}</td>
-        <td>{{order.sell_price.quote}}</td>
-        <td>123.456</td>
-        <td class="text-left">
-          <a @click="open = true; orderId = order.orderid">Cancel</a>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-    <VueModal
-      v-if="open"
-      @close="open = false"
-      title="Cancel order"
-      :locked="isLoading"
-      class="small"
-    >
-      <div class="default-body">
-        Are you sure you want to cancel the order <b>{{orderId}}</b>?
-      </div>
-      <div slot="footer" class="actions">
-        <button
-          :disabled="isLoading"
-          class="btn btn-large btn-primary"
-          @click="isLoading = true; handleCancelOrder(orderId)"
-        >
-          Confirm
-        </button>
-        <button :disabled="isLoading" class="btn btn-large btn-plain" @click="open = false">
-          Cancel
-        </button>
-      </div>
-    </VueModal>
+    <div class="search border-bottom px-4">
+      <span class="octicon octicon-search"/>
+      <input v-model="search" type="text" class="px-4 py-3 border-0 input-lg"/>
+    </div>
+    <template>
+      <table class="table width-full text-right">
+        <thead>
+        <tr class="border-bottom">
+          <th class="text-left">Order ID</th>
+          <th class="text-left">Time</th>
+          <th class="text-left">Type</th>
+          <th>Price</th>
+          <th>Amount</th>
+          <th>Total</th>
+          <th class="text-left">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="order in openOrders" class="border-bottom" :key="order.orderId">
+          <td class="text-left">{{order.orderid}}</td>
+          <td class="text-left">{{order.created | date}}</td>
+          <td class="text-left">
+            <span class="text-red" v-if="order.sell_price.base.slice(-6) === ' STEEM'">Sell</span>
+            <span class="text-green" v-else>Buy</span>
+          </td>
+          <td>{{order.sell_price.base}}</td>
+          <td>{{order.sell_price.quote}}</td>
+          <td>123.456</td>
+          <td class="text-left">
+            <a @click="open = true; orderId = order.orderid">Cancel</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <VueModal
+        v-if="open"
+        @close="open = false"
+        title="Cancel order"
+        :locked="isLoading"
+        class="small"
+      >
+        <div class="default-body">
+          Are you sure you want to cancel the order <b>{{orderId}}</b>?
+        </div>
+        <div slot="footer" class="actions">
+          <button
+            :disabled="isLoading"
+            class="btn btn-large btn-primary"
+            @click="isLoading = true; handleCancelOrder(orderId)"
+          >
+            Confirm
+          </button>
+          <button :disabled="isLoading" class="btn btn-large btn-plain" @click="open = false">
+            Cancel
+          </button>
+        </div>
+      </VueModal>
+    </template>
   </div>
 </template>
 
@@ -64,11 +70,14 @@ export default {
       open: false,
       isLoading: false,
       orderId: null,
+      search: '',
     };
   },
   computed: {
     openOrders() {
-      return this.$store.state.auth.open_orders;
+      return this.$store.state.auth.open_orders.filter(order => JSON.stringify(order)
+        .toLowerCase()
+        .includes(this.search.toLowerCase()));
     },
   },
   methods: {
@@ -87,3 +96,14 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="less">
+@import '../vars';
+
+.search {
+  .octicon-search {
+    color: @border-color;
+    font-size: 20px;
+  }
+}
+</style>
