@@ -15,6 +15,7 @@ const undelegateVestingShares = require('./undelegate-vesting-shares');
 const unfollow = require('./unfollow');
 const unmute = require('./unmute');
 const vote = require('./vote');
+const convert = require('./convert');
 
 module.exports = {
   comment,
@@ -34,4 +35,5 @@ module.exports = {
   unmute,
   profile_update: profileUpdate,
   vote,
+  convert,
 };
