@@ -10,6 +10,7 @@ const follow = require('./follow');
 const mute = require('./mute');
 const reblog = require('./reblog');
 const setWithdrawVestingRoute = require('./set-withdraw-vesting-route');
+const changeRecoveryAccount = require('./change-recovery-account');
 const transfer = require('./transfer');
 const undelegateVestingShares = require('./undelegate-vesting-shares');
 const unfollow = require('./unfollow');
@@ -29,6 +30,7 @@ module.exports = {
   mute,
   reblog,
   set_withdraw_vesting_route: setWithdrawVestingRoute,
+  change_recovery_account: changeRecoveryAccount,
   transfer,
   undelegate_vesting_shares: undelegateVestingShares,
   unfollow,
