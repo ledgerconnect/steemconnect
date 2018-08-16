@@ -4,7 +4,7 @@ const { isEmpty, userExists, normalizeUsername } = require('../validation-utils'
 const parse = (query) => {
   const cQuery = cloneDeep(query);
   cQuery.owner = normalizeUsername(cQuery.owner);
-  cQuery.requestid = parseInt(cQuery.requestid, 0);
+  cQuery.requestid = parseInt(cQuery.requestid, 10);
 
   return cQuery;
 };
