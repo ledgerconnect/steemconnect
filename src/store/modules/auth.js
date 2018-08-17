@@ -32,7 +32,7 @@ const actions = {
       throw new Error('Invalid credentials');
     }
 
-    const result = await client.callAsync('get_accounts', [[username]]);
+    const result = await client.database.getAccounts([username]);
     commit('saveAccount', { result: result[0], keys });
     await Promise.all([
       dispatch('getOpenOrders'),
@@ -42,7 +42,7 @@ const actions = {
   },
   getOpenOrders: ({ commit }) => (
     new Promise((resolve) => {
-      client.callAsync('get_open_orders', [state.username]).then((result) => {
+      client.database.call('get_open_orders', [state.username]).then((result) => {
         commit('saveOpenOrders', result);
         resolve();
       });
@@ -50,7 +50,7 @@ const actions = {
   ),
   getTransferHistory: ({ commit }) => (
     new Promise((resolve) => {
-      client.callAsync('get_state', [`/@${state.username}/transfers`]).then((result) => {
+      client.database.getState(`/@${state.username}/transfers`).then((result) => {
         const transferHistory = result.accounts[state.username].transfer_history.slice().reverse();
         commit('saveTransferHistory', transferHistory);
         resolve();

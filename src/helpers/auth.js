@@ -1,6 +1,5 @@
-import { Client, PrivateKey } from 'dsteem';
-
-const client = new Client('https://api.steemit.com');
+import { PrivateKey } from 'dsteem';
+import client from './client';
 
 function getActivePublicKey(username, password) {
   let privateKey = null;

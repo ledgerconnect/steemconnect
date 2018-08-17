@@ -43,17 +43,17 @@ const mutations = {
 
 const actions = {
   getTicker: ({ commit }, asset) => {
-    client.callAsync('get_ticker', []).then((result) => {
+    client.database.call('get_ticker', []).then((result) => {
       commit('saveTicker', { asset, result });
     });
   },
   getOrderBook: ({ commit }, asset) => {
-    client.callAsync('get_order_book', [500]).then((result) => {
+    client.database.call('get_order_book', [500]).then((result) => {
       commit('saveOrderBook', { asset, result });
     });
   },
   getRecentTrades: ({ commit }, asset) => {
-    client.callAsync('get_recent_trades', [25]).then((result) => {
+    client.database.call('get_recent_trades', [25]).then((result) => {
       commit('saveRecentTrades', { asset, result });
     });
   },
