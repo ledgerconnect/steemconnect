@@ -13,7 +13,7 @@
         <tr
           v-for="transfer in transferHistory"
           class="border-bottom"
-          :key="getTransferKey(transfer)"
+          :key="transfer[0]"
         >
           <td class="text-left">{{ transfer[1].timestamp | date }}</td>
           <td class="text-left">{{ transfer[1].op[0] }}</td>
@@ -41,16 +41,9 @@ export default {
       return this.$store.state.auth.transfer_history;
     },
   },
-  methods: {
-    getTransferKey(transfer) {
-      return transfer[1].virtual_op !== 0
-        ? `${transfer[1].block}-${transfer[1].trx_in_block}`
-        : transfer[1].trx_id;
-    },
-    ...mapActions([
-      'getTransferHistory',
-    ]),
-  },
+  methods: mapActions([
+    'getTransferHistory',
+  ]),
   mounted() {
     this.getTransferHistory();
   },
