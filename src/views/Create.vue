@@ -114,6 +114,8 @@ import { credentialsValid, getKeys } from '@/helpers/auth';
 import { addToKeychain, hasAccounts } from '@/helpers/keychain';
 import { ERROR_INVALID_CREDENTIALS } from '@/helpers/messages';
 
+const MIN_ENCRYPTION_KEY_LENGTH = 8;
+
 export default {
   data() {
     return {
@@ -157,6 +159,8 @@ export default {
 
       if (!key) {
         current.key = 'Encryption key is required.';
+      } else if (key.length < MIN_ENCRYPTION_KEY_LENGTH) {
+        current.key = 'Encryption key has to have at least 8 characters.';
       }
 
       if (!keyConfirmation) {
