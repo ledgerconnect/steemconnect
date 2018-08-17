@@ -1,18 +1,19 @@
 import Vue from 'vue';
 import client from '@/helpers/client';
+import { credentialsValid } from '@/helpers/auth';
 
 const state = {
   username: null,
-  password: null,
+  keys: {},
   account: {},
   open_orders: [],
   transfer_history: [],
 };
 
 const mutations = {
-  saveAccount(_state, { result, password }) {
+  saveAccount(_state, { result, keys }) {
     Vue.set(state, 'username', result.name);
-    Vue.set(state, 'password', password);
+    Vue.set(state, 'keys', keys);
     Vue.set(state, 'account', result);
   },
   saveOpenOrders(_state, result) {
@@ -24,23 +25,21 @@ const mutations = {
 };
 
 const actions = {
-  login: ({ commit, dispatch }, { username, password }) => (
-    new Promise((resolve) => {
-      client.callAsync('get_accounts', [[username]]).then((result) => {
-        commit('saveAccount', { result: result[0], password });
-        Promise.all([
-          dispatch('getOpenOrders'),
-          dispatch('getTransferHistory'),
-          dispatch('getRate'),
-        ]).then(() => {
-          resolve();
-        });
-      })
-        .catch((err) => {
-          console.log('Steemd "get_accounts" request failed', err);
-        });
-    })
-  ),
+  login: async ({ commit, dispatch }, { username, keys }) => {
+    const valid = await credentialsValid(username, keys.active);
+
+    if (!valid) {
+      throw new Error('Invalid credentials');
+    }
+
+    const result = await client.callAsync('get_accounts', [[username]]);
+    commit('saveAccount', { result: result[0], keys });
+    await Promise.all([
+      dispatch('getOpenOrders'),
+      dispatch('getTransferHistory'),
+      dispatch('getRate'),
+    ]);
+  },
   getOpenOrders: ({ commit }) => (
     new Promise((resolve) => {
       client.callAsync('get_open_orders', [state.username]).then((result) => {

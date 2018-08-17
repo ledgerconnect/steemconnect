@@ -40,13 +40,14 @@
             class="form-control input-lg input-block mb-2"
             @blur="handleBlur('password')"
           />
-          <label class="mb-4">
+          <label class="mb-2" :class="{ 'mb-4': !error }">
             <input
               key="storeAccount"
               v-model="storeAccount"
               type="checkbox"
             > Keep the account on this computer
           </label>
+          <div v-if="!!error" class="error mb-4">{{ error }}</div>
           <button
             :disabled="nextDisabled || isLoading"
             class="btn btn-large btn-blue input-block mb-2"
@@ -81,9 +82,11 @@
             key="keyConfirmation"
             v-model="keyConfirmation"
             type="password"
-            class="form-control input-lg input-block mb-4"
+            class="form-control input-lg input-block mb-2"
+            :class="{ 'mb-4': !error }"
             @blur="handleBlur('keyConfirmation')"
           />
+          <div v-if="!!error" class="error mb-4">{{ error }}</div>
           <button
             :disabled="submitDisabled || isLoading"
             type="submit"
@@ -107,7 +110,9 @@
 <script>
 import { mapActions } from 'vuex';
 import triplesec from 'triplesec';
+import { credentialsValid, getKeys } from '@/helpers/auth';
 import { addToKeychain, hasAccounts } from '@/helpers/keychain';
+import { ERROR_INVALID_CREDENTIALS } from '@/helpers/messages';
 
 export default {
   data() {
@@ -123,6 +128,7 @@ export default {
       password: '',
       key: '',
       keyConfirmation: '',
+      error: '',
       storeAccount: true,
       isLoading: false,
     };
@@ -192,33 +198,53 @@ export default {
     handleBlur(name) {
       this.dirty[name] = true;
     },
-    startLogin() {
+    async startLogin() {
       this.isLoading = true;
 
       const { username, password } = this.values;
+      const keys = await getKeys(username, password);
 
-      this.login({ username, password }).then(() => {
+      this.login({ username, keys }).then(() => {
         const { redirect } = this.$route.query;
         this.$router.push(redirect || '/market/SBD');
         this.isLoading = false;
+        this.error = '';
       }).catch((err) => {
+        this.error = ERROR_INVALID_CREDENTIALS;
         console.log('Login failed', err);
       });
     },
-    submitNext() {
+    async submitNext() {
+      const { username, password } = this.values;
+
+      this.isLoading = true;
+
+      const invalidCredentials = !(await credentialsValid(username, password));
+
+      this.isLoading = false;
+
+      if (invalidCredentials) {
+        this.error = ERROR_INVALID_CREDENTIALS;
+        return;
+      }
+
+      this.error = '';
+
       if (this.storeAccount) {
         this.step += 1;
       } else {
         this.startLogin();
       }
     },
-    submitForm() {
+    async submitForm() {
       const { username, password, key } = this.values;
 
       this.isLoading = true;
 
+      const keys = await getKeys(username, password);
+
       triplesec.encrypt({
-        data: new triplesec.Buffer(password),
+        data: new triplesec.Buffer(JSON.stringify(keys)),
         key: new triplesec.Buffer(key),
       }, (encryptError, buff) => {
         if (encryptError) {

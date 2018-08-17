@@ -36,9 +36,11 @@
         <input
           v-model="key"
           type="password"
-          class="form-control input-lg input-block mb-4"
+          class="form-control input-lg input-block mb-2"
+          :class="{ 'mb-4': !error }"
           @blur="handleBlur('key')"
         />
+        <div v-if="!!error" class="error mb-4">{{ error }}</div>
         <button
           :disabled="submitDisabled || isLoading"
           type="submit"
@@ -61,6 +63,8 @@
 import { mapActions } from 'vuex';
 import triplesec from 'triplesec';
 import { getKeychain } from '@/helpers/keychain';
+import { jsonParse } from '@/helpers/utils';
+import { ERROR_INVALID_CREDENTIALS, ERROR_INVALID_ENCRYPTION_KEY } from '@/helpers/messages';
 
 export default {
   data() {
@@ -72,6 +76,7 @@ export default {
       },
       username: '',
       key: '',
+      error: '',
       isLoading: false,
     };
   },
@@ -118,26 +123,30 @@ export default {
     submitForm() {
       this.isLoading = true;
 
-      const encryptedPassword = this.keychain[this.username];
+      const encryptedKeys = this.keychain[this.username];
 
       triplesec.decrypt({
-        data: new triplesec.Buffer(encryptedPassword, 'hex'),
+        data: new triplesec.Buffer(encryptedKeys, 'hex'),
         key: new triplesec.Buffer(this.key),
       }, (decryptError, buff) => {
         if (decryptError) {
           this.isLoading = false;
+          this.error = ERROR_INVALID_ENCRYPTION_KEY;
+
           console.log('err', decryptError);
           return;
         }
 
         this.login({
           username: this.username,
-          password: buff.toString(),
+          keys: jsonParse(buff.toString()),
         }).then(() => {
           const { redirect } = this.$route.query;
           this.$router.push(redirect || '/market/SBD');
           this.isLoading = false;
+          this.error = '';
         }).catch((err) => {
+          this.error = ERROR_INVALID_CREDENTIALS;
           console.log('Login failed', err);
         });
       });
