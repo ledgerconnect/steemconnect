@@ -19,7 +19,7 @@
           </div>
           <input
             key="username"
-            v-model="username"
+            v-model.trim="username"
             id="username"
             type="text"
             class="form-control input-lg input-block mb-2"
@@ -34,7 +34,7 @@
           </div>
           <input
             key="password"
-            v-model="password"
+            v-model.trim="password"
             id="password"
             type="password"
             class="form-control input-lg input-block mb-2"
@@ -66,7 +66,7 @@
           </div>
           <input
             key="key"
-            v-model="key"
+            v-model.trim="key"
             type="password"
             class="form-control input-lg input-block mb-2"
             @blur="handleBlur('key')"
@@ -80,7 +80,7 @@
           </div>
           <input
             key="keyConfirmation"
-            v-model="keyConfirmation"
+            v-model.trim="keyConfirmation"
             type="password"
             class="form-control input-lg input-block mb-2"
             :class="{ 'mb-4': !error }"
@@ -137,14 +137,6 @@ export default {
     hasAccounts() {
       return hasAccounts();
     },
-    values() {
-      return {
-        username: this.username.trim(),
-        password: this.password.trim(),
-        key: this.key.trim(),
-        keyConfirmation: this.keyConfirmation.trim(),
-      };
-    },
     errors() {
       const current = {};
 
@@ -153,7 +145,7 @@ export default {
         password,
         key,
         keyConfirmation,
-      } = this.values;
+      } = this;
 
       if (!username) {
         current.username = 'Username is required.';
@@ -201,7 +193,7 @@ export default {
     async startLogin() {
       this.isLoading = true;
 
-      const { username, password } = this.values;
+      const { username, password } = this;
       const keys = await getKeys(username, password);
 
       this.login({ username, keys }).then(() => {
@@ -215,7 +207,7 @@ export default {
       });
     },
     async submitNext() {
-      const { username, password } = this.values;
+      const { username, password } = this;
 
       this.isLoading = true;
 
@@ -237,7 +229,7 @@ export default {
       }
     },
     async submitForm() {
-      const { username, password, key } = this.values;
+      const { username, password, key } = this;
 
       this.isLoading = true;
 

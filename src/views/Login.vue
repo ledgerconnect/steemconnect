@@ -13,7 +13,7 @@
           {{ errors.username }}
         </div>
         <select
-          v-model="username"
+          v-model.trim="username"
           class="form-select input-block mb-2"
           @blur="handleBlur('username')"
         >
@@ -34,7 +34,7 @@
           {{ errors.key }}
         </div>
         <input
-          v-model="key"
+          v-model.trim="key"
           type="password"
           class="form-control input-lg input-block mb-2"
           :class="{ 'mb-4': !error }"
@@ -87,8 +87,7 @@ export default {
     errors() {
       const current = {};
 
-      const username = this.username.trim();
-      const key = this.key.trim();
+      const { username, key } = this;
 
       if (!username) {
         current.username = 'Username is required.';
