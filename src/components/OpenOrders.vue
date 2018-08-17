@@ -38,23 +38,38 @@
         v-if="open"
         @close="open = false"
         title="Cancel order"
-        :locked="isLoading"
+        :locked="sending"
         class="small"
       >
         <div class="default-body">
-          Are you sure you want to cancel the order <b>{{orderId}}</b>?
+          <div v-if="failed" class="flash flash-error mb-4">
+            We couldn't cancel this order. Please try again later.
+          </div>
+          <Confirmation v-if="!!transactionId" :id="transactionId" />
+          <span v-else>
+            Are you sure you want to cancel the order <b>{{orderId}}</b>?
+          </span>
         </div>
         <div slot="footer" class="actions">
           <button
-            :disabled="isLoading"
-            class="btn btn-large btn-primary"
-            @click="isLoading = true; handleCancelOrder(orderId)"
+            v-if="!!transactionId"
+            @click="open = false"
+            class="btn btn-large btn-plain input-block"
           >
-            Confirm
+            Close
           </button>
-          <button :disabled="isLoading" class="btn btn-large btn-plain" @click="open = false">
-            Cancel
-          </button>
+          <template v-else>
+            <button
+              :disabled="sending"
+              class="btn btn-large btn-primary"
+              @click="handleCancelOrder(orderId)"
+            >
+              {{ confirmText }}
+            </button>
+            <button :disabled="sending" class="btn btn-large btn-plain" @click="open = false">
+              Cancel
+            </button>
+          </template>
         </div>
       </VueModal>
     </template>
@@ -68,9 +83,11 @@ export default {
   data() {
     return {
       open: false,
-      isLoading: false,
+      sending: false,
       orderId: null,
       search: '',
+      transactionId: '',
+      failed: false,
     };
   },
   computed: {
@@ -79,19 +96,38 @@ export default {
         .toLowerCase()
         .includes(this.search.toLowerCase()));
     },
+    confirmText() {
+      if (this.sending) return 'Sending';
+
+      return this.failed ? 'Retry' : 'Confirm';
+    },
+  },
+  watch: {
+    open() {
+      this.failed = false;
+    },
   },
   methods: {
     ...mapActions([
-      'cancelOrder',
+      'getOpenOrders',
+      'cancelLimitOrder',
     ]),
-    handleCancelOrder(orderId) {
-      this.cancelOrder(orderId).then(() => {
-        this.open = false;
-        this.isLoading = false;
-        this.orderId = null;
-      }).catch((e) => {
-        console.log('Cancel order failed', e);
-      });
+    async handleCancelOrder(orderId) {
+      this.sending = true;
+
+      try {
+        const confirmation = await this.cancelLimitOrder(orderId);
+
+        this.transactionId = confirmation.id;
+        this.failed = false;
+      } catch (err) {
+        console.error(err);
+
+        this.transactionId = '';
+        this.failed = true;
+      }
+
+      this.sending = false;
     },
   },
 };

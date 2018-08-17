@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import axios from 'axios';
-import client from '@/helpers/client';
+import client, { cancelLimitOrder } from '@/helpers/client';
 import { groupByRealPrice } from '@/helpers/market';
 
 const state = {
@@ -57,21 +57,20 @@ const actions = {
       commit('saveRecentTrades', { asset, result });
     });
   },
-  cancelOrder: ({ dispatch }, orderId) => (
-    new Promise((resolve) => {
-      setTimeout(() => {
-        console.log(`Order ${orderId} canceled`);
-        dispatch('getOpenOrders');
-        resolve();
-      }, 2000);
-    })
-  ),
   getRate: ({ commit }) => {
     axios.get('https://api.coinmarketcap.com/v1/ticker/steem/').then((response) => {
       if (response.data && response.data[0] && response.data[0].price_btc) {
         commit('saveRate', response.data[0]);
       }
     }).catch(err => console.log(err));
+  },
+  cancelLimitOrder: async ({ rootState, dispatch }, orderId) => {
+    const { account, keys } = rootState.auth;
+
+    const confirmation = await cancelLimitOrder(account.name, orderId, keys.active);
+    await dispatch('getOpenOrders');
+
+    return confirmation;
   },
 };
 
