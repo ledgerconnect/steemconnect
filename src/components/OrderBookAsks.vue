@@ -1,11 +1,11 @@
 <template>
-  <table class="table table-lg width-full text-right">
+  <table class="table table-lg width-full text-left">
     <thead>
       <tr class="border-bottom">
         <!--<th>Sum</th>-->
-        <th>Total</th>
-        <th>Size (SBD)</th>
         <th>Ask (STEEM)</th>
+        <th>Size (SBD)</th>
+        <th>Total</th>
       </tr>
     </thead>
     <tbody>
@@ -14,8 +14,6 @@
         :key="i"
         class="border-bottom"
       >
-        <td>{{order.sbd / 1000}}</td>
-        <td>{{order.steem / 1000}}</td>
         <td>
           <a
             @click="$root.$emit('fillOrder', order.price)"
@@ -24,6 +22,8 @@
             {{order.price}}
           </a>
         </td>
+        <td>{{order.sbd / 1000}}</td>
+        <td>{{order.steem / 1000}}</td>
       </tr>
     </tbody>
   </table>
