@@ -23,6 +23,8 @@
             id="username"
             type="text"
             class="form-control input-lg input-block mb-2"
+            autocorrect="off"
+            autocapitalize="none"
             @blur="handleBlur('username')"
           />
           <label for="password">Steem password or active WIF</label>
@@ -268,9 +270,5 @@ export default {
 
 .ahref-btn {
   text-align: center;
-}
-
-.error {
-  color: @error-color;
 }
 </style>

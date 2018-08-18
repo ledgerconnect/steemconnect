@@ -15,6 +15,8 @@
         <select
           v-model.trim="username"
           class="form-select input-block mb-2"
+          autocorrect="off"
+          autocapitalize="none"
           @blur="handleBlur('username')"
         >
           <option disabled value="">Please select one</option>
@@ -164,9 +166,5 @@ export default {
 
 .ahref-btn {
   text-align: center;
-}
-
-.error {
-  color: @error-color;
 }
 </style>

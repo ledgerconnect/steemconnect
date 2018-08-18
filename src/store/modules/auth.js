@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import { PrivateKey } from 'dsteem';
 import client from '@/helpers/client';
 import { credentialsValid } from '@/helpers/auth';
 
@@ -57,6 +58,16 @@ const actions = {
       });
     })
   ),
+  transfer: ({ rootState }, { amount, to, memo }) => {
+    const { account, keys } = rootState.auth;
+
+    return client.broadcast.transfer({
+      from: account.name,
+      amount,
+      to,
+      memo,
+    }, PrivateKey.from(keys.active));
+  },
 };
 
 export default {

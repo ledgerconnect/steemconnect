@@ -104,6 +104,7 @@ export default {
   },
   watch: {
     open() {
+      this.transactionId = '';
       this.failed = false;
     },
   },
