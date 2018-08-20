@@ -6,7 +6,7 @@
           <th>Type</th>
           <th>Account / key</th>
           <th>Weight</th>
-          <th>Action</th>
+          <th/>
         </tr>
       </thead>
       <tbody>
@@ -21,14 +21,18 @@
             <td>{{ authority }}</td>
             <td>{{ auth[0] }}</td>
             <td>{{ auth[1] }}</td>
-            <td>Revoke</td>
+            <td class="text-right">
+              <span class="iconfont icon-kebab-vertical"/>
+            </td>
           </tr>
         </template>
         <tr class="border-bottom">
           <td>memo</td>
           <td>{{ account.memo_key }}</td>
           <td></td>
-          <td>Edit</td>
+          <td class="text-right">
+            <span class="iconfont icon-kebab-vertical"/>
+          </td>
         </tr>
       </tbody>
     </table>

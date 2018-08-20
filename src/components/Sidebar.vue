@@ -2,7 +2,7 @@
   <div id="nav" class="border-right">
     <div class="p-4">
       <router-link to="/">
-        <span id="logo" class="octicon octicon-diff-modified"/>
+        <span id="logo" class="iconfont icon-diff-modified"/>
       </router-link>
     </div>
     <ul>

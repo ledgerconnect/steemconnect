@@ -1,7 +1,7 @@
 <template>
   <div class="container-xs text-center">
     <router-link to="/">
-      <span id="logo" class="octicon octicon-diff-modified mb-4"/>
+      <span id="logo" class="iconfont icon-diff-modified mb-4"/>
     </router-link>
     <h2>Welcome on SteemDEX</h2>
     <router-link

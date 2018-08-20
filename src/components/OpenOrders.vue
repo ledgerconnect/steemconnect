@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="search border-bottom px-4">
-      <span class="octicon octicon-search"/>
+      <span class="iconfont icon-search"/>
       <input v-model="search" type="text" class="px-4 py-3 border-0 input-lg"/>
     </div>
     <template>
@@ -138,7 +138,7 @@ export default {
 @import '../vars';
 
 .search {
-  .octicon-search {
+  .icon-search {
     color: @border-color;
     font-size: 20px;
   }

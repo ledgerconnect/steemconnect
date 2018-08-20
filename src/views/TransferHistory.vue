@@ -6,7 +6,7 @@
           <th class="text-left">Time</th>
           <th class="text-left">Operation</th>
           <th>Amount</th>
-          <th class="text-left">Action</th>
+          <th/>
         </tr>
       </thead>
       <tbody>
@@ -18,12 +18,12 @@
           <td class="text-left">{{ transfer[1].timestamp | date }}</td>
           <td class="text-left">{{ transfer[1].op[0] }}</td>
           <td>{{ transfer[1].op[1].amount }}</td>
-          <td class="text-left">
+          <td class="text-right">
             <a
               :href="'https://steemd.com/tx/' + transfer[1].trx_id"
               target="_blank"
             >
-              Open in steemd
+              <span class="iconfont icon-kebab-vertical"/>
             </a>
           </td>
         </tr>
