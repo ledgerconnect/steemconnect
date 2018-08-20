@@ -25,18 +25,21 @@
           v-model="quantity"
           name="quantity"
           class="form-control input-lg input-block mb-2"
+          @change="updateTotal"
         />
         <p>Bid price (STEEM)</p>
         <input
           v-model="price"
           name="price"
           class="form-control input-lg input-block mb-2"
+          @change="updateTotal"
         />
         <p>Total (STEEM)</p>
         <input
           v-model="total"
           name="total"
           class="form-control input-lg input-block mb-4"
+          @change="updateQuantity"
         />
         <div class="text-uppercase">
           <a
@@ -98,9 +101,21 @@ export default {
       isLoading: false,
     };
   },
+  methods: {
+    updateTotal() {
+      this.total = this.quantity > 0 && this.price > 0 ?
+        (this.quantity / this.price).toFixed(3) : '0.000';
+    },
+    updateQuantity() {
+      this.quantity = this.total > 0 && this.price > 0 ?
+        (this.total / this.price).toFixed(3) : this.quantity;
+    },
+  },
   mounted() {
-    this.$root.$on('fillOrder', (price) => {
-      this.price = price;
+    this.$root.$on('fillOrder', ({ price, quantity }) => {
+      this.price = price || this.price;
+      this.quantity = quantity || this.quantity;
+      this.updateTotal();
     });
   },
 };

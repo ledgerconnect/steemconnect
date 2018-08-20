@@ -2,7 +2,6 @@
   <table class="table table-lg width-full text-left">
     <thead>
       <tr class="border-bottom">
-        <!--<th>Sum</th>-->
         <th>Ask (STEEM)</th>
         <th>Size (SBD)</th>
         <th>Total</th>
@@ -16,13 +15,17 @@
       >
         <td>
           <a
-            @click="$root.$emit('fillOrder', order.price)"
+            @click="$root.$emit('fillOrder', { price: order.price })"
             class="text-red"
           >
             {{order.price}}
           </a>
         </td>
-        <td>{{order.sbd / 1000}}</td>
+        <td>
+          <a @click="$root.$emit('fillOrder', { quantity: order.sbd / 1000 })">
+            {{order.sbd / 1000}}
+          </a>
+        </td>
         <td>{{order.steem / 1000}}</td>
       </tr>
     </tbody>

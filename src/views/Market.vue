@@ -4,14 +4,14 @@
     <div class="graph border-bottom bg-gray-light mb-4"/>
     <div>
       <div class="columns m-0">
-        <div class="column px-0 one-third">
+        <div class="column px-0 col-lg-4 col-12 mb-4">
           <h4 class="mx-4">Bids</h4>
           <OrderBookBids :bids="bids"/>
         </div>
-        <div class="column one-third text-center px-6">
+        <div class="column col-lg-4 col-12 text-center px-6 mb-4">
           <Actions/>
         </div>
-        <div class="column px-0 one-third">
+        <div class="column px-0 col-lg-4 col-12 mb-4">
           <h4 class="mx-4">Asks</h4>
           <OrderBookAsks :asks="asks"/>
         </div>
