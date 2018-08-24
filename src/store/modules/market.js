@@ -26,22 +26,22 @@ const mutations = {
   },
   saveTicker(_state, { asset, result }) {
     if (result) {
-      Vue.set(state.ticker, asset, result);
+      Vue.set(_state.ticker, asset, result);
     }
   },
   saveOrderBook(_state, { asset, result }) {
     if (result) {
-      Vue.set(state.orderBook[asset], 'bids', groupByRealPrice(result.bids));
-      Vue.set(state.orderBook[asset], 'asks', groupByRealPrice(result.asks));
+      Vue.set(_state.orderBook[asset], 'bids', groupByRealPrice(result.bids));
+      Vue.set(_state.orderBook[asset], 'asks', groupByRealPrice(result.asks));
     }
   },
   saveRecentTrades(_state, { asset, result }) {
     if (result) {
-      Vue.set(state.recentTrades, asset, result);
+      Vue.set(_state.recentTrades, asset, result);
     }
   },
   saveRate(_state, result) {
-    Vue.set(state, 'rate', result);
+    Vue.set(_state, 'rate', result);
   },
 };
 

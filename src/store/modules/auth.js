@@ -13,15 +13,15 @@ const state = {
 
 const mutations = {
   saveAccount(_state, { result, keys }) {
-    Vue.set(state, 'username', result.name);
-    Vue.set(state, 'keys', keys);
-    Vue.set(state, 'account', result);
+    Vue.set(_state, 'username', result.name);
+    Vue.set(_state, 'keys', keys);
+    Vue.set(_state, 'account', result);
   },
   saveOpenOrders(_state, result) {
-    Vue.set(state, 'open_orders', result);
+    Vue.set(_state, 'open_orders', result);
   },
   saveTransferHistory(_state, result) {
-    Vue.set(state, 'transfer_history', result);
+    Vue.set(_state, 'transfer_history', result);
   },
 };
 
