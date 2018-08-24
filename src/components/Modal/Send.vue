@@ -50,6 +50,9 @@
           class="form-control input-lg input-block mb-2"
           @blur="handleBlur('amount')"
         />
+        <div class="mb-2">
+          <a @click="setMax">Max: {{ balanceAsset.toString() }}</a>
+        </div>
         <label for="memo">Description</label>
         <textarea
           v-model.trim="memo"
@@ -117,12 +120,15 @@ export default {
     amountAsset() {
       return new Asset(parseFloat(this.amount || '0'), this.asset);
     },
-    balanceSufficient() {
+    balanceAsset() {
       const { account } = this.$store.state.auth;
 
       const balance = this.asset === 'STEEM' ? account.balance : account.sbd_balance;
 
-      return Asset.fromString(balance).subtract(this.amountAsset).amount >= 0;
+      return Asset.fromString(balance);
+    },
+    balanceSufficient() {
+      return this.balanceAsset.subtract(this.amountAsset).amount >= 0;
     },
     usernameValid() {
       return this.to && this.verifiedRecipient === this.to;
@@ -202,6 +208,9 @@ export default {
 
       this.verificationUpToDate = true;
     }, USERNAME_LOOKUP_WAIT),
+    setMax() {
+      this.amount = this.balanceAsset.amount.toFixed(3);
+    },
     async handleConfirm() {
       this.sending = true;
 
