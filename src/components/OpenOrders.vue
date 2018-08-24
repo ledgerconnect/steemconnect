@@ -109,10 +109,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions([
-      'getOpenOrders',
-      'cancelLimitOrder',
-    ]),
+    ...mapActions(['cancelLimitOrder']),
     async handleCancelOrder(orderId) {
       this.sending = true;
 

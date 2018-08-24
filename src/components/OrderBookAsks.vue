@@ -15,14 +15,14 @@
       >
         <td>
           <a
-            @click="$root.$emit('fillOrder', { price: order.price })"
+            @click="$root.$emit('fillPrice', order.price)"
             class="text-red"
           >
             {{order.price}}
           </a>
         </td>
         <td>
-          <a @click="$root.$emit('fillOrder', { quantity: order.sbd / 1000 })">
+          <a @click="$root.$emit('fillQuantity', order.sbd / 1000)">
             {{order.sbd / 1000}}
           </a>
         </td>
@@ -34,6 +34,6 @@
 
 <script>
 export default {
-  props: ['asks', 'fillOrder'],
+  props: ['asks'],
 };
 </script>

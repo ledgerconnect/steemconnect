@@ -1,7 +1,6 @@
-// eslint-disable-next-line import/prefer-default-export
 export function groupByRealPrice(orders, digits = 6) {
   return orders.reduce((a, b) => {
-    const val = parseFloat(b.real_price).toFixed(digits);
+    const val = parseFloat(1 / b.real_price).toFixed(digits);
 
     const sbd = a[val] ? a[val].sbd : 0;
     const steem = a[val] ? a[val].steem : 0;
@@ -17,4 +16,8 @@ export function groupByRealPrice(orders, digits = 6) {
       },
     };
   }, {});
+}
+
+export function dropPrecision(value, digits = 3) {
+  return parseFloat(value.toFixed(digits));
 }

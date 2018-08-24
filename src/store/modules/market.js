@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import axios from 'axios';
-import client, { cancelLimitOrder } from '@/helpers/client';
+import client, { createLimitOrder, cancelLimitOrder } from '@/helpers/client';
 import { groupByRealPrice } from '@/helpers/market';
 
 const state = {
@@ -63,6 +63,22 @@ const actions = {
         commit('saveRate', response.data[0]);
       }
     }).catch(err => console.log(err));
+  },
+  createLimitOrder: async ({ rootState, dispatch }, order) => {
+    const { account, keys } = rootState.auth;
+
+    const confirmation = await createLimitOrder(
+      account.name,
+      order.amountToSell,
+      order.minToReceive,
+      order.fillOrKill,
+      order.expiration,
+      keys.active,
+    );
+
+    await dispatch('getOpenOrders');
+
+    return confirmation;
   },
   cancelLimitOrder: async ({ rootState, dispatch }, orderId) => {
     const { account, keys } = rootState.auth;
