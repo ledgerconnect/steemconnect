@@ -39,6 +39,7 @@ const actions = {
       dispatch('getOpenOrders'),
       dispatch('getTransferHistory'),
       dispatch('getRate'),
+      dispatch('getDynamicGlobalProperties'),
     ]);
   },
   getOpenOrders: ({ commit }) => (

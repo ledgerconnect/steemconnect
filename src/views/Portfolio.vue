@@ -14,8 +14,8 @@
       <tbody>
         <tr class="border-bottom">
           <td class="text-left">Steem (STEEM)</td>
-          <td>{{$n(parseFloat(account.balance))}}</td>
-          <td>{{$n(rate.price_usd * parseFloat(account.balance), 'currency')}}</td>
+          <td>{{$n(steemBalance)}}</td>
+          <td>{{$n(rate.price_usd * steemBalance, 'currency')}}</td>
           <td>{{$n(rate.price_usd, 'currency')}}</td>
           <td :class="rate.percent_change_24h > 0 ? 'text-green' : 'text-red'">
             <span v-if="rate.percent_change_24h > 0">+</span>{{$n(rate.percent_change_24h)}}%
@@ -26,19 +26,41 @@
         </tr>
         <tr class="border-bottom">
           <td class="text-left">Steem Dollars (SBD)</td>
-          <td>{{$n(parseFloat(account.sbd_balance))}}</td>
-          <td>
-            {{
-              $n(rate.price_usd
-                / tickers.SBD.latest
-                * parseFloat(account.sbd_balance), 'currency')
-            }}
-          </td>
+          <td>{{$n(sbdBalance)}}</td>
+          <td>{{$n(rate.price_usd / tickers.SBD.latest * sbdBalance, 'currency')}}</td>
           <td>{{$n(rate.price_usd / tickers.SBD.latest, 'currency')}}</td>
           <td>?</td>
           <td class="text-left">
             <a href="#" @click.prevent="open = true; asset = 'SBD'">Send</a>
           </td>
+        </tr>
+        <tr class="border-bottom">
+          <td class="text-left">Steem Power (SP)</td>
+          <td>{{$n(steemPowerBalance)}}</td>
+          <td>{{$n(rate.price_usd * steemPowerBalance, 'currency')}}</td>
+          <td>{{$n(rate.price_usd, 'currency')}}</td>
+          <td :class="rate.percent_change_24h > 0 ? 'text-green' : 'text-red'">
+            <span v-if="rate.percent_change_24h > 0">+</span>{{$n(rate.percent_change_24h)}}%
+          </td>
+          <td />
+        </tr>
+        <tr v-if="savingsSteemBalance > 0" class="border-bottom">
+          <td class="text-left">Savings Steem</td>
+          <td>{{$n(savingsSteemBalance)}}</td>
+          <td>{{$n(rate.price_usd * savingsSteemBalance, 'currency')}}</td>
+          <td>{{$n(rate.price_usd, 'currency')}}</td>
+          <td :class="rate.percent_change_24h > 0 ? 'text-green' : 'text-red'">
+            <span v-if="rate.percent_change_24h > 0">+</span>{{$n(rate.percent_change_24h)}}%
+          </td>
+          <td />
+        </tr>
+        <tr v-if="savingsSbdBalance > 0" class="border-bottom">
+          <td class="text-left">Savings Steem Dollars</td>
+          <td>{{$n(savingsSbdBalance)}}</td>
+          <td>{{$n(rate.price_usd / tickers.SBD.latest * savingsSbdBalance, 'currency')}}</td>
+          <td>{{$n(rate.price_usd / tickers.SBD.latest, 'currency')}}</td>
+          <td>?</td>
+          <td />
         </tr>
       </tbody>
     </table>
@@ -60,6 +82,27 @@ export default {
     account() {
       return this.$store.state.auth.account;
     },
+    steemBalance() {
+      return parseFloat(this.account.balance) || 0;
+    },
+    sbdBalance() {
+      return parseFloat(this.account.sbd_balance) || 0;
+    },
+    savingsSteemBalance() {
+      return parseFloat(this.account.savings_balance) || 0;
+    },
+    savingsSbdBalance() {
+      return parseFloat(this.account.savings_sbd_balance) || 0;
+    },
+    steemPowerBalance() {
+      const { properties } = this.$store.state.market;
+
+      return this.vestToSteem(
+        this.account.vesting_shares,
+        properties.total_vesting_shares,
+        properties.total_vesting_fund_steem,
+      );
+    },
     rate() {
       return this.$store.state.market.rate;
     },
@@ -70,13 +113,19 @@ export default {
     },
   },
   methods: {
-    handleCancel() {
-      this.open = false;
-    },
     ...mapActions([
       'getRate',
       'getTicker',
     ]),
+    vestToSteem(vestingShares, totalVestingShares, totalVestingFundSteem) {
+      return (
+        parseFloat(totalVestingFundSteem) *
+        (parseFloat(vestingShares) / parseFloat(totalVestingShares))
+      );
+    },
+    handleCancel() {
+      this.open = false;
+    },
   },
   beforeDestroy() {
     clearInterval(this.queryInterval);

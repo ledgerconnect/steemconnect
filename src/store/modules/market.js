@@ -4,6 +4,7 @@ import client, { createLimitOrder, cancelLimitOrder } from '@/helpers/client';
 import { groupByRealPrice } from '@/helpers/market';
 
 const state = {
+  properties: {},
   ticker: {
     SBD: {},
   },
@@ -20,6 +21,9 @@ const state = {
 };
 
 const mutations = {
+  saveProperties(_state, result) {
+    Vue.set(_state, 'properties', result);
+  },
   saveTicker(_state, { asset, result }) {
     if (result) {
       Vue.set(state.ticker, asset, result);
@@ -42,6 +46,11 @@ const mutations = {
 };
 
 const actions = {
+  getDynamicGlobalProperties: ({ commit }) => {
+    client.database.call('get_dynamic_global_properties', []).then((result) => {
+      commit('saveProperties', result);
+    });
+  },
   getTicker: ({ commit }, asset) => {
     client.database.call('get_ticker', []).then((result) => {
       commit('saveTicker', { asset, result });
