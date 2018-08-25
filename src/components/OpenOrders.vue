@@ -14,7 +14,7 @@
           <th>Price</th>
           <th>Amount</th>
           <th>Total</th>
-          <th class="text-left">Action</th>
+          <th/>
         </tr>
         </thead>
         <tbody>
@@ -32,9 +32,10 @@
             <VueDropdown>
               <VueButton
                 slot="trigger"
-                icon-left="more_vert"
                 class="icon-button flat"
-              />
+              >
+                <span class="iconfont icon-kebab-vertical"/>
+              </VueButton>
               <VueDropdownButton @click.prevent="open = true; orderId = order.orderid">
                 Cancel this order
               </VueDropdownButton>

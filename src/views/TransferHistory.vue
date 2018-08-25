@@ -29,16 +29,17 @@
               <VueDropdown>
                 <VueButton
                   slot="trigger"
-                  icon-left="more_vert"
                   class="icon-button flat"
-                />
+                >
+                  <span class="iconfont icon-kebab-vertical"/>
+                </VueButton>
                 <VueDropdownButton>
                   <a
                     :href="'https://steemd.com/tx/' + transfer[1].trx_id"
                     target="_blank"
                     class="button-link"
                   >
-                    TX details
+                    TX info <span class="iconfont icon-link-external"/>
                   </a>
                 </VueDropdownButton>
                 <VueDropdownButton disabled>Copy TX ID</VueDropdownButton>

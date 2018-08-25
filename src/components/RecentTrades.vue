@@ -6,7 +6,7 @@
         <th class="text-left">Date</th>
         <th class="text-left">Type</th>
         <th>Price</th>
-        <th>Total units {{asset}}</th>
+        <th>Total units ({{asset}})</th>
         <th>Total cost (STEEM)</th>
       </tr>
     </thead>

@@ -8,7 +8,7 @@
           <th>Value, USD</th>
           <th>Price, USD</th>
           <th>24h change</th>
-          <th class="text-left">Action</th>
+          <th/>
         </tr>
       </thead>
       <tbody>
@@ -24,9 +24,10 @@
             <VueDropdown>
               <VueButton
                 slot="trigger"
-                icon-left="more_vert"
                 class="icon-button flat"
-              />
+              >
+                <span class="iconfont icon-kebab-vertical"/>
+              </VueButton>
               <VueDropdownButton @click.prevent="open = true; asset = 'STEEM'">
                 Send
               </VueDropdownButton>
@@ -44,9 +45,10 @@
             <VueDropdown>
               <VueButton
                 slot="trigger"
-                icon-left="more_vert"
                 class="icon-button flat"
-              />
+              >
+                <span class="iconfont icon-kebab-vertical"/>
+              </VueButton>
               <VueDropdownButton @click.prevent="open = true; asset = 'SBD'">
                 Send
               </VueDropdownButton>
@@ -66,9 +68,10 @@
             <VueDropdown>
               <VueButton
                 slot="trigger"
-                icon-left="more_vert"
                 class="icon-button flat"
-              />
+              >
+                <span class="iconfont icon-kebab-vertical"/>
+              </VueButton>
               <VueDropdownButton disabled>Power down</VueDropdownButton>
             </VueDropdown>
           </td>
@@ -85,9 +88,10 @@
             <VueDropdown>
               <VueButton
                 slot="trigger"
-                icon-left="more_vert"
                 class="icon-button flat"
-              />
+              >
+                <span class="iconfont icon-kebab-vertical"/>
+              </VueButton>
               <VueDropdownButton disabled>Withdraw</VueDropdownButton>
             </VueDropdown>
           </td>
@@ -102,9 +106,10 @@
             <VueDropdown>
               <VueButton
                 slot="trigger"
-                icon-left="more_vert"
                 class="icon-button flat"
-              />
+              >
+                <span class="iconfont icon-kebab-vertical"/>
+              </VueButton>
               <VueDropdownButton disabled>Withdraw</VueDropdownButton>
             </VueDropdown>
           </td>
