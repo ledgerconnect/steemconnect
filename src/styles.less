@@ -119,6 +119,18 @@ label {
   background-color: @sidebar-bg-color;
 }
 
+.entry-enter-active {
+  transition: opacity 1s ease;
+}
+
+.entry-enter {
+  opacity: 0;
+}
+
+.entry-leave {
+  display: none;
+}
+
 ::-webkit-scrollbar-thumb {
   background-color: @border-color;
   border: 0;

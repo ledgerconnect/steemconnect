@@ -7,10 +7,10 @@
         <th>Bid (STEEM)</th>
       </tr>
     </thead>
-    <tbody>
+    <transition-group v-if="visibleBids.length !== 0" name="entry" tag="tbody">
       <tr
-        v-for="(order, key, i) in bids.slice(0, 5)"
-        :key="i"
+        v-for="order in visibleBids"
+        :key="getOrderKey(order)"
         class="border-bottom"
       >
         <td>{{order.steem / 1000}}</td>
@@ -28,12 +28,24 @@
           </a>
         </td>
       </tr>
-    </tbody>
+    </transition-group>
   </table>
 </template>
 
 <script>
+const VISIBLE_BIDS = 5;
+
 export default {
   props: ['bids'],
+  computed: {
+    visibleBids() {
+      return this.bids.slice(0, VISIBLE_BIDS);
+    },
+  },
+  methods: {
+    getOrderKey(order) {
+      return `${order.count}-${order.price}`;
+    },
+  },
 };
 </script>

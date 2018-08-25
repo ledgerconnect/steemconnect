@@ -7,10 +7,10 @@
         <th>Total</th>
       </tr>
     </thead>
-    <tbody>
+    <transition-group v-if="visibleAsks.length !== 0" name="entry" tag="tbody">
       <tr
-        v-for="(order, key, i) in asks.slice(0, 5)"
-        :key="i"
+        v-for="order in visibleAsks"
+        :key="getOrderKey(order)"
         class="border-bottom"
       >
         <td>
@@ -28,12 +28,24 @@
         </td>
         <td>{{order.steem / 1000}}</td>
       </tr>
-    </tbody>
+    </transition-group>
   </table>
 </template>
 
 <script>
+const VISIBLE_ASKS = 5;
+
 export default {
   props: ['asks'],
+  computed: {
+    visibleAsks() {
+      return this.asks.slice(0, VISIBLE_ASKS);
+    },
+  },
+  methods: {
+    getOrderKey(order) {
+      return `${order.count}-${order.price}`;
+    },
+  },
 };
 </script>
