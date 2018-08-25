@@ -26,7 +26,12 @@ const mutations = {
   },
   saveTicker(_state, { asset, result }) {
     if (result) {
-      Vue.set(_state.ticker, asset, result);
+      Vue.set(_state.ticker, asset, {
+        ...result,
+        latest: 1 / result.latest,
+        lowest_ask: 1 / result.lowest_ask,
+        highest_bid: 1 / result.highest_bid,
+      });
     }
   },
   saveOrderBook(_state, { asset, result }) {

@@ -37,8 +37,8 @@
         <tr class="border-bottom">
           <td class="text-left">Steem Dollars (SBD)</td>
           <td>{{$n(sbdBalance)}}</td>
-          <td>{{$n(rate.price_usd / tickers.SBD.latest * sbdBalance, 'currency')}}</td>
-          <td>{{$n(rate.price_usd / tickers.SBD.latest, 'currency')}}</td>
+          <td>{{$n(rate.price_usd * tickers.SBD.latest * sbdBalance, 'currency')}}</td>
+          <td>{{$n(rate.price_usd * tickers.SBD.latest, 'currency')}}</td>
           <td>?</td>
           <td>
             <VueDropdown>
@@ -95,8 +95,8 @@
         <tr v-if="savingsSbdBalance > 0" class="border-bottom">
           <td class="text-left">Savings Steem Dollars</td>
           <td>{{$n(savingsSbdBalance)}}</td>
-          <td>{{$n(rate.price_usd / tickers.SBD.latest * savingsSbdBalance, 'currency')}}</td>
-          <td>{{$n(rate.price_usd / tickers.SBD.latest, 'currency')}}</td>
+          <td>{{$n(rate.price_usd * tickers.SBD.latest * savingsSbdBalance, 'currency')}}</td>
+          <td>{{$n(rate.price_usd * tickers.SBD.latest, 'currency')}}</td>
           <td>?</td>
           <td>
             <VueDropdown>

@@ -23,10 +23,10 @@
           </td>
           <td>
             <template v-if="trade.current_pays.slice(-6) === ' STEEM'">
-              {{(parseFloat(trade.open_pays) / parseFloat(trade.current_pays)).toFixed(6)}}
+              {{(parseFloat(trade.current_pays) / parseFloat(trade.open_pays)).toFixed(6)}}
             </template>
             <template v-else>
-              {{(parseFloat(trade.current_pays) / parseFloat(trade.open_pays)).toFixed(6)}}
+              {{(parseFloat(trade.open_pays) / parseFloat(trade.current_pays)).toFixed(6)}}
             </template>
           </td>
           <td>
