@@ -18,7 +18,7 @@ const mutations = {
     Vue.set(_state, 'account', result);
   },
   saveOpenOrders(_state, result) {
-    Vue.set(_state, 'open_orders', result);
+    Vue.set(_state, 'open_orders', result.reverse());
   },
   saveTransferHistory(_state, result) {
     Vue.set(_state, 'transfer_history', result);
