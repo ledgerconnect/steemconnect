@@ -3,9 +3,7 @@
     v-model="amount"
     :id="id"
     :name="name"
-    @blur="handleBlur"
-    @focus="handleFocus"
-    @change="handleChange"
+    v-on="restListeners"
     class="form-control input-lg input-block mb-2"
   />
 </template>
@@ -19,6 +17,11 @@ export default {
     };
   },
   computed: {
+    restListeners() {
+      const { input, ...rest } = this.$listeners;
+
+      return rest;
+    },
     regex() {
       return new RegExp(`^[0-9]*[.]?[0-9]{0,${this.digits || 3}}$`);
     },
@@ -33,17 +36,6 @@ export default {
       }
 
       this.$emit('input', this.amount);
-    },
-  },
-  methods: {
-    handleBlur(e) {
-      this.$emit('blur', e);
-    },
-    handleFocus(e) {
-      this.$emit('focus', e);
-    },
-    handleChange(e) {
-      this.$emit('change', e);
     },
   },
 };

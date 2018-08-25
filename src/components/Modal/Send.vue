@@ -35,21 +35,32 @@
           autocapitalize="none"
           @blur="handleBlur('to')"
         />
-        <label for="amount">Amount</label>
+        <div class="split">
+          <label for="amount">Amount</label>
+          <label for="usd">Amount USD</label>
+        </div>
         <div
           v-if="dirty.amount && !!errors.amount"
           class="error mb-2"
         >
           {{ errors.amount }}
         </div>
-        <input
-          v-model="amount"
-          id="amount"
-          name="amount"
-          type="number"
-          class="form-control input-lg input-block mb-2"
-          @blur="handleBlur('amount')"
-        />
+        <div class="split">
+          <AmountInput
+            v-model="amount"
+            id="amount"
+            name="amount"
+            @keyup="setUsd"
+            @blur="handleBlur('amount')"
+          />
+          <AmountInput
+            v-model="usd"
+            id="usd"
+            name="usd"
+            @keyup="setAmount"
+            @blur="handleBlur('amount')"
+          />
+        </div>
         <div class="mb-2">
           <a @click="setMax">Max: {{ balanceAsset.toString() }}</a>
         </div>
@@ -94,7 +105,8 @@ import { Asset } from 'dsteem';
 import debounce from 'lodash/debounce';
 import client from '@/helpers/client';
 
-const AMOUNT_REGEX = /^[0-9]*\.?[0-9]{0,3}$/;
+const DEFAULT_AMOUNT = '0.000';
+const DEFAULT_USD = '0.00';
 const USERNAME_LOOKUP_WAIT = 200;
 
 export default {
@@ -103,7 +115,8 @@ export default {
     return {
       asset: 'STEEM',
       to: '',
-      amount: '0',
+      amount: DEFAULT_AMOUNT,
+      usd: DEFAULT_USD,
       memo: '',
       verificationUpToDate: false,
       verifiedRecipient: '',
@@ -117,6 +130,13 @@ export default {
     };
   },
   computed: {
+    ratio() {
+      const { ticker, rate } = this.$store.state.market;
+
+      if (this.asset === 'STEEM') return rate.price_usd;
+
+      return ticker.SBD.latest * rate.price_usd;
+    },
     amountAsset() {
       return new Asset(parseFloat(this.amount || '0'), this.asset);
     },
@@ -173,17 +193,16 @@ export default {
       this.verificationUpToDate = false;
       this.lookupUsername(value);
     },
-    amount(value, oldValue) {
-      if (!AMOUNT_REGEX.test(value)) {
-        this.amount = oldValue;
-      }
+    asset() {
+      this.setUsd();
     },
   },
   methods: {
     ...mapActions(['transfer']),
     resetForm() {
       this.to = '';
-      this.amount = 0;
+      this.amount = DEFAULT_AMOUNT;
+      this.usd = DEFAULT_USD;
       this.memo = '';
 
       this.dirty = {
@@ -208,8 +227,15 @@ export default {
 
       this.verificationUpToDate = true;
     }, USERNAME_LOOKUP_WAIT),
+    setUsd() {
+      this.usd = (this.amount * this.ratio).toFixed(2);
+    },
+    setAmount() {
+      this.amount = (this.usd / this.ratio).toFixed(3);
+    },
     setMax() {
       this.amount = this.balanceAsset.amount.toFixed(3);
+      this.setUsd();
     },
     async handleConfirm() {
       this.sending = true;
@@ -235,3 +261,14 @@ export default {
   },
 };
 </script>
+
+<style lang="less" scoped>
+.split {
+  display: flex;
+  justify-content: space-between;
+
+  & > * {
+    width: 48%;
+  }
+}
+</style>
