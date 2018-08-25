@@ -20,8 +20,18 @@
           <td :class="rate.percent_change_24h > 0 ? 'text-green' : 'text-red'">
             <span v-if="rate.percent_change_24h > 0">+</span>{{$n(rate.percent_change_24h)}}%
           </td>
-          <td class="text-left">
-            <a href="#" @click.prevent="open = true; asset = 'STEEM'">Send</a>
+          <td>
+            <VueDropdown>
+              <VueButton
+                slot="trigger"
+                icon-left="more_vert"
+                class="icon-button flat"
+              />
+              <VueDropdownButton @click.prevent="open = true; asset = 'STEEM'">
+                Send
+              </VueDropdownButton>
+              <VueDropdownButton disabled>Power up</VueDropdownButton>
+            </VueDropdown>
           </td>
         </tr>
         <tr class="border-bottom">
@@ -30,8 +40,18 @@
           <td>{{$n(rate.price_usd / tickers.SBD.latest * sbdBalance, 'currency')}}</td>
           <td>{{$n(rate.price_usd / tickers.SBD.latest, 'currency')}}</td>
           <td>?</td>
-          <td class="text-left">
-            <a href="#" @click.prevent="open = true; asset = 'SBD'">Send</a>
+          <td>
+            <VueDropdown>
+              <VueButton
+                slot="trigger"
+                icon-left="more_vert"
+                class="icon-button flat"
+              />
+              <VueDropdownButton @click.prevent="open = true; asset = 'SBD'">
+                Send
+              </VueDropdownButton>
+              <VueDropdownButton disabled>Convert</VueDropdownButton>
+            </VueDropdown>
           </td>
         </tr>
         <tr class="border-bottom">
@@ -42,7 +62,16 @@
           <td :class="rate.percent_change_24h > 0 ? 'text-green' : 'text-red'">
             <span v-if="rate.percent_change_24h > 0">+</span>{{$n(rate.percent_change_24h)}}%
           </td>
-          <td />
+          <td>
+            <VueDropdown>
+              <VueButton
+                slot="trigger"
+                icon-left="more_vert"
+                class="icon-button flat"
+              />
+              <VueDropdownButton disabled>Power down</VueDropdownButton>
+            </VueDropdown>
+          </td>
         </tr>
         <tr v-if="savingsSteemBalance > 0" class="border-bottom">
           <td class="text-left">Savings Steem</td>
@@ -52,7 +81,16 @@
           <td :class="rate.percent_change_24h > 0 ? 'text-green' : 'text-red'">
             <span v-if="rate.percent_change_24h > 0">+</span>{{$n(rate.percent_change_24h)}}%
           </td>
-          <td />
+          <td>
+            <VueDropdown>
+              <VueButton
+                slot="trigger"
+                icon-left="more_vert"
+                class="icon-button flat"
+              />
+              <VueDropdownButton disabled>Withdraw</VueDropdownButton>
+            </VueDropdown>
+          </td>
         </tr>
         <tr v-if="savingsSbdBalance > 0" class="border-bottom">
           <td class="text-left">Savings Steem Dollars</td>
@@ -60,7 +98,16 @@
           <td>{{$n(rate.price_usd / tickers.SBD.latest * savingsSbdBalance, 'currency')}}</td>
           <td>{{$n(rate.price_usd / tickers.SBD.latest, 'currency')}}</td>
           <td>?</td>
-          <td />
+          <td>
+            <VueDropdown>
+              <VueButton
+                slot="trigger"
+                icon-left="more_vert"
+                class="icon-button flat"
+              />
+              <VueDropdownButton disabled>Withdraw</VueDropdownButton>
+            </VueDropdown>
+          </td>
         </tr>
       </tbody>
     </table>

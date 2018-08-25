@@ -61,7 +61,7 @@
 }
 
 html, body, #app {
-  height: 100%;
+  min-height: 100%;
   color: @text-color;
   background-color: @bg-color;
   font-size: 16px;
@@ -173,4 +173,15 @@ label {
 
 .error {
   color: @error-color;
+}
+
+.button-link {
+  text-decoration: none;
+
+  &:link,
+  &:visited,
+  &:hover,
+  &:active {
+    text-decoration: none;
+  }
 }

@@ -25,13 +25,24 @@
             <td class="text-left">{{ transfer[1].op[0] }}</td>
             <td class="text-left">{{ transfer[1].timestamp | timeOnly }}</td>
             <td>{{ transfer[1].op[1].amount }}</td>
-            <td class="text-right">
-              <a
-                :href="'https://steemd.com/tx/' + transfer[1].trx_id"
-                target="_blank"
-              >
-                <span class="iconfont icon-kebab-vertical"/>
-              </a>
+            <td>
+              <VueDropdown>
+                <VueButton
+                  slot="trigger"
+                  icon-left="more_vert"
+                  class="icon-button flat"
+                />
+                <VueDropdownButton>
+                  <a
+                    :href="'https://steemd.com/tx/' + transfer[1].trx_id"
+                    target="_blank"
+                    class="button-link"
+                  >
+                    TX details
+                  </a>
+                </VueDropdownButton>
+                <VueDropdownButton disabled>Copy TX ID</VueDropdownButton>
+              </VueDropdown>
             </td>
           </tr>
         </template>

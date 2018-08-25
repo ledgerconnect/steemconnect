@@ -28,8 +28,18 @@
           <td>{{order.sell_price.base}}</td>
           <td>{{order.sell_price.quote}}</td>
           <td>123.456</td>
-          <td class="text-left">
-            <a @click="open = true; orderId = order.orderid">Cancel</a>
+          <td>
+            <VueDropdown>
+              <VueButton
+                slot="trigger"
+                icon-left="more_vert"
+                class="icon-button flat"
+              />
+              <VueDropdownButton @click.prevent="open = true; orderId = order.orderid">
+                Cancel this order
+              </VueDropdownButton>
+              <VueDropdownButton disabled>Copy order ID</VueDropdownButton>
+            </VueDropdown>
           </td>
         </tr>
         </tbody>
