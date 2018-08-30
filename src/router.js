@@ -9,6 +9,7 @@ const Create = () => import(/* webpackChunkName: "create" */ '@/views/Create.vue
 const OpenOrders = () => import(/* webpackChunkName: "open-orders" */ '@/views/OpenOrders.vue');
 const Portfolio = () => import(/* webpackChunkName: "portfolio" */ '@/views/Portfolio.vue');
 const TransferHistory = () => import(/* webpackChunkName: "transfer-history" */ '@/views/TransferHistory.vue');
+const Contacts = () => import(/* webpackChunkName: "contacts" */ '@/views/Contacts.vue');
 const Permissions = () => import(/* webpackChunkName: "permissions" */ '@/views/Permissions.vue');
 const Settings = () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue');
 const About = () => import(/* webpackChunkName: "about" */ '@/views/About.vue');
@@ -65,6 +66,12 @@ export default new Router({
       name: 'transfer-history',
       beforeEnter: requireAuth,
       component: TransferHistory,
+    },
+    {
+      path: '/contacts',
+      name: 'contacts',
+      beforeEnter: requireAuth,
+      component: Contacts,
     },
     {
       path: '/permissions',

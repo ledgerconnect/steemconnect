@@ -110,7 +110,7 @@ const DEFAULT_USD = '0.00';
 const USERNAME_LOOKUP_WAIT = 200;
 
 export default {
-  props: ['open', 'initialAsset'],
+  props: ['open', 'initialAsset', 'initialUsername'],
   data() {
     return {
       asset: 'STEEM',
@@ -189,6 +189,9 @@ export default {
     initialAsset(value) {
       if (value) this.asset = value;
     },
+    initialUsername(value) {
+      if (value) this.to = value;
+    },
     to(value) {
       this.verificationUpToDate = false;
       this.lookupUsername(value);
@@ -200,7 +203,7 @@ export default {
   methods: {
     ...mapActions(['transfer']),
     resetForm() {
-      this.to = '';
+      this.to = this.initialUsername || '';
       this.amount = DEFAULT_AMOUNT;
       this.usd = DEFAULT_USD;
       this.memo = '';

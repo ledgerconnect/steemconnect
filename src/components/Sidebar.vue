@@ -43,6 +43,11 @@
             </router-link>
           </li>
           <li>
+            <router-link to="/contacts" class="py-1 px-4 d-block">
+              Contacts
+            </router-link>
+          </li>
+          <li>
             <router-link to="/permissions" class="py-1 px-4 d-block">
               Permissions
             </router-link>

@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div class="search border-bottom px-4">
-      <span class="iconfont icon-search"/>
-      <input v-model="search" type="text" class="px-4 py-3 border-0 input-lg"/>
-    </div>
+    <Search v-model="search" />
     <template>
       <table class="table width-full text-right">
         <thead>
