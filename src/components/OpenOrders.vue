@@ -141,14 +141,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="less">
-@import '../vars';
-
-.search {
-  .icon-search {
-    color: @border-color;
-    font-size: 20px;
-  }
-}
-</style>

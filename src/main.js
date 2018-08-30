@@ -22,7 +22,7 @@ requireComponent.keys().forEach((fileName) => {
 
 Vue.filter('date', value => moment.utc(value).local().fromNow());
 Vue.filter('timeOnly', value => moment.utc(value).local().format('HH:mm'));
-Vue.filter('dateHeader', value => moment(value, 'YYYY-MM-DD').format('MMM Do, YYYY'));
+Vue.filter('dateHeader', value => moment(value, 'YYYY-MM-DD').format('MMM D, YYYY'));
 
 Vue.use(VueUi);
 Vue.use(VueI18n);
