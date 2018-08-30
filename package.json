@@ -1,6 +1,8 @@
 {
   "name": "steemdex",
   "version": "0.1.0",
+  "description": "Decentralized exchange (DEX) for Steem",
+  "author": "Bonustrack <fabien@bonustrack.co> (https://github.com/bonustrack)",
   "main": "electron-entry.js",
   "scripts": {
     "start": "node start.js",
