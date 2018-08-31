@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Search v-model="search" />
     <table class="table table-lg width-full text-right">
       <thead>
         <tr class="border-bottom">
@@ -12,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr class="border-bottom">
+        <tr v-if="balanceVisible('Steem (STEEM)')" class="border-bottom">
           <td class="text-left">Steem (STEEM)</td>
           <td>{{$n(steemBalance)}}</td>
           <td>{{$n(rate.price_usd * steemBalance, 'currency')}}</td>
@@ -35,7 +36,7 @@
             </VueDropdown>
           </td>
         </tr>
-        <tr class="border-bottom">
+        <tr v-if="balanceVisible('Steem Dollars (SBD)')" class="border-bottom">
           <td class="text-left">Steem Dollars (SBD)</td>
           <td>{{$n(sbdBalance)}}</td>
           <td>{{$n(rate.price_usd * tickers.SBD.latest * sbdBalance, 'currency')}}</td>
@@ -56,7 +57,7 @@
             </VueDropdown>
           </td>
         </tr>
-        <tr class="border-bottom">
+        <tr v-if="balanceVisible('Steem Power (SP)')" class="border-bottom">
           <td class="text-left">Steem Power (SP)</td>
           <td>{{$n(steemPowerBalance)}}</td>
           <td>{{$n(rate.price_usd * steemPowerBalance, 'currency')}}</td>
@@ -76,7 +77,10 @@
             </VueDropdown>
           </td>
         </tr>
-        <tr v-if="savingsSteemBalance > 0" class="border-bottom">
+        <tr
+          v-if="balanceVisible('Savings Steem') && savingsSteemBalance > 0"
+          class="border-bottom"
+        >
           <td class="text-left">Savings Steem</td>
           <td>{{$n(savingsSteemBalance)}}</td>
           <td>{{$n(rate.price_usd * savingsSteemBalance, 'currency')}}</td>
@@ -96,7 +100,10 @@
             </VueDropdown>
           </td>
         </tr>
-        <tr v-if="savingsSbdBalance > 0" class="border-bottom">
+        <tr
+          v-if="balanceVisible('Savings Steem Dollars') && savingsSbdBalance > 0"
+          class="border-bottom"
+        >
           <td class="text-left">Savings Steem Dollars</td>
           <td>{{$n(savingsSbdBalance)}}</td>
           <td>{{$n(rate.price_usd * tickers.SBD.latest * savingsSbdBalance, 'currency')}}</td>
@@ -128,6 +135,7 @@ export default {
     return {
       open: false,
       asset: 'STEEM',
+      search: '',
     };
   },
   computed: {
@@ -174,6 +182,13 @@ export default {
         parseFloat(totalVestingFundSteem) *
         (parseFloat(vestingShares) / parseFloat(totalVestingShares))
       );
+    },
+    balanceVisible(name) {
+      if (!this.search) return true;
+
+      return name
+        .toLowerCase()
+        .includes(this.search.toLowerCase());
     },
     handleCancel() {
       this.open = false;
