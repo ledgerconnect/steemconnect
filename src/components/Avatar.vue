@@ -13,8 +13,8 @@ export default {
 
 <style scoped lang="less">
 .avatar {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   background-size: cover;
   background-repeat: no-repeat;

@@ -18,7 +18,10 @@
             <td class="text-center" colspan="3">Nothing found</td>
           </tr>
           <tr v-for="contact in filteredContacts" class="border-bottom" :key="contact.username">
-            <td>{{contact.username}}</td>
+            <td>
+              <Avatar :username="contact.username" />
+              {{contact.username}}
+            </td>
             <td>
               <span v-for="scope in contact.what" :key="scope" class="Label Label--outline mr-1">
                 {{ scope }}
@@ -92,3 +95,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.avatar {
+  margin-right: 8px;
+}
+</style>
