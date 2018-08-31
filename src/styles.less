@@ -60,11 +60,20 @@
   outline: none;
 }
 
-html, body, #app {
-  min-height: 100%;
+html {
+  height: 100%;
+}
+
+body {
+  display: flex;
   color: @text-color;
   background-color: @bg-color;
   font-size: 16px;
+}
+
+body, #app {
+  min-height: 100%;
+  width: 100%;
 }
 
 a {
