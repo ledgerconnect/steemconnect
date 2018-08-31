@@ -7,3 +7,13 @@ export function jsonParse(input) {
     return {};
   }
 }
+
+export async function copyToClipboard(text) {
+  const result = await navigator.permissions.query({ name: 'clipboard-write' });
+
+  if (result.state !== 'granted' && result.state !== 'prompt') {
+    throw new Error('Permissions not granted');
+  }
+
+  await navigator.clipboard.writeText(text);
+}

@@ -33,10 +33,14 @@
               >
                 <span class="iconfont icon-kebab-vertical"/>
               </VueButton>
-              <VueDropdownButton @click.prevent="open = true; orderId = order.orderid">
+              <VueDropdownButton @click="open = true; orderId = order.orderid">
                 Cancel this order
               </VueDropdownButton>
-              <VueDropdownButton disabled>Copy order ID</VueDropdownButton>
+              <VueDropdownButton
+                @click="handleIdCopy(order.orderid)"
+              >
+                Copy order ID
+              </VueDropdownButton>
             </VueDropdown>
           </td>
         </tr>
@@ -86,6 +90,7 @@
 
 <script>
 import { mapActions } from 'vuex';
+import { copyToClipboard } from '@/helpers/utils';
 
 export default {
   data() {
@@ -118,6 +123,13 @@ export default {
   },
   methods: {
     ...mapActions(['cancelLimitOrder']),
+    handleIdCopy(id) {
+      try {
+        copyToClipboard(id);
+      } catch (err) {
+        console.error(err);
+      }
+    },
     async handleCancelOrder(orderId) {
       this.sending = true;
 

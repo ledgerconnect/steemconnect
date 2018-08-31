@@ -102,23 +102,38 @@
             TX info <span class="iconfont icon-link-external"/>
           </a>
         </VueDropdownButton>
-        <VueDropdownButton disabled>Copy TX ID</VueDropdownButton>
+        <VueDropdownButton
+          @click="handleIdCopy(transfer[1].trx_id)"
+        >
+          Copy TX ID
+        </VueDropdownButton>
       </VueDropdown>
     </td>
   </tr>
 </template>
 
 <script>
+import { copyToClipboard } from '@/helpers/utils';
+
 export default {
   props: ['transfer'],
   data() {
     return {
       op: this.transfer[1].op,
-    }
+    };
   },
   computed: {
     username() {
       return this.$store.state.auth.username;
+    },
+  },
+  methods: {
+    handleIdCopy(id) {
+      try {
+        copyToClipboard(id);
+      } catch (err) {
+        console.error(err);
+      }
     },
   },
 };
