@@ -1,7 +1,15 @@
 import Vue from 'vue';
 import { PrivateKey } from 'dsteem';
+import router from '@/router';
 import client from '@/helpers/client';
 import { credentialsValid } from '@/helpers/auth';
+import createIdleDetector from '@/helpers/idle';
+
+const IDLE_DETECTOR_TRESHOLD = 20 * 60 * 1000;
+const idleDetector = createIdleDetector({
+  treshold: IDLE_DETECTOR_TRESHOLD,
+  autostop: true,
+});
 
 const state = {
   username: null,
@@ -27,6 +35,13 @@ const mutations = {
   saveTransferHistory(_state, result) {
     Vue.set(_state, 'transfer_history', result);
   },
+  logout(_state) {
+    Vue.set(_state, 'username', null);
+    Vue.set(_state, 'keys', {});
+    Vue.set(_state, 'account', {});
+    Vue.set(_state, 'open_orders', []);
+    Vue.set(_state, 'transfer_history', []);
+  },
 };
 
 const actions = {
@@ -39,6 +54,7 @@ const actions = {
 
     const result = await client.database.getAccounts([username]);
     commit('saveAccount', { result: result[0], keys });
+
     await Promise.all([
       dispatch('getOpenOrders'),
       dispatch('getTransferHistory'),
@@ -46,6 +62,13 @@ const actions = {
       dispatch('getDynamicGlobalProperties'),
       dispatch('getContacts'),
     ]);
+
+    idleDetector.setCallback(() => dispatch('logout'));
+    idleDetector.start();
+  },
+  logout: ({ commit }) => {
+    commit('logout');
+    router.push('/');
   },
   getOpenOrders: ({ commit }) => (
     new Promise((resolve) => {
