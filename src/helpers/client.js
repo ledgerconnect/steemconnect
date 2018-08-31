@@ -1,4 +1,5 @@
-import { Client, PrivateKey } from 'dsteem';
+import { Client } from 'dsteem';
+import { privateKeyFrom } from '@/helpers/auth';
 
 const DEFAULT_EXPIRE = '2106-02-07T06:28:15';
 
@@ -24,7 +25,7 @@ export function createLimitOrder(
     },
   ];
 
-  return client.broadcast.sendOperations([op], PrivateKey.from(activeKey));
+  return client.broadcast.sendOperations([op], privateKeyFrom(activeKey));
 }
 
 export function cancelLimitOrder(owner, orderId, activeKey) {
@@ -36,7 +37,7 @@ export function cancelLimitOrder(owner, orderId, activeKey) {
     },
   ];
 
-  return client.broadcast.sendOperations([op], PrivateKey.from(activeKey));
+  return client.broadcast.sendOperations([op], privateKeyFrom(activeKey));
 }
 
 export default client;

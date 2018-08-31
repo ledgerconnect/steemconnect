@@ -1,11 +1,24 @@
 import { PrivateKey } from 'dsteem';
+import * as bs58 from 'bs58';
 import client from './client';
+
+function decodePrivate(encodedKey) {
+  const buffer = bs58.decode(encodedKey);
+
+  if (buffer[0] !== 128) throw new Error('private key network id mismatch');
+
+  return buffer.slice(0, -4);
+}
+
+export function privateKeyFrom(password) {
+  return new PrivateKey(decodePrivate(password).slice(1));
+}
 
 function getActivePublicKey(username, password) {
   let privateKey = null;
 
   try {
-    privateKey = PrivateKey.from(password);
+    privateKey = privateKeyFrom(password);
   } catch (err) {
     privateKey = PrivateKey.fromSeed(`${username}active${password}`);
   }
@@ -54,7 +67,7 @@ export async function getKeys(username, password) {
   };
 
   try {
-    const activeKey = PrivateKey.from(password);
+    const activeKey = privateKeyFrom(password);
 
     keys.active = activeKey.toString();
   } catch (err) {

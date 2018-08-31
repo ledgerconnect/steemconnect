@@ -1,8 +1,7 @@
 import Vue from 'vue';
-import { PrivateKey } from 'dsteem';
-import router from '@/router';
 import client from '@/helpers/client';
-import { credentialsValid } from '@/helpers/auth';
+import { credentialsValid, privateKeyFrom } from '@/helpers/auth';
+import router from '@/router';
 import createIdleDetector from '@/helpers/idle';
 
 const IDLE_DETECTOR_TRESHOLD = 20 * 60 * 1000;
@@ -95,7 +94,7 @@ const actions = {
       amount,
       to,
       memo,
-    }, PrivateKey.from(keys.active));
+    }, privateKeyFrom(keys.active));
   },
   getContacts: async ({ state: _state, commit }) => {
     const step = 100;

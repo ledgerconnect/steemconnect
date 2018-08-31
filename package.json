@@ -19,6 +19,7 @@
   "dependencies": {
     "@vue/ui": "^0.5.2",
     "axios": "^0.18.0",
+    "bs58": "^4.0.1",
     "dsteem": "^0.9.0",
     "express": "^4.16.3",
     "lodash": "^4.17.10",
