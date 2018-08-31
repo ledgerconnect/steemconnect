@@ -80,9 +80,15 @@
     <td>
       <div v-if="op[0] === 'transfer'">
         {{ op[1].to === username ? '+' : '-' }}{{ op[1].amount }}
+        <h6 class="m-0">
+          {{$n(convertToUsd(op), 'currency')}}
+        </h6>
       </div>
-      <div v-else>
+      <div v-else-if="!!op[1].amount">
         {{ op[1].amount }}
+        <h6 class="m-0">
+          {{$n(convertToUsd(op), 'currency')}}
+        </h6>
       </div>
     </td>
     <td>
@@ -113,6 +119,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import { copyToClipboard } from '@/helpers/utils';
 
 export default {
@@ -126,8 +133,26 @@ export default {
     username() {
       return this.$store.state.auth.username;
     },
+    rate() {
+      return this.$store.state.market.rate;
+    },
+    tickers() {
+      return {
+        SBD: this.$store.state.market.ticker.SBD,
+      };
+    },
   },
   methods: {
+    ...mapActions([
+      'getRate',
+      'getTicker',
+    ]),
+    convertToUsd(op) {
+      const { amount } = op[1];
+      const modifier = amount.indexOf('SBD') !== -1 ? this.tickers.SBD.latest : 1;
+
+      return this.rate.price_usd * parseFloat(amount) * modifier;
+    },
     handleIdCopy(id) {
       try {
         copyToClipboard(id);
@@ -135,6 +160,17 @@ export default {
         console.error(err);
       }
     },
+  },
+  mounted() {
+    this.getRate();
+    this.getTicker('SBD');
+    this.queryInterval = setInterval(() => {
+      this.getRate();
+      this.getTicker('SBD');
+    }, 20000);
+  },
+  beforeDestroy() {
+    clearInterval(this.queryInterval);
   },
 };
 </script>
