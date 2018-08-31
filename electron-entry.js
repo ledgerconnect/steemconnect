@@ -1,7 +1,13 @@
 // Modules to control application life and create native browser window
 const path = require('path');
-// eslint-disable-next-line import/no-extraneous-dependencies
-const { app, BrowserWindow, protocol } = require('electron');
+/* eslint-disable import/no-extraneous-dependencies */
+const {
+  app,
+  BrowserWindow,
+  protocol,
+  Menu,
+} = require('electron');
+/* eslint-enable import/no-extraneous-dependencies */
 
 const PATHS_RE = /\/(css|js|img|fonts)\/(.+)/;
 
@@ -41,6 +47,29 @@ function createWindow() {
 
     return callback({ path: newPath });
   });
+
+  const template = [
+    {
+      label: 'Application',
+      submenu: [
+        { label: 'Quit', accelerator: 'CommandOrCrl+Q', click: () => app.quit() }
+      ],
+    },
+    {
+      label: 'Edit',
+      submenu: [
+        { label: 'Undo', accelerator: 'CmdOrCtrl+Z', role: 'undo' },
+        { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', role: 'redo' },
+        { type: 'separator' },
+        { label: 'Cut', accelerator: 'CmdOrCtrl+X', role: 'cut' },
+        { label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' },
+        { label: 'Paste', accelerator: 'CmdOrCtrl+V', role: 'paste' },
+        { label: 'Select All', accelerator: 'CmdOrCtrl+A', role: 'selectAll' },
+      ],
+    },
+  ];
+
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
 
 // This method will be called when Electron has finished
