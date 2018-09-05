@@ -5,6 +5,8 @@ import { groupByRealPrice } from '@/helpers/market';
 
 const state = {
   properties: {},
+  steemAddressPrefix: '',
+  chainId: '',
   ticker: {
     SBD: {},
   },
@@ -21,6 +23,10 @@ const state = {
 };
 
 const mutations = {
+  saveConfig(_state, config) {
+    Vue.set(_state, 'steemAddressPrefix', config.STEEM_ADDRESS_PREFIX);
+    Vue.set(_state, 'chainId', config.STEEM_CHAIN_ID);
+  },
   saveProperties(_state, result) {
     Vue.set(_state, 'properties', result);
   },
@@ -51,6 +57,10 @@ const mutations = {
 };
 
 const actions = {
+  getConfig: async ({ commit }) => {
+    const config = await client.database.call('get_config', []);
+    commit('saveConfig', config);
+  },
   getDynamicGlobalProperties: ({ commit }) => {
     client.database.call('get_dynamic_global_properties', []).then((result) => {
       commit('saveProperties', result);

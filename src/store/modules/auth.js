@@ -55,6 +55,7 @@ const actions = {
     commit('saveAccount', { result: result[0], keys });
 
     await Promise.all([
+      dispatch('getConfig'),
       dispatch('getOpenOrders'),
       dispatch('getTransferHistory'),
       dispatch('getRate'),
