@@ -8,9 +8,10 @@
           <th class="text-left">Order ID</th>
           <th class="text-left">Time</th>
           <th class="text-left">Type</th>
-          <th>Price</th>
-          <th>Amount</th>
-          <th>Total</th>
+          <th>Quantity</th>
+          <th>Filled</th>
+          <th>Price (STEEM)</th>
+          <th>Total (STEEM)</th>
           <th/>
         </tr>
         </thead>
@@ -19,12 +20,13 @@
           <td class="text-left">{{order.orderid}}</td>
           <td class="text-left">{{order.created | date}}</td>
           <td class="text-left">
-            <span class="text-red" v-if="order.sell_price.base.slice(-6) === ' STEEM'">Sell</span>
+            <span class="text-red" v-if="getOrderDirection(order) === 'sell'">Sell</span>
             <span class="text-green" v-else>Buy</span>
           </td>
-          <td>{{order.sell_price.base}}</td>
-          <td>{{order.sell_price.quote}}</td>
-          <td>123.456</td>
+          <td>{{getOrderQuantity(order).toFixed(3)}}</td>
+          <td>{{getOrderFilled(order).toFixed(3)}}</td>
+          <td>{{getOrderPrice(order).toFixed(6)}}</td>
+          <td>{{getOrderTotal(order).toFixed(3)}}</td>
           <td>
             <VueDropdown>
               <VueButton
@@ -129,6 +131,36 @@ export default {
       } catch (err) {
         console.error(err);
       }
+    },
+    getOrderDirection(order) {
+      if (order.sell_price.base.indexOf('SBD') !== -1) return 'sell';
+      return 'buy';
+    },
+    getOrderQuantity(order) {
+      if (this.getOrderDirection(order) === 'sell') {
+        return parseFloat(order.sell_price.base);
+      }
+      return parseFloat(order.sell_price.quote);
+    },
+    getOrderFilled(order) {
+      const toSell = parseFloat(order.sell_price.base);
+      const filled = toSell - (order.for_sale / 1000);
+
+      const fillRate = filled / toSell;
+
+      return this.getOrderQuantity(order) * fillRate;
+    },
+    getOrderPrice(order) {
+      if (this.getOrderDirection(order) === 'sell') {
+        return parseFloat(order.sell_price.quote) / parseFloat(order.sell_price.base);
+      }
+      return parseFloat(order.sell_price.base) / parseFloat(order.sell_price.quote);
+    },
+    getOrderTotal(order) {
+      if (this.getOrderDirection(order) === 'buy') {
+        return parseFloat(order.sell_price.base);
+      }
+      return parseFloat(order.sell_price.quote);
     },
     async handleCancelOrder(orderId) {
       this.sending = true;
