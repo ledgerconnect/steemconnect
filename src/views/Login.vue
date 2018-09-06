@@ -19,7 +19,6 @@
           autocapitalize="none"
           @blur="handleBlur('username')"
         >
-          <option disabled value="">Please select one</option>
           <option
             v-for="user in Object.keys(keychain)"
             :key="user"
@@ -117,6 +116,12 @@ export default {
     },
     loadKeychain() {
       this.keychain = getKeychain();
+
+      const usernames = Object.keys(this.keychain);
+
+      if (usernames.length > 0) {
+        [this.username] = usernames;
+      }
     },
     handleBlur(name) {
       this.dirty[name] = true;
