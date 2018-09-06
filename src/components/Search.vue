@@ -21,3 +21,21 @@ export default {
   },
 };
 </script>
+
+<style lang="less" scoped>
+@import (reference) '../vars';
+
+.search {
+  display: flex;
+  align-items: center;
+
+  & > .icon-search {
+    color: @border-color;
+    font-size: 20px;
+  }
+
+  & > input {
+    flex: 1;
+  }
+}
+</style>

@@ -1,6 +1,9 @@
 <template>
   <div>
-    <Search v-model="search" />
+    <div class="header-container">
+      <Search v-model="search" />
+      <button @click.prevent="open = true" class="border-bottom border-left">Send</button>
+    </div>
     <table class="table table-lg width-full text-right">
       <thead>
         <tr class="border-bottom">
@@ -213,3 +216,25 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="less">
+@import (reference) '../vars.less';
+
+.header-container {
+  display: flex;
+  width: 100%;
+
+  & > div {
+    flex: 1;
+  }
+
+  & > button {
+    color: @border-color;
+    font-size: 18px;
+    padding: 0 24px;
+    background: none;
+    outline: none;
+    border: none;
+  }
+}
+</style>
