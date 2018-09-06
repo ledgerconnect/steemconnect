@@ -1,7 +1,9 @@
 <template>
   <div>
     <Ticker :asset="asset" :ticker="ticker"/>
-    <div class="graph border-bottom bg-gray-light mb-4"/>
+    <div class="graph border-bottom bg-gray-light mb-4 tradingview-widget-container">
+      <div id="tradingview_24491"></div>
+    </div>
     <div>
       <div class="columns m-0">
         <div class="column px-0 col-lg-4 col-12 mb-4">
@@ -66,6 +68,22 @@ export default {
       this.getOrderBook(this.asset);
       this.getRecentTrades(this.asset);
     }, 3000);
+
+    // eslint-disable-next-line no-new, new-cap
+    new TradingView.widget({
+      autosize: true,
+      symbol: 'BITTREX:STEEMBTC',
+      interval: 'D',
+      timezone: 'Etc/UTC',
+      theme: 'Light',
+      style: '1',
+      locale: 'en',
+      toolbar_bg: '#f1f3f6',
+      enable_publishing: false,
+      hide_legend: true,
+      save_image: false,
+      container_id: 'tradingview_24491',
+    });
   },
 };
 </script>
@@ -73,5 +91,9 @@ export default {
 <style scoped lang="less">
 .graph {
   height: 400px;
+
+  & > div:first-child {
+    height: 100%;
+  }
 }
 </style>
