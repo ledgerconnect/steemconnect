@@ -81,7 +81,8 @@ export default {
     filteredContacts() {
       if (this.search === '') return this.contacts;
 
-      return this.contacts.filter(contact => contact.username.indexOf(this.search) !== -1);
+      return this.contacts.filter(contact =>
+        contact.username.indexOf(this.search.toLowerCase()) !== -1);
     },
   },
   methods: {
