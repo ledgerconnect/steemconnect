@@ -35,15 +35,13 @@
                 >
                   <span class="iconfont icon-kebab-vertical"/>
                 </VueButton>
-                <VueDropdownButton>
-                  <a
-                    :href="'https://steemit.com/@' + contact.username"
-                    target="_blank"
-                    class="button-link"
-                  >
-                    View profile <span class="iconfont icon-link-external"/>
-                  </a>
-                </VueDropdownButton>
+                <a
+                  :href="'https://steemit.com/@' + contact.username"
+                  target="_blank"
+                  class="button-link vue-ui-button vue-ui-dropdown-button button"
+                >
+                  View profile <span class="iconfont icon-link-external"/>
+                </a>
                 <VueDropdownButton
                   @click="handleSendOpen(contact.username)"
                 >

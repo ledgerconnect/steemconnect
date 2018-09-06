@@ -53,6 +53,12 @@
               <VueDropdownButton @click.prevent="open = true; asset = 'SBD'">
                 Send
               </VueDropdownButton>
+              <router-link
+                to="/market/SBD"
+                class="button-link vue-ui-button vue-ui-dropdown-button button"
+              >
+                Trade
+              </router-link>
               <VueDropdownButton disabled>Convert</VueDropdownButton>
             </VueDropdown>
           </td>
