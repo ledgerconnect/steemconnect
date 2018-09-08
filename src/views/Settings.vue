@@ -1,32 +1,113 @@
 <template>
   <div class="p-4">
     <h1>Settings</h1>
-    <form class="container-sm mx-0 mb-4">
-      <p>Language</p>
-      <select value="en" class="form-select input-block mb-2">
+    <div v-if="successVisible" class="flash flash-success mb-4">
+      Settings has been saved.
+    </div>
+    <form @submit.prevent="handleSubmit" class="container-sm mx-0 mb-4">
+      <label for="language">Language</label>
+      <select
+        v-model="language"
+        id="language"
+        class="form-select input-block mb-2"
+        @blur="handleBlur('language')"
+      >
         <option value="en">English</option>
         <option value="fr">Français</option>
       </select>
-      <p>Session timeout in</p>
-      <select value="5" class="form-select input-block mb-2">
+      <label for="timeout">Session timeout in</label>
+      <select
+        v-model="timeout"
+        id="timeout"
+        class="form-select input-block mb-2"
+        @blur="handleBlur('timeout')"
+      >
         <option value="5">5 minutes</option>
         <option value="10">10 minutes</option>
         <option value="20">20 minutes</option>
         <option value="40">40 minutes</option>
         <option value="60">1 hour</option>
       </select>
-      <p>Theme</p>
-      <select value="white" class="form-select input-block mb-2">
+      <label for="theme">Theme</label>
+      <select
+        v-model="theme"
+        id="theme"
+        class="form-select input-block mb-2"
+        @blur="handleBLur('theme')"
+      >
         <option value="white">White</option>
         <option value="black">Black</option>
       </select>
-      <p>Node address</p>
+      <label for="address">Node address</label>
       <input
+        v-model.trim="address"
+        id="address"
         name="to"
-        value="https://api.steemit.com"
         type="text"
-        class="form-control input-lg input-block mb-2"
+        class="form-control input-lg input-block mb-4"
+        @blur="handleBlur('address')"
       />
+      <button
+        type="submit"
+        class="btn btn-large btn-blue mb-2"
+      >
+        Save settings
+      </button>
     </form>
   </div>
 </template>
+
+<script>
+import { mapActions } from 'vuex';
+
+export default {
+  data() {
+    return {
+      language: this.$store.state.settings.language,
+      timeout: this.$store.state.settings.timeout,
+      theme: this.$store.state.settings.theme,
+      address: this.$store.state.settings.address,
+      dirty: {
+        language: false,
+        timeout: false,
+        theme: false,
+        address: false,
+      },
+      saved: false,
+    };
+  },
+  computed: {
+    successVisible() {
+      if (!this.saved) return false;
+
+      if (this.dirty.language || this.dirty.timeout || this.dirty.theme || this.dirty.address) {
+        return false;
+      }
+
+      return true;
+    },
+  },
+  methods: {
+    ...mapActions(['saveSettings']),
+    handleBlur(name) {
+      this.dirty[name] = true;
+    },
+    handleSubmit() {
+      this.saveSettings({
+        language: this.language,
+        timeout: this.timeout,
+        theme: this.theme,
+        address: this.address,
+      });
+
+      this.dirty = {
+        language: false,
+        timeout: false,
+        theme: false,
+        address: false,
+      };
+      this.saved = true;
+    },
+  },
+};
+</script>

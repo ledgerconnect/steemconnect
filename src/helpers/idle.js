@@ -1,31 +1,35 @@
 import _ from 'lodash';
 
-export default function createIdleDetector({ treshold, autostop = false }) {
-  let enabled = false;
-  let callback = null;
-
-  const triggerIdle = _.debounce(() => {
-    if (enabled && typeof callback === 'function') callback();
-    if (autostop) enabled = false;
-  }, treshold);
-
-  window.onload = triggerIdle;
-  window.onmousemove = triggerIdle;
-  window.onmousedown = triggerIdle;
-  window.ontouchstart = triggerIdle;
-  window.onclick = triggerIdle;
-  window.onkeypress = triggerIdle;
+export default function createIdleDetector() {
+  let triggerIdle = null;
 
   return {
-    setCallback(newCallback) {
-      callback = newCallback;
-    },
-    start() {
-      enabled = true;
+    start(treshold, callback) {
+      this.stop();
+
+      triggerIdle = _.debounce(callback, treshold);
+
+      window.addEventListener('load', triggerIdle);
+      window.addEventListener('mousemove', triggerIdle);
+      window.addEventListener('mousedown', triggerIdle);
+      window.addEventListener('touchstart', triggerIdle);
+      window.addEventListener('click', triggerIdle);
+      window.addEventListener('keypress', triggerIdle);
+
       triggerIdle();
     },
     stop() {
-      enabled = false;
+      if (!triggerIdle) return;
+
+      window.removeEventListener('load', triggerIdle);
+      window.removeEventListener('mousemove', triggerIdle);
+      window.removeEventListener('mousedown', triggerIdle);
+      window.removeEventListener('touchstart', triggerIdle);
+      window.removeEventListener('click', triggerIdle);
+      window.removeEventListener('keypress', triggerIdle);
+
+      triggerIdle.cancel();
+      triggerIdle = null;
     },
   };
 }

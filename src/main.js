@@ -12,6 +12,12 @@ import router from '@/router';
 import store from '@/store/index';
 import messages from '@/translation.json';
 import numberFormats from '@/number.json';
+import createIdleDetector from '@/helpers/idle';
+
+// eslint-disable-next-line import/prefer-default-export
+export const idleDetector = createIdleDetector({
+  autostop: true,
+});
 
 const requireComponent = require.context('./components', true, /[\w-]+\.vue$/);
 requireComponent.keys().forEach((fileName) => {
@@ -26,6 +32,8 @@ Vue.filter('dateHeader', value => moment(value, 'YYYY-MM-DD').format('MMM D, YYY
 
 Vue.use(VueUi);
 Vue.use(VueI18n);
+
+store.dispatch('loadSettings');
 
 const i18n = new VueI18n({
   locale: 'en',

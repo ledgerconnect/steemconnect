@@ -2,13 +2,7 @@ import Vue from 'vue';
 import client from '@/helpers/client';
 import { credentialsValid, privateKeyFrom } from '@/helpers/auth';
 import router from '@/router';
-import createIdleDetector from '@/helpers/idle';
-
-const IDLE_DETECTOR_TRESHOLD = 20 * 60 * 1000;
-const idleDetector = createIdleDetector({
-  treshold: IDLE_DETECTOR_TRESHOLD,
-  autostop: true,
-});
+import { idleDetector } from '@/main';
 
 const state = {
   username: null,
@@ -44,7 +38,7 @@ const mutations = {
 };
 
 const actions = {
-  login: async ({ commit, dispatch }, { username, keys }) => {
+  login: async ({ commit, dispatch, rootState }, { username, keys }) => {
     const valid = await credentialsValid(username, keys.active);
 
     if (!valid) {
@@ -55,7 +49,6 @@ const actions = {
     commit('saveAccount', { result: result[0], keys });
 
     await Promise.all([
-      dispatch('getConfig'),
       dispatch('getOpenOrders'),
       dispatch('getTransferHistory'),
       dispatch('getRate'),
@@ -63,8 +56,10 @@ const actions = {
       dispatch('getContacts'),
     ]);
 
-    idleDetector.setCallback(() => dispatch('logout'));
-    idleDetector.start();
+    idleDetector.start(rootState.settings.timeout * 60 * 1000, () => {
+      idleDetector.stop();
+      dispatch('logout');
+    });
   },
   logout: ({ commit }) => {
     commit('logout');
