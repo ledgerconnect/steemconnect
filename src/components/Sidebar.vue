@@ -1,5 +1,5 @@
 <template>
-  <div id="nav" class="border-right">
+  <div id="nav">
     <div class="p-4">
       <router-link to="/">
         <span id="logo" class="iconfont icon-diff-modified"/>
@@ -7,9 +7,34 @@
     </div>
     <ul>
       <li class="border-bottom">
-        <router-link to="/settings" class="py-2 px-4 d-block">
+        <a href="#" class="py-2 px-4 d-block">
           {{username}}
-        </router-link>
+        </a>
+      </li>
+      <li class="border-bottom py-3">
+        <div class="pb-1 px-4 text-uppercase text-small">Account</div>
+        <ul>
+          <li>
+            <router-link to="/portfolio" class="py-1 px-4 d-block">
+              Portfolio
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/transfer-history" class="py-1 px-4 d-block">
+              History
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/contacts" class="py-1 px-4 d-block">
+              Contacts
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/permissions" class="py-1 px-4 d-block">
+              Permissions
+            </router-link>
+          </li>
+        </ul>
       </li>
       <li class="border-bottom py-3">
         <div class="pb-1 px-4 text-uppercase text-small">Markets</div>
@@ -30,27 +55,17 @@
         </ul>
       </li>
       <li class="border-bottom py-3">
-        <div class="pb-1 px-4 text-uppercase text-small">Account</div>
+        <div class="pb-1 px-4 text-uppercase text-small">Apps</div>
         <ul>
           <li>
-            <router-link to="/portfolio" class="py-1 px-4 d-block">
-              Portfolio
-            </router-link>
+            <a href="#apps" class="py-1 px-4 d-block">
+              App store
+            </a>
           </li>
           <li>
-            <router-link to="/transfer-history" class="py-1 px-4 d-block">
-              Transfer history
-            </router-link>
-          </li>
-          <li>
-            <router-link to="/contacts" class="py-1 px-4 d-block">
-              Contacts
-            </router-link>
-          </li>
-          <li>
-            <router-link to="/permissions" class="py-1 px-4 d-block">
-              Permissions
-            </router-link>
+            <a href="#authorized-apps" class="py-1 px-4 d-block">
+              Authorized apps
+            </a>
           </li>
         </ul>
       </li>
@@ -113,9 +128,16 @@ export default {
 
     li {
       clear: both;
+      border-color: #2f3136 !important;
 
       .router-link-exact-active {
-        box-shadow: inset 4px 0 0 0 @link-color;
+        opacity: 1;
+      }
+
+      a {
+        text-decoration: none;
+        color: #f6f6f7;
+        opacity: 0.3;
       }
     }
   }
