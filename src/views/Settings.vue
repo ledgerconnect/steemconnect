@@ -1,59 +1,61 @@
 <template>
-  <div class="p-4">
-    <h1>Settings</h1>
-    <div v-if="successVisible" class="flash flash-success mb-4">
-      Settings has been saved.
+  <div>
+    <h3 class="p-4 border-bottom">Settings</h3>
+    <div class="p-4">
+      <div v-if="successVisible" class="flash flash-success mb-4">
+        Settings has been saved.
+      </div>
+      <form @submit.prevent="handleSubmit" class="container-sm mx-0 mb-4">
+        <label for="language">Language</label>
+        <select
+          v-model="language"
+          id="language"
+          class="form-select input-block mb-2"
+          @blur="handleBlur('language')"
+        >
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+        </select>
+        <label for="timeout">Session timeout in</label>
+        <select
+          v-model="timeout"
+          id="timeout"
+          class="form-select input-block mb-2"
+          @blur="handleBlur('timeout')"
+        >
+          <option value="5">5 minutes</option>
+          <option value="10">10 minutes</option>
+          <option value="20">20 minutes</option>
+          <option value="40">40 minutes</option>
+          <option value="60">1 hour</option>
+        </select>
+        <label for="theme">Theme</label>
+        <select
+          v-model="theme"
+          id="theme"
+          class="form-select input-block mb-2"
+          @blur="handleBLur('theme')"
+        >
+          <option value="white">White</option>
+          <option value="black">Black</option>
+        </select>
+        <label for="address">Node address</label>
+        <input
+          v-model.trim="address"
+          id="address"
+          name="to"
+          type="text"
+          class="form-control input-lg input-block mb-4"
+          @blur="handleBlur('address')"
+        />
+        <button
+          type="submit"
+          class="btn btn-large btn-blue mb-2"
+        >
+          Save
+        </button>
+      </form>
     </div>
-    <form @submit.prevent="handleSubmit" class="container-sm mx-0 mb-4">
-      <label for="language">Language</label>
-      <select
-        v-model="language"
-        id="language"
-        class="form-select input-block mb-2"
-        @blur="handleBlur('language')"
-      >
-        <option value="en">English</option>
-        <option value="fr">Français</option>
-      </select>
-      <label for="timeout">Session timeout in</label>
-      <select
-        v-model="timeout"
-        id="timeout"
-        class="form-select input-block mb-2"
-        @blur="handleBlur('timeout')"
-      >
-        <option value="5">5 minutes</option>
-        <option value="10">10 minutes</option>
-        <option value="20">20 minutes</option>
-        <option value="40">40 minutes</option>
-        <option value="60">1 hour</option>
-      </select>
-      <label for="theme">Theme</label>
-      <select
-        v-model="theme"
-        id="theme"
-        class="form-select input-block mb-2"
-        @blur="handleBLur('theme')"
-      >
-        <option value="white">White</option>
-        <option value="black">Black</option>
-      </select>
-      <label for="address">Node address</label>
-      <input
-        v-model.trim="address"
-        id="address"
-        name="to"
-        type="text"
-        class="form-control input-lg input-block mb-4"
-        @blur="handleBlur('address')"
-      />
-      <button
-        type="submit"
-        class="btn btn-large btn-blue mb-2"
-      >
-        Save settings
-      </button>
-    </form>
   </div>
 </template>
 

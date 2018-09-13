@@ -12,6 +12,7 @@ const TransferHistory = () => import(/* webpackChunkName: "transfer-history" */ 
 const Contacts = () => import(/* webpackChunkName: "contacts" */ '@/views/Contacts.vue');
 const Permissions = () => import(/* webpackChunkName: "permissions" */ '@/views/Permissions.vue');
 const Settings = () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue');
+const AppStore = () => import(/* webpackChunkName: "app-store" */ '@/views/AppStore.vue');
 const About = () => import(/* webpackChunkName: "about" */ '@/views/About.vue');
 
 Vue.use(Router);
@@ -78,6 +79,12 @@ export default new Router({
       name: 'permissions',
       beforeEnter: requireAuth,
       component: Permissions,
+    },
+    {
+      path: '/app-store',
+      name: 'app-store',
+      beforeEnter: requireAuth,
+      component: AppStore,
     },
     {
       path: '/settings',

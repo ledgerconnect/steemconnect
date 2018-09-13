@@ -1,13 +1,19 @@
 <template>
   <span
     class="avatar"
-    :style="'background-image:url(https://steemitimages.com/u/' + username + '/avatar/small'"
+    :class="'avatar-' + sizeValue"
+    :style="'background-image:url(https://steemitimages.com/u/' + username + '/avatar/' + sizeValue"
   />
 </template>
 
 <script>
 export default {
-  props: ['username'],
+  props: ['username', 'size'],
+  data() {
+    return {
+      sizeValue: this.size || 'small',
+    };
+  },
 };
 </script>
 
@@ -19,5 +25,11 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 50% 50%;
+
+  &.avatar-medium {
+    width: 64px;
+    height: 64px;
+    border-radius: 2px;
+  }
 }
 </style>

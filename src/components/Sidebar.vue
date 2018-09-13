@@ -37,6 +37,21 @@
         </ul>
       </li>
       <li class="border-bottom py-3">
+        <div class="pb-1 px-4 text-uppercase text-small">Apps</div>
+        <ul>
+          <li>
+            <router-link to="/app-store" class="py-1 px-4 d-block">
+              App store
+            </router-link>
+          </li>
+          <li>
+            <a href="#authorized-apps" class="py-1 px-4 d-block">
+              Authorized apps
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li class="border-bottom py-3">
         <div class="pb-1 px-4 text-uppercase text-small">Markets</div>
         <ul>
           <li>
@@ -51,21 +66,6 @@
                 {{openOrders.length}}
               </span>
             </router-link>
-          </li>
-        </ul>
-      </li>
-      <li class="border-bottom py-3">
-        <div class="pb-1 px-4 text-uppercase text-small">Apps</div>
-        <ul>
-          <li>
-            <a href="#apps" class="py-1 px-4 d-block">
-              App store
-            </a>
-          </li>
-          <li>
-            <a href="#authorized-apps" class="py-1 px-4 d-block">
-              Authorized apps
-            </a>
           </li>
         </ul>
       </li>
