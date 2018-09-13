@@ -1,4 +1,3 @@
-// Modules to control application life and create native browser window
 const path = require('path');
 /* eslint-disable import/no-extraneous-dependencies */
 const {
@@ -11,26 +10,53 @@ const {
 
 const PATHS_RE = /\/(css|js|img|fonts)\/(.+)/;
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+// NOTE: Accelerators are optional, but provided so they are
+// displayed in context menus on right click.
+const SELECTION_MENU = [
+  { role: 'copy', accelerator: 'CmdOrCtrl+C' },
+  { role: 'selectAll', accelerator: 'CmdOrCtrl+A' },
+];
+const INPUT_MENU = [
+  { role: 'undo', accelerator: 'CmdOrCtrl+Z' },
+  { role: 'redo', accelerator: 'Shift+CmdOrCtrl+Z' },
+  { type: 'separator' },
+  { role: 'cut', accelerator: 'CmdOrCtrl+X' },
+  { role: 'copy', accelerator: 'CmdOrCtrl+C' },
+  { role: 'paste', accelerator: 'CmdOrCtrl+V' },
+  { role: 'selectAll', accelerator: 'CmdOrCtrl+A' },
+];
+const APP_MENU = [
+  {
+    label: 'Application',
+    submenu: [{ role: 'quit' }],
+  },
+  {
+    label: 'Edit',
+    submenu: INPUT_MENU,
+  },
+];
+
 let mainWindow;
 
 function createWindow() {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 1280, height: 720 });
+  const appMenu = Menu.buildFromTemplate(APP_MENU);
+  const inputMenu = Menu.buildFromTemplate(INPUT_MENU);
+  const selectionMenu = Menu.buildFromTemplate(SELECTION_MENU);
 
-  // and load the index.html of the app.
+  mainWindow = new BrowserWindow({ width: 1280, height: 720 });
   mainWindow.loadFile('web-dist/index.html');
 
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
-
-  // Emitted when the window is closed.
   mainWindow.on('closed', () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
     mainWindow = null;
+  });
+
+  mainWindow.webContents.on('context-menu', (e, props) => {
+    const { selectionText, isEditable } = props;
+    if (isEditable) {
+      inputMenu.popup(mainWindow);
+    } else if (selectionText && selectionText.trim() !== '') {
+      selectionMenu.popup(mainWindow);
+    }
   });
 
   // Required so build works both on the browser and inside electron.
@@ -48,36 +74,11 @@ function createWindow() {
     return callback({ path: newPath });
   });
 
-  const template = [
-    {
-      label: 'Application',
-      submenu: [
-        { label: 'Quit', accelerator: 'CommandOrCrl+Q', click: () => app.quit() }
-      ],
-    },
-    {
-      label: 'Edit',
-      submenu: [
-        { label: 'Undo', accelerator: 'CmdOrCtrl+Z', role: 'undo' },
-        { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', role: 'redo' },
-        { type: 'separator' },
-        { label: 'Cut', accelerator: 'CmdOrCtrl+X', role: 'cut' },
-        { label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' },
-        { label: 'Paste', accelerator: 'CmdOrCtrl+V', role: 'paste' },
-        { label: 'Select All', accelerator: 'CmdOrCtrl+A', role: 'selectAll' },
-      ],
-    },
-  ];
-
-  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+  Menu.setApplicationMenu(appMenu);
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.on('ready', createWindow);
 
-// Quit when all windows are closed.
 app.on('window-all-closed', () => {
   // On OS X it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
@@ -93,6 +94,3 @@ app.on('activate', () => {
     createWindow();
   }
 });
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
