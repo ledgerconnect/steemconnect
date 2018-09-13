@@ -8,7 +8,7 @@
       <tbody>
         <tr v-for="(app, i) in apps" :key="i" class="border-bottom v-align-top">
           <td class="text-left" width="1">
-            <Avatar :username="app.username" size="medium"/>
+            <Avatar :username="app.username" :size="64"/>
           </td>
           <td class="text-left" style="width: 600px;">
             <h4>

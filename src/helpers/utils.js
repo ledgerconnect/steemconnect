@@ -17,3 +17,14 @@ export async function copyToClipboard(text) {
 
   await navigator.clipboard.writeText(text);
 }
+
+const getSearchIndex = (value, term) =>
+  value.toLowerCase().indexOf(term.toLowerCase());
+
+export function simpleSearch(values, term, extractor = el => el) {
+  if (term === '') return values;
+
+  return values
+    .filter(value => getSearchIndex(extractor(value), term) !== -1)
+    .sort((a, b) => getSearchIndex(extractor(a), term) - getSearchIndex(extractor(b), term));
+}

@@ -64,6 +64,8 @@
 </template>
 
 <script>
+import { simpleSearch } from '@/helpers/utils';
+
 export default {
   data() {
     return {
@@ -77,10 +79,7 @@ export default {
       return this.$store.state.auth.contacts;
     },
     filteredContacts() {
-      if (this.search === '') return this.contacts;
-
-      return this.contacts.filter(contact =>
-        contact.username.indexOf(this.search.toLowerCase()) !== -1);
+      return simpleSearch(this.contacts, this.search, contact => contact.username);
     },
   },
   methods: {

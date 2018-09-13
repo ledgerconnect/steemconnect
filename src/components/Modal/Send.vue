@@ -24,17 +24,22 @@
         >
           {{ errors.to }}
         </div>
-        <input
+        <AutocompleteInput
           v-model.trim="to"
           id="to"
-          name="to"
-          value=""
-          type="text"
-          class="form-control input-lg input-block mb-2"
-          autocorrect="off"
-          autocapitalize="none"
+          :values="contacts"
           @blur="handleBlur('to')"
-        />
+        >
+          <template slot-scope="slotProps">
+            <div class="contact">
+              <div class="contact-user">
+                <Avatar :username="slotProps.option" :size="26" />
+                {{slotProps.option}}
+              </div>
+              <span class="Label Label--outline">Following</span>
+            </div>
+          </template>
+        </AutocompleteInput>
         <div class="split">
           <label for="amount">Amount</label>
           <label for="usd">Amount USD</label>
@@ -130,6 +135,9 @@ export default {
     };
   },
   computed: {
+    contacts() {
+      return this.$store.state.auth.contacts.map(contact => contact.username);
+    },
     ratio() {
       const { ticker, rate } = this.$store.state.market;
 
@@ -272,6 +280,21 @@ export default {
 
   & > * {
     width: 48%;
+  }
+}
+
+.contact {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+
+  & > .contact-user {
+    display: flex;
+
+    & > .avatar {
+      margin-right: 8px;
+    }
   }
 }
 </style>
