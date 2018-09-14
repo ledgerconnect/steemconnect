@@ -99,7 +99,7 @@
         </div>
         <router-link
           v-if="hasAccounts"
-          :to="`/?${getRedirectQuery()}`"
+          :to="`/login?${getRedirectQuery()}`"
           class="btn btn-large input-block ahref-btn mb-2"
         >
           Log in instead

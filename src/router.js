@@ -2,10 +2,11 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import store from '@/store';
 import { isElectron } from '@/helpers/utils';
+import { hasAccounts } from '@/helpers/keychain';
 
-const Home = () => import(/* webpackChunkName: "home" */ '@/views/Home.vue');
 const Market = () => import(/* webpackChunkName: "market" */ '@/views/Market.vue');
 const Create = () => import(/* webpackChunkName: "create" */ '@/views/Create.vue');
+const Login = () => import(/* webpackChunkName: "login" */ '@/views/Login.vue');
 const OpenOrders = () => import(/* webpackChunkName: "open-orders" */ '@/views/OpenOrders.vue');
 const Portfolio = () => import(/* webpackChunkName: "portfolio" */ '@/views/Portfolio.vue');
 const TransferHistory = () => import(/* webpackChunkName: "transfer-history" */ '@/views/TransferHistory.vue');
@@ -19,7 +20,17 @@ Vue.use(Router);
 
 const requireAuth = (to, from, next) => {
   if (!store.state.auth.account.name) {
-    next({ path: '/', query: { redirect: to.fullPath } });
+    const path = hasAccounts() ? '/login' : '/create';
+
+    next({ path, query: { redirect: to.fullPath } });
+  } else {
+    next();
+  }
+};
+
+const beforeLogin = (to, from, next) => {
+  if (!hasAccounts()) {
+    next({ path: '/create', query: { redirect: to.query.redirect } });
   } else {
     next();
   }
@@ -30,8 +41,21 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home,
+      redirect: '/create',
+    },
+    {
+      path: '/create',
+      name: 'create',
+      component: Create,
+      meta: {
+        layout: 'light',
+      },
+    },
+    {
+      path: '/login',
+      name: 'login',
+      beforeEnter: beforeLogin,
+      component: Login,
       meta: {
         layout: 'light',
       },
@@ -41,14 +65,6 @@ export default new Router({
       name: 'market',
       beforeEnter: requireAuth,
       component: Market,
-    },
-    {
-      path: '/create',
-      name: 'create',
-      component: Create,
-      meta: {
-        layout: 'light',
-      },
     },
     {
       path: '/open-orders',
