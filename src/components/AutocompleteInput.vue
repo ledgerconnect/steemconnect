@@ -24,9 +24,9 @@
     >
       <li
         v-for="(option, id) in visibleOptions"
-        :key="option"
+        :key="keyExtractor(option)"
         :class="{ 'active': id === selector }"
-        @click="handleOptionClick(option)"
+        @click="handleOptionClick(valueExtractor(option))"
       >
         <slot v-bind:option="option">
           {{ option }}
@@ -40,7 +40,28 @@
 import { simpleSearch } from '@/helpers/utils';
 
 export default {
-  props: ['value', 'id', 'values'],
+  props: {
+    value: String,
+    id: String,
+    values: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    keyExtractor: {
+      type: Function,
+      default: el => el,
+    },
+    valueExtractor: {
+      type: Function,
+      default: el => el,
+    },
+    termsExtractor: {
+      type: Function,
+      default: el => el,
+    },
+  },
   data() {
     return {
       ignoreBlur: false,
@@ -66,7 +87,7 @@ export default {
       return rest;
     },
     visibleOptions() {
-      return simpleSearch(this.values, this.inputValue).slice(0, 4);
+      return simpleSearch(this.values, this.inputValue, this.termsExtractor).slice(0, 4);
     },
   },
   methods: {
@@ -98,7 +119,7 @@ export default {
           }
           break;
         case 'Enter':
-          this.inputValue = this.visibleOptions[this.selector];
+          this.inputValue = this.valueExtractor(this.visibleOptions[this.selector]);
 
           this.open = false;
           break;

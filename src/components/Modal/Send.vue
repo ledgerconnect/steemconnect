@@ -28,15 +28,31 @@
           v-model.trim="to"
           id="to"
           :values="contacts"
+          :keyExtractor="contact => contact.username"
+          :valueExtractor="contact => contact.username"
+          :termsExtractor="contact => contact.terms"
           @blur="handleBlur('to')"
         >
           <template slot-scope="slotProps">
             <div class="contact">
               <div class="contact-user">
-                <Avatar :username="slotProps.option" :size="26" />
-                {{slotProps.option}}
+                <Avatar :username="slotProps.option.username" :size="26" />
+                <span v-if="slotProps.option.name">
+                  {{slotProps.option.username}} ({{slotProps.option.name}})
+                </span>
+                <span v-else>
+                  {{slotProps.option.username}}
+                </span>
               </div>
-              <span class="Label Label--outline">Following</span>
+              <div class="contact-labels">
+                <span
+                  v-for="type in slotProps.option.types"
+                  :key="type"
+                  class="Label Label--outline"
+                >
+                  {{type}}
+                </span>
+              </div>
             </div>
           </template>
         </AutocompleteInput>
@@ -105,9 +121,11 @@
 </template>
 
 <script>
+import xor from 'lodash/xor';
 import { mapActions } from 'vuex';
 import { Asset } from 'dsteem';
 import debounce from 'lodash/debounce';
+import { EXCHANGES } from '@/helpers/constants';
 import client from '@/helpers/client';
 
 const DEFAULT_AMOUNT = '0.000';
@@ -136,7 +154,38 @@ export default {
   },
   computed: {
     contacts() {
-      return this.$store.state.auth.contacts.map(contact => contact.username);
+      const contacts = this.$store.state.auth.contacts.map(contact => ({
+        types: ['following'],
+        username: contact.username,
+        terms: [contact.username],
+      }));
+
+      const exchanges = EXCHANGES.map(exchange => ({
+        types: ['exchange'],
+        name: exchange.name,
+        username: exchange.username,
+        terms: [exchange.username, exchange.name],
+      }));
+
+      const allContacts = [...contacts, ...exchanges].reduce((acc, x) => {
+        const current = acc[x.username];
+
+        if (!current) {
+          acc[x.username] = x;
+          return acc;
+        }
+
+        acc[x.username] = {
+          ...current,
+          ...x,
+          types: xor(x.types, current.types),
+          terms: xor(x.terms, current.terms),
+        };
+
+        return acc;
+      }, {});
+
+      return Object.values(allContacts);
     },
     ratio() {
       const { ticker, rate } = this.$store.state.market;
@@ -295,6 +344,10 @@ export default {
     & > .avatar {
       margin-right: 8px;
     }
+  }
+
+  & > .contact-labels > span:not(:last-child) {
+    margin-right: 4px;
   }
 }
 </style>
