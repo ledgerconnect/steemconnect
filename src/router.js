@@ -41,7 +41,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/create',
+      redirect: '/login',
     },
     {
       path: '/create',
