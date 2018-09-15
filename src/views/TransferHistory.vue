@@ -1,6 +1,9 @@
 <template>
   <div>
-    <Search v-model="search" />
+    <div class="header-container">
+      <Search v-model="search" />
+      <button @click.prevent="sendOpen = true" class="border-bottom border-left">Send</button>
+    </div>
     <table class="table table-lg width-full text-right">
       <thead>
         <tr class="border-bottom">
@@ -25,6 +28,7 @@
         </template>
       </tbody>
     </table>
+    <ModalSend :open="sendOpen" @cancel="handleCancel" />
   </div>
 </template>
 
@@ -35,6 +39,7 @@ import { mapActions } from 'vuex';
 export default {
   data() {
     return {
+      sendOpen: false,
       search: '',
     };
   },
@@ -53,9 +58,14 @@ export default {
       }, {});
     },
   },
-  methods: mapActions([
-    'getTransferHistory',
-  ]),
+  methods: {
+    ...mapActions([
+      'getTransferHistory',
+    ]),
+    handleCancel() {
+      this.sendOpen = false;
+    },
+  },
   mounted() {
     this.getTransferHistory();
   },

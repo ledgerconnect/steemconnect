@@ -98,25 +98,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="less">
-@import (reference) '../vars.less';
-
-.header-container {
-  display: flex;
-  width: 100%;
-
-  & > div {
-    flex: 1;
-  }
-
-  & > button {
-    color: @border-color;
-    font-size: 18px;
-    padding: 0 24px;
-    background: none;
-    outline: none;
-    border: none;
-  }
-}
-</style>
