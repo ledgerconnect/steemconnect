@@ -61,6 +61,8 @@ export default {
   methods: {
     ...mapActions([
       'getTransferHistory',
+      'getRate',
+      'getTicker',
     ]),
     handleCancel() {
       this.sendOpen = false;
@@ -68,6 +70,16 @@ export default {
   },
   mounted() {
     this.getTransferHistory();
+    this.getRate();
+    this.getTicker('SBD');
+
+    this.queryInterval = setInterval(() => {
+      this.getRate();
+      this.getTicker('SBD');
+    }, 20000);
+  },
+  beforeDestroy() {
+    clearInterval(this.queryInterval);
   },
 };
 </script>

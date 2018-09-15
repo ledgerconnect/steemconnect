@@ -119,7 +119,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import { copyToClipboard } from '@/helpers/utils';
 
 export default {
@@ -143,10 +142,6 @@ export default {
     },
   },
   methods: {
-    ...mapActions([
-      'getRate',
-      'getTicker',
-    ]),
     convertToUsd(op) {
       const { amount } = op[1];
       const modifier = amount.indexOf('SBD') !== -1 ? this.tickers.SBD.latest : 1;
@@ -160,17 +155,6 @@ export default {
         console.error(err);
       }
     },
-  },
-  mounted() {
-    this.getRate();
-    this.getTicker('SBD');
-    this.queryInterval = setInterval(() => {
-      this.getRate();
-      this.getTicker('SBD');
-    }, 20000);
-  },
-  beforeDestroy() {
-    clearInterval(this.queryInterval);
   },
 };
 </script>
