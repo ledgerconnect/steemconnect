@@ -84,52 +84,18 @@
           </button>
         </div>
       </form>
-      <VueModal
-        v-if="open"
-        @close="open = false"
-        :title="modalTitle"
-        :locked="sending"
-        class="small text-left"
-      >
-        <div class="default-body">
-          <div v-if="failed" class="flash flash-error mb-4">
-            Oops, something went wrong. Please try again later.
-          </div>
-          <Confirmation v-if="!!transactionId" :id="transactionId" />
-          <span v-else v-html="modalText" />
-        </div>
-        <div slot="footer" class="actions">
-          <button
-            v-if="!!transactionId"
-            @click="open = false"
-            class="btn btn-large btn-plain input-block"
-          >
-            Close
-          </button>
-          <template v-else>
-            <button
-              :disabled="sending"
-              class="btn btn-large btn-primary"
-              @click="handleConfirm"
-            >
-              {{ confirmText }}
-            </button>
-            <button
-              :disabled="sending"
-              class="btn btn-large btn-plain"
-              @click="open = false"
-            >
-              Cancel
-            </button>
-          </template>
-        </div>
-      </VueModal>
+      <ModalCreateOrder
+        :open="open"
+        :tab="tab"
+        :amountToSell="amountToSell"
+        :minToReceive="minToReceive"
+        @cancel="handleModalCancel"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import { Asset } from 'dsteem';
 
 const DEFAULT_QUANTITY = '0.000';
@@ -145,9 +111,6 @@ export default {
       total: DEFAULT_TOTAL,
       open: false,
       dirty: false,
-      sending: false,
-      transactionId: '',
-      failed: false,
     };
   },
   computed: {
@@ -199,44 +162,12 @@ export default {
     orderDisabled() {
       return this.dirty && this.hasErrors;
     },
-    modalTitle() {
-      return this.tab === 'buy' ? 'Buy SBD' : 'Sell SBD';
-    },
-    modalText() {
-      if (this.tab === 'buy') {
-        return this.calculateBody(this.amountToSell, this.minToReceive, 'buy');
-      }
-
-      return this.calculateBody(this.minToReceive, this.amountToSell, 'sell');
-    },
-    confirmText() {
-      if (this.sending) return 'Sending';
-
-      return this.failed ? 'Retry' : 'Confirm';
-    },
-  },
-  watch: {
-    open(value) {
-      this.dirty = false;
-
-      if (value === false && (this.transactionId || this.failed)) {
-        this.resetForm();
-      }
-    },
   },
   methods: {
-    ...mapActions(['createLimitOrder']),
     resetForm() {
       this.quantity = DEFAULT_QUANTITY;
       this.price = DEFAULT_PRICE;
       this.total = DEFAULT_TOTAL;
-
-      this.transactionId = '';
-      this.failed = false;
-    },
-    calculateBody(from, to, text) {
-      const rate = (from.amount / to.amount).toFixed(6);
-      return `Are you sure you want to ${text} <b>${to.toString()}</b> for <b>${from.toString()}</b> (at ${rate} STEEM/SBD)?`;
     },
     updateTotal() {
       this.total = (this.quantity * this.price).toFixed(3);
@@ -253,24 +184,8 @@ export default {
         this.open = true;
       }
     },
-    async handleConfirm() {
-      this.sending = true;
-
-      const { amountToSell, minToReceive } = this;
-
-      try {
-        const confirmation = await this.createLimitOrder({ amountToSell, minToReceive });
-
-        this.transactionId = confirmation.id;
-        this.failed = false;
-      } catch (err) {
-        console.error(err);
-
-        this.transactionId = '';
-        this.failed = true;
-      }
-
-      this.sending = false;
+    handleModalCancel() {
+      this.open = false;
     },
   },
   mounted() {
