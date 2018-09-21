@@ -42,8 +42,8 @@ const mutations = {
   },
   saveOrderBook(_state, { asset, result }) {
     if (result) {
-      Vue.set(_state.orderBook[asset], 'bids', groupByRealPrice(result.bids));
-      Vue.set(_state.orderBook[asset], 'asks', groupByRealPrice(result.asks));
+      Vue.set(_state.orderBook[asset], 'asks', groupByRealPrice(result.bids));
+      Vue.set(_state.orderBook[asset], 'bids', groupByRealPrice(result.asks));
     }
   },
   saveRecentTrades(_state, { asset, result }) {

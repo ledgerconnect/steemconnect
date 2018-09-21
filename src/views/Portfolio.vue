@@ -2,7 +2,8 @@
   <div>
     <div class="header-container">
       <Search v-model="search" />
-      <button @click.prevent="open = true" class="border-bottom border-left">Send</button>
+      <button @click.prevent="sendOpen = true" class="border-bottom border-left">Send</button>
+      <button @click.prevent="swapOpen = true" class="border-bottom border-left">Swap</button>
     </div>
     <table class="table table-lg width-full text-right">
       <thead>
@@ -32,7 +33,7 @@
               >
                 <span class="iconfont icon-kebab-vertical"/>
               </VueButton>
-              <VueDropdownButton @click.prevent="open = true; asset = 'STEEM'">
+              <VueDropdownButton @click.prevent="sendOpen = true; asset = 'STEEM'">
                 Send
               </VueDropdownButton>
               <VueDropdownButton disabled>Power up</VueDropdownButton>
@@ -53,7 +54,7 @@
               >
                 <span class="iconfont icon-kebab-vertical"/>
               </VueButton>
-              <VueDropdownButton @click.prevent="open = true; asset = 'SBD'">
+              <VueDropdownButton @click.prevent="sendOpen = true; asset = 'SBD'">
                 Send
               </VueDropdownButton>
               <router-link
@@ -62,6 +63,9 @@
               >
                 Trade
               </router-link>
+              <VueDropdownButton @click.prevent="swapOpen = true">
+                Swap
+              </VueDropdownButton>
               <VueDropdownButton disabled>Convert</VueDropdownButton>
             </VueDropdown>
           </td>
@@ -132,7 +136,8 @@
         </tr>
       </tbody>
     </table>
-    <ModalSend :open="open" :initialAsset="asset" @cancel="handleCancel" />
+    <ModalSend :open="sendOpen" :initialAsset="asset" @cancel="handleSendCancel" />
+    <ModalSwap :open="swapOpen" @cancel="handleSwapCancel" />
   </div>
 </template>
 
@@ -142,7 +147,8 @@ import { mapActions } from 'vuex';
 export default {
   data() {
     return {
-      open: false,
+      sendOpen: false,
+      swapOpen: false,
       asset: 'STEEM',
       search: '',
     };
@@ -185,6 +191,7 @@ export default {
     ...mapActions([
       'getRate',
       'getTicker',
+      'getOrderBook',
     ]),
     vestToSteem(vestingShares, totalVestingShares, totalVestingFundSteem) {
       return (
@@ -199,8 +206,11 @@ export default {
         .toLowerCase()
         .includes(this.search.toLowerCase());
     },
-    handleCancel() {
-      this.open = false;
+    handleSendCancel() {
+      this.sendOpen = false;
+    },
+    handleSwapCancel() {
+      this.swapOpen = false;
     },
   },
   beforeDestroy() {
@@ -209,9 +219,11 @@ export default {
   mounted() {
     this.getRate();
     this.getTicker('SBD');
+    this.getOrderBook('SBD');
     this.queryInterval = setInterval(() => {
       this.getRate();
       this.getTicker('SBD');
+      this.getOrderBook('SBD');
     }, 20000);
   },
 };

@@ -1,20 +1,18 @@
 {
   "name": "steemdex",
   "version": "0.1.0",
-  "description": "Decentralized exchange (DEX) for Steem",
-  "author": "Bonustrack <fabien@bonustrack.co> (https://github.com/bonustrack)",
-  "main": "electron-entry.js",
   "scripts": {
-    "start": "node start.js",
-    "start-electron": "electron .",
-    "build-electron": "npm run build-electron:mac && npm run build-electron:linux && npm run build-electron:win",
-    "build-electron:mac": "electron-builder --mac",
-    "build-electron:linux": "electron-builder --linux",
-    "build-electron:win": "electron-builder --win",
-    "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "start": "node start.js",
+    "build-electron:linux": "electron-builder --linux",
+    "start-electron": "electron .",
+    "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build",
+    "test:unit": "vue-cli-service test:unit",
+    "build-electron": "npm run build-electron:mac && npm run build-electron:linux && npm run build-electron:win",
+    "build-electron:mac": "electron-builder --mac",
+    "build-electron:win": "electron-builder --win"
   },
   "dependencies": {
     "@vue/ui": "^0.5.2",
@@ -35,8 +33,12 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.0",
     "@vue/cli-plugin-eslint": "^3.0.0",
+    "@vue/cli-plugin-unit-jest": "^3.0.3",
     "@vue/cli-service": "^3.0.0",
     "@vue/eslint-config-airbnb": "^3.0.0",
+    "@vue/test-utils": "^1.0.0-beta.20",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^23.0.1",
     "electron": "^2.0.7",
     "electron-builder": "^20.28.0",
     "less": "^3.8.1",
@@ -50,6 +52,9 @@
     "last 2 versions",
     "not ie <= 8"
   ],
+  "author": "Bonustrack <fabien@bonustrack.co> (https://github.com/bonustrack)",
+  "main": "electron-entry.js",
+  "description": "Decentralized exchange (DEX) for Steem",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/bonuschain/steemdex/issues"

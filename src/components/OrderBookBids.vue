@@ -15,8 +15,8 @@
       >
         <td>{{order.steem / 1000}}</td>
         <td>
-          <a @click="$root.$emit('fillQuantity', order.sbd / 1000)">
-            {{order.sbd / 1000}}
+          <a @click="$root.$emit('fillQuantity', order.token / 1000)">
+            {{order.token / 1000}}
           </a>
         </td>
         <td>
