@@ -20,6 +20,27 @@ const handler = {
 
 const client = new Proxy({}, handler);
 
+export function unfollow(self, username, postingKey) {
+  const op = [
+    'custom_json',
+    {
+      id: 'follow',
+      required_auths: [],
+      required_posting_auths: [self],
+      json: JSON.stringify([
+        'follow',
+        {
+          follower: self,
+          following: username,
+          what: [],
+        },
+      ]),
+    },
+  ];
+
+  return client.broadcast.sendOperations([op], privateKeyFrom(postingKey));
+}
+
 export function createLimitOrder(
   owner,
   amountToSell,

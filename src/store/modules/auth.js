@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import client from '@/helpers/client';
+import client, { unfollow } from '@/helpers/client';
 import { credentialsValid, privateKeyFrom } from '@/helpers/auth';
 import router from '@/router';
 import { idleDetector } from '@/main';
@@ -91,6 +91,15 @@ const actions = {
       to,
       memo,
     }, privateKeyFrom(keys.active));
+  },
+  unfollow: async ({ rootState, dispatch }, username) => {
+    const { account, keys } = rootState.auth;
+
+    const confirmation = await unfollow(account.name, username, keys.active);
+
+    dispatch('getContacts');
+
+    return confirmation;
   },
   getContacts: async ({ state: _state, commit }) => {
     const step = 100;

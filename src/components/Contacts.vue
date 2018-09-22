@@ -47,7 +47,11 @@
                 >
                   Send
                 </VueDropdownButton>
-                <VueDropdownButton disabled>Unfollow</VueDropdownButton>
+                <VueDropdownButton
+                  @click="handleUnfollowOpen(contact.username)"
+                >
+                  Unfollow
+                </VueDropdownButton>
               </VueDropdown>
           </td>
           </tr>
@@ -56,9 +60,14 @@
     </template>
     <ModalSend
       :open="sendModalOpen"
-      :initialUsername="sendUsername"
+      :initialUsername="currentUsername"
       initialAsset="STEEM"
       @cancel="handleSendCancel"
+    />
+    <ModalUnfollow
+      :open="unfollowModalOpen"
+      :username="currentUsername"
+      @cancel="handleUnfollowCancel"
     />
   </div>
 </template>
@@ -70,8 +79,9 @@ export default {
   data() {
     return {
       search: '',
+      currentUsername: '',
       sendModalOpen: false,
-      sendUsername: '',
+      unfollowModalOpen: false,
     };
   },
   computed: {
@@ -84,11 +94,18 @@ export default {
   },
   methods: {
     handleSendOpen(username) {
-      this.sendUsername = username;
+      this.currentUsername = username;
       this.sendModalOpen = true;
     },
     handleSendCancel() {
       this.sendModalOpen = false;
+    },
+    handleUnfollowOpen(username) {
+      this.currentUsername = username;
+      this.unfollowModalOpen = true;
+    },
+    handleUnfollowCancel() {
+      this.unfollowModalOpen = false;
     },
   },
 };
