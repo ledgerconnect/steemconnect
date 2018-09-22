@@ -17,6 +17,7 @@ const unfollow = require('./unfollow');
 const unmute = require('./unmute');
 const vote = require('./vote');
 const convert = require('./convert');
+const transferFromSavings = require('./transfer-from-savings');
 
 module.exports = {
   comment,
@@ -38,4 +39,5 @@ module.exports = {
   profile_update: profileUpdate,
   vote,
   convert,
+  transfer_from_savings: transferFromSavings,
 };
