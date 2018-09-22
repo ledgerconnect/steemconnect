@@ -54,6 +54,7 @@ class AppForm extends Component {
       require_protocol: true,
       require_valid_protocol: false,
       allow_underscores: true,
+      require_tld: false,
     };
     for (let i = 0; i < uris.length; i += 1) {
       if (!validator.isURL(uris[i], urlOptions)) {
