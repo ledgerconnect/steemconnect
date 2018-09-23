@@ -11,7 +11,7 @@ const parse = (query) => {
 
 const validate = async (query, errors) => {
   if (!isEmpty(query.from) && !await userExists(query.from)) {
-    errors.push({ field: 'account_to_recover', error: 'error_user_exist', values: { user: query.from } });
+    errors.push({ field: 'from', error: 'error_user_exist', values: { user: query.from } });
   }
 };
 
