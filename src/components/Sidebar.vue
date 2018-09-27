@@ -1,13 +1,20 @@
 <template>
-  <div id="nav">
+  <div class="nav" :class="{'nav--open': sidebarVisible}">
     <div class="p-4">
-      <router-link to="/">
+      <router-link
+        to="/"
+        @click.native="toggleSidebar"
+      >
         <span id="logo" class="iconfont icon-diff-modified"/>
       </router-link>
     </div>
     <ul>
       <li class="border-bottom">
-        <a href="#" class="py-2 px-4 d-block">
+        <a
+          href="#"
+          class="py-2 px-4 d-block"
+          @click="toggleSidebar"
+        >
           {{username}}
         </a>
       </li>
@@ -15,22 +22,38 @@
         <div class="pb-1 px-4 text-uppercase text-small">Account</div>
         <ul>
           <li>
-            <router-link to="/portfolio" class="py-1 px-4 d-block">
+            <router-link
+              to="/portfolio"
+              class="py-1 px-4 d-block"
+              @click.native="toggleSidebar"
+            >
               Portfolio
             </router-link>
           </li>
           <li>
-            <router-link to="/transfer-history" class="py-1 px-4 d-block">
+            <router-link
+              to="/transfer-history"
+              class="py-1 px-4 d-block"
+              @click.native="toggleSidebar"
+            >
               History
             </router-link>
           </li>
           <li>
-            <router-link to="/contacts" class="py-1 px-4 d-block">
+            <router-link
+              to="/contacts"
+              class="py-1 px-4 d-block"
+              @click.native="toggleSidebar"
+            >
               Contacts
             </router-link>
           </li>
           <li>
-            <router-link to="/permissions" class="py-1 px-4 d-block">
+            <router-link
+              to="/permissions"
+              class="py-1 px-4 d-block"
+              @click.native="toggleSidebar"
+            >
               Permissions
             </router-link>
           </li>
@@ -40,12 +63,20 @@
         <div class="pb-1 px-4 text-uppercase text-small">Apps</div>
         <ul>
           <li>
-            <router-link to="/app-store" class="py-1 px-4 d-block">
+            <router-link
+              to="/app-store"
+              class="py-1 px-4 d-block"
+              @click.native="toggleSidebar"
+            >
               App store
             </router-link>
           </li>
           <li>
-            <a href="#authorized-apps" class="py-1 px-4 d-block">
+            <a
+              href="#authorized-apps"
+              class="py-1 px-4 d-block"
+              @click="toggleSidebar"
+            >
               Authorized apps
             </a>
           </li>
@@ -55,12 +86,20 @@
         <div class="pb-1 px-4 text-uppercase text-small">Markets</div>
         <ul>
           <li>
-            <router-link to="/market/SBD" class="py-1 px-4 d-block">
+            <router-link
+              to="/market/SBD"
+              class="py-1 px-4 d-block"
+              @click.native="toggleSidebar"
+            >
               SBD
             </router-link>
           </li>
           <li>
-            <router-link to="/open-orders" class="py-1 px-4 d-block">
+            <router-link
+              to="/open-orders"
+              class="py-1 px-4 d-block"
+              @click.native="toggleSidebar"
+            >
               Open orders
               <span v-if="openOrders.length > 0" class="Counter Counter--gray">
                 {{openOrders.length}}
@@ -70,12 +109,20 @@
         </ul>
       </li>
       <li>
-        <router-link to="/settings" class="py-2 px-4 d-block">
+        <router-link
+          to="/settings"
+          class="py-2 px-4 d-block"
+          @click.native="toggleSidebar"
+        >
           Settings
         </router-link>
       </li>
       <li>
-        <router-link to="/about" class="py-2 px-4 d-block">
+        <router-link
+          to="/about"
+          class="py-2 px-4 d-block"
+          @click.native="toggleSidebar"
+        >
           About
         </router-link>
       </li>
@@ -84,13 +131,26 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   computed: {
+    sidebarVisible() {
+      return this.$store.state.ui.sidebarVisible;
+    },
     openOrders() {
       return this.$store.state.auth.open_orders;
     },
     username() {
       return this.$store.state.auth.username;
+    },
+  },
+  methods: {
+    ...mapActions(['toggleSidebarVisibility']),
+    toggleSidebar() {
+      if (typeof window !== 'undefined' && window.matchMedia('(max-width: 1011px)')) {
+        this.toggleSidebarVisibility();
+      }
     },
   },
 };
@@ -104,19 +164,24 @@ export default {
   color: @primary-color;
 }
 
-#nav {
+.nav {
+  z-index: @sidebar-zindex;
   font-size: 18px;
   position: fixed;
   top: 0;
   bottom: 0;
-  left: 0;
+  left: -@sidebar-width;
   width: @sidebar-width;
   overflow: auto;
   background-color: @sidebar-bg-color;
-  display: none;
+  transition: left 0.3s;
 
-  @media (min-width: 768px){
-    display: block;
+  @media only screen and (min-width: 1012px) {
+    left: 0 !important;
+  }
+
+  &--open {
+     left: 0 !important;
   }
 
   a {

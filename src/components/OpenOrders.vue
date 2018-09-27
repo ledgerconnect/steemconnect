@@ -1,6 +1,11 @@
 <template>
   <div>
-    <Search v-model="search" />
+    <Header v-if="full">
+      <Search v-model="search" />
+    </Header>
+    <div v-else class="border-top border-bottom">
+      <Search v-model="search" />
+    </div>
     <template>
       <table class="table width-full text-right">
         <thead>
@@ -61,6 +66,12 @@
 import { copyToClipboard } from '@/helpers/utils';
 
 export default {
+  props: {
+    full: {
+      type: Boolean,
+      required: true,
+    },
+  },
   data() {
     return {
       open: false,

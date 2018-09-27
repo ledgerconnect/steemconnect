@@ -1,6 +1,8 @@
 <template>
   <div>
-    <Search v-model="search" />
+    <Header>
+      <Search v-model="search" />
+    </Header>
     <template>
       <table class="table width-full">
         <thead>

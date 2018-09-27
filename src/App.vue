@@ -8,7 +8,7 @@
     </div>
     <div class="d-flex flex-row" v-else>
       <Sidebar/>
-      <div id="content" class="width-full ml-sm-0">
+      <div class="content width-full ml-sm-0" :class="{'content--nav-open': sidebarVisible}">
         <router-view/>
       </div>
     </div>
@@ -22,6 +22,11 @@ export default {
       initialized: false,
     };
   },
+  computed: {
+    sidebarVisible() {
+      return this.$store.state.ui.sidebarVisible;
+    },
+  },
   beforeUpdate() {
     if (this.initialized) return;
 
@@ -33,11 +38,19 @@ export default {
 <style scoped lang="less">
 @import './vars';
 
-#content {
-  margin-left: 0;
+.content {
+  position: relative;
+  left: 0;
+  transition: left 0.3s;
 
-  @media (min-width: 768px){
+  @media only screen and (min-width: 1012px) {
     margin-left: @sidebar-width !important;
+  }
+
+  @media only screen and (max-width: 1011px) {
+    &--nav-open {
+      left: @sidebar-width;
+    }
   }
 }
 </style>

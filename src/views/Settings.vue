@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="p-4 border-bottom">Settings</h3>
+    <Header title="Settings" />
     <div class="p-4">
       <div v-if="successVisible" class="flash flash-success mb-4">
         Settings has been saved.

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Header title="Market" />
     <Ticker :asset="asset" :ticker="ticker"/>
     <div class="graph border-bottom bg-gray-light mb-4 tradingview-widget-container">
       <div id="tradingview_24491"></div>
@@ -23,7 +24,7 @@
       <h3 class="mx-4">Trade history</h3>
       <RecentTrades :recentTrades="recentTrades" :asset="asset"/>
       <h3 class="mx-4">Open orders</h3>
-      <OpenOrders/>
+      <OpenOrders :full="false" />
     </div>
   </div>
 </template>

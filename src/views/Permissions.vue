@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Header title="Permissions" />
     <table class="table table-lg width-full">
       <thead>
         <tr class="border-bottom">

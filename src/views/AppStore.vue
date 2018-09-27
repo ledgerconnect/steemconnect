@@ -1,9 +1,11 @@
 <template>
   <div>
-    <div class="header-container">
-      <Search v-model="search" />
-      <button class="border-bottom border-left">Create</button>
-    </div>
+    <Header>
+      <div class="header-container">
+        <Search v-model="search" />
+        <button class="border-left">Create</button>
+      </div>
+    </Header>
     <table class="table table-lg width-full text-right">
       <tbody>
         <tr v-for="(app, i) in apps" :key="i" class="border-bottom v-align-top">

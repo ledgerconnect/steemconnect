@@ -1,3 +1,3 @@
 <template>
-  <OpenOrders/>
+  <OpenOrders :full="true" />
 </template>

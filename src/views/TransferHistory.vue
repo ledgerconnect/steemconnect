@@ -1,9 +1,11 @@
 <template>
   <div>
-    <div class="header-container">
-      <Search v-model="search" />
-      <button @click.prevent="sendOpen = true" class="border-bottom border-left">Send</button>
-    </div>
+    <Header>
+      <div class="header-container">
+        <Search v-model="search" />
+        <button @click.prevent="sendOpen = true" class="border-left">Send</button>
+      </div>
+    </Header>
     <table class="table table-lg width-full text-right">
       <thead>
         <tr class="border-bottom">
