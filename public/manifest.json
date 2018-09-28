@@ -1,0 +1,11 @@
+{
+  "name": "steemsign",
+  "version": "0.0",
+  "description": "Signer app for Steem",
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "index.html"
+  },
+  "content_security_policy": "script-src 'self' https://s3.tradingview.com; object-src 'self'",
+  "manifest_version": 2
+}

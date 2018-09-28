@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import store from '@/store';
-import { isElectron } from '@/helpers/utils';
+import { isElectron, isChromeExtension } from '@/helpers/utils';
 import { hasAccounts } from '@/helpers/keychain';
 
 const Market = () => import(/* webpackChunkName: "market" */ '@/views/Market.vue');
@@ -40,7 +40,7 @@ export default new Router({
   mode: isElectron() ? 'hash' : 'history',
   routes: [
     {
-      path: '/',
+      path: isChromeExtension() ? '/index.html' : '/',
       redirect: '/login',
     },
     {

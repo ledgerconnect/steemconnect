@@ -1,8 +1,15 @@
 <template>
-  <div id="app" v-show="initialized">
+  <div
+    id="app"
+    :class="{
+      'app--extension': isExtension,
+      'app--extension--light': isExtensionLight
+    }"
+    v-show="initialized"
+  >
     <div
       class="d-flex flex-row flex-items-center height-full"
-      v-if="$route.meta.layout === 'light'"
+      v-if="isLight"
     >
       <router-view/>
     </div>
@@ -16,6 +23,8 @@
 </template>
 
 <script>
+import { isChromeExtension } from '@/helpers/utils';
+
 export default {
   data() {
     return {
@@ -23,6 +32,15 @@ export default {
     };
   },
   computed: {
+    isLight() {
+      return this.$route.meta.layout === 'light';
+    },
+    isExtension() {
+      return isChromeExtension();
+    },
+    isExtensionLight() {
+      return isChromeExtension() && this.isLight;
+    },
     sidebarVisible() {
       return this.$store.state.ui.sidebarVisible;
     },
