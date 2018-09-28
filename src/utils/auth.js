@@ -69,10 +69,6 @@ export const createSuggestedPassword = () => {
 };
 
 export const getAccountCreationFee = async () => {
-  const chainConfig = await steem.api.getConfigAsync();
-  const chainProps = await steem.api.getChainPropertiesAsync();
-  const accountCreationFee = chainProps.account_creation_fee;
-  const steemModifier = chainConfig.STEEM_CREATE_ACCOUNT_WITH_STEEM_MODIFIER;
-  const accountCreationSteemFee = parseFloat(accountCreationFee.split(' ')[0]) * steemModifier;
-  return `${accountCreationSteemFee.toFixed(3)} STEEM`;
+  const chainProps = await steem.api.callAsync('condenser_api.get_chain_properties', []);
+  return chainProps.account_creation_fee;
 };

@@ -47,8 +47,6 @@ class CreateApp extends React.Component {
     this.hideModal();
     this.setState({ isLoading: true });
     const clientId = this.state.values.username;
-
-    /** Calculate required STEEM to create new account */
     const accountCreationFee = await getAccountCreationFee();
 
     /** Generate account authorities */
@@ -57,54 +55,60 @@ class CreateApp extends React.Component {
     const active = { weight_threshold: 1, account_auths: [['steemconnect', 1]], key_auths: [[publicKeys.active, 1]] };
     const posting = { weight_threshold: 1, account_auths: [['steemconnect', 1]], key_auths: [[publicKeys.posting, 1]] };
 
-    /** Create proxy account */
-    await steem.broadcast.accountCreateWithDelegationAsync(
-      auth.wif,
-      accountCreationFee,
-      '0.000000 VESTS',
-      auth.username,
-      clientId,
-      owner,
-      active,
-      posting,
-      publicKeys.memo,
-      { owner: this.props.auth.user.name },
-      []
-    ).then(async () => {
-      /** Wait 5 seconds to insure the newly created account is indexed on the node */
-      await sleep(5000);
+    const operations = [[
+      'account_create', {
+        fee: accountCreationFee,
+        creator: auth.username,
+        new_account_name: clientId,
+        owner,
+        active,
+        posting,
+        memo_key: publicKeys.memo,
+        json_metadata: JSON.stringify({ owner: this.props.auth.user.name }),
+      },
+    ]];
 
-      /** Send request to server for create app */
-      fetch(`/api/apps/@${clientId}`, {
-        headers: new Headers({
-          Authorization: this.props.auth.token,
-        }),
-        method: 'POST',
-      })
-        .then(res => res.json())
-        .then((data) => {
-          if (!data.error) {
-            /** Redirect to edit app */
-            browserHistory.push(`/apps/@${clientId}/edit`);
-            notification.success({
-              message: intl.formatMessage({ id: 'success' }),
-              description: intl.formatMessage({ id: 'success_proxy_account' }, { clientId }),
+    /** Create proxy account */
+    steem.broadcast.send(
+      { operations, extensions: [] },
+      { active: auth.wif },
+      async (err) => {
+        if (!err) {
+          /** Wait 5 seconds to insure the newly created account is indexed on the node */
+          await sleep(5000);
+
+          /** Send request to server for create app */
+          fetch(`/api/apps/@${clientId}`, {
+            headers: new Headers({
+              Authorization: this.props.auth.token,
+            }),
+            method: 'POST',
+          })
+            .then(res => res.json())
+            .then((data) => {
+              if (!data.error) {
+                /** Redirect to edit app */
+                browserHistory.push(`/apps/@${clientId}/edit`);
+                notification.success({
+                  message: intl.formatMessage({ id: 'success' }),
+                  description: intl.formatMessage({ id: 'success_proxy_account' }, { clientId }),
+                });
+              } else {
+                this.setState({ isLoading: false });
+                notification.error({
+                  message: intl.formatMessage({ id: 'error' }),
+                  description: data.error || intl.formatMessage({ id: 'general_error' }),
+                });
+              }
             });
-          } else {
-            this.setState({ isLoading: false });
-            notification.error({
-              message: intl.formatMessage({ id: 'error' }),
-              description: data.error || intl.formatMessage({ id: 'general_error' }),
-            });
-          }
-        });
-    }).catch((err) => {
-      this.setState({ isLoading: false });
-      notification.error({
-        message: intl.formatMessage({ id: 'error' }),
-        description: getErrorMessage(err) || intl.formatMessage({ id: 'general_error' }),
+        } else {
+          this.setState({ isLoading: false });
+          notification.error({
+            message: intl.formatMessage({ id: 'error' }),
+            description: getErrorMessage(err) || intl.formatMessage({ id: 'general_error' }),
+          });
+        }
       });
-    });
   };
 
   render() {
