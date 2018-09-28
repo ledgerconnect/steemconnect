@@ -7,6 +7,7 @@ import { browserHistory } from 'react-router';
 import CreateAppForm from '../Form/CreateApp';
 import SignForm from '../Form/Sign';
 import config from '../../../config.json';
+import { getAccountCreationFee } from '../../utils/auth';
 import { getErrorMessage } from '../../../helpers/operation';
 import Loading from '../../widgets/Loading';
 import { sleep } from '../../../helpers/utils';
@@ -24,7 +25,7 @@ class CreateApp extends React.Component {
   };
 
   componentWillMount = async () => {
-    const accountCreationFee = '3.000 STEEM';
+    const accountCreationFee = await getAccountCreationFee();
     this.setState({ accountCreationFee });
   };
 
@@ -46,7 +47,7 @@ class CreateApp extends React.Component {
     this.hideModal();
     this.setState({ isLoading: true });
     const clientId = this.state.values.username;
-    const accountCreationFee = '3.000 STEEM';
+    const accountCreationFee = await getAccountCreationFee();
 
     /** Generate account authorities */
     const publicKeys = config.offline_generated_public_keys;
