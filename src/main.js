@@ -7,6 +7,7 @@ import VueUi from '@vue/ui';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 import moment from 'moment';
+import urlParse from 'url-parse';
 import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store/index';
@@ -34,6 +35,7 @@ requireComponent.keys().forEach((fileName) => {
 Vue.filter('date', value => moment.utc(value).local().fromNow());
 Vue.filter('timeOnly', value => moment.utc(value).local().format('HH:mm'));
 Vue.filter('dateHeader', value => moment(value, 'YYYY-MM-DD').format('MMM D, YYYY'));
+Vue.filter('parseUrl', value => urlParse(value).host);
 
 Vue.use(VueUi);
 Vue.use(VueI18n);

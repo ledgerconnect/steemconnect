@@ -12,6 +12,7 @@ const Portfolio = () => import(/* webpackChunkName: "portfolio" */ '@/views/Port
 const TransferHistory = () => import(/* webpackChunkName: "transfer-history" */ '@/views/TransferHistory.vue');
 const Contacts = () => import(/* webpackChunkName: "contacts" */ '@/views/Contacts.vue');
 const Permissions = () => import(/* webpackChunkName: "permissions" */ '@/views/Permissions.vue');
+const Sign = () => import(/* webpackChunkName: "sign" */ '@/views/Sign.vue');
 const Settings = () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue');
 const AppStore = () => import(/* webpackChunkName: "app-store" */ '@/views/AppStore.vue');
 const About = () => import(/* webpackChunkName: "about" */ '@/views/About.vue');
@@ -101,6 +102,12 @@ export default new Router({
       name: 'app-store',
       beforeEnter: requireAuth,
       component: AppStore,
+    },
+    {
+      path: '/sign/*',
+      name: 'sign',
+      beforeEnter: requireAuth,
+      component: Sign,
     },
     {
       path: '/settings',

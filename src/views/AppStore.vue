@@ -27,13 +27,23 @@
                 <a href="#" class="mr-3">{{ app.twitter }}</a>
               </template>
               <span class="iconfont icon-link mr-2"/>
-              <a href="#" class="mr-3">{{ app.website }}</a>
+              <a
+                :href="app.website"
+                target="_blank"
+                class="mr-3"
+              >{{ app.website | parseUrl }}</a>
             </div>
             <p class="mb-4">{{ app.about }}</p>
-            <p>
-              <b>Reputation</b>
-              <br/>{{ app.reputation }}
-            </p>
+            <div class="columns">
+              <p class="column col-3">
+                <b>Followers</b>
+                <br/>{{ $n(app.followers) }}
+              </p>
+              <p class="column col-3">
+                <b>Reputation</b>
+                <br/>{{ app.reputation }}
+              </p>
+            </div>
           </td>
           <td>
             <button class="btn btn-blue mr-2">
@@ -57,31 +67,26 @@ const apps = [
   {
     username: 'dtube',
     name: 'DTube',
-    website: 'd.tube',
+    website: 'http://d.tube',
     about: 'D.Tube is the first crypto-decentralized video platform, built on top of the STEEM Blockchain and the IPFS peer-to-peer network.',
     reputation: 74,
-  },
-  {
-    username: 'dlive',
-    name: 'DLive',
-    website: 'dlive.tv',
-    about: 'DLive is the first decentralized live streaming and video community for you to share original content, and earn feeless rewards in cryptocurrency directly from your viewers.',
-    reputation: 64,
-    twitter: 'officialdlive',
+    followers: 2240,
   },
   {
     username: 'utopian-io',
     name: 'Utopian',
-    website: 'utopian.io',
+    website: 'https://utopian.io',
     about: 'Utopian is the only platform rewarding contributions to Open Source projects by utilizing a decentralised, vote-based reward system built on top of the STEEM Blockchain.',
     reputation: 72,
+    followers: 9301,
   },
   {
     username: 'steemhunt',
     name: 'Steemhunt',
-    website: 'steemhunt.com',
+    website: 'https://www.steemhunt.com',
     about: 'Steem Fueled ProductHunt - Make money by discovering cool products every day',
     reputation: 66,
+    followers: 835,
   },
 ];
 

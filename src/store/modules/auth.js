@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import { PrivateKey, cryptoUtils } from 'dsteem';
 import client, { unfollow } from '@/helpers/client';
 import { credentialsValid, privateKeyFrom } from '@/helpers/auth';
 import router from '@/router';
@@ -117,6 +118,13 @@ const actions = {
     const contacts = allFollows.map(follow => ({ username: follow.following, what: follow.what }));
     commit('saveContacts', { contacts });
   },
+  sign: ({ rootState }, tx) => {
+    const { keys } = rootState.auth;
+    const { chainId } = rootState.market;
+    const privateKey = PrivateKey.fromString(keys.active);
+    return cryptoUtils.signTransaction(tx, [privateKey], Buffer.from(chainId, 'hex'));
+  },
+  broadcast: (context, tx) => client.broadcast.send(tx),
 };
 
 export default {

@@ -1,4 +1,5 @@
 import { Client } from 'dsteem';
+import * as steemuri from 'steem-uri';
 import { privateKeyFrom } from '@/helpers/auth';
 
 const DEFAULT_EXPIRE = '2106-02-07T06:28:15';
@@ -74,6 +75,24 @@ export function cancelLimitOrder(owner, orderId, activeKey) {
   ];
 
   return client.broadcast.sendOperations([op], privateKeyFrom(activeKey));
+}
+
+export async function resolveTransaction(parsed, signer) {
+  const props = await client.database.getDynamicGlobalProperties();
+
+  // resolve the decoded tx and params to a signable tx
+  const { tx } = steemuri.resolveTransaction(parsed.tx, parsed.params, {
+    /* eslint-disable no-bitwise */
+    ref_block_num: props.head_block_number & 0xFFFF,
+    ref_block_prefix: Buffer.from(props.head_block_id, 'hex').readUInt32LE(4),
+    expiration: new Date(Date.now() + client.broadcast.expireTime).toISOString().slice(0, -5),
+    signers: [signer],
+    preferred_signer: signer,
+  });
+  tx.ref_block_num = parseInt(tx.ref_block_num, 10);
+  tx.ref_block_prefix = parseInt(tx.ref_block_prefix, 10);
+
+  return tx;
 }
 
 export default client;

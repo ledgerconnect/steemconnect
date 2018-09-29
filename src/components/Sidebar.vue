@@ -166,7 +166,7 @@ export default {
 
 .nav {
   z-index: @sidebar-zindex;
-  font-size: 18px;
+  font-size: 17px;
   position: fixed;
   top: 0;
   bottom: 0;
