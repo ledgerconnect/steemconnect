@@ -4,17 +4,11 @@ import store from '@/store';
 import { isElectron, isChromeExtension } from '@/helpers/utils';
 import { hasAccounts } from '@/helpers/keychain';
 
-const Market = () => import(/* webpackChunkName: "market" */ '@/views/Market.vue');
 const Create = () => import(/* webpackChunkName: "create" */ '@/views/Create.vue');
 const Login = () => import(/* webpackChunkName: "login" */ '@/views/Login.vue');
-const OpenOrders = () => import(/* webpackChunkName: "open-orders" */ '@/views/OpenOrders.vue');
-const Portfolio = () => import(/* webpackChunkName: "portfolio" */ '@/views/Portfolio.vue');
-const TransferHistory = () => import(/* webpackChunkName: "transfer-history" */ '@/views/TransferHistory.vue');
-const Contacts = () => import(/* webpackChunkName: "contacts" */ '@/views/Contacts.vue');
 const Permissions = () => import(/* webpackChunkName: "permissions" */ '@/views/Permissions.vue');
 const Sign = () => import(/* webpackChunkName: "sign" */ '@/views/Sign.vue');
 const Settings = () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue');
-const AppStore = () => import(/* webpackChunkName: "app-store" */ '@/views/AppStore.vue');
 const About = () => import(/* webpackChunkName: "about" */ '@/views/About.vue');
 
 Vue.use(Router);
@@ -62,46 +56,10 @@ export default new Router({
       },
     },
     {
-      path: '/market/:asset',
-      name: 'market',
-      beforeEnter: requireAuth,
-      component: Market,
-    },
-    {
-      path: '/open-orders',
-      name: 'open-orders',
-      beforeEnter: requireAuth,
-      component: OpenOrders,
-    },
-    {
-      path: '/portfolio',
-      name: 'portfolio',
-      beforeEnter: requireAuth,
-      component: Portfolio,
-    },
-    {
-      path: '/transfer-history',
-      name: 'transfer-history',
-      beforeEnter: requireAuth,
-      component: TransferHistory,
-    },
-    {
-      path: '/contacts',
-      name: 'contacts',
-      beforeEnter: requireAuth,
-      component: Contacts,
-    },
-    {
       path: '/permissions',
       name: 'permissions',
       beforeEnter: requireAuth,
       component: Permissions,
-    },
-    {
-      path: '/app-store',
-      name: 'app-store',
-      beforeEnter: requireAuth,
-      component: AppStore,
     },
     {
       path: '/sign/*',

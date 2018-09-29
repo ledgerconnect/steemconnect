@@ -6,7 +6,6 @@ import VueI18n from 'vue-i18n';
 import VueUi from '@vue/ui';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
-import moment from 'moment';
 import urlParse from 'url-parse';
 import App from '@/App.vue';
 import router from '@/router';
@@ -32,9 +31,6 @@ requireComponent.keys().forEach((fileName) => {
   Vue.component(componentName, componentConfig.default || componentConfig);
 });
 
-Vue.filter('date', value => moment.utc(value).local().fromNow());
-Vue.filter('timeOnly', value => moment.utc(value).local().format('HH:mm'));
-Vue.filter('dateHeader', value => moment(value, 'YYYY-MM-DD').format('MMM D, YYYY'));
 Vue.filter('parseUrl', value => urlParse(value).host);
 
 Vue.use(VueUi);
@@ -49,7 +45,6 @@ if (ipc) {
     router.push(newUrl);
   });
 }
-
 
 const i18n = new VueI18n({
   locale: 'en',

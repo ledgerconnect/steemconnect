@@ -10,7 +10,7 @@ function decodePrivate(encodedKey) {
   return buffer.slice(0, -4);
 }
 
-export function privateKeyFrom(password) {
+function privateKeyFrom(password) {
   return new PrivateKey(decodePrivate(password).slice(1));
 }
 

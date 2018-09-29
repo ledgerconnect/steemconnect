@@ -204,7 +204,7 @@ export default {
 
       this.login({ username, keys }).then(() => {
         const { redirect } = this.$route.query;
-        this.$router.push(redirect || '/market/SBD');
+        this.$router.push(redirect || '/settings');
         this.isLoading = false;
         this.error = '';
       }).catch((err) => {
