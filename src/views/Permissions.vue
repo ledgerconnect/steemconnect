@@ -11,13 +11,13 @@
         </tr>
       </thead>
       <tbody>
-        <template v-for="authority in ['owner', 'active', 'posting']">
+        <template v-for="(authority, i) in ['owner', 'active', 'posting']">
           <tr
             v-for="
-              (auth, i) in account[authority].key_auths.concat(account[authority].account_auths)
+              (auth, j) in account[authority].key_auths.concat(account[authority].account_auths)
              "
             class="border-bottom"
-            :key="i"
+            :key="`${i}-${j}`"
           >
             <td>{{ authority }}</td>
             <td>{{ auth[0] }}</td>
