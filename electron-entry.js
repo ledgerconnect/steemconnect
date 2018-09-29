@@ -10,6 +10,8 @@ const {
 
 const PATHS_RE = /\/(css|js|img|fonts)\/(.+)/;
 
+let openedUrl = null;
+
 // NOTE: Accelerators are optional, but provided so they are
 // displayed in context menus on right click.
 const SELECTION_MENU = [
@@ -50,6 +52,12 @@ function createWindow() {
     mainWindow = null;
   });
 
+  mainWindow.webContents.on('did-finish-load', () => {
+    if (!openedUrl) return;
+
+    mainWindow.webContents.send('handleProtocol', openedUrl);
+  });
+
   mainWindow.webContents.on('context-menu', (e, props) => {
     const { selectionText, isEditable } = props;
     if (isEditable) {
@@ -77,20 +85,59 @@ function createWindow() {
   Menu.setApplicationMenu(appMenu);
 }
 
-app.on('ready', createWindow);
+const gotLock = app.requestSingleInstanceLock();
 
-app.on('window-all-closed', () => {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
+if (!gotLock) {
+  app.quit();
+} else {
+  app.on('second-instance', (e, argv) => {
+    e.preventDefault();
 
-app.on('activate', () => {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
-    createWindow();
-  }
-});
+    if (argv.length === 2) {
+      mainWindow.webContents.send('handleProtocol', argv[1]);
+    }
+
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
+  });
+
+  app.on('ready', createWindow);
+
+  app.on('window-all-closed', () => {
+    // On OS X it is common for applications and their menu bar
+    // to stay active until the user quits explicitly with Cmd + Q
+    if (process.platform !== 'darwin') {
+      app.quit();
+    }
+  });
+
+  app.on('activate', () => {
+    // On OS X it's common to re-create a window in the app when the
+    // dock icon is clicked and there are no other windows open.
+    if (mainWindow === null) {
+      createWindow();
+    }
+  });
+
+  app.on('will-finish-launching', () => {
+    app.on('open-url', (e, newUrl) => {
+      e.preventDefault();
+
+      if (!mainWindow) {
+        openedUrl = newUrl;
+      } else {
+        mainWindow.webContents.send('handleProtocol', newUrl);
+      }
+    });
+
+    process.argv.forEach((arg) => {
+      if (/steem:\/\//.test(arg)) {
+        openedUrl = arg;
+      }
+    });
+  });
+
+  app.setAsDefaultProtocolClient('steem');
+}

@@ -39,7 +39,7 @@
     "@vue/test-utils": "^1.0.0-beta.20",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^23.0.1",
-    "electron": "^2.0.7",
+    "electron": "^3.0.0",
     "electron-builder": "^20.28.0",
     "less": "^3.8.1",
     "less-loader": "^4.1.0",
@@ -52,6 +52,20 @@
     "last 2 versions",
     "not ie <= 8"
   ],
+  "build": {
+    "appId": "io.steemdex.app",
+    "protocols": [
+      {
+        "name": "steem",
+        "schemes": [
+          "steem"
+        ]
+      }
+    ],
+    "linux": {
+      "target": ["deb", "tar.xz"]
+    }
+  },
   "author": "Bonustrack <fabien@bonustrack.co> (https://github.com/bonustrack)",
   "main": "electron-entry.js",
   "description": "Decentralized exchange (DEX) for Steem",
