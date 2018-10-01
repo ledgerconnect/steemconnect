@@ -9,104 +9,14 @@
       </router-link>
     </div>
     <ul>
-      <li class="border-bottom">
-        <a
-          href="#"
+      <li>
+        <router-link
+          to="/permissions"
           class="py-2 px-4 d-block"
-          @click="toggleSidebar"
+          @click.native="toggleSidebar"
         >
-          {{username}}
-        </a>
-      </li>
-      <li class="border-bottom py-3">
-        <div class="pb-1 px-4 text-uppercase text-small">Account</div>
-        <ul>
-          <li>
-            <router-link
-              to="/portfolio"
-              class="py-1 px-4 d-block"
-              @click.native="toggleSidebar"
-            >
-              Portfolio
-            </router-link>
-          </li>
-          <li>
-            <router-link
-              to="/transfer-history"
-              class="py-1 px-4 d-block"
-              @click.native="toggleSidebar"
-            >
-              History
-            </router-link>
-          </li>
-          <li>
-            <router-link
-              to="/contacts"
-              class="py-1 px-4 d-block"
-              @click.native="toggleSidebar"
-            >
-              Contacts
-            </router-link>
-          </li>
-          <li>
-            <router-link
-              to="/permissions"
-              class="py-1 px-4 d-block"
-              @click.native="toggleSidebar"
-            >
-              Permissions
-            </router-link>
-          </li>
-        </ul>
-      </li>
-      <li class="border-bottom py-3">
-        <div class="pb-1 px-4 text-uppercase text-small">Apps</div>
-        <ul>
-          <li>
-            <router-link
-              to="/app-store"
-              class="py-1 px-4 d-block"
-              @click.native="toggleSidebar"
-            >
-              App store
-            </router-link>
-          </li>
-          <li>
-            <a
-              href="#authorized-apps"
-              class="py-1 px-4 d-block"
-              @click="toggleSidebar"
-            >
-              Authorized apps
-            </a>
-          </li>
-        </ul>
-      </li>
-      <li class="border-bottom py-3">
-        <div class="pb-1 px-4 text-uppercase text-small">Markets</div>
-        <ul>
-          <li>
-            <router-link
-              to="/market/SBD"
-              class="py-1 px-4 d-block"
-              @click.native="toggleSidebar"
-            >
-              SBD
-            </router-link>
-          </li>
-          <li>
-            <router-link
-              to="/open-orders"
-              class="py-1 px-4 d-block"
-              @click.native="toggleSidebar"
-            >
-              Open orders
-              <span v-if="openOrders.length > 0" class="Counter Counter--gray">
-                {{openOrders.length}}
-              </span>
-            </router-link>
-          </li>
-        </ul>
+          Permissions
+        </router-link>
       </li>
       <li>
         <router-link
@@ -137,9 +47,6 @@ export default {
   computed: {
     sidebarVisible() {
       return this.$store.state.ui.sidebarVisible;
-    },
-    openOrders() {
-      return this.$store.state.auth.open_orders;
     },
     username() {
       return this.$store.state.auth.username;
