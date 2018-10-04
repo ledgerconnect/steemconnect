@@ -8,7 +8,7 @@ let rawClient = new Client('https://api.steemit.com', CLIENT_OPTIONS);
 const handler = {
   get(target, prop) {
     if (prop === 'updateClient') {
-      return (address) => {
+      return address => {
         rawClient = new Client(address, CLIENT_OPTIONS);
       };
     }
@@ -25,7 +25,7 @@ export async function resolveTransaction(parsed, signer) {
   // resolve the decoded tx and params to a signable tx
   const { tx } = steemuri.resolveTransaction(parsed.tx, parsed.params, {
     /* eslint-disable no-bitwise */
-    ref_block_num: props.head_block_number & 0xFFFF,
+    ref_block_num: props.head_block_number & 0xffff,
     ref_block_prefix: Buffer.from(props.head_block_id, 'hex').readUInt32LE(4),
     expiration: new Date(Date.now() + client.broadcast.expireTime).toISOString().slice(0, -5),
     signers: [signer],

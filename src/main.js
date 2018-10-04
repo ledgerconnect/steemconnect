@@ -25,7 +25,7 @@ export const idleDetector = createIdleDetector({
 });
 
 const requireComponent = require.context('./components', true, /[\w-]+\.vue$/);
-requireComponent.keys().forEach((fileName) => {
+requireComponent.keys().forEach(fileName => {
   const componentConfig = requireComponent(fileName);
   const componentName = upperFirst(camelCase(fileName.replace(/^\.\//, '').replace(/\.\w+$/, '')));
   Vue.component(componentName, componentConfig.default || componentConfig);

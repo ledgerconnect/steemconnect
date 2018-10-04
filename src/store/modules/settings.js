@@ -32,7 +32,7 @@ const mutations = {
 
 const actions = {
   getDynamicGlobalProperties: ({ commit }) => {
-    client.database.call('get_dynamic_global_properties', []).then((result) => {
+    client.database.call('get_dynamic_global_properties', []).then(result => {
       commit('saveProperties', result);
     });
   },
