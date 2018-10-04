@@ -1,11 +1,6 @@
 const path = require('path');
 /* eslint-disable import/no-extraneous-dependencies */
-const {
-  app,
-  BrowserWindow,
-  protocol,
-  Menu,
-} = require('electron');
+const { app, BrowserWindow, protocol, Menu } = require('electron');
 /* eslint-enable import/no-extraneous-dependencies */
 
 const PATHS_RE = /\/(css|js|img|fonts)\/(.+)/;
@@ -132,7 +127,7 @@ if (!gotLock) {
       }
     });
 
-    process.argv.forEach((arg) => {
+    process.argv.forEach(arg => {
       if (/steem:\/\//.test(arg)) {
         openedUrl = arg;
       }

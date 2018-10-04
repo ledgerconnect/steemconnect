@@ -105,9 +105,7 @@ export default {
     this.loadKeychain();
   },
   methods: {
-    ...mapActions([
-      'login',
-    ]),
+    ...mapActions(['login']),
     getRedirectQuery() {
       const { redirect } = this.$route.query;
       if (!redirect) return '';
@@ -131,31 +129,36 @@ export default {
 
       const encryptedKeys = this.keychain[this.username];
 
-      triplesec.decrypt({
-        data: new triplesec.Buffer(encryptedKeys, 'hex'),
-        key: new triplesec.Buffer(this.key),
-      }, (decryptError, buff) => {
-        if (decryptError) {
-          this.isLoading = false;
-          this.error = ERROR_INVALID_ENCRYPTION_KEY;
+      triplesec.decrypt(
+        {
+          data: new triplesec.Buffer(encryptedKeys, 'hex'),
+          key: new triplesec.Buffer(this.key),
+        },
+        (decryptError, buff) => {
+          if (decryptError) {
+            this.isLoading = false;
+            this.error = ERROR_INVALID_ENCRYPTION_KEY;
 
-          console.log('err', decryptError);
-          return;
-        }
+            console.log('err', decryptError);
+            return;
+          }
 
-        this.login({
-          username: this.username,
-          keys: jsonParse(buff.toString()),
-        }).then(() => {
-          const { redirect } = this.$route.query;
-          this.$router.push(redirect || '/settings');
-          this.isLoading = false;
-          this.error = '';
-        }).catch((err) => {
-          this.error = ERROR_INVALID_CREDENTIALS;
-          console.log('Login failed', err);
-        });
-      });
+          this.login({
+            username: this.username,
+            keys: jsonParse(buff.toString()),
+          })
+            .then(() => {
+              const { redirect } = this.$route.query;
+              this.$router.push(redirect || '/settings');
+              this.isLoading = false;
+              this.error = '';
+            })
+            .catch(err => {
+              this.error = ERROR_INVALID_CREDENTIALS;
+              console.log('Login failed', err);
+            });
+        },
+      );
     },
   },
 };

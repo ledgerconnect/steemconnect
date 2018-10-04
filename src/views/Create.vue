@@ -144,12 +144,7 @@ export default {
     errors() {
       const current = {};
 
-      const {
-        username,
-        password,
-        key,
-        keyConfirmation,
-      } = this;
+      const { username, password, key, keyConfirmation } = this;
 
       if (!username) {
         current.username = 'Username is required.';
@@ -184,9 +179,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions([
-      'login',
-    ]),
+    ...mapActions(['login']),
     getRedirectQuery() {
       const { redirect } = this.$route.query;
       if (!redirect) return '';
@@ -202,15 +195,17 @@ export default {
       const { username, password } = this;
       const keys = await getKeys(username, password);
 
-      this.login({ username, keys }).then(() => {
-        const { redirect } = this.$route.query;
-        this.$router.push(redirect || '/settings');
-        this.isLoading = false;
-        this.error = '';
-      }).catch((err) => {
-        this.error = ERROR_INVALID_CREDENTIALS;
-        console.log('Login failed', err);
-      });
+      this.login({ username, keys })
+        .then(() => {
+          const { redirect } = this.$route.query;
+          this.$router.push(redirect || '/settings');
+          this.isLoading = false;
+          this.error = '';
+        })
+        .catch(err => {
+          this.error = ERROR_INVALID_CREDENTIALS;
+          console.log('Login failed', err);
+        });
     },
     async submitNext() {
       const { username, password } = this;
@@ -241,20 +236,23 @@ export default {
 
       const keys = await getKeys(username, password);
 
-      triplesec.encrypt({
-        data: new triplesec.Buffer(JSON.stringify(keys)),
-        key: new triplesec.Buffer(key),
-      }, (encryptError, buff) => {
-        if (encryptError) {
-          this.isLoading = false;
-          console.log('err', encryptError);
-          return;
-        }
+      triplesec.encrypt(
+        {
+          data: new triplesec.Buffer(JSON.stringify(keys)),
+          key: new triplesec.Buffer(key),
+        },
+        (encryptError, buff) => {
+          if (encryptError) {
+            this.isLoading = false;
+            console.log('err', encryptError);
+            return;
+          }
 
-        addToKeychain(username, buff.toString('hex'));
+          addToKeychain(username, buff.toString('hex'));
 
-        this.startLogin();
-      });
+          this.startLogin();
+        },
+      );
     },
   },
 };

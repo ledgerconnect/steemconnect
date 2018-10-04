@@ -88,7 +88,7 @@ export default {
   }
 
   &--open {
-     left: 0 !important;
+    left: 0 !important;
   }
 
   a {

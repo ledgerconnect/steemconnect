@@ -50,6 +50,5 @@ export default {
   & > h5 {
     margin: 0 0 0 16px;
   }
-
 }
 </style>
