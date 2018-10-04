@@ -1,5 +1,5 @@
 {
-  "name": "steemdex",
+  "name": "steemsign",
   "version": "0.1.0",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -54,7 +54,7 @@
     "not ie <= 8"
   ],
   "build": {
-    "appId": "io.steemdex.app",
+    "appId": "com.steemsign.app",
     "protocols": [
       {
         "name": "steem",
@@ -72,9 +72,9 @@
   },
   "author": "Bonustrack <fabien@bonustrack.co> (https://github.com/bonustrack)",
   "main": "electron-entry.js",
-  "description": "Decentralized exchange (DEX) for Steem",
+  "description": "Signer app for Steem",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bonuschain/steemdex/issues"
+    "url": "https://github.com/bonuschain/steemsign/issues"
   }
 }
