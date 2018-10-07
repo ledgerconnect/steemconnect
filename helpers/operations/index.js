@@ -19,6 +19,7 @@ const vote = require('./vote');
 const convert = require('./convert');
 const transferFromSavings = require('./transfer-from-savings');
 const cancelTransferFromSavings = require('./cancel-transfer-from-savings');
+const claimAccount = require('./claim-account');
 
 module.exports = {
   comment,
@@ -42,4 +43,5 @@ module.exports = {
   convert,
   transfer_from_savings: transferFromSavings,
   cancel_transfer_from_savings: cancelTransferFromSavings,
+  claim_account: claimAccount,
 };
