@@ -34,5 +34,6 @@
   "delegate_vesting_shares": "delegator",
   "undelegate_vesting_shares": "delegator",
   "account_create_with_delegation": "creator",
-  "fill_convert_request": "owner"
+  "fill_convert_request": "owner",
+  "claim_account": "creator"
 }
