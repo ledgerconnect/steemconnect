@@ -61,9 +61,18 @@ router.all('/api/oauth2/token', authenticate(['code', 'refresh']), async (req, r
 });
 
 /** Revoke app access token */
-router.all('/api/oauth2/token/revoke', authenticate('app'), async (req, res) => {
-  await req.db.tokens.destroy({ where: { token: req.token } });
-  res.json({ success: true });
+router.all('/api/oauth2/token/revoke', authenticate(['app', 'refresh']), async (req, res) => {
+  if (req.role === 'refresh') {
+    await req.db.blacklisted_refresh_tokens.create({
+      client_id: req.proxy,
+      user: req.user,
+      token: req.token,
+    });
+    res.json({ success: true });
+  } else {
+    await req.db.tokens.destroy({ where: { token: req.token } });
+    res.json({ success: true });
+  }
 });
 
 module.exports = router;
