@@ -6,11 +6,12 @@ import AccountForm from '../Form/AccountForm';
 import SignForm from '../Form/Sign';
 import Loading from '../../widgets/Loading';
 import { getErrorMessage } from '../../../helpers/operation';
+import { getAccountCreationFee } from '../../utils/auth';
 
 class CreateAccount extends Component {
   static propTypes = {
     intl: intlShape.isRequired,
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -18,8 +19,14 @@ class CreateAccount extends Component {
       step: 0,
       error: false,
       account: {},
+      accountCreationFee: '0.000 STEEM',
     };
   }
+
+  componentWillMount = async () => {
+    const accountCreationFee = await getAccountCreationFee();
+    this.setState({ accountCreationFee });
+  };
 
   submit = (data) => {
     this.setState({
@@ -29,7 +36,7 @@ class CreateAccount extends Component {
   };
 
   sign = (auth) => {
-    const { account } = this.state;
+    const { account, accountCreationFee } = this.state;
     const { intl } = this.props;
     const publicKeys = steem.auth.generateKeys(account.name, account.password, ['owner', 'active', 'posting', 'memo']);
     const owner = { weight_threshold: 1, account_auths: [], key_auths: [[publicKeys.owner, 1]] };
@@ -39,19 +46,24 @@ class CreateAccount extends Component {
       account_auths: [],
       key_auths: [[publicKeys.posting, 1]],
     };
-    steem.broadcast.accountCreateWithDelegation(
-      auth.wif,
-      account.steem,
-      account.vests,
-      auth.username,
-      account.name,
-      owner,
-      active,
-      posting,
-      publicKeys.memo,
-      JSON.stringify({}),
-      [],
-      (err) => {
+
+    const operations = [[
+      'account_create', {
+        fee: accountCreationFee,
+        creator: auth.username,
+        new_account_name: account.name,
+        owner,
+        active,
+        posting,
+        memo_key: publicKeys.memo,
+        json_metadata: JSON.stringify({}),
+      },
+    ]];
+
+    steem.broadcast.send(
+      { operations, extensions: [] },
+      { active: auth.wif },
+      async (err) => {
         this.setState({ step: 0 });
         if (err) {
           notification.error({
@@ -66,6 +78,7 @@ class CreateAccount extends Component {
         }
       }
     );
+
     this.setState({ step: 2 });
   };
 
@@ -74,18 +87,22 @@ class CreateAccount extends Component {
     return (
       <div className="Sign">
         <div className="Sign__content container text-left my-2 Sign__authorize">
-          {step === 0 &&
+          {!this.state.accountCreationFee && <center><Loading /></center>}
+          {this.state.accountCreationFee && step === 0 &&
             <div>
               <h2 className="text-center"><FormattedMessage id="create_account" /></h2>
-              <AccountForm submit={this.submit} />
+              <AccountForm
+                accountCreationFee={this.state.accountCreationFee}
+                submit={this.submit}
+              />
             </div>
           }
-          {step === 1 &&
+          {this.state.accountCreationFee && step === 1 &&
             <div className="text-center">
               <SignForm roles={['active']} sign={this.sign} />
             </div>
           }
-          {step === 2 &&
+          {this.state.accountCreationFee && step === 2 &&
             <div className="text-center">
               <Loading />
             </div>

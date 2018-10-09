@@ -10,7 +10,6 @@ export default class AccountForm extends Form {
     const data = this.props.data || {
       password,
       steem: '0.000 STEEM',
-      vests: '0.000000 VESTS',
     };
     this.state = {
       data,
@@ -24,6 +23,7 @@ export default class AccountForm extends Form {
       <form onSubmit={this.onSubmit}>
         <div className="block">
           <div className={this.getClasses('name', 'form-group')}>
+            <p>The cost to create an account is <b>{this.props.accountCreationFee}</b>.</p>
             <label className="label" htmlFor="username"><FormattedMessage id="username" /></label>
             <input
               id="username"
@@ -47,30 +47,6 @@ export default class AccountForm extends Form {
               defaultValue={data.password}
             />
             <small><FormattedMessage id="password_tip" /></small>
-          </div>
-          <div className="form-group">
-            <label className="label" htmlFor="steem"><FormattedMessage id="steem" /></label>
-            <input
-              id="steem"
-              type="text"
-              className="form-control"
-              name="steem"
-              onChange={this.onChange}
-              defaultValue={data.steem}
-            />
-            <small><FormattedMessage id="steem_tip" /></small>
-          </div>
-          <div className="form-group">
-            <label className="label" htmlFor="vests"><FormattedMessage id="vests" /></label>
-            <input
-              id="vests"
-              type="text"
-              className="form-control"
-              name="vests"
-              onChange={this.onChange}
-              defaultValue={data.vests}
-            />
-            <small><FormattedMessage id="vests_tip" /></small>
           </div>
         </div>
         <div className="form-group py-3 text-center">
