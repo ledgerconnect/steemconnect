@@ -19,7 +19,7 @@ class CreateAccount extends Component {
       step: 0,
       error: false,
       account: {},
-      accountCreationFee: '0.000 STEEM',
+      accountCreationFee: null,
     };
   }
 
@@ -83,26 +83,26 @@ class CreateAccount extends Component {
   };
 
   render() {
-    const { step } = this.state;
+    const { step, accountCreationFee } = this.state;
     return (
       <div className="Sign">
         <div className="Sign__content container text-left my-2 Sign__authorize">
-          {!this.state.accountCreationFee && <center><Loading /></center>}
-          {this.state.accountCreationFee && step === 0 &&
+          {!accountCreationFee && <center><Loading /></center>}
+          {accountCreationFee && step === 0 &&
             <div>
               <h2 className="text-center"><FormattedMessage id="create_account" /></h2>
               <AccountForm
-                accountCreationFee={this.state.accountCreationFee}
+                accountCreationFee={accountCreationFee}
                 submit={this.submit}
               />
             </div>
           }
-          {this.state.accountCreationFee && step === 1 &&
+          {accountCreationFee && step === 1 &&
             <div className="text-center">
               <SignForm roles={['active']} sign={this.sign} />
             </div>
           }
-          {this.state.accountCreationFee && step === 2 &&
+          {accountCreationFee && step === 2 &&
             <div className="text-center">
               <Loading />
             </div>
