@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import store from '@/store';
+import getStoreInstance from '@/store';
 import { isElectron, isChromeExtension } from '@/helpers/utils';
 import { hasAccounts } from '@/helpers/keychain';
 
@@ -14,13 +14,15 @@ const About = () => import(/* webpackChunkName: "about" */ '@/views/About.vue');
 Vue.use(Router);
 
 const requireAuth = (to, from, next) => {
-  if (!store.state.auth.account.name) {
-    const path = hasAccounts() ? '/login' : '/create';
+  getStoreInstance(store => {
+    if (!store.state.auth.account.name) {
+      const path = hasAccounts() ? '/login' : '/create';
 
-    next({ path, query: { redirect: to.fullPath } });
-  } else {
-    next();
-  }
+      next({ path, query: { redirect: to.fullPath } });
+    } else {
+      next();
+    }
+  });
 };
 
 const beforeLogin = (to, from, next) => {

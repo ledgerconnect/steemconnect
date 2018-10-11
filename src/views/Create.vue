@@ -121,23 +121,58 @@ const MIN_ENCRYPTION_KEY_LENGTH = 8;
 export default {
   data() {
     return {
-      step: 1,
       dirty: {
         username: false,
         password: false,
         key: false,
         keyConfirmation: false,
       },
-      username: '',
-      password: '',
-      key: '',
-      keyConfirmation: '',
       error: '',
       storeAccount: true,
       isLoading: false,
     };
   },
   computed: {
+    step: {
+      get() {
+        return this.$store.state.persistentForms.create.step;
+      },
+      set(value) {
+        this.$store.commit('saveCreateStep', value);
+      },
+    },
+    username: {
+      get() {
+        return this.$store.state.persistentForms.create.username;
+      },
+      set(value) {
+        this.$store.commit('saveCreateUsername', value);
+      },
+    },
+    password: {
+      get() {
+        return this.$store.state.persistentForms.create.password;
+      },
+      set(value) {
+        this.$store.commit('saveCreatePassword', value);
+      },
+    },
+    key: {
+      get() {
+        return this.$store.state.persistentForms.create.key;
+      },
+      set(value) {
+        this.$store.commit('saveCreateKey', value);
+      },
+    },
+    keyConfirmation: {
+      get() {
+        return this.$store.state.persistentForms.create.keyConfirmation;
+      },
+      set(value) {
+        this.$store.commit('saveCreateKeyConfirmation', value);
+      },
+    },
     hasAccounts() {
       return hasAccounts();
     },

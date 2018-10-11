@@ -9,10 +9,11 @@ import camelCase from 'lodash/camelCase';
 import urlParse from 'url-parse';
 import App from '@/App.vue';
 import router from '@/router';
-import store from '@/store/index';
+import getStoreInstance from '@/store/index';
 import messages from '@/translation.json';
 import numberFormats from '@/number.json';
 import createIdleDetector from '@/helpers/idle';
+import { isChromeExtension } from '@/helpers/utils';
 
 let ipc = null;
 if (typeof window !== 'undefined' && window.require) {
@@ -36,27 +37,42 @@ Vue.filter('parseUrl', value => urlParse(value).host);
 Vue.use(VueUi);
 Vue.use(VueI18n);
 
-store.dispatch('loadSettings');
+getStoreInstance(store => {
+  store.dispatch('loadSettings');
 
-if (ipc) {
-  ipc.on('handleProtocol', (e, arg) => {
-    const newUrl = `/${arg.slice('steem://'.length)}`;
+  if (ipc) {
+    ipc.on('handleProtocol', (e, arg) => {
+      const newUrl = `/${arg.slice('steem://'.length)}`;
 
-    router.push(newUrl);
+      router.push(newUrl);
+    });
+  }
+
+  const i18n = new VueI18n({
+    locale: 'en',
+    messages,
+    numberFormats,
   });
-}
 
-const i18n = new VueI18n({
-  locale: 'en',
-  messages,
-  numberFormats,
+  Vue.config.productionTip = false;
+
+  new Vue({
+    i18n,
+    router,
+    store,
+    render: h => h(App),
+    created() {
+      if (!isChromeExtension()) return;
+
+      this.$router.afterEach(to => {
+        this.$store.dispatch('savePath', to.path);
+      });
+
+      const { savedPath } = this.$store.state.ui;
+
+      if (savedPath) {
+        this.$router.push(savedPath);
+      }
+    },
+  }).$mount('#app');
 });
-
-Vue.config.productionTip = false;
-
-new Vue({
-  i18n,
-  router,
-  store,
-  render: h => h(App),
-}).$mount('#app');

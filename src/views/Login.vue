@@ -75,13 +75,27 @@ export default {
         username: false,
         key: false,
       },
-      username: '',
-      key: '',
       error: '',
       isLoading: false,
     };
   },
   computed: {
+    username: {
+      get() {
+        return this.$store.state.persistentForms.login.username;
+      },
+      set(value) {
+        this.$store.commit('saveLoginUsername', value);
+      },
+    },
+    key: {
+      get() {
+        return this.$store.state.persistentForms.login.key;
+      },
+      set(value) {
+        this.$store.commit('saveLoginKey', value);
+      },
+    },
     submitDisabled() {
       return !!this.errors.username || !!this.errors.key;
     },
