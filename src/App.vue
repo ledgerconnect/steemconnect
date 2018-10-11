@@ -1,10 +1,7 @@
 <template>
   <div
     id="app"
-    :class="{
-      'app--extension': isExtension,
-      'app--extension--light': isExtensionLight
-    }"
+    :class="{ 'app--extension': isExtension }"
     v-show="initialized"
   >
     <div
@@ -37,9 +34,6 @@ export default {
     },
     isExtension() {
       return isChromeExtension();
-    },
-    isExtensionLight() {
-      return isChromeExtension() && this.isLight;
     },
     sidebarVisible() {
       return this.$store.state.ui.sidebarVisible;

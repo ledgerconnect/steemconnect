@@ -71,12 +71,13 @@ body {
 }
 
 .app--extension {
-  min-width: 790px;
-  min-height: 500px !important;
-}
+  width: @extension-width !important;
+  height: @extension-height;
 
-.app--extension--light {
-  min-width: 450px;
+  & .Box {
+    border-radius: 0;
+    border: none;
+  }
 }
 
 body,
