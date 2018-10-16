@@ -215,6 +215,20 @@ export default {
   },
   methods: {
     ...mapActions(['login']),
+    resetForm() {
+      this.dirty = {
+        username: false,
+        password: false,
+        key: false,
+        keyConfirmation: false,
+      };
+
+      this.step = 1;
+      this.username = '';
+      this.password = '';
+      this.key = '';
+      this.keyConfirmation = '';
+    },
     getRedirectQuery() {
       const { redirect } = this.$route.query;
       if (!redirect) return '';
@@ -236,10 +250,13 @@ export default {
           this.$router.push(redirect || '/settings');
           this.isLoading = false;
           this.error = '';
+
+          this.resetForm();
         })
         .catch(err => {
-          this.error = ERROR_INVALID_CREDENTIALS;
           console.log('Login failed', err);
+          this.isLoading = false;
+          this.error = ERROR_INVALID_CREDENTIALS;
         });
     },
     async submitNext() {
