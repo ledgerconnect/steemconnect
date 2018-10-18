@@ -40,7 +40,7 @@ function createWindow() {
   const inputMenu = Menu.buildFromTemplate(INPUT_MENU);
   const selectionMenu = Menu.buildFromTemplate(SELECTION_MENU);
 
-  mainWindow = new BrowserWindow({ width: 1280, height: 720 });
+  mainWindow = new BrowserWindow({ width: 360, height: 600 });
   mainWindow.loadFile('web-dist/index.html');
 
   mainWindow.on('closed', () => {
