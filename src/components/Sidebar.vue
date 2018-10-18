@@ -9,6 +9,15 @@
       </router-link>
     </div>
     <ul>
+      <li class="border-bottom">
+        <a
+          href="#"
+          class="py-2 px-4 d-block"
+          @click="toggleSidebar"
+        >
+          {{username}}
+        </a>
+      </li>
       <li>
         <router-link
           to="/permissions"

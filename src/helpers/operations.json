@@ -1,0 +1,51 @@
+{
+  "transfer": {
+    "template": {
+      "from": "__signer",
+      "to": null,
+      "amount": null,
+      "memo": ""
+    }
+  },
+  "delegate_vesting_shares": {
+    "template": {
+      "delegator": "__signer",
+      "delegatee": null,
+      "vesting_shares": null
+    }
+  },
+  "transfer_to_vesting": {
+    "template": {
+      "from": "__signer",
+      "to": null,
+      "amount": null
+    }
+  },
+  "withdraw_vesting": {
+    "template": {
+      "account": "__signer",
+      "vesting_shares": null
+    }
+  },
+  "convert": {
+    "template": {
+      "owner": "__signer",
+      "requestid": null,
+      "amount": null
+    }
+  },
+  "account_witness_vote": {
+    "template": {
+      "account": "__signer",
+      "witness": null,
+      "approve": true
+    }
+  },
+  "claim_account": {
+    "template": {
+      "creator": "__signer",
+      "fee": "0.000 STEEM",
+      "extensions": []
+    }
+  }
+}

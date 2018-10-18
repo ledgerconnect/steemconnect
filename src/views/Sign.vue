@@ -57,7 +57,7 @@
 <script>
 import * as steemuri from 'steem-uri';
 import { mapActions } from 'vuex';
-import { resolveTransaction } from '@/helpers/client';
+import { resolveTransaction, legacyUriToParsedSteemUri } from '@/helpers/client';
 
 export default {
   data() {
@@ -79,9 +79,13 @@ export default {
       try {
         parsed = steemuri.decode(uri);
       } catch (err) {
-        this.uriIsValid = false;
         console.error('Failed to decode URI', err);
+        parsed = legacyUriToParsedSteemUri(uri);
+        if (!parsed) {
+          this.uriIsValid = false;
+        }
       }
+
       this.parsed = parsed;
     },
     async handleSubmit() {

@@ -1,5 +1,9 @@
 import { Client } from 'dsteem';
 import * as steemuri from 'steem-uri';
+import urlParse from 'url-parse';
+import qs from 'query-string';
+import snakeCase from 'lodash/snakeCase';
+import opsMap from './operations.json';
 
 const CLIENT_OPTIONS = { timeout: 15000 };
 
@@ -35,6 +39,28 @@ export async function resolveTransaction(parsed, signer) {
   tx.ref_block_prefix = parseInt(tx.ref_block_prefix, 10);
 
   return tx;
+}
+
+export function legacyUriToParsedSteemUri(uri) {
+  let parsed;
+  try {
+    const url = urlParse(uri);
+    const opName = snakeCase(url.pathname.slice(1));
+    const queryParams = qs.parse(url.query.slice(1));
+    if (opsMap[opName]) {
+      const opParams = opsMap[opName].template;
+      /* eslint-disable no-return-assign */
+      Object.keys(queryParams)
+        .filter(key => key in opParams)
+        .forEach(key => (opParams[key] = queryParams[key]));
+      const params = { callback: queryParams.redirect_uri };
+      const b64Uri = steemuri.encodeOps([[opName, opParams]], params);
+      parsed = steemuri.decode(b64Uri);
+    }
+  } catch (err) {
+    console.log('Failed to parse legacy uri', err);
+  }
+  return parsed;
 }
 
 export default client;

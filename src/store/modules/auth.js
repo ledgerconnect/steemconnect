@@ -48,7 +48,7 @@ const actions = {
   },
   sign: ({ rootState }, tx) => {
     const { keys } = rootState.auth;
-    const { chainId } = rootState.market;
+    const { chainId } = rootState.settings;
     const privateKey = PrivateKey.fromString(keys.active);
     return cryptoUtils.signTransaction(tx, [privateKey], Buffer.from(chainId, 'hex'));
   },
