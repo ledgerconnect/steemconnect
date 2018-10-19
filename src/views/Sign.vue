@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="p-4 border-bottom">New unsigned transaction</h3>
+    <Header title="New unsigned transaction" />
     <div v-if="parsed && uriIsValid" class="p-4">
       <div class="container-sm mx-0">
         <div v-if="!loading && failed" class="flash flash-error mb-4">
