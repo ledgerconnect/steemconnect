@@ -99,7 +99,7 @@
         </div>
         <router-link
           v-if="hasAccounts"
-          :to="`/login?${getRedirectQuery()}`"
+          :to="{ name: 'login', query: { redirect: getRedirectQuery() }}"
           class="btn btn-large input-block ahref-btn mb-2"
         >
           Log in instead
@@ -135,42 +135,42 @@ export default {
   computed: {
     step: {
       get() {
-        return this.$store.state.persistentForms.create.step;
+        return this.$store.state.persistentForms.import.step;
       },
       set(value) {
-        this.$store.commit('saveCreateStep', value);
+        this.$store.commit('saveImportStep', value);
       },
     },
     username: {
       get() {
-        return this.$store.state.persistentForms.create.username;
+        return this.$store.state.persistentForms.import.username;
       },
       set(value) {
-        this.$store.commit('saveCreateUsername', value);
+        this.$store.commit('saveImportUsername', value);
       },
     },
     password: {
       get() {
-        return this.$store.state.persistentForms.create.password;
+        return this.$store.state.persistentForms.import.password;
       },
       set(value) {
-        this.$store.commit('saveCreatePassword', value);
+        this.$store.commit('saveImportPassword', value);
       },
     },
     key: {
       get() {
-        return this.$store.state.persistentForms.create.key;
+        return this.$store.state.persistentForms.import.key;
       },
       set(value) {
-        this.$store.commit('saveCreateKey', value);
+        this.$store.commit('saveImportKey', value);
       },
     },
     keyConfirmation: {
       get() {
-        return this.$store.state.persistentForms.create.keyConfirmation;
+        return this.$store.state.persistentForms.import.keyConfirmation;
       },
       set(value) {
-        this.$store.commit('saveCreateKeyConfirmation', value);
+        this.$store.commit('saveImportKeyConfirmation', value);
       },
     },
     hasAccounts() {
@@ -231,9 +231,7 @@ export default {
     },
     getRedirectQuery() {
       const { redirect } = this.$route.query;
-      if (!redirect) return '';
-
-      return `redirect=${redirect}`;
+      return redirect;
     },
     handleBlur(name) {
       this.dirty[name] = true;

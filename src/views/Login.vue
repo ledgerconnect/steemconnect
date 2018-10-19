@@ -50,10 +50,10 @@
           Log in
         </button>
         <router-link
-          :to="`/create?${getRedirectQuery()}`"
+          :to="{ name: 'import', query: { redirect: getRedirectQuery() }}"
           class="btn btn-large input-block ahref-btn mb-2"
         >
-          Sign up instead
+          Import account
         </router-link>
       </form>
     </div>
@@ -131,9 +131,7 @@ export default {
     },
     getRedirectQuery() {
       const { redirect } = this.$route.query;
-      if (!redirect) return '';
-
-      return `redirect=${redirect}`;
+      return redirect;
     },
     loadKeychain() {
       this.keychain = getKeychain();

@@ -4,7 +4,7 @@ import getStoreInstance from '@/store';
 import { isElectron, isChromeExtension } from '@/helpers/utils';
 import { hasAccounts } from '@/helpers/keychain';
 
-const Create = () => import(/* webpackChunkName: "create" */ '@/views/Create.vue');
+const Import = () => import(/* webpackChunkName: "import" */ '@/views/Import.vue');
 const Login = () => import(/* webpackChunkName: "login" */ '@/views/Login.vue');
 const Permissions = () => import(/* webpackChunkName: "permissions" */ '@/views/Permissions.vue');
 const Sign = () => import(/* webpackChunkName: "sign" */ '@/views/Sign.vue');
@@ -16,9 +16,9 @@ Vue.use(Router);
 const requireAuth = (to, from, next) => {
   getStoreInstance(store => {
     if (!store.state.auth.account.name) {
-      const path = hasAccounts() ? '/login' : '/create';
+      const name = hasAccounts() ? 'login' : 'import';
 
-      next({ path, query: { redirect: to.fullPath } });
+      next({ name, query: { redirect: to.fullPath } });
     } else {
       next();
     }
@@ -27,7 +27,7 @@ const requireAuth = (to, from, next) => {
 
 const beforeLogin = (to, from, next) => {
   if (!hasAccounts()) {
-    next({ path: '/create', query: { redirect: to.query.redirect } });
+    next({ name: 'import', query: { redirect: to.query.redirect } });
   } else {
     next();
   }
@@ -41,9 +41,9 @@ export default new Router({
       redirect: '/login',
     },
     {
-      path: '/create',
-      name: 'create',
-      component: Create,
+      path: '/import',
+      name: 'import',
+      component: Import,
       meta: {
         layout: 'light',
       },

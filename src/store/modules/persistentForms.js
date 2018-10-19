@@ -9,7 +9,7 @@ const state = {
     username: '',
     key: '',
   },
-  create: {
+  import: {
     step: 1,
     username: '',
     password: '',
@@ -25,20 +25,20 @@ const mutations = {
   saveLoginKey(_state, key) {
     Vue.set(_state.login, 'key', key);
   },
-  saveCreateStep(_state, step) {
-    Vue.set(_state.create, 'step', step);
+  saveImportStep(_state, step) {
+    Vue.set(_state.import, 'step', step);
   },
-  saveCreateUsername(_state, username) {
-    Vue.set(_state.create, 'username', username);
+  saveImportUsername(_state, username) {
+    Vue.set(_state.import, 'username', username);
   },
-  saveCreatePassword(_state, password) {
-    Vue.set(_state.create, 'password', password);
+  saveImportPassword(_state, password) {
+    Vue.set(_state.import, 'password', password);
   },
-  saveCreateKey(_state, key) {
-    Vue.set(_state.create, 'key', key);
+  saveImportKey(_state, key) {
+    Vue.set(_state.import, 'key', key);
   },
-  saveCreateKeyConfirmation(_state, keyConfirmation) {
-    Vue.set(_state.create, 'keyConfirmation', keyConfirmation);
+  saveImportKeyConfirmation(_state, keyConfirmation) {
+    Vue.set(_state.import, 'keyConfirmation', keyConfirmation);
   },
 };
 
