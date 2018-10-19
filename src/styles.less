@@ -73,11 +73,6 @@ body {
 .app--extension {
   width: @extension-width !important;
   height: @extension-height;
-
-  & .Box {
-    border-radius: 0;
-    border: none;
-  }
 }
 
 body,
@@ -123,6 +118,13 @@ label {
   font-family: 'Circular-Pro-Book', Helvetica, Arial, sans-serif;
   color: @text-color;
   text-align: left !important;
+}
+
+@media (max-width: 400px) {
+  & .Box {
+    border-radius: 0;
+    border: none;
+  }
 }
 
 .table {
