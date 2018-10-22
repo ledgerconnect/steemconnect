@@ -77,6 +77,7 @@
   },
   "author": "Bonustrack <fabien@bonustrack.co> (https://github.com/bonustrack)",
   "main": "electron-entry.js",
+  "homepage": "https://steemconnect.com",
   "description": "Signer app for Steem",
   "license": "MIT",
   "bugs": {

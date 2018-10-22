@@ -3,7 +3,7 @@
     <router-link to="/">
       <span id="logo" class="iconfont icon-diff-modified mb-4"/>
     </router-link>
-    <div class="width-full p-4 mb-6 Box">
+    <div class="width-full p-4 mb-4 Box">
       <form
         @submit.prevent="submitForm"
         method="post"
@@ -106,6 +106,7 @@
         </router-link>
       </form>
     </div>
+    <Footer/>
   </div>
 </template>
 
