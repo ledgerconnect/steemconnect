@@ -66,19 +66,16 @@ export default new Router({
     {
       path: '/sign/*',
       name: 'sign',
-      beforeEnter: requireAuth,
       component: Sign,
     },
     {
       path: '/settings',
       name: 'settings',
-      beforeEnter: requireAuth,
       component: Settings,
     },
     {
       path: '/about',
       name: 'about',
-      beforeEnter: requireAuth,
       component: About,
     },
   ],

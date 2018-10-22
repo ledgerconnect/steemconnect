@@ -9,7 +9,16 @@
       </router-link>
     </div>
     <ul>
-      <li class="border-bottom">
+      <li v-if="!username" class="border-bottom">
+        <router-link
+          to="/login"
+          class="py-2 px-4 d-block"
+          @click="toggleSidebar"
+        >
+          Log in
+        </router-link>
+      </li>
+      <li v-if="username" class="border-bottom">
         <a
           href="#"
           class="py-2 px-4 d-block"
@@ -18,7 +27,7 @@
           {{username}}
         </a>
       </li>
-      <li>
+      <li v-if="username">
         <router-link
           to="/permissions"
           class="py-2 px-4 d-block"
