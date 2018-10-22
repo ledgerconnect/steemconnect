@@ -1,6 +1,6 @@
 {
-  "name": "steemsign",
-  "version": "0.0",
+  "name": "steemconnect",
+  "version": "0.1.0",
   "description": "Signer app for Steem",
   "browser_action": {
     "default_icon": "icon.png",

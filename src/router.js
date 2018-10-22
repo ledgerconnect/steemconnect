@@ -6,6 +6,7 @@ import { hasAccounts } from '@/helpers/keychain';
 
 const Import = () => import(/* webpackChunkName: "import" */ '@/views/Import.vue');
 const Login = () => import(/* webpackChunkName: "login" */ '@/views/Login.vue');
+const Dashboard = () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue');
 const Permissions = () => import(/* webpackChunkName: "permissions" */ '@/views/Permissions.vue');
 const Sign = () => import(/* webpackChunkName: "sign" */ '@/views/Sign.vue');
 const Settings = () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue');
@@ -17,8 +18,8 @@ const requireAuth = (to, from, next) => {
   getStoreInstance(store => {
     if (!store.state.auth.account.name) {
       const name = hasAccounts() ? 'login' : 'import';
-
-      next({ name, query: { redirect: to.fullPath } });
+      const redirect = to.fullPath === '/' ? undefined : to.fullPath;
+      next({ name, query: { redirect } });
     } else {
       next();
     }
@@ -27,7 +28,8 @@ const requireAuth = (to, from, next) => {
 
 const beforeLogin = (to, from, next) => {
   if (!hasAccounts()) {
-    next({ name: 'import', query: { redirect: to.query.redirect } });
+    const redirect = to.query.redirect === '/' ? undefined : to.query.redirect;
+    next({ name: 'import', query: { redirect } });
   } else {
     next();
   }
@@ -38,7 +40,9 @@ export default new Router({
   routes: [
     {
       path: isChromeExtension() ? '/index.html' : '/',
-      redirect: '/login',
+      name: 'dashboard',
+      beforeEnter: requireAuth,
+      component: Dashboard,
     },
     {
       path: '/import',

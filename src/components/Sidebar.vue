@@ -19,13 +19,13 @@
         </router-link>
       </li>
       <li v-if="username" class="border-bottom">
-        <a
-          href="#"
+        <router-link
+          to="/"
           class="py-2 px-4 d-block"
           @click="toggleSidebar"
         >
           {{username}}
-        </a>
+        </router-link>
       </li>
       <li v-if="username">
         <router-link

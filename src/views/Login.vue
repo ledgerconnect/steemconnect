@@ -171,7 +171,7 @@ export default {
           })
             .then(() => {
               const { redirect } = this.$route.query;
-              this.$router.push(redirect || '/settings');
+              this.$router.push(redirect || '/');
               this.isLoading = false;
               this.error = '';
 
