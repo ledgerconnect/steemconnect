@@ -3,6 +3,16 @@
     <Header title="New unsigned transaction" />
     <div v-if="parsed && uriIsValid" class="p-4">
       <div class="container-sm mx-0">
+        <div v-if="isWeb" class="flash mb-4 overflow-hidden">
+          <div class="mb-3">
+            We recommend you to use the SteemConnect desktop app.
+            If you don't have this, you can download it from the
+            <a href="https://steemconnect.com" target="_blank">official site</a>.
+          </div>
+          <button class="btn btn-blue" @click="openUriScheme">
+            Open desktop app
+          </button>
+        </div>
         <div v-if="!loading && failed" class="flash flash-error mb-4">
           Oops, something went wrong. Please try again later.
         </div>
@@ -58,6 +68,7 @@
 import * as steemuri from 'steem-uri';
 import { mapActions } from 'vuex';
 import { resolveTransaction, legacyUriToParsedSteemUri } from '@/helpers/client';
+import { isWeb } from '@/helpers/utils';
 
 export default {
   data() {
@@ -67,10 +78,12 @@ export default {
       loading: false,
       transactionId: '',
       failed: false,
+      isWeb: isWeb(),
+      uri: `steem://sign/${this.$route.params[0]}${window.location.search}`,
     };
   },
   mounted() {
-    this.parseUri(`steem://sign/${this.$route.params[0]}${window.location.search}`);
+    this.parseUri(this.uri);
   },
   methods: {
     ...mapActions(['sign', 'broadcast']),
@@ -87,6 +100,9 @@ export default {
       }
 
       this.parsed = parsed;
+    },
+    openUriScheme() {
+      document.location = this.uri;
     },
     async handleSubmit() {
       this.loading = true;
