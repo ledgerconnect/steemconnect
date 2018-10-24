@@ -1,5 +1,7 @@
 {
   "transfer": {
+    "name": "Transfer",
+    "description": "Transfers asset from one account to another.",
     "template": {
       "from": "__signer",
       "to": null,
@@ -8,6 +10,7 @@
     }
   },
   "delegate_vesting_shares": {
+    "name": "Delegate Steem Power",
     "template": {
       "delegator": "__signer",
       "delegatee": null,
@@ -15,6 +18,7 @@
     }
   },
   "transfer_to_vesting": {
+    "name": "Power up",
     "template": {
       "from": "__signer",
       "to": null,
@@ -22,6 +26,7 @@
     }
   },
   "withdraw_vesting": {
+    "name": "Power down",
     "template": {
       "account": "__signer",
       "vesting_shares": null
@@ -35,6 +40,7 @@
     }
   },
   "account_witness_vote": {
+    "name": "Witness vote",
     "template": {
       "account": "__signer",
       "witness": null,

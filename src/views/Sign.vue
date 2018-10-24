@@ -20,9 +20,7 @@
         <div v-if="!failed && !transactionId">
           <div v-for="(operation, key) in parsed.tx.operations" :key="key" class="mb-4">
             <div class="Box">
-              <div class="Box-row">
-                <h4 class="mb-0">{{ operation[0] }}</h4>
-              </div>
+              <OperationHeader :operation="operation[0]"/>
               <div class="Box-row">
                 <div v-for="(value, key) in operation[1]" :key="key">
                   <p>
