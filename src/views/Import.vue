@@ -27,7 +27,7 @@
             autocapitalize="none"
             @blur="handleBlur('username')"
           />
-          <label for="password">Steem password or active WIF</label>
+          <label for="password">Steem password or private key</label>
           <div
             v-if="dirty.password && !!errors.password"
             class="error mb-2"

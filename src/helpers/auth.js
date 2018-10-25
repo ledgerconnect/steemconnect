@@ -14,73 +14,86 @@ function privateKeyFrom(password) {
   return new PrivateKey(decodePrivate(password).slice(1));
 }
 
-function getActivePublicKey(username, password) {
-  let privateKey = null;
-
+function isKey(username, password) {
   try {
-    privateKey = privateKeyFrom(password);
+    privateKeyFrom(password);
+    return true;
   } catch (err) {
-    privateKey = PrivateKey.fromSeed(`${username}active${password}`);
+    return false;
   }
-
-  return privateKey.createPublic().toString();
 }
 
-async function getUserKeys(username, type) {
-  let accounts = [];
+async function getUserKeysMap(username) {
+  const keys = {};
 
+  let accounts = null;
   try {
     accounts = await client.database.getAccounts([username]);
   } catch (err) {
     console.error(err);
+    return keys;
   }
 
-  if (accounts.length === 1) {
-    if (type === 'memo') {
-      return [accounts[0].memo_key];
+  if (accounts.length !== 1) return keys;
+
+  const [account] = accounts;
+
+  keys[account.memo_key] = 'memo';
+
+  const types = ['owner', 'active', 'posting'];
+
+  for (let i = 0; i < types.length; i += 1) {
+    const keysOfType = account[types[i]].key_auths;
+
+    for (let j = 0; j < keysOfType.length; j += 1) {
+      keys[keysOfType[j][0]] = types[i];
     }
-
-    return accounts[0][type].key_auths.map(key => key[0]);
   }
 
-  return [];
+  return keys;
 }
 
 export async function credentialsValid(username, password) {
-  const publicKey = getActivePublicKey(username, password);
+  const keysMap = await getUserKeysMap(username);
 
-  const matchingKeys = await getUserKeys(username, 'active');
+  const key = isKey(username, password)
+    ? privateKeyFrom(password)
+    : PrivateKey.fromLogin(username, password, 'active');
 
-  return matchingKeys.indexOf(publicKey) !== -1;
-}
-
-export async function memoValid(username, memo) {
-  const matchingKeys = await getUserKeys(username, 'memo');
-
-  return matchingKeys.indexOf(memo) !== -1;
+  return !!keysMap[key.createPublic().toString()];
 }
 
 export async function getKeys(username, password) {
   const keys = {
     active: null,
     memo: null,
+    posting: null,
   };
 
-  try {
-    const activeKey = privateKeyFrom(password);
+  const keysMap = await getUserKeysMap(username);
 
-    keys.active = activeKey.toString();
-  } catch (err) {
-    const activeKey = PrivateKey.fromSeed(`${username}active${password}`);
-    const memoKey = PrivateKey.fromSeed(`${username}memo${password}`);
+  if (isKey(username, password)) {
+    const type =
+      keysMap[
+        privateKeyFrom(password)
+          .createPublic()
+          .toString()
+      ];
 
-    keys.active = activeKey.toString();
+    keys[type] = password;
 
-    const isMemoValid = await memoValid(username, memoKey.createPublic().toString());
+    return keys;
+  }
 
-    if (isMemoValid) {
-      keys.memo = memoKey.toString();
-    }
+  const activeKey = PrivateKey.fromLogin(username, password, 'active');
+  const postingKey = PrivateKey.fromLogin(username, password, 'posting');
+  const memoKey = PrivateKey.fromLogin(username, password, 'memo');
+
+  keys.active = activeKey.toString();
+  keys.posting = postingKey.toString();
+
+  if (keysMap[memoKey.createPublic().toString()] === 'memo') {
+    keys.memo = memoKey.toString();
   }
 
   return keys;

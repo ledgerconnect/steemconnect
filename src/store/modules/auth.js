@@ -26,7 +26,8 @@ const mutations = {
 
 const actions = {
   login: async ({ commit, dispatch, rootState }, { username, keys }) => {
-    const valid = await credentialsValid(username, keys.active);
+    const key = keys.active || keys.posting || keys.memo;
+    const valid = await credentialsValid(username, key);
 
     if (!valid) {
       throw new Error('Invalid credentials');
@@ -47,6 +48,7 @@ const actions = {
     router.push('/');
   },
   sign: ({ rootState }, tx) => {
+    // TODO: Use proper key
     const { keys } = rootState.auth;
     const { chainId } = rootState.settings;
     const privateKey = PrivateKey.fromString(keys.active);
