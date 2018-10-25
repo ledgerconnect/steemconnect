@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export const isElectron = () => navigator.userAgent.toLowerCase().indexOf('electron') > -1;
 
 export const isChromeExtension = () =>
@@ -11,4 +13,21 @@ export function jsonParse(input) {
   } catch (err) {
     return {};
   }
+}
+
+/** Parse error message from Steemd response */
+export function getErrorMessage(error) {
+  let errorMessage = '';
+  if (_.has(error, 'stack[0].format')) {
+    errorMessage = error.stack[0].format;
+    if (_.has(error, 'stack[0].data')) {
+      const { data } = error.stack[0];
+      Object.keys(data).forEach(d => {
+        errorMessage = errorMessage.split(`\${${d}}`).join(data[d]);
+      });
+    }
+  } else if (error.message) {
+    errorMessage = error.message;
+  }
+  return errorMessage;
 }

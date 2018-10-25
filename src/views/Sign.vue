@@ -3,7 +3,7 @@
     <Header title="New unsigned transaction" />
     <div v-if="parsed && uriIsValid" class="p-4">
       <div class="container-sm mx-0">
-        <div v-if="isWeb" class="flash mb-4 overflow-hidden">
+        <div v-if="isWeb && !failed && !transactionId" class="flash mb-4 overflow-hidden">
           <div class="mb-3">
             We recommend you to use the SteemConnect desktop app.
             If you don't have this, you can download it from the
@@ -14,7 +14,12 @@
           </button>
         </div>
         <div v-if="!loading && failed" class="flash flash-error mb-4">
-          Oops, something went wrong. Please try again later.
+          Oops, something went wrong.
+          <span v-if="errorMessage">
+            Here is the error message:
+            <br/><b>"{{ errorMessage }}"</b>
+          </span>
+          <span v-else>Please try again later.</span>
         </div>
         <Confirmation v-if="!loading && !!transactionId" :id="transactionId" />
         <div v-if="!failed && !transactionId">
@@ -36,11 +41,19 @@
             <span class="link-color">{{ parsed.params.callback | parseUrl }}</span>.
           </div>
           <div class="mb-4">
+            <router-link
+              :to="{ name: 'login', query: { redirect: this.uri.replace('steem://', '') }}"
+              class="btn btn-large mr-2 mb-2"
+              v-if="!username"
+            >
+              Log in
+            </router-link>
             <button
               type="submit"
               class="btn btn-large btn-primary mr-2 mb-2"
               :disabled="loading"
               @click="handleSubmit"
+              v-else
             >
               {{ parsed.params.no_broadcast ? 'Sign' : 'Approve' }}
             </button>
@@ -66,7 +79,7 @@
 import * as steemuri from 'steem-uri';
 import { mapActions } from 'vuex';
 import { resolveTransaction, legacyUriToParsedSteemUri } from '@/helpers/client';
-import { isWeb } from '@/helpers/utils';
+import { isWeb, getErrorMessage } from '@/helpers/utils';
 
 export default {
   data() {
@@ -76,9 +89,15 @@ export default {
       loading: false,
       transactionId: '',
       failed: false,
+      errorMessage: '',
       isWeb: isWeb(),
       uri: `steem://sign/${this.$route.params[0]}${window.location.search}`,
     };
+  },
+  computed: {
+    username() {
+      return this.$store.state.auth.username;
+    },
   },
   mounted() {
     this.parseUri(this.uri);
@@ -130,6 +149,7 @@ export default {
           this.transactionId = confirmation.id;
           this.failed = false;
         } catch (err) {
+          this.errorMessage = getErrorMessage(err);
           console.error('Failed to broadcast transaction', err);
           this.transactionId = '';
           this.failed = true;
