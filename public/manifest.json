@@ -6,6 +6,14 @@
     "default_icon": "icon.png",
     "default_popup": "index.html"
   },
+  "content_scripts": [
+    {
+      "matches": ["file://*/*", "http://*/*", "https://*/*"],
+      "js": ["contentscript.js"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
   "background": {
     "scripts": ["background.js"],
     "persistent": true

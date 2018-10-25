@@ -58,8 +58,8 @@
               {{ parsed.params.no_broadcast ? 'Sign' : 'Approve' }}
             </button>
             <button
-              type="submit"
               class="btn btn-large btn-danger mb-2"
+              @click="handleReject"
             >
               Reject
             </button>
@@ -167,6 +167,9 @@ export default {
       } else {
         this.loading = false;
       }
+    },
+    handleReject() {
+      this.$router.push({ name: 'settings' });
     },
   },
 };

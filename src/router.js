@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import getStoreInstance from '@/store';
-import { isElectron, isChromeExtension } from '@/helpers/utils';
+import { isWeb } from '@/helpers/utils';
 import { hasAccounts } from '@/helpers/keychain';
 
 const Import = () => import(/* webpackChunkName: "import" */ '@/views/Import.vue');
@@ -36,10 +36,10 @@ const beforeLogin = (to, from, next) => {
 };
 
 export default new Router({
-  mode: isElectron() ? 'hash' : 'history',
+  mode: isWeb() ? 'history' : 'hash',
   routes: [
     {
-      path: isChromeExtension() ? '/index.html' : '/',
+      path: '/',
       name: 'dashboard',
       beforeEnter: requireAuth,
       component: Dashboard,

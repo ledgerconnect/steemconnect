@@ -1,3 +1,5 @@
+/* global chrome */
+
 import 'primer/index.scss';
 import '@vue/ui/dist/vue-ui.css';
 import '@/styles.less';
@@ -37,6 +39,19 @@ Vue.filter('parseUrl', value => urlParse(value).host);
 Vue.use(VueUi);
 Vue.use(VueI18n);
 
+let pushToRouter = null;
+
+if (isChromeExtension()) {
+  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    console.log(request);
+    if (request.id !== 'sign') return;
+
+    pushToRouter = router.push(request.payload);
+
+    sendResponse(true);
+  });
+}
+
 getStoreInstance(store => {
   store.dispatch('loadSettings');
 
@@ -70,7 +85,9 @@ getStoreInstance(store => {
 
       const { savedPath } = this.$store.state.ui;
 
-      if (savedPath) {
+      if (pushToRouter) {
+        pushToRouter();
+      } else if (savedPath) {
         this.$router.push(savedPath);
       }
     },
