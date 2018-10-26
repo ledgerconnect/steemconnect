@@ -29,11 +29,11 @@
       </li>
       <li v-if="username">
         <router-link
-          to="/permissions"
+          to="/keys"
           class="py-2 px-4 d-block"
           @click.native="toggleSidebar"
         >
-          Permissions
+          Keys
         </router-link>
       </li>
       <li>

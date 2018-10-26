@@ -1,11 +1,11 @@
 <template>
   <div>
-    <Header title="Permissions" />
+    <Header title="Keys" />
     <table class="table table-lg width-full after-header">
       <thead>
         <tr class="border-bottom">
           <th>Type</th>
-          <th>Account / key</th>
+          <th>Key</th>
           <th>Weight</th>
           <th/>
         </tr>
@@ -18,6 +18,7 @@
              "
             class="border-bottom"
             :key="`${i}-${j}`"
+            v-if="publicKeys[authority] === auth[0]"
           >
             <td>{{ authority }}</td>
             <td>{{ auth[0] }}</td>
@@ -27,7 +28,7 @@
             </td>
           </tr>
         </template>
-        <tr class="border-bottom">
+        <tr class="border-bottom" v-if="publicKeys['memo'] == account.memo_key">
           <td>memo</td>
           <td>{{ account.memo_key }}</td>
           <td></td>
@@ -41,10 +42,25 @@
 </template>
 
 <script>
+import { privateKeyFrom } from '@/helpers/auth';
+
 export default {
   computed: {
     account() {
       return this.$store.state.auth.account;
+    },
+    publicKeys() {
+      const { keys } = this.$store.state.auth;
+
+      return Object.keys(keys).reduce((acc, b) => {
+        if (!keys[b]) return acc;
+
+        acc[b] = privateKeyFrom(keys[b])
+          .createPublic()
+          .toString();
+
+        return acc;
+      }, {});
     },
   },
 };

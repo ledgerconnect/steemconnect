@@ -7,7 +7,7 @@ import { hasAccounts } from '@/helpers/keychain';
 const Import = () => import(/* webpackChunkName: "import" */ '@/views/Import.vue');
 const Login = () => import(/* webpackChunkName: "login" */ '@/views/Login.vue');
 const Dashboard = () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue');
-const Permissions = () => import(/* webpackChunkName: "permissions" */ '@/views/Permissions.vue');
+const Keys = () => import(/* webpackChunkName: "keys" */ '@/views/Keys.vue');
 const Sign = () => import(/* webpackChunkName: "sign" */ '@/views/Sign.vue');
 const Settings = () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue');
 const About = () => import(/* webpackChunkName: "about" */ '@/views/About.vue');
@@ -62,10 +62,10 @@ export default new Router({
       },
     },
     {
-      path: '/permissions',
-      name: 'permissions',
+      path: '/keys',
+      name: 'keys',
       beforeEnter: requireAuth,
-      component: Permissions,
+      component: Keys,
     },
     {
       path: '/sign/*',
