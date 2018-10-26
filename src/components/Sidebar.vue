@@ -13,7 +13,7 @@
         <router-link
           to="/login"
           class="py-2 px-4 d-block"
-          @click="toggleSidebar"
+          @click.native="toggleSidebar"
         >
           Log in
         </router-link>
@@ -22,7 +22,7 @@
         <router-link
           to="/"
           class="py-2 px-4 d-block"
-          @click="toggleSidebar"
+          @click.native="toggleSidebar"
         >
           {{username}}
         </router-link>
