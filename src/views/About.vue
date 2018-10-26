@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header title="About" />
-    <div class="p-4">
+    <div class="p-4 after-header">
       <h2>{{pkg.name}}</h2>
       <p v-if="pkg.description">{{pkg.description}}</p>
       <p>Version: {{pkg.version}}</p>

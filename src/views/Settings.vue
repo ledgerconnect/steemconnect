@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header title="Settings" />
-    <div class="p-4">
+    <div class="p-4 after-header">
       <div v-if="successVisible" class="flash flash-success mb-4">
         Settings has been saved.
       </div>

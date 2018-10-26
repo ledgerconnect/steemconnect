@@ -55,13 +55,15 @@ export default {
   left: 0;
   transition: left 0.3s;
 
-  @media only screen and (min-width: 1012px) {
+  @media @bp-small {
     margin-left: @sidebar-width !important;
   }
 
-  @media only screen and (max-width: 1011px) {
-    &--nav-open {
-      left: @sidebar-width;
+  &--nav-open {
+    left: @sidebar-width;
+
+    @media @bp-small {
+      left: 0;
     }
   }
 }

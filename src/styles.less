@@ -128,6 +128,14 @@ label {
   }
 }
 
+.after-header {
+  margin-top: @header-height;
+
+  @media @bp-small {
+    margin-top: 0;
+  }
+}
+
 .table {
   border-radius: 4px;
   margin-bottom: 24px;
@@ -145,10 +153,6 @@ label {
   thead {
     color: @border-color;
   }
-}
-
-.table-header {
-  background-color: @header-color;
 }
 
 .entry-enter-active {

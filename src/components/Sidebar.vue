@@ -101,7 +101,7 @@ export default {
   background-color: @sidebar-bg-color;
   transition: left 0.3s;
 
-  @media only screen and (min-width: 1012px) {
+  @media @bp-small {
     left: 0 !important;
   }
 

@@ -26,10 +26,18 @@ export default {
 @import (reference) '../vars';
 
 .header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: @header-height;
+  background-color: @header-bg;
   display: flex;
-  height: 56px;
   align-items: center;
   transition: width 0.3s;
+
+  @media @bp-small {
+    position: relative;
+  }
 
   & > button {
     line-height: 22px;
@@ -37,7 +45,7 @@ export default {
     border: none;
     outline: none;
 
-    @media only screen and (min-width: 1012px) {
+    @media @bp-small {
       display: none;
     }
 

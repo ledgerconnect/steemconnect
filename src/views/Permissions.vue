@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header title="Permissions" />
-    <table class="table table-lg width-full">
+    <table class="table table-lg width-full after-header">
       <thead>
         <tr class="border-bottom">
           <th>Type</th>
