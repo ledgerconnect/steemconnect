@@ -48,8 +48,11 @@ export function legacyUriToParsedSteemUri(uri) {
     const opName = snakeCase(url.pathname.slice(1));
     const queryParams = qs.parse(url.query.slice(1));
     if (opsMap[opName]) {
-      const opParams = opsMap[opName].template;
+      const opParams = {};
       /* eslint-disable no-return-assign */
+      Object.keys(opsMap[opName].schema).forEach(
+        key => (opParams[key] = opsMap[opName].schema[key].default || null),
+      );
       Object.keys(queryParams)
         .filter(key => key in opParams)
         .forEach(key => (opParams[key] = queryParams[key]));
