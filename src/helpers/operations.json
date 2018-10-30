@@ -2,56 +2,109 @@
   "transfer": {
     "name": "Transfer",
     "description": "Transfers asset from one account to another.",
-    "template": {
-      "from": "__signer",
-      "to": null,
-      "amount": null,
-      "memo": ""
+    "schema": {
+      "from": {
+        "type": "account",
+        "default": "__signer"
+      },
+      "to": {
+        "type": "account"
+      },
+      "amount": {
+        "type": "amount"
+      },
+      "memo": {
+        "type": "string",
+        "default": ""
+      }
     }
   },
   "delegate_vesting_shares": {
     "name": "Delegate Steem Power",
-    "template": {
-      "delegator": "__signer",
-      "delegatee": null,
-      "vesting_shares": null
+    "schema": {
+      "delegator": {
+        "type": "account",
+        "default": "__signer"
+      },
+      "delegatee": {
+        "type": "account"
+      },
+      "vesting_shares": {
+        "type": "amount"
+      }
     }
   },
   "transfer_to_vesting": {
     "name": "Power up",
-    "template": {
-      "from": "__signer",
-      "to": null,
-      "amount": null
+    "schema": {
+      "from": {
+        "type": "account",
+        "default": "__signer"
+      },
+      "to": {
+        "type": "account"
+      },
+      "amount": {
+        "type": "amount"
+      }
     }
   },
   "withdraw_vesting": {
     "name": "Power down",
-    "template": {
-      "account": "__signer",
-      "vesting_shares": null
+    "schema": {
+      "account": {
+        "type": "account",
+        "default": "__signer"
+      },
+      "vesting_shares": {
+        "type": "amount"
+      }
     }
   },
   "convert": {
-    "template": {
-      "owner": "__signer",
-      "requestid": null,
-      "amount": null
+    "schema": {
+      "owner": {
+        "type": "account",
+        "default": "__signer"
+      },
+      "requestid": {
+        "type": "int"
+      },
+      "amount": {
+        "type": "amount"
+      }
     }
   },
   "account_witness_vote": {
     "name": "Witness vote",
-    "template": {
-      "account": "__signer",
-      "witness": null,
-      "approve": true
+    "schema": {
+      "account": {
+        "type": "account",
+        "default": "__signer"
+      },
+      "witness": {
+        "type": "account"
+      },
+      "approve": {
+        "type": "bool",
+        "default": true
+      }
     }
   },
   "claim_account": {
-    "template": {
-      "creator": "__signer",
-      "fee": "0.000 STEEM",
-      "extensions": []
+    "schema": {
+      "creator": {
+        "type": "account",
+        "default": "__signer"
+      },
+      "fee": {
+        "type": "amount",
+        "default": "0.000 STEEM"
+      },
+      "extensions": {
+        "type": "array",
+        "default": []
+      }
     }
   }
 }
