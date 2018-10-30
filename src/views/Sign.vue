@@ -23,19 +23,11 @@
         </div>
         <Confirmation v-if="!loading && !!transactionId" :id="transactionId" />
         <div v-if="!failed && !transactionId">
-          <div v-for="(operation, key) in parsed.tx.operations" :key="key" class="mb-4">
-            <div class="Box">
-              <OperationHeader :operation="operation[0]"/>
-              <div class="Box-row">
-                <div v-for="(value, key) in operation[1]" :key="key">
-                  <p>
-                    <b class="form-label">{{ key }}</b>
-                    <OperationValue :value="value"/>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Operation
+            v-for="(operation, key) in parsed.tx.operations"
+            :operation="operation"
+            :key="key"
+          />
           <div class="flash flash-warn mb-4" v-if="parsed.params.callback">
             You are going to get redirected to
             <span class="link-color">{{ parsed.params.callback | parseUrl }}</span>.

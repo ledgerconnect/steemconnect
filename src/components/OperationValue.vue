@@ -13,21 +13,41 @@
     </template>
     <template v-else>
       <template v-if="value === '__signer'">
-        <em v-if="!username">you</em>
-        <template v-else>{{ username }}</template>
+        <template v-if="username">
+          <OperationValueAccount :value="username"/>
+        </template>
+        <em v-else>you</em>
       </template>
-      <template v-else>{{ value }}</template>
+      <template v-else-if="!value">
+        <em>empty</em>
+      </template>
+      <template v-else>
+        <template v-if="schema.type === 'account'">
+          <OperationValueAccount :value="value"/>
+        </template>
+        <template v-else>{{ value }}</template>
+      </template>
     </template>
   </span>
 </template>
 
 <script>
+import _ from 'lodash';
+import operations from '@/helpers/operations.json';
+
 export default {
-  props: ['value'],
+  props: ['value', 'path'],
   data() {
     return {
       username: this.$store.state.auth.username,
     };
   },
+  computed: {
+    schema() {
+      return _.has(operations, this.path)
+        ? _.get(operations, this.path)
+        : {};
+    },
+  }
 };
 </script>
