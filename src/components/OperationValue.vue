@@ -44,10 +44,8 @@ export default {
   },
   computed: {
     schema() {
-      return _.has(operations, this.path)
-        ? _.get(operations, this.path)
-        : {};
+      return _.has(operations, this.path) ? _.get(operations, this.path) : {};
     },
-  }
+  },
 };
 </script>
