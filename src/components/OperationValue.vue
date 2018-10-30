@@ -1,19 +1,23 @@
 <template>
   <span>
-    <span v-if="value && Array.isArray(value)">
+    <template v-if="value && Array.isArray(value)">
       <OperationValue v-for="(v, key) in value" :key="key" :value="v"/>
-    </span>
-    <span v-else-if="value && typeof value === 'object'">
+    </template>
+    <template v-else-if="value && typeof value === 'object'">
       <div v-for="(v, key) in value" :key="key" class="mt-2">
         <p>
           <span class="form-label">- {{ key }}</span>
           <OperationValue :value="v"/>
         </p>
       </div>
-    </span>
-    <span v-else>
-      {{ value === '__signer' ? username : value }}
-    </span>
+    </template>
+    <template v-else>
+      <template v-if="value === '__signer'">
+        <em v-if="!username">you</em>
+        <template v-else>{{ username }}</template>
+      </template>
+      <template v-else>{{ value }}</template>
+    </template>
   </span>
 </template>
 
