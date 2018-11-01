@@ -113,11 +113,22 @@
 <script>
 import { mapActions } from 'vuex';
 import triplesec from 'triplesec';
+import PasswordValidator from 'password-validator';
 import { credentialsValid, getKeys } from '@/helpers/auth';
 import { addToKeychain, hasAccounts } from '@/helpers/keychain';
 import { ERROR_INVALID_CREDENTIALS } from '@/helpers/messages';
 
-const MIN_ENCRYPTION_KEY_LENGTH = 8;
+const passphraseSchema = new PasswordValidator();
+
+passphraseSchema
+  .is()
+  .min(8)
+  .has()
+  .uppercase()
+  .has()
+  .lowercase()
+  .has()
+  .symbols();
 
 export default {
   data() {
@@ -192,8 +203,9 @@ export default {
 
       if (!key) {
         current.key = 'Encryption key is required.';
-      } else if (key.length < MIN_ENCRYPTION_KEY_LENGTH) {
-        current.key = 'Encryption key has to have at least 8 characters.';
+      } else if (!passphraseSchema.validate(key)) {
+        current.key =
+          'Encryption key has to be at least 8 characters long and contain lowercase letter, uppercase letter, and a symbol.';
       }
 
       if (!keyConfirmation) {
