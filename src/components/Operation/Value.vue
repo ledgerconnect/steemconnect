@@ -18,13 +18,14 @@
         </template>
         <em v-else>you</em>
       </template>
-      <template v-else-if="!value">
+      <template v-else-if="value === null">
         <em>empty</em>
       </template>
       <template v-else>
         <template v-if="schema.type === 'account'">
           <OperationValueAccount :value="value"/>
         </template>
+        <template v-else-if="schema.type === 'time'">{{ value | dateHeader }}</template>
         <template v-else>{{ value }}</template>
       </template>
     </template>

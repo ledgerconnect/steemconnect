@@ -62,6 +62,7 @@
     }
   },
   "convert": {
+    "name": "Convert",
     "schema": {
       "owner": {
         "type": "account",
@@ -91,7 +92,20 @@
       }
     }
   },
+  "account_witness_proxy": {
+    "name": "Witness proxy",
+    "schema": {
+      "account": {
+        "type": "account",
+        "default": "__signer"
+      },
+      "proxy": {
+        "type": "account"
+      }
+    }
+  },
   "claim_account": {
+    "name": "Claim account",
     "schema": {
       "creator": {
         "type": "account",
@@ -104,6 +118,131 @@
       "extensions": {
         "type": "array",
         "default": []
+      }
+    }
+  },
+  "vote": {
+    "name": "Vote",
+    "schema": {
+      "voter": {
+        "type": "account",
+        "default": "__signer"
+      },
+      "author": {
+        "type": "account"
+      },
+      "permlink": {
+        "type": "string"
+      },
+      "weight": {
+        "type": "int",
+        "default": 10000
+      }
+    }
+  },
+  "limit_order_create": {
+    "name": "Create limit order",
+    "schema": {
+      "owner": {
+        "type": "account",
+        "default": "__signer"
+      },
+      "orderid": {
+        "type": "int"
+      },
+      "amount_to_sell": {
+        "type": "amount"
+      },
+      "min_to_receive": {
+        "type": "amount"
+      },
+      "fill_or_kill": {
+        "type": "bool"
+      },
+      "expiration": {
+        "type": "time"
+      }
+    }
+  },
+  "limit_order_create2": {
+    "name": "Create limit order",
+    "schema": {
+      "owner": {
+        "type": "account",
+        "default": "__signer"
+      },
+      "orderid": {
+        "type": "int"
+      },
+      "amount_to_sell": {
+        "type": "amount"
+      },
+      "exchange_rate": {
+        "type": "object"
+      },
+      "fill_or_kill": {
+        "type": "bool"
+      },
+      "expiration": {
+        "type": "time"
+      }
+    }
+  },
+  "limit_order_cancel": {
+    "name": "Cancel limit order",
+    "schema": {
+      "owner": {
+        "type": "account",
+        "default": "__signer"
+      },
+      "orderid": {
+        "type": "int"
+      }
+    }
+  },
+  "claim_reward_balance": {
+    "name": "Redeem rewards",
+    "schema": {
+      "account": {
+        "type": "account",
+        "default": "__signer"
+      },
+      "reward_steem": {
+        "type": "amount"
+      },
+      "reward_sbd": {
+        "type": "amount"
+      },
+      "reward_vests": {
+        "type": "amount"
+      }
+    }
+  },
+  "comment": {
+    "name": "Post or comment",
+    "schema": {
+      "parent_author": {
+        "type": "account",
+        "default": ""
+      },
+      "parent_permlink": {
+        "type": "string"
+      },
+      "author": {
+        "type": "account",
+        "default": "__signer"
+      },
+      "permlink": {
+        "type": "string"
+      },
+      "title": {
+        "type": "string"
+      },
+      "body": {
+        "type": "string"
+      },
+      "json_metadata": {
+        "type": "string"
       }
     }
   }

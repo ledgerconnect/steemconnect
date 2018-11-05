@@ -9,6 +9,7 @@ import VueUi from '@vue/ui';
 import upperFirst from 'lodash/upperFirst';
 import camelCase from 'lodash/camelCase';
 import urlParse from 'url-parse';
+import moment from 'moment';
 import App from '@/App.vue';
 import router from '@/router';
 import getStoreInstance from '@/store/index';
@@ -34,6 +35,7 @@ requireComponent.keys().forEach(fileName => {
   Vue.component(componentName, componentConfig.default || componentConfig);
 });
 
+Vue.filter('dateHeader', value => moment(value, 'YYYY-MM-DD').format('MMM D, YYYY'));
 Vue.filter('parseUrl', value => urlParse(value).host);
 
 Vue.use(VueUi);
