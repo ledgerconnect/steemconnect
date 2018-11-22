@@ -34,7 +34,7 @@
           v-model="theme"
           id="theme"
           class="form-select input-block mb-2"
-          @blur="handleBLur('theme')"
+          @blur="handleBlur('theme')"
         >
           <option value="white">White</option>
           <option value="black">Black</option>

@@ -42,7 +42,10 @@ const actions = {
   },
   loadSettings: ({ dispatch, commit }) => {
     const settingsContent = localStorage.getItem(SETTINGS_KEY);
-    if (!settingsContent) return;
+    if (!settingsContent) {
+      dispatch('getConfig');
+      return;
+    }
 
     try {
       const settings = JSON.parse(settingsContent);
