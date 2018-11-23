@@ -73,7 +73,7 @@ export default {
   methods: {
     ...mapActions(['toggleSidebarVisibility']),
     toggleSidebar() {
-      if (typeof window !== 'undefined' && window.matchMedia('(max-width: 1011px)')) {
+      if (typeof window !== 'undefined' && window.matchMedia('(max-width: 1011px)').matches) {
         this.toggleSidebarVisibility();
       }
     },
