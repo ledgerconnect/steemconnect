@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import getStoreInstance from '@/store';
+import store from '@/store';
 import { isWeb } from '@/helpers/utils';
 import { hasAccounts } from '@/helpers/keychain';
 
@@ -15,15 +15,13 @@ const About = () => import(/* webpackChunkName: "about" */ '@/views/About.vue');
 Vue.use(Router);
 
 const requireAuth = (to, from, next) => {
-  getStoreInstance(store => {
-    if (!store.state.auth.account.name) {
-      const name = hasAccounts() ? 'login' : 'import';
-      const redirect = to.fullPath === '/' ? undefined : to.fullPath;
-      next({ name, query: { redirect } });
-    } else {
-      next();
-    }
-  });
+  if (!store.state.auth.account.name) {
+    const name = hasAccounts() ? 'login' : 'import';
+    const redirect = to.fullPath === '/' ? undefined : to.fullPath;
+    next({ name, query: { redirect } });
+  } else {
+    next();
+  }
 };
 
 const beforeLogin = (to, from, next) => {

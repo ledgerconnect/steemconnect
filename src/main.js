@@ -1,5 +1,3 @@
-/* global chrome */
-
 import 'primer/index.scss';
 import '@vue/ui/dist/vue-ui.css';
 import '@/styles.less';
@@ -12,7 +10,7 @@ import urlParse from 'url-parse';
 import moment from 'moment';
 import App from '@/App.vue';
 import router from '@/router';
-import getStoreInstance from '@/store/index';
+import getPersistedData from '@/persisted';
 import messages from '@/translation.json';
 import numberFormats from '@/number.json';
 import createIdleDetector from '@/helpers/idle';
@@ -41,20 +39,7 @@ Vue.filter('parseUrl', value => urlParse(value).host);
 Vue.use(VueUi);
 Vue.use(VueI18n);
 
-let pushToRouter = null;
-
-if (isChromeExtension()) {
-  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    console.log(request);
-    if (request.id !== 'sign') return;
-
-    pushToRouter = router.push(request.payload);
-
-    sendResponse(true);
-  });
-}
-
-getStoreInstance(store => {
+getPersistedData(({ store, url }) => {
   store.dispatch('loadSettings');
 
   if (ipc) {
@@ -87,8 +72,8 @@ getStoreInstance(store => {
 
       const { savedPath } = this.$store.state.ui;
 
-      if (pushToRouter) {
-        pushToRouter();
+      if (url) {
+        this.$router.push(url);
       } else if (savedPath) {
         this.$router.push(savedPath);
       }

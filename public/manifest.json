@@ -6,11 +6,12 @@
     "default_icon": "icon.png",
     "default_popup": "index.html"
   },
+  "web_accessible_resources": ["pagescript.js"],
   "content_scripts": [
     {
       "matches": ["file://*/*", "http://*/*", "https://*/*"],
       "js": ["contentscript.js"],
-      "run_at": "document_idle",
+      "run_at": "document_start",
       "all_frames": true
     }
   ],

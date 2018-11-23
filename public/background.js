@@ -1,18 +1,29 @@
 /* global chrome */
 
-let data = null;
+const callbacks = {};
+
+let state = null;
+let url = null;
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  switch (request.id) {
+  switch (request.type) {
     case 'store':
-      data = request.payload;
+      state = request.payload;
       sendResponse(true);
-      break;
+
+      return false;
     case 'retrieve':
-      sendResponse(data);
-      break;
+      sendResponse({
+        state,
+        url,
+      });
+
+      url = null;
+      return false;
     case 'sign': {
-      debugger;
+      const id = new Date().getTime();
+
+      callbacks[id] = sendResponse;
 
       window.open(
         `index.html`,
@@ -20,14 +31,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         'width=360,height=600,status=no,scrollbars=yes,resizable=no',
       );
 
-      setTimeout(() => {
-        chrome.runtime.sendMessage(request);
-      }, 100);
+      url = `/${request.payload}${request.payload.indexOf('?') === -1 ? '?' : '&'}requestId=${id}`;
 
-      sendResponse(true);
-      break;
+      return true;
     }
+    case 'signComplete':
+      if (callbacks[request.payload.requestId])
+        callbacks[request.payload.requestId](request.payload.args);
+
+      return false;
     default:
       sendResponse(false);
+      return false;
   }
 });

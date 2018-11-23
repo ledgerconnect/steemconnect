@@ -34,7 +34,7 @@
           </div>
           <div class="mb-4">
             <router-link
-              :to="{ name: 'login', query: { redirect: this.uri.replace('steem://', '') }}"
+              :to="{ name: 'login', query: { redirect: this.$route.fullPath }}"
               class="btn btn-large mr-2 mb-2"
               v-if="!username"
             >
@@ -68,10 +68,38 @@
 </template>
 
 <script>
+/* global chrome */
 import * as steemuri from 'steem-uri';
 import { mapActions } from 'vuex';
 import { resolveTransaction, legacyUriToParsedSteemUri } from '@/helpers/client';
-import { isWeb, getErrorMessage } from '@/helpers/utils';
+import { isWeb, isChromeExtension, getErrorMessage } from '@/helpers/utils';
+
+const REQUEST_ID_PARAM = 'requestId';
+
+function signComplete(requestId, err, res) {
+  if (!isChromeExtension()) return;
+
+  chrome.runtime.sendMessage({
+    type: 'signComplete',
+    payload: {
+      requestId,
+      args: [err, res],
+    },
+  });
+}
+
+function buildSearchParams(route) {
+  const keys = Object.keys(route.query);
+
+  if (keys.length === 0) return '';
+
+  const params = keys
+    .filter(key => key !== REQUEST_ID_PARAM)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(route.query[key])}`)
+    .join('&');
+
+  return `?${params}`;
+}
 
 export default {
   data() {
@@ -83,7 +111,8 @@ export default {
       failed: false,
       errorMessage: '',
       isWeb: isWeb(),
-      uri: `steem://sign/${this.$route.params[0]}${window.location.search}`,
+      uri: `steem://sign/${this.$route.params[0]}${buildSearchParams(this.$route)}`,
+      requestId: this.$route.query[REQUEST_ID_PARAM],
     };
   },
   computed: {
@@ -140,16 +169,25 @@ export default {
           confirmation = await this.broadcast(signedTx);
           this.transactionId = confirmation.id;
           this.failed = false;
+
+          if (this.requestId) {
+            signComplete(this.requestId, null, confirmation);
+          }
         } catch (err) {
           this.errorMessage = getErrorMessage(err);
           console.error('Failed to broadcast transaction', err);
           this.transactionId = '';
           this.failed = true;
+
+          if (this.requestId) {
+            signComplete(this.requestId, err, null);
+          }
         }
       }
 
       // redirect to the callback if set
-      if (this.parsed.params.callback) {
+      // TODO: Handle Chrome extension & desktop app redirect.
+      if (this.parsed.params.callback && isWeb()) {
         window.location = steemuri.resolveCallback(this.parsed.params.callback, {
           sig,
           id: confirmation.id || undefined,
@@ -161,6 +199,12 @@ export default {
       }
     },
     handleReject() {
+      const requestId = this.$route.query[REQUEST_ID_PARAM];
+
+      if (requestId) {
+        signComplete(requestId, 'Request rejected', null);
+      }
+
       this.$router.push({ name: 'settings' });
     },
   },
