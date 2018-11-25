@@ -1,9 +1,10 @@
 <template>
   <div class="container-xs text-center">
-    <router-link to="/">
-      <span id="logo" class="iconfont icon-diff-modified mb-4"/>
-    </router-link>
-    <div class="width-full p-4 mb-4 Box">
+    <router-link
+      to="/"
+      class="logo-lg iconfont icon-steemconnect d-inline-block my-2"
+    />
+    <div class="width-full p-4 mb-2">
       <form @submit.prevent="submitForm" method="post" class="text-left">
         <p>Steem username</p>
         <div
@@ -51,7 +52,7 @@
         </button>
         <router-link
           :to="{ name: 'import', query: { redirect: getRedirectQuery() }}"
-          class="btn btn-large input-block ahref-btn mb-2"
+          class="btn btn-large input-block text-center mb-2"
         >
           Import account
         </router-link>
@@ -188,16 +189,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="less">
-@import '../vars';
-
-#logo {
-  font-size: 64px;
-  color: @primary-color;
-}
-
-.ahref-btn {
-  text-align: center;
-}
-</style>

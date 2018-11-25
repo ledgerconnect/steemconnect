@@ -5,7 +5,7 @@
         to="/"
         @click.native="toggleSidebar"
       >
-        <span id="logo" class="iconfont icon-diff-modified"/>
+        <span class="logo iconfont icon-steemconnect"/>
       </router-link>
     </div>
     <ul>
@@ -83,11 +83,6 @@ export default {
 
 <style scoped lang="less">
 @import '../vars';
-
-#logo {
-  font-size: 32px;
-  color: @primary-color;
-}
 
 .nav {
   z-index: @sidebar-zindex;
