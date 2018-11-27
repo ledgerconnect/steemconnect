@@ -31,7 +31,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         'width=360,height=600,status=no,scrollbars=yes,resizable=no',
       );
 
-      url = `/${request.payload}${request.payload.indexOf('?') === -1 ? '?' : '&'}requestId=${id}`;
+      const payload = request.payload.replace('steem://', '');
+
+      url = `/${payload}${payload.indexOf('?') === -1 ? '?' : '&'}requestId=${id}`;
 
       return true;
     }
