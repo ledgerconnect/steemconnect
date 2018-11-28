@@ -4,18 +4,8 @@
     :class="{ 'app--extension': isExtension }"
     v-show="initialized"
   >
-    <div
-      class="d-flex flex-row flex-items-center height-full"
-      v-if="isLight"
-    >
-      <router-view/>
-    </div>
-    <div class="d-flex flex-row" v-else>
-      <Sidebar/>
-      <div class="content width-full ml-sm-0" :class="{'content--nav-open': sidebarVisible}">
-        <router-view/>
-      </div>
-    </div>
+    <Sidebar v-if="showSidebar" />
+    <router-view class="height-full" :class="{'content': showSidebar, 'content--nav-open': sidebarVisible}" />
   </div>
 </template>
 
@@ -29,8 +19,8 @@ export default {
     };
   },
   computed: {
-    isLight() {
-      return this.$route.meta.layout === 'light';
+    showSidebar() {
+      return !this.$route.meta.hideSidebar;
     },
     isExtension() {
       return isChromeExtension();

@@ -1,5 +1,5 @@
 <template>
-  <div class="container-xs text-center">
+  <Center>
     <router-link
       to="/"
       class="logo-lg iconfont icon-steemconnect d-inline-block my-2"
@@ -108,7 +108,7 @@
       </form>
     </div>
     <Footer/>
-  </div>
+  </Center>
 </template>
 
 <script>

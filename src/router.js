@@ -11,6 +11,7 @@ const Keys = () => import(/* webpackChunkName: "keys" */ '@/views/Keys.vue');
 const Sign = () => import(/* webpackChunkName: "sign" */ '@/views/Sign.vue');
 const Settings = () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue');
 const About = () => import(/* webpackChunkName: "about" */ '@/views/About.vue');
+const Error404 = () => import(/* webpachChunkName: "error404" */ '@/views/404.vue');
 
 Vue.use(Router);
 
@@ -47,7 +48,7 @@ export default new Router({
       name: 'import',
       component: Import,
       meta: {
-        layout: 'light',
+        hideSidebar: true,
       },
     },
     {
@@ -56,7 +57,7 @@ export default new Router({
       beforeEnter: beforeLogin,
       component: Login,
       meta: {
-        layout: 'light',
+        hideSidebar: true,
       },
     },
     {
@@ -79,6 +80,13 @@ export default new Router({
       path: '/about',
       name: 'about',
       component: About,
+    },
+    {
+      path: '*',
+      component: Error404,
+      meta: {
+        hideSidebar: true,
+      },
     },
   ],
 });

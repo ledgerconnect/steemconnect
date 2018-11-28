@@ -1,11 +1,15 @@
 <template>
-  <div class="container-xs text-center">
+  <Center>
     <router-link
       to="/"
       class="logo-lg iconfont icon-steemconnect d-inline-block my-2"
     />
     <div class="width-full p-4 mb-2">
-      <form @submit.prevent="submitForm" method="post" class="text-left">
+      <form
+        @submit.prevent="submitForm"
+        method="post"
+        class="text-left"
+      >
         <p>Steem username</p>
         <div
           v-if="dirty.username && !!errors.username"
@@ -59,7 +63,7 @@
       </form>
     </div>
     <Footer/>
-  </div>
+  </Center>
 </template>
 
 <script>
