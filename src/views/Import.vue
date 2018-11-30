@@ -2,8 +2,11 @@
   <Center>
     <router-link
       to="/"
-      class="logo-lg iconfont icon-steemconnect d-inline-block my-2"
-    />
+      class="d-inline-block my-2 no-decoration"
+    >
+      <span class="logo iconfont icon-steemconnect"/>
+      <h4 class="m-0">steemconnect</h4>
+    </router-link>
     <div class="width-full p-4 mb-2">
       <form
         @submit.prevent="submitForm"
@@ -60,7 +63,7 @@
           </button>
         </div>
         <div v-if="step === 2">
-          <p>Encryption key</p>
+          <label for="key">Encryption key</label>
           <div
             v-if="dirty.key && !!errors.key"
             class="error mb-2"
@@ -69,12 +72,13 @@
           </div>
           <input
             key="key"
+            id="key"
             v-model.trim="key"
             type="password"
             class="form-control input-lg input-block mb-2"
             @blur="handleBlur('key')"
           />
-          <p>Confirm encryption key</p>
+          <label for="key-confirmation">Confirm encryption key</label>
           <div
            v-if="dirty.keyConfirmation && !!errors.keyConfirmation"
            class="error mb-2"
@@ -83,6 +87,7 @@
           </div>
           <input
             key="keyConfirmation"
+            id="key-confirmation"
             v-model.trim="keyConfirmation"
             type="password"
             class="form-control input-lg input-block mb-2"

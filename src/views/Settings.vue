@@ -10,7 +10,7 @@
         <select
           v-model="language"
           id="language"
-          class="form-select input-block mb-2"
+          class="form-select input-lg input-block mb-2"
           @blur="handleBlur('language')"
         >
           <option value="en">English</option>
@@ -20,7 +20,7 @@
         <select
           v-model="timeout"
           id="timeout"
-          class="form-select input-block mb-2"
+          class="form-select input-lg input-block mb-2"
           @blur="handleBlur('timeout')"
         >
           <option value="5">5 minutes</option>
@@ -33,7 +33,7 @@
         <select
           v-model="theme"
           id="theme"
-          class="form-select input-block mb-2"
+          class="form-select input-lg input-block mb-2"
           @blur="handleBlur('theme')"
         >
           <option value="white">White</option>

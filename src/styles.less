@@ -55,6 +55,7 @@ b,
 }
 
 label {
+  color: @heading-color;
   display: inline-block;
   font-size: 18px;
   font-weight: 500;
@@ -222,15 +223,82 @@ input {
 
 .logo {
   font-size: 32px;
-  color: @primary-color;
-}
-
-.logo-lg {
-  font-size: 54px;
-  color: @primary-color;
-  line-height: 1em;
+  color: @heading-color;
 }
 
 a.iconfont:hover {
   text-decoration: none;
+}
+
+.no-decoration, .no-decoration:hover {
+  text-decoration: none;
+}
+
+.btn {
+  background: transparent;
+  color: darken(@input-border-color, 10%);
+  border-color: @input-border-color;
+  box-shadow: none !important;
+
+  &:hover {
+    color: @heading-color;
+    background: transparent;
+  }
+}
+
+.btn-blue,
+.btn-blue:focus,
+.btn-blue:disabled,
+.btn-blue:hover {
+  color: #ffffff;
+  border-color: @primary-color;
+  background: @primary-color;
+
+  &:disabled {
+    opacity: 0.4;
+  }
+
+  &:hover {
+    border-color: darken(@primary-color, 10%);
+    background: darken(@primary-color, 10%);
+  }
+}
+
+.btn-danger,
+.btn-danger:focus,
+.btn-danger:disabled,
+.btn-danger:hover {
+  color: #ffffff;
+  border-color: @error-color;
+  background: @error-color;
+
+  &:hover {
+    border-color: darken(@error-color, 10%);
+    background: darken(@error-color, 10%);
+  }
+}
+
+.btn-success,
+.btn-success:focus,
+.btn-success:disabled,
+.btn-success:hover {
+  color: #ffffff;
+  border-color: @success-color;
+  background: @success-color;
+
+  &:hover {
+    border-color: darken(@success-color, 10%);
+    background: darken(@success-color, 10%);
+  }
+}
+
+.input-lg {
+  border-color: @input-border-color;
+  padding: 6px 12px;
+  min-height: 42px;
+  box-shadow: none !important;
+
+  &:focus {
+    border-color: @primary-color;
+  }
 }

@@ -42,7 +42,7 @@
             </router-link>
             <button
               type="submit"
-              class="btn btn-large btn-primary mr-2 mb-2"
+              class="btn btn-large btn-success mr-2 mb-2"
               :disabled="loading"
               @click="handleSubmit"
               v-else

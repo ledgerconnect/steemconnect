@@ -2,15 +2,18 @@
   <Center>
     <router-link
       to="/"
-      class="logo-lg iconfont icon-steemconnect d-inline-block my-2"
-    />
+      class="d-inline-block my-2 no-decoration"
+    >
+      <span class="logo iconfont icon-steemconnect"/>
+      <h4 class="m-0">steemconnect</h4>
+    </router-link>
     <div class="width-full p-4 mb-2">
       <form
         @submit.prevent="submitForm"
         method="post"
         class="text-left"
       >
-        <p>Steem username</p>
+        <label for="username">Steem username</label>
         <div
           v-if="dirty.username && !!errors.username"
           class="error mb-2"
@@ -18,8 +21,9 @@
           {{ errors.username }}
         </div>
         <select
+          id="username"
           v-model.trim="username"
-          class="form-select input-block mb-2"
+          class="form-select input-lg input-block mb-2"
           autocorrect="off"
           autocapitalize="none"
           @blur="handleBlur('username')"
@@ -32,7 +36,7 @@
             {{ user }}
           </option>
         </select>
-        <p>Encryption key</p>
+        <label for="password">Encryption key</label>
         <div
           v-if="dirty.key && !!errors.key"
           class="error mb-2"
@@ -40,6 +44,7 @@
           {{ errors.key }}
         </div>
         <input
+          id="password"
           v-model.trim="key"
           type="password"
           class="form-control input-lg input-block mb-2"
