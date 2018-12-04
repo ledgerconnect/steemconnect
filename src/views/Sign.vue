@@ -199,13 +199,15 @@ export default {
       }
     },
     handleReject() {
-      const requestId = this.$route.query[REQUEST_ID_PARAM];
-
-      if (requestId) {
-        signComplete(requestId, 'Request rejected', null);
+      if (this.requestId) {
+        signComplete(this.requestId, 'Request rejected', null);
       }
 
-      this.$router.push({ name: 'settings' });
+      this.$router.push({ name: 'dashboard' });
+
+      if (isChromeExtension()) {
+        window.close();
+      }
     },
   },
 };
