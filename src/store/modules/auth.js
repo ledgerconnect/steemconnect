@@ -36,8 +36,6 @@ const actions = {
     const result = await client.database.getAccounts([username]);
     commit('saveAccount', { result: result[0], keys });
 
-    await Promise.all([dispatch('getDynamicGlobalProperties')]);
-
     idleDetector.start(rootState.settings.timeout * 60 * 1000, () => {
       idleDetector.stop();
       dispatch('logout');

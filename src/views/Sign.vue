@@ -71,8 +71,15 @@
 /* global chrome */
 import * as steemuri from 'steem-uri';
 import { mapActions } from 'vuex';
-import { resolveTransaction, legacyUriToParsedSteemUri } from '@/helpers/client';
-import { isWeb, isChromeExtension, getErrorMessage } from '@/helpers/utils';
+import { resolveTransaction } from '@/helpers/client';
+import {
+  isWeb,
+  isChromeExtension,
+  getErrorMessage,
+  getVestsToSP,
+  legacyUriToParsedSteemUri,
+  processTransaction,
+} from '@/helpers/utils';
 
 const REQUEST_ID_PARAM = 'requestId';
 
@@ -119,6 +126,11 @@ export default {
     username() {
       return this.$store.state.auth.username;
     },
+    config() {
+      return {
+        vestsToSP: getVestsToSP(this.$store.state.settings.properties),
+      };
+    },
   },
   mounted() {
     this.parseUri(this.uri);
@@ -130,14 +142,13 @@ export default {
       try {
         parsed = steemuri.decode(uri);
       } catch (err) {
-        console.error('Failed to decode URI', err);
         parsed = legacyUriToParsedSteemUri(uri);
         if (!parsed) {
           this.uriIsValid = false;
         }
       }
 
-      this.parsed = parsed;
+      this.parsed = processTransaction(parsed, this.config);
     },
     openUriScheme() {
       document.location = this.uri;
@@ -185,7 +196,6 @@ export default {
         }
       }
 
-      // redirect to the callback if set
       // TODO: Handle Chrome extension & desktop app redirect.
       if (this.parsed.params.callback && isWeb()) {
         window.location = steemuri.resolveCallback(this.parsed.params.callback, {

@@ -1,26 +1,34 @@
 <template>
-  <div
-    id="app"
-    :class="{ 'app--extension': isExtension }"
-    v-show="initialized"
-  >
-    <Sidebar v-if="showSidebar" />
-    <router-view class="height-full" :class="{'content': showSidebar, 'content--nav-open': sidebarVisible}" />
+  <div id="app" :class="{ 'app--extension': isExtension }">
+    <template v-if="loaded">
+      <Sidebar v-if="showSidebar"/>
+      <router-view
+        class="height-full"
+        :class="{'content': showSidebar, 'content--nav-open': sidebarVisible}"
+      />
+    </template>
+    <VueLoadingIndicator v-else-if="showLoading" class="overlay fixed primary big"/>
   </div>
 </template>
 
 <script>
 import { isChromeExtension } from '@/helpers/utils';
 
+const LOADING_ICON_TIMEOUT = 300;
+
 export default {
   data() {
     return {
       initialized: false,
+      showLoading: false,
     };
   },
   computed: {
+    loaded() {
+      return !!this.$store.state.settings.properties.head_block_number;
+    },
     showSidebar() {
-      return !this.$route.meta.hideSidebar;
+      return !this.$route.meta.hideSidebar && this.initialized;
     },
     isExtension() {
       return isChromeExtension();
@@ -28,6 +36,17 @@ export default {
     sidebarVisible() {
       return this.$store.state.ui.sidebarVisible;
     },
+  },
+  created() {
+    const loadingTimeout = setTimeout(() => {
+      this.showLoading = true;
+    }, LOADING_ICON_TIMEOUT);
+
+    this.$store.dispatch('getDynamicGlobalProperties').then(() => {
+      clearTimeout(loadingTimeout);
+
+      this.showLoading = false;
+    });
   },
   beforeUpdate() {
     if (this.initialized) return;

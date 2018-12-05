@@ -5,7 +5,7 @@
     "schema": {
       "from": {
         "type": "account",
-        "default": "__signer"
+        "defaultValue": "__signer"
       },
       "to": {
         "type": "account"
@@ -15,7 +15,7 @@
       },
       "memo": {
         "type": "string",
-        "default": ""
+        "defaultValue": ""
       }
     }
   },
@@ -24,7 +24,7 @@
     "schema": {
       "delegator": {
         "type": "account",
-        "default": "__signer"
+        "defaultValue": "__signer"
       },
       "delegatee": {
         "type": "account"
@@ -39,7 +39,7 @@
     "schema": {
       "from": {
         "type": "account",
-        "default": "__signer"
+        "defaultValue": "__signer"
       },
       "to": {
         "type": "account"
@@ -54,7 +54,7 @@
     "schema": {
       "account": {
         "type": "account",
-        "default": "__signer"
+        "defaultValue": "__signer"
       },
       "vesting_shares": {
         "type": "amount"
@@ -66,7 +66,7 @@
     "schema": {
       "owner": {
         "type": "account",
-        "default": "__signer"
+        "defaultValue": "__signer"
       },
       "requestid": {
         "type": "int"
@@ -81,14 +81,14 @@
     "schema": {
       "account": {
         "type": "account",
-        "default": "__signer"
+        "defaultValue": "__signer"
       },
       "witness": {
         "type": "account"
       },
       "approve": {
         "type": "bool",
-        "default": true
+        "defaultValue": true
       }
     }
   },
@@ -97,7 +97,7 @@
     "schema": {
       "account": {
         "type": "account",
-        "default": "__signer"
+        "defaultValue": "__signer"
       },
       "proxy": {
         "type": "account"
@@ -109,15 +109,15 @@
     "schema": {
       "creator": {
         "type": "account",
-        "default": "__signer"
+        "defaultValue": "__signer"
       },
       "fee": {
         "type": "amount",
-        "default": "0.000 STEEM"
+        "defaultValue": "0.000 STEEM"
       },
       "extensions": {
         "type": "array",
-        "default": []
+        "defaultValue": []
       }
     }
   },
@@ -126,7 +126,7 @@
     "schema": {
       "voter": {
         "type": "account",
-        "default": "__signer"
+        "defaultValue": "__signer"
       },
       "author": {
         "type": "account"
@@ -136,7 +136,7 @@
       },
       "weight": {
         "type": "int",
-        "default": 10000
+        "defaultValue": 10000
       }
     }
   },
@@ -145,7 +145,7 @@
     "schema": {
       "owner": {
         "type": "account",
-        "default": "__signer"
+        "defaultValue": "__signer"
       },
       "orderid": {
         "type": "int"
@@ -169,7 +169,7 @@
     "schema": {
       "owner": {
         "type": "account",
-        "default": "__signer"
+        "defaultValue": "__signer"
       },
       "orderid": {
         "type": "int"
@@ -193,7 +193,7 @@
     "schema": {
       "owner": {
         "type": "account",
-        "default": "__signer"
+        "defaultValue": "__signer"
       },
       "orderid": {
         "type": "int"
@@ -205,7 +205,7 @@
     "schema": {
       "account": {
         "type": "account",
-        "default": "__signer"
+        "defaultValue": "__signer"
       },
       "reward_steem": {
         "type": "amount"
@@ -223,14 +223,14 @@
     "schema": {
       "parent_author": {
         "type": "account",
-        "default": ""
+        "defaultValue": ""
       },
       "parent_permlink": {
         "type": "string"
       },
       "author": {
         "type": "account",
-        "default": "__signer"
+        "defaultValue": "__signer"
       },
       "permlink": {
         "type": "string"

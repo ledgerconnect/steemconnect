@@ -31,11 +31,10 @@ const mutations = {
 };
 
 const actions = {
-  getDynamicGlobalProperties: ({ commit }) => {
+  getDynamicGlobalProperties: ({ commit }) =>
     client.database.call('get_dynamic_global_properties', []).then(result => {
       commit('saveProperties', result);
-    });
-  },
+    }),
   getConfig: async ({ commit }) => {
     const config = await client.database.call('get_config', []);
     commit('saveConfig', config);
