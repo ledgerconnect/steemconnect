@@ -1,9 +1,40 @@
 /* global chrome */
 
+const WINDOW_WIDTH = 360;
+const WINDOW_HEIGHT = 600;
+
 const callbacks = {};
 
 let state = null;
 let url = null;
+
+const popupIds = [];
+
+function openPopup() {
+  popupIds.forEach(id => chrome.windows.remove(id));
+
+  chrome.windows.getCurrent(chromeWindow => {
+    const popupProperties = {
+      state: 'normal',
+      width: WINDOW_WIDTH,
+      height: WINDOW_HEIGHT,
+      left: chromeWindow.left + chromeWindow.width - WINDOW_WIDTH,
+      top: chromeWindow.top,
+    };
+
+    chrome.windows.create(
+      {
+        url: 'index.html',
+        type: 'popup',
+        ...popupProperties,
+      },
+      ({ id }) => {
+        popupIds.push(id);
+        setTimeout(() => chrome.windows.update(id, popupProperties), 300);
+      },
+    );
+  });
+}
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.type) {
@@ -21,19 +52,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       url = null;
       return false;
     case 'sign': {
-      const id = new Date().getTime();
+      const requestId = new Date().getTime();
 
-      callbacks[id] = sendResponse;
-
-      window.open(
-        `index.html`,
-        'extension_popup',
-        'width=360,height=600,status=no,scrollbars=yes,resizable=no',
-      );
+      callbacks[requestId] = sendResponse;
 
       const payload = request.payload.replace('steem://', '');
 
-      url = `/${payload}${payload.indexOf('?') === -1 ? '?' : '&'}requestId=${id}`;
+      url = `/${payload}${payload.indexOf('?') === -1 ? '?' : '&'}requestId=${requestId}`;
+
+      openPopup();
 
       return true;
     }
