@@ -213,10 +213,10 @@ export default {
         signComplete(this.requestId, 'Request rejected', null);
       }
 
-      this.$router.push({ name: 'dashboard' });
-
       if (isChromeExtension()) {
         window.close();
+      } else {
+        this.$router.push({ name: 'dashboard' });
       }
     },
   },

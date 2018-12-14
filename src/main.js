@@ -64,19 +64,22 @@ getPersistedData(({ store, url }) => {
     store,
     render: h => h(App),
     created() {
+      const { savedPath } = this.$store.state.ui;
+
       if (!isChromeExtension()) return;
+
+      if (url) {
+        this.$router.push(url);
+        return;
+      }
+
+      if (savedPath) {
+        this.$router.push(savedPath);
+      }
 
       this.$router.afterEach(to => {
         this.$store.dispatch('savePath', to.path);
       });
-
-      const { savedPath } = this.$store.state.ui;
-
-      if (url) {
-        this.$router.push(url);
-      } else if (savedPath) {
-        this.$router.push(savedPath);
-      }
     },
   }).$mount('#app');
 });
