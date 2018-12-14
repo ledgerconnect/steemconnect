@@ -2,10 +2,7 @@
   <div id="app" :class="{ 'app--extension': isExtension }">
     <template v-if="loaded">
       <Sidebar v-if="showSidebar"/>
-      <router-view
-        class="height-full"
-        :class="{'content': showSidebar, 'content--nav-open': sidebarVisible}"
-      />
+      <router-view :class="{'content': showSidebar, 'content--nav-open': sidebarVisible}" />
     </template>
     <VueLoadingIndicator v-else-if="showLoading" class="overlay fixed primary big"/>
   </div>
