@@ -151,7 +151,10 @@ export default {
       this.parsed = processTransaction(parsed, this.config);
     },
     openUriScheme() {
-      document.location = this.uri;
+      /* eslint-disable no-underscore-dangle */
+      if (window._steemconnect) window._steemconnect.sign(this.uri);
+      else document.location = this.uri;
+      /* eslint-enable no-underscore-rangle */
     },
     async handleSubmit() {
       this.loading = true;
