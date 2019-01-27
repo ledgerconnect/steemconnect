@@ -20,7 +20,7 @@ export const authenticate = () =>
     dispatch(authenticateRequest());
     const token = localStorage.getItem('token');
     if (token) {
-      fetch('/api/me', {
+      fetch('https://api.steemconnect.com/api/me', {
         method: 'POST',
         headers: new Headers({ Authorization: token }),
       })

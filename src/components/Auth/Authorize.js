@@ -68,7 +68,7 @@ export default class Authorize extends Component {
     if (scope.split(',').length === 0) {
       scopes = config.authorized_operations;
     }
-    const app = await fetch(`/api/apps/@${clientId}`)
+    const app = await fetch(`https://api.steemconnect.com/api/apps/@${clientId}`)
       .then(res => res.json());
     this.setState({ scopes, app, step: 1 });
   }

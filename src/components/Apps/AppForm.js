@@ -68,7 +68,7 @@ class AppForm extends Component {
   confirm = () => {
     const { intl } = this.props;
     const { data } = this.state;
-    fetch(`/api/token/revoke/app/${data.client_id}`, {
+    fetch(`https://api.steemconnect.com/api/token/revoke/app/${data.client_id}`, {
       headers: new Headers({
         Authorization: this.props.auth.token,
       }),

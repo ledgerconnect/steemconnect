@@ -211,6 +211,7 @@ export default class Sign extends Component {
               this.setState({ success: result, step: 'result' });
             }
           } else {
+            // eslint-disable-next-line no-console
             console.error(err);
             this.setState({ error: err, step: 'result' });
           }
@@ -230,6 +231,7 @@ export default class Sign extends Component {
             this.setState({ success: result, step: 'result' });
           }
         } else {
+          // eslint-disable-next-line no-console
           console.error(err);
           this.setState({ error: err, step: 'result' });
         }

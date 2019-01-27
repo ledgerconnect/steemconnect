@@ -26,7 +26,7 @@ export default class MyApps extends Component {
   componentWillMount() {
     this.setState({ isLoading: true });
 
-    fetch('/api/apps/me', {
+    fetch('https://api.steemconnect.com/api/apps/me', {
       headers: new Headers({
         Authorization: this.props.auth.token,
       }),

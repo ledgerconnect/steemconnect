@@ -4,7 +4,7 @@ import { decode } from '@steemit/steem-js/lib/auth/memo';
 import { key_utils } from '@steemit/steem-js/lib/auth/ecc'; // eslint-disable-line camelcase
 
 export const login = ({ username, wif, role = 'posting' }, cb) => {
-  fetch(`/api/login/challenge?username=${username}&role=${role}`)
+  fetch(`https://api.steemconnect.com/api/login/challenge?username=${username}&role=${role}`)
     .then(res => res.json())
     .then((data) => {
       let token;
@@ -53,7 +53,7 @@ export const addPostingAuthority = ({ username, wif, clientId }, cb) => {
 
 export const authorize = ({ clientId, scope, responseType = 'token' }, cb) => {
   const token = localStorage.getItem('token');
-  fetch(`/api/oauth2/authorize?client_id=${clientId}&scope=${scope}&response_type=${responseType}`, {
+  fetch(`https://api.steemconnect.com/api/oauth2/authorize?client_id=${clientId}&scope=${scope}&response_type=${responseType}`, {
     headers: new Headers({ Authorization: token }),
   })
     .then(res => res.json())

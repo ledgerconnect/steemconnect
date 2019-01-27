@@ -78,7 +78,7 @@ class CreateApp extends React.Component {
           await sleep(5000);
 
           /** Send request to server for create app */
-          fetch(`/api/apps/@${clientId}`, {
+          fetch(`https://api.steemconnect.com/api/apps/@${clientId}`, {
             headers: new Headers({
               Authorization: this.props.auth.token,
             }),

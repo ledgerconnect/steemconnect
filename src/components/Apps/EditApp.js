@@ -32,7 +32,7 @@ class EditApp extends Component {
     const { clientId } = this.state;
     this.setState({ isLoading: true });
 
-    fetch(`/api/apps/@${clientId}`, {
+    fetch(`https://api.steemconnect.com/api/apps/@${clientId}`, {
       headers: new Headers({
         Authorization: this.props.auth.token,
       }),
@@ -51,7 +51,7 @@ class EditApp extends Component {
     const { clientId } = this.state;
     const { intl } = this.props;
     this.setState({ isLoading: true });
-    fetch(`/api/apps/@${clientId}`, {
+    fetch(`https://api.steemconnect.com/api/apps/@${clientId}`, {
       method: 'PUT',
       headers: new Headers({
         Accept: 'application/json, text/plain, */*',

@@ -23,7 +23,7 @@ class AuthorizedApps extends Component {
   }
 
   async componentWillMount() {
-    const result = await fetch('/api/apps/authorized', {
+    const result = await fetch('https://api.steemconnect.com/api/apps/authorized', {
       headers: new Headers({
         Authorization: this.props.auth.token,
       }),
@@ -47,7 +47,7 @@ class AuthorizedApps extends Component {
 
   confirm = () => {
     const { intl } = this.props;
-    fetch('/api/token/revoke/user', {
+    fetch('https://api.steemconnect.com/api/token/revoke/user', {
       headers: new Headers({
         Authorization: this.props.auth.token,
       }),

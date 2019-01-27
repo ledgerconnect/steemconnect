@@ -17,7 +17,7 @@ export default class Apps extends Component {
 
   componentWillMount() {
     this.setState({ isLoading: true });
-    fetch('/api/apps')
+    fetch('https://api.steemconnect.com/api/apps')
       .then(res => res.json())
       .then((apps) => {
         this.setState({

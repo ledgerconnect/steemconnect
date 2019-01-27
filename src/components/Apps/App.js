@@ -40,7 +40,7 @@ class App extends Component {
     const { clientId } = this.state;
     this.setState({ isLoading: true });
 
-    fetch(`/api/apps/@${clientId}`, {
+    fetch(`https://api.steemconnect.com/api/apps/@${clientId}`, {
       headers: new Headers({
         Authorization: this.props.auth.token,
       }),
@@ -76,7 +76,7 @@ class App extends Component {
 
   confirm = () => {
     const { intl } = this.props;
-    fetch(`/api/token/revoke/user/${this.state.clientId}`, {
+    fetch(`https://api.steemconnect.com/api/token/revoke/user/${this.state.clientId}`, {
       headers: new Headers({
         Authorization: this.props.auth.token,
       }),
@@ -101,7 +101,7 @@ class App extends Component {
   confirmResetSecret = () => {
     const { clientId, app } = this.state;
     const { intl, auth } = this.props;
-    fetch(`/api/apps/@${clientId}/reset-secret`, {
+    fetch(`https://api.steemconnect.com/api/apps/@${clientId}/reset-secret`, {
       method: 'PUT',
       headers: new Headers({
         Accept: 'application/json, text/plain, */*',
