@@ -1,7 +1,5 @@
 const express = require('express');
 const { authenticate, verifyPermissions } = require('../helpers/middleware');
-const { encode } = require('@steemit/steem-js/lib/auth/memo');
-const { issueUserToken } = require('../helpers/token');
 const { getUserMetadata, updateUserMetadata } = require('../helpers/metadata');
 const { getErrorMessage } = require('../helpers/operation');
 const { isOperationAuthor } = require('../helpers/operation');
@@ -140,60 +138,6 @@ router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, re
       }
     );
   }
-});
-
-router.all('/login/challenge', async (req, res) => {
-  const username = req.query.username;
-  const role = ['posting', 'active', 'owner'].includes(req.query.role) ? req.query.role : 'posting';
-  const token = issueUserToken(username);
-  let accounts;
-  try {
-    accounts = await req.steem.api.getAccountsAsync([username]);
-  } catch (err) {
-    req.log.error(err, 'challenge: SteemAPI request failed', username);
-    res.status(501).send('SteemAPI request failed');
-    return;
-  }
-  const keyAuths = accounts[0][role].key_auths;
-  const codes = keyAuths.map(keyAuth =>
-    encode(process.env.BROADCASTER_POSTING_WIF, keyAuth[0], `#${token}`)
-  );
-  res.json({
-    username,
-    codes,
-  });
-  return;
-});
-
-/**
-  Revoke app tokens for a user
-  If appId is not provided all the tokens for all the apps are revoked
-*/
-router.all('/token/revoke/:type/:clientId?', authenticate('user'), async (req, res) => {
-  const { clientId, type } = req.params;
-  const { user } = req;
-  const where = {};
-
-  if (type === 'app' && clientId) {
-    const app = await req.db.apps.findOne({ where: { client_id: clientId } });
-    if (app.owner === user) {
-      where.client_id = clientId;
-    }
-  } else if (type === 'user') {
-    where.user = user;
-    if (clientId) {
-      where.client_id = clientId;
-    }
-  }
-
-  if (
-    (type === 'user' && (where.user || where.client_id)) ||
-    (type === 'app' && where.client_id)
-  ) {
-    await req.db.tokens.destroy({ where });
-  }
-
-  res.json({ success: true });
 });
 
 module.exports = router;
