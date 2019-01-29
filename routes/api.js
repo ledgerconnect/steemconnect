@@ -1,6 +1,8 @@
 const express = require('express');
+const debug = require('debug')('sc2:server');
 const { authenticate, verifyPermissions } = require('../helpers/middleware');
 const { getUserMetadata, updateUserMetadata } = require('../helpers/metadata');
+const { issueAppToken, issueAppRefreshToken } = require('../helpers/token');
 const { getErrorMessage } = require('../helpers/operation');
 const { isOperationAuthor } = require('../helpers/operation');
 const config = require('../config.json');
@@ -138,6 +140,27 @@ router.post('/broadcast', authenticate('app'), verifyPermissions, async (req, re
       }
     );
   }
+});
+
+/** Request app access token */
+router.all('/oauth2/token', authenticate(['code', 'refresh']), async (req, res) => {
+  debug(`Issue app token for user @${req.user} using @${req.proxy} proxy.`);
+  const accessToken = await issueAppToken(req.proxy, req.user, req.scope);
+  const payload = {
+    access_token: accessToken,
+    expires_in: config.token_expiration,
+    username: req.user,
+  };
+  if (req.scope.includes('offline')) {
+    payload.refresh_token = issueAppRefreshToken(req.proxy, req.user, req.scope);
+  }
+  res.json(payload);
+});
+
+/** Revoke app access token */
+router.all('/oauth2/token/revoke', authenticate('app'), async (req, res) => {
+  await req.db.tokens.destroy({ where: { token: req.token } });
+  res.json({ success: true });
 });
 
 module.exports = router;

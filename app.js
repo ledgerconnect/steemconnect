@@ -96,7 +96,6 @@ app.use(strategy);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api', require('./routes/api'));
-app.use('/', require('./routes/oauth2'));
 app.use('/', require('./routes'));
 
 // catch 404 and forward to error handler

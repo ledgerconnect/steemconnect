@@ -57,7 +57,7 @@ export default class Authorize extends Component {
   }
 
   async componentWillMount() {
-    const { scope, clientId } = this.state;
+    const { scope, clientId, redirectUri } = this.state;
     if (scope !== '') {
       if (difference(scope.split(','), config.authorized_operations.concat(['login', 'offline'])).length > 0) {
         this.setState({ step: 4 });
@@ -68,9 +68,17 @@ export default class Authorize extends Component {
     if (scope.split(',').length === 0) {
       scopes = config.authorized_operations;
     }
-    const app = await fetch(`https://api.steemconnect.com/api/apps/@${clientId}`)
-      .then(res => res.json());
-    this.setState({ scopes, app, step: 1 });
+    let app = null;
+    try {
+      app = await fetch(`https://api.steemconnect.com/api/apps/@${clientId}`).then(res => res.json());
+    } catch (e) {
+      console.log('The app does not exist');
+    }
+    if (!app || !app.redirect_uris.includes(redirectUri)) {
+      window.location.href = '/404';
+    } else {
+      this.setState({ scopes, app, step: 1 });
+    }
   }
 
   authorize = (auth) => {
