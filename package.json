@@ -82,7 +82,11 @@
   "homepage": "https://steemconnect.com",
   "description": "Signer app for Steem",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/steemscript/steemsign.git"
+  },
   "bugs": {
-    "url": "https://github.com/bonuschain/steemsign/issues"
+    "url": "https://github.com/steemscript/steemsign/issues"
   }
 }

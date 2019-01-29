@@ -4,7 +4,7 @@
       <Sidebar v-if="showSidebar"/>
       <router-view :class="{'content': showSidebar, 'content--nav-open': sidebarVisible}" />
     </template>
-    <VueLoadingIndicator v-else-if="showLoading" class="overlay fixed primary big"/>
+    <VueLoadingIndicator v-else-if="showLoading" class="overlay fixed big"/>
   </div>
 </template>
 

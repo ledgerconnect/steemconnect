@@ -4,6 +4,7 @@ import store from '@/store';
 import { isWeb } from '@/helpers/utils';
 import { hasAccounts } from '@/helpers/keychain';
 
+const Home = () => import(/* webpackChunkName: "home" */ '@/views/Home.vue');
 const Import = () => import(/* webpackChunkName: "import" */ '@/views/Import.vue');
 const Login = () => import(/* webpackChunkName: "login" */ '@/views/Login.vue');
 const Dashboard = () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue');
@@ -39,9 +40,12 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'dashboard',
-      beforeEnter: requireAuth,
-      component: Dashboard,
+      name: isWeb() ? 'home' : 'dashboard',
+      beforeEnter: isWeb() ? null : requireAuth,
+      component: isWeb() ? Home : Dashboard,
+      meta: {
+        hideSidebar: isWeb(),
+      },
     },
     {
       path: '/import',
