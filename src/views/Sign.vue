@@ -7,7 +7,7 @@
           <div class="mb-3">
             We recommend you to use the SteemConnect desktop app.
             If you don't have this, you can download it from the
-            <a href="https://steemconnect.com" target="_blank">official site</a>.
+            <a :href="pkg.homepage" target="_blank">official site</a>.
           </div>
           <button class="btn btn-blue" @click="openUriScheme">
             Open desktop app
@@ -72,6 +72,7 @@
 import * as steemuri from 'steem-uri';
 import { mapActions } from 'vuex';
 import { resolveTransaction } from '@/helpers/client';
+import pkg from '@/../package.json';
 import {
   isWeb,
   isChromeExtension,
@@ -111,6 +112,7 @@ function buildSearchParams(route) {
 export default {
   data() {
     return {
+      pkg,
       parsed: null,
       uriIsValid: true,
       loading: false,

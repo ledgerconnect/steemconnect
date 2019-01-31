@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="120px" height="120px" viewBox="0 0 120 120" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <g id="Desktop-HD" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <rect fill="#FFFFFF" x="0" y="0" width="120" height="120"></rect>
-        <circle id="Oval-3" fill="#D6D6D6" cx="60.5" cy="60.5" r="1.5"></circle>
+        <circle fill="#D6D6D6" cx="60.5" cy="60.5" r="1.5"></circle>
     </g>
 </svg>

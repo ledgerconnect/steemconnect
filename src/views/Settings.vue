@@ -6,6 +6,7 @@
         Settings has been saved.
       </div>
       <form @submit.prevent="handleSubmit" class="container-sm mx-0 mb-4">
+        <!--
         <label for="language">Language</label>
         <select
           v-model="language"
@@ -16,6 +17,7 @@
           <option value="en">English</option>
           <option value="fr">Français</option>
         </select>
+        -->
         <label for="timeout">Session timeout in</label>
         <select
           v-model="timeout"
@@ -29,6 +31,7 @@
           <option value="40">40 minutes</option>
           <option value="60">1 hour</option>
         </select>
+        <!--
         <label for="theme">Theme</label>
         <select
           v-model="theme"
@@ -39,6 +42,7 @@
           <option value="white">White</option>
           <option value="black">Black</option>
         </select>
+        -->
         <label for="address">Node address</label>
         <input
           v-model.trim="address"

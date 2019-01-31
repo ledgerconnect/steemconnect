@@ -5,7 +5,7 @@
       <h4 class="m-0">steemconnect</h4>
       <div class="mt-4 mb-7">
         <h1 class="mb-6">You're in control of your keys.</h1>
-        <div class="columns mb-6">
+        <div class="columns mb-6 hide-sm">
           <div class="column one-half v-align-middle">
             <a
               :href="pkg.repository.url.replace('.git', '/releases')"

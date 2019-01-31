@@ -2,6 +2,13 @@
   "name": "steemconnect",
   "version": "0.1.0",
   "description": "Signer app for Steem",
+  "icons": {
+    "16": "icon16.png",
+    "32": "favicon.png",
+    "48": "icon48.png",
+    "128": "icon128.png",
+    "256": "icon.png"
+  },
   "browser_action": {
     "default_icon": "icon.png",
     "default_popup": "index.html"
