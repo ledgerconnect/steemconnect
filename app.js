@@ -6,16 +6,7 @@ const http = require('http');
 const https = require('https');
 const csp = require('express-csp-header');
 const cors = require('cors');
-const steem = require('@steemit/steem-js');
-const db = require('./db/models');
-const { strategy } = require('./helpers/middleware');
 const logger = require('./helpers/logger');
-
-if (process.env.STEEMD_URL_SERVER) {
-  steem.api.setOptions({ url: process.env.STEEMD_URL_SERVER });
-} else if (process.env.STEEMD_URL) {
-  steem.api.setOptions({ url: process.env.STEEMD_URL });
-}
 
 http.globalAgent.maxSockets = Infinity;
 https.globalAgent.maxSockets = Infinity;
@@ -81,22 +72,15 @@ app.set('view engine', 'hbs');
 app.enable('trust proxy');
 app.disable('x-powered-by');
 
-app.use((req, res, next) => {
-  req.steem = steem;
-  req.db = db;
-  next();
-});
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
-app.use(strategy);
-
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api', require('./routes/api'));
-app.use('/', require('./routes'));
+app.get('/*', (req, res) => {
+  res.render('index', { title: 'SteemConnect' });
+});
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
