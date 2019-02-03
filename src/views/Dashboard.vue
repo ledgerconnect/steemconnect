@@ -2,10 +2,17 @@
   <div>
     <Header title="steemconnect" />
     <div class="p-4 after-header">
-      <div v-if="username" class="container-sm mx-auto pt-6 text-center">
-        <span class="iconfont icon-zap"/>
-        <h2 class="m-0 mb-4">Ready</h2>
-        <p>Your account <b>{{ username }}</b> is unlocked, ready to sign transaction(s).</p>
+      <div v-if="username" class="container-sm mx-auto pt-4 text-center">
+        <div class="mb-3">
+          <Avatar :username="username" :size="80"/>
+          <h4>{{ username }}</h4>
+        </div>
+        <p>Your account is unlocked, ready to sign transaction(s).</p>
+        <p>
+          <router-link to="/login">
+            Switch account
+          </router-link>
+        </p>
       </div>
     </div>
   </div>
@@ -20,12 +27,3 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="less">
-@import '../vars';
-
-.icon-zap {
-  font-size: 64px;
-  color: @primary-color;
-}
-</style>

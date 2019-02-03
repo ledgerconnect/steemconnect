@@ -9,12 +9,12 @@
         <p v-if="pkg.license">License: {{pkg.license}}</p>
         <p v-if="pkg.homepage">
           <a :href="pkg.homepage" target="_blank">
-            Website
+            <span class="iconfont icon-link-external"/> Website
           </a>
         </p>
         <p v-if="pkg.bugs">
           <a :href="pkg.bugs.url" target="_blank">
-            Report a bug
+            <span class="iconfont icon-mark-github"/> Report a bug
           </a>
         </p>
       </div>
