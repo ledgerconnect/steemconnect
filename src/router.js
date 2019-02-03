@@ -12,7 +12,7 @@ const Keys = () => import(/* webpackChunkName: "keys" */ '@/views/Keys.vue');
 const Sign = () => import(/* webpackChunkName: "sign" */ '@/views/Sign.vue');
 const Settings = () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue');
 const About = () => import(/* webpackChunkName: "about" */ '@/views/About.vue');
-const Error404 = () => import(/* webpachChunkName: "error404" */ '@/views/404.vue');
+const Error404 = () => import(/* webpachChunkName: "error-404" */ '@/views/404.vue');
 
 Vue.use(Router);
 
@@ -43,26 +43,17 @@ export default new Router({
       name: isWeb() ? 'home' : 'dashboard',
       beforeEnter: isWeb() ? null : requireAuth,
       component: isWeb() ? Home : Dashboard,
-      meta: {
-        hideSidebar: isWeb(),
-      },
     },
     {
       path: '/import',
       name: 'import',
       component: Import,
-      meta: {
-        hideSidebar: true,
-      },
     },
     {
       path: '/login',
       name: 'login',
       beforeEnter: beforeLogin,
       component: Login,
-      meta: {
-        hideSidebar: true,
-      },
     },
     {
       path: '/keys',
@@ -88,9 +79,7 @@ export default new Router({
     {
       path: '*',
       component: Error404,
-      meta: {
-        hideSidebar: true,
-      },
+      name: 'error-404',
     },
   ],
 });

@@ -2,7 +2,7 @@
   <div>
     <Header title="New unsigned transaction" />
     <div v-if="parsed && uriIsValid" class="p-4 after-header">
-      <div class="container-sm mx-0">
+      <div class="container-sm mx-auto">
         <div v-if="isWeb && !failed && !transactionId" class="flash mb-4 overflow-hidden">
           <div class="mb-3">
             We recommend you to use the SteemConnect desktop app.
@@ -60,7 +60,7 @@
       </div>
     </div>
     <div class="p-4 after-header" v-else>
-      <div class="container-sm mx-0 flash flash-error mb-4">
+      <div class="container-sm mx-auto flash flash-error mb-4">
         Oops, something went wrong. The signing URL provided is invalid.
       </div>
     </div>
