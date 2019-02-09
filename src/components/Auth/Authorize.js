@@ -56,7 +56,7 @@ export default class Authorize extends Component {
     };
   }
 
-  async componentWillMount() {
+  componentWillMount() {
     const { scope, clientId, redirectUri } = this.state;
     if (scope !== '') {
       if (difference(scope.split(','), config.authorized_operations.concat(['login', 'offline'])).length > 0) {
@@ -68,17 +68,20 @@ export default class Authorize extends Component {
     if (scope.split(',').length === 0) {
       scopes = config.authorized_operations;
     }
-    let app = null;
-    try {
-      app = await fetch(`https://api.steemconnect.com/api/apps/@${clientId}`).then(res => res.json());
-    } catch (e) {
-      console.log('The app does not exist');
-    }
-    if (!app || !app.redirect_uris.includes(redirectUri)) {
-      window.location.href = '/404';
-    } else {
-      this.setState({ scopes, app, step: 1 });
-    }
+
+    fetch(`https://api.steemconnect.com/api/apps/@${clientId}`)
+      .then(res => res.json())
+      .then((app) => {
+        if (app && app.redirect_uris.includes(redirectUri)) {
+          this.setState({ scopes, app, step: 1 });
+        } else {
+          window.location.href = '/404';
+        }
+      })
+      .catch((err) => {
+        console.log('Failed to fetch app', err);
+        window.location.href = '/404';
+      });
   }
 
   authorize = (auth) => {
