@@ -69,7 +69,13 @@ export default class Authorize extends Component {
       scopes = config.authorized_operations;
     }
 
-    fetch(`https://api.steemconnect.com/api/apps/@${clientId}`)
+    fetch(`https://api.steemconnect.com/api/apps/@${clientId}`, {
+      method: 'GET',
+      headers: new Headers({
+        Accept: 'application/json, text/plain, */*',
+        'Content-Type': 'application/json',
+      }),
+    })
       .then(res => res.json())
       .then((app) => {
         if (app && app.redirect_uris.includes(redirectUri)) {
