@@ -72,11 +72,11 @@ export default class Authorize extends Component {
     fetch(`https://api.steemconnect.com/api/apps/@${clientId}`)
       .then(res => res.json())
       .then((app) => {
-        console.log(`# App ${JSON.stringify(app)}`);
-        if (app && app.redirect_uri.indexOf(redirectUri) > -1) {
-          console.log(`# Redirect uri ok ${redirectUri}`);
+        if (app.redirect_uris.includes(redirectUri)) {
+          console.log(`Redirect uri is good ${redirectUri}`);
           this.setState({ scopes, app, step: 1 });
         } else {
+          console.log(`Redirect uri is wrong ${redirectUri}`);
           window.location.href = '/404';
         }
       })
