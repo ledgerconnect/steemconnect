@@ -74,17 +74,17 @@
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@steemit/libcrypto/-/libcrypto-1.0.1.tgz#c31ab3e5deb667628169b3d54d746b015de31a79"
 
-"@steemit/rpc-auth@^1.1.0":
+"@steemit/rpc-auth@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@steemit/rpc-auth/-/rpc-auth-1.1.1.tgz#8f6239e89783d2b251b49e9e1b9486b5d167f944"
   dependencies:
     "@steemit/libcrypto" "^1.0.1"
 
-"@steemit/steem-js@^0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@steemit/steem-js/-/steem-js-0.7.2.tgz#7844fe38cccad6167999e961c03aac1099d49e7d"
+"@steemit/steem-js@^0.7.4":
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/@steemit/steem-js/-/steem-js-0.7.4.tgz#65053fffe0ad99a4c18bd4b089c2cd78ac09bf3d"
   dependencies:
-    "@steemit/rpc-auth" "^1.1.0"
+    "@steemit/rpc-auth" "^1.1.1"
     bigi "^1.4.2"
     bluebird "^3.4.6"
     browserify-aes "^1.0.6"
@@ -99,6 +99,7 @@
     detect-node "^2.0.3"
     ecurve "^1.0.5"
     lodash "^4.16.4"
+    retry "^0.12.0"
     secure-random "^1.1.1"
     ws "^3.3.2"
 
@@ -2500,9 +2501,9 @@ es6-set@^0.1.4, es6-set@~0.1.5:
     es6-symbol "3.1.1"
     event-emitter "~0.3.5"
 
-es6-shim@^0.35.3:
-  version "0.35.3"
-  resolved "https://registry.yarnpkg.com/es6-shim/-/es6-shim-0.35.3.tgz#9bfb7363feffff87a6cdb6cd93e405ec3c4b6f26"
+es6-shim@^0.35.4:
+  version "0.35.4"
+  resolved "https://registry.yarnpkg.com/es6-shim/-/es6-shim-0.35.4.tgz#8d5a4109756383d3f0323421089c423acf8378f1"
 
 es6-symbol@3.1.1, es6-symbol@^3.1.1, es6-symbol@~3.1.1:
   version "3.1.1"
@@ -6281,6 +6282,10 @@ retry-as-promised@^2.3.1:
   dependencies:
     bluebird "^3.4.6"
     debug "^2.6.9"
+
+retry@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/retry/-/retry-0.12.0.tgz#1b42a6266a21f07421d1b0b54b7dc167b01c013b"
 
 right-align@^0.1.1:
   version "0.1.3"

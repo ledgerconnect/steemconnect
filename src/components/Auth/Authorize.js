@@ -69,20 +69,20 @@ export default class Authorize extends Component {
       scopes = config.authorized_operations;
     }
 
-    console.log('$ Client id', clientId);
+    console.log(`# Client id ${clientId}`);
     fetch(`https://api.steemconnect.com/api/apps/@${clientId}`)
       .then(res => res.json())
       .then((app) => {
-        console.log('$ App', app);
+        console.log(`# App ${app}`);
         if (app && app.redirect_uris.includes(redirectUri)) {
-          console.log('$ Redirect uri ok', redirectUri);
+          console.log(`# Redirect uri ok ${redirectUri}`);
           this.setState({ scopes, app, step: 1 });
         } else {
           window.location.href = '/404';
         }
       })
       .catch((err) => {
-        console.log('$ Failed to fetch app', JSON.stringify(err));
+        console.log(`# Failed to fetch app ${JSON.stringify(err)}`);
         window.location.href = '/404';
       });
   }
