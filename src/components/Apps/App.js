@@ -96,6 +96,7 @@ class App extends Component {
       displayRevokeModal,
     } = this.state;
     const { intl } = this.props;
+    const editionIsEnabled = false;
     return (
       <div className="container my-5">
         {isLoaded &&
@@ -103,7 +104,7 @@ class App extends Component {
             <Avatar icon={app.icon} size="80" className="float-left mr-3" />
             <h2 className="d-inline">{clientId}</h2>
             <span className="float-right">
-              {isLoaded && app.owner === this.props.auth.user.name &&
+              {editionIsEnabled && isLoaded && app.owner === this.props.auth.user.name &&
                 <Link to={`/apps/@${clientId}/edit`} className="btn btn-secondary btn-sm ml-2">
                   <FormattedMessage id="edit" />
                 </Link>
