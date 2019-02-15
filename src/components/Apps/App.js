@@ -32,7 +32,6 @@ class App extends Component {
       clientId: this.props.params.clientId,
       app: [],
       displayRevokeModal: false,
-      displayResetSecretModal: false,
     };
   }
 
@@ -61,16 +60,9 @@ class App extends Component {
     });
   }
 
-  showResetSecretModal = () => {
-    this.setState({
-      displayResetSecretModal: true,
-    });
-  }
-
   handleCancel = () => {
     this.setState({
       displayRevokeModal: false,
-      displayResetSecretModal: false,
     });
   }
 
@@ -96,42 +88,12 @@ class App extends Component {
           });
         }
       });
-  }
-
-  confirmResetSecret = () => {
-    const { clientId, app } = this.state;
-    const { intl, auth } = this.props;
-    fetch(`https://api.steemconnect.com/api/apps/@${clientId}/reset-secret`, {
-      method: 'PUT',
-      headers: new Headers({
-        Accept: 'application/json, text/plain, */*',
-        'Content-Type': 'application/json',
-        Authorization: auth.token,
-      }),
-    })
-      .then(res => res.json())
-      .then((res) => {
-        app.secret = res.secret;
-        this.setState({ app });
-        this.handleCancel();
-        notification.success({
-          message: intl.formatMessage({ id: 'success' }),
-          description: intl.formatMessage({ id: 'success_secret_reset' }),
-        });
-      })
-      .catch(() => {
-        this.handleCancel();
-        notification.error({
-          message: intl.formatMessage({ id: 'error' }),
-          description: intl.formatMessage({ id: 'general_error' }),
-        });
-      });
-  }
+  };
 
   render() {
     const {
       app, clientId, isLoading, isLoaded, revealSecret,
-      displayRevokeModal, displayResetSecretModal,
+      displayRevokeModal,
     } = this.state;
     const { intl } = this.props;
     return (
@@ -173,19 +135,6 @@ class App extends Component {
                         <FormattedMessage id="click_to_reveal" />
                       </button>
                     }
-                    <button type="button" className="btn btn-secondary btn-sm ml-2" onClick={this.showResetSecretModal}>
-                      <FormattedMessage id="reset" />
-                    </button>
-                    <Modal
-                      title={intl.formatMessage({ id: 'are_you_sure' })}
-                      visible={displayResetSecretModal}
-                      onOk={this.confirmResetSecret}
-                      onCancel={this.handleCancel}
-                      okText={intl.formatMessage({ id: 'yes' })}
-                      cancelText={intl.formatMessage({ id: 'no' })}
-                    >
-                      <p><FormattedMessage id="reset_secret_question" /></p>
-                    </Modal>
                   </div>
                 }
               </div>
