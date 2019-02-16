@@ -4,8 +4,9 @@ import { Modal, notification } from 'antd';
 import { Link } from 'react-router';
 import fetch from 'isomorphic-fetch';
 import { hasAuthority } from '../../utils/auth';
+import { getApp } from '../../utils/app';
 import Loading from '../../widgets/Loading';
-import Avatar from '../../widgets/Avatar';
+import Avatar from '../../widgets/SteemitAvatar';
 
 class App extends Component {
   static propTypes = {
@@ -39,19 +40,16 @@ class App extends Component {
     const { clientId } = this.state;
     this.setState({ isLoading: true });
 
-    fetch(`https://api.steemconnect.com/api/apps/@${clientId}`, {
-      headers: new Headers({
-        Authorization: this.props.auth.token,
-      }),
-    })
-      .then(res => res.json())
-      .then((app) => {
-        this.setState({
-          app,
-          isLoading: false,
-          isLoaded: true,
-        });
+    getApp(clientId).then((app) => {
+      this.setState({
+        app,
+        isLoading: false,
+        isLoaded: true,
       });
+    }).catch((e) => {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    });
   }
 
   showRevokeModal = () => {
@@ -68,6 +66,7 @@ class App extends Component {
 
   confirm = () => {
     const { intl } = this.props;
+
     fetch(`https://api.steemconnect.com/api/token/revoke/user/${this.state.clientId}`, {
       headers: new Headers({
         Authorization: this.props.auth.token,
@@ -92,7 +91,7 @@ class App extends Component {
 
   render() {
     const {
-      app, clientId, isLoading, isLoaded, revealSecret,
+      app, clientId, isLoading, isLoaded,
       displayRevokeModal,
     } = this.state;
     const { intl } = this.props;
@@ -101,10 +100,10 @@ class App extends Component {
       <div className="container my-5">
         {isLoaded &&
           <div>
-            <Avatar icon={app.icon} size="80" className="float-left mr-3" />
+            <Avatar username={clientId} size="80" className="float-left mr-3" />
             <h2 className="d-inline">{clientId}</h2>
             <span className="float-right">
-              {editionIsEnabled && isLoaded && app.owner === this.props.auth.user.name &&
+              {editionIsEnabled && isLoaded && app.creator === this.props.auth.user.name &&
                 <Link to={`/apps/@${clientId}/edit`} className="btn btn-secondary btn-sm ml-2">
                   <FormattedMessage id="edit" />
                 </Link>
@@ -120,24 +119,8 @@ class App extends Component {
               <p><FormattedMessage id="app_secured_by" /></p>
               <div className="list-group">
                 <div className="list-group-item">
-                  <b className="mr-1"><FormattedMessage id="client_id" />:</b> {app.client_id}
+                  <b className="mr-1"><FormattedMessage id="client_id" />:</b> {clientId}
                 </div>
-                {app.secret &&
-                  <div className="list-group-item">
-                    <b className="mr-1"><FormattedMessage id="client_secret" />:</b>
-                    {revealSecret
-                      ? <div>
-                        {`${app.secret} `}
-                        <button className="button-link" onClick={() => this.setState({ revealSecret: false })}>
-                          <FormattedMessage id="hide" />
-                        </button>
-                      </div>
-                      : <button className="button-link" onClick={() => this.setState({ revealSecret: true })}>
-                        <FormattedMessage id="click_to_reveal" />
-                      </button>
-                    }
-                  </div>
-                }
               </div>
             </div>
             <br />

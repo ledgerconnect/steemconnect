@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Form, Modal, Input, Radio, notification } from 'antd';
-import { Link } from 'react-router';
 import validator from 'validator';
 
 class AppForm extends Component {
@@ -11,6 +10,7 @@ class AppForm extends Component {
     auth: PropTypes.shape({
       token: PropTypes.string.isRequired,
     }),
+    username: PropTypes.string,
     intl: intlShape.isRequired,
     submit: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
@@ -66,9 +66,8 @@ class AppForm extends Component {
   }
 
   confirm = () => {
-    const { intl } = this.props;
-    const { data } = this.state;
-    fetch(`https://api.steemconnect.com/api/token/revoke/app/${data.client_id}`, {
+    const { intl, username } = this.props;
+    fetch(`https://api.steemconnect.com/api/token/revoke/app/${username}`, {
       headers: new Headers({
         Authorization: this.props.auth.token,
       }),
@@ -151,12 +150,12 @@ class AppForm extends Component {
         <Form.Item
           label={<FormattedMessage id="app_description" />}
         >
-          {getFieldDecorator('description', {
+          {getFieldDecorator('about', {
             rules: [
               { required: true, message: intl.formatMessage({ id: 'error_required' }) },
               { max: 400 },
             ],
-            initialValue: data.description,
+            initialValue: data.about,
           })(
             <Input.TextArea
               placeholder={intl.formatMessage({ id: 'app_description' })}
@@ -169,8 +168,8 @@ class AppForm extends Component {
         <Form.Item
           label={<FormattedMessage id="app_icon" />}
         >
-          {getFieldDecorator('icon', {
-            initialValue: data.icon,
+          {getFieldDecorator('profile_image', {
+            initialValue: data.profile_image,
           })(
             <Input
               placeholder={intl.formatMessage({ id: 'app_icon' })}
@@ -227,7 +226,7 @@ class AppForm extends Component {
         >
           {getFieldDecorator('is_public', {
             rules: [{ required: true, message: intl.formatMessage({ id: 'error_required' }) }],
-            initialValue: data.is_public,
+            initialValue: !data.is_public,
           })(
             <Radio.Group>
               <Radio style={radioStyle} value><FormattedMessage id="visible" /></Radio>
@@ -246,8 +245,7 @@ class AppForm extends Component {
           >
             <p><FormattedMessage id="revoke_access_tokens_question_app" /></p>
           </Modal>
-          <Link to="/apps/me" className="btn btn-secondary"><FormattedMessage id="cancel" /></Link>
-          {auth.isAuthenticated && data.owner === auth.user.name &&
+          {auth.isAuthenticated && data.creator === auth.user.name &&
           <button
             type="submit"
             className="btn btn-success ml-3"
@@ -255,7 +253,7 @@ class AppForm extends Component {
           >
             <FormattedMessage id="save" />
           </button>}
-          {auth.isAuthenticated && data.owner === auth.user.name &&
+          {auth.isAuthenticated && data.creator === auth.user.name &&
           <button type="button" className="btn btn-danger ml-3" onClick={this.showRevokeModal}>
             <FormattedMessage id="revoke_access_tokens" />
           </button>}

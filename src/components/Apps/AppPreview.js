@@ -2,18 +2,18 @@ import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 import './AppPreview.less';
 
-const AppPreview = ({ app }) => (
+const AppPreview = ({ username }) => (
   <div className="list-group-item">
     <b>
-      <Link to={`/apps/@${app.client_id}`}>
-        {app.client_id}
+      <Link to={`/apps/@${username}`}>
+        {username}
       </Link>
     </b>
   </div>
 );
 
 AppPreview.propTypes = {
-  app: PropTypes.shape(),
+  username: PropTypes.string,
 };
 
 export default AppPreview;

@@ -1,21 +1,17 @@
 import React, { Component, PropTypes } from 'react';
-import { injectIntl, intlShape } from 'react-intl';
-import fetch from 'isomorphic-fetch';
-import { notification } from 'antd';
+import { injectIntl } from 'react-intl';
 import AppForm from './AppForm';
+import { getApp } from '../../utils/app';
 import Loading from '../../widgets/Loading';
-import Avatar from '../../widgets/Avatar';
+import Avatar from '../../widgets/SteemitAvatar';
 
 class EditApp extends Component {
   static propTypes = {
     params: PropTypes.shape({
       clientId: PropTypes.string,
     }),
-    auth: PropTypes.shape({
-      token: PropTypes.string,
-    }),
-    intl: intlShape.isRequired,
-  }
+    auth: PropTypes.shape(),
+  };
 
   constructor(props) {
     super(props);
@@ -32,48 +28,20 @@ class EditApp extends Component {
     const { clientId } = this.state;
     this.setState({ isLoading: true });
 
-    fetch(`https://api.steemconnect.com/api/apps/@${clientId}`, {
-      headers: new Headers({
-        Authorization: this.props.auth.token,
-      }),
-    })
-      .then(res => res.json())
-      .then((app) => {
-        this.setState({
-          app,
-          isLoading: false,
-          isLoaded: true,
-        });
+    getApp(clientId).then((app) => {
+      this.setState({
+        app,
+        isLoading: false,
+        isLoaded: true,
       });
+    });
   }
 
   submit = (data) => {
     const { clientId } = this.state;
-    const { intl } = this.props;
-    this.setState({ isLoading: true });
-    fetch(`https://api.steemconnect.com/api/apps/@${clientId}`, {
-      method: 'PUT',
-      headers: new Headers({
-        Accept: 'application/json, text/plain, */*',
-        'Content-Type': 'application/json',
-        Authorization: this.props.auth.token,
-      }),
-      body: JSON.stringify(data),
-    })
-      .then(res => res.json())
-      .then(() => {
-        this.setState({ isLoading: false });
-        notification.success({
-          message: intl.formatMessage({ id: 'success' }),
-          description: intl.formatMessage({ id: 'success_app_updated' }),
-        });
-      })
-      .catch(() => {
-        notification.error({
-          message: intl.formatMessage({ id: 'error' }),
-          description: intl.formatMessage({ id: 'general_error' }),
-        });
-      });
+    // eslint-disable-next-line no-console
+    console.log('Application edition is temporary disabled', clientId, data);
+    // @TODO redirect to hot signing
   };
 
   render() {
@@ -85,11 +53,12 @@ class EditApp extends Component {
         {isLoaded &&
           <div>
             <div className="pb-3">
-              <Avatar icon={app.icon} size="80" className="float-left mr-3" />
+              <Avatar username={clientId} size="80" className="float-left mr-3" />
               <h2 className="d-inline">{clientId}</h2>
               <p>@{clientId}</p>
             </div>
             <AppForm
+              username={clientId}
               data={app}
               auth={auth}
               isLoading={isLoading}

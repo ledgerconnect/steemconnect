@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'react-intl';
-import fetch from 'isomorphic-fetch';
 import Loading from '../../widgets/Loading';
+import { getApps } from '../../utils/app';
 import AppPreview from './AppPreview';
 
 export default class Apps extends Component {
@@ -17,15 +17,16 @@ export default class Apps extends Component {
 
   componentWillMount() {
     this.setState({ isLoading: true });
-    fetch('https://api.steemconnect.com/api/apps')
-      .then(res => res.json())
-      .then((apps) => {
-        this.setState({
-          apps,
-          isLoading: false,
-          isLoaded: true,
-        });
+    getApps().then((apps) => {
+      this.setState({
+        apps,
+        isLoading: false,
+        isLoaded: true,
       });
+    }).catch((e) => {
+      // eslint-disable-next-line no-console
+      console.error('Failed to load the list of apps', e);
+    });
   }
 
   render() {
@@ -37,7 +38,7 @@ export default class Apps extends Component {
         {isLoaded &&
           <div>
             {apps.map((app, key) =>
-              <AppPreview app={app} key={key} />
+              <AppPreview username={app} key={key} />
             )}
           </div>
         }

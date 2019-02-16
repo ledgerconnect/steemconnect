@@ -7,11 +7,11 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import qs from 'query-string';
 import jwt from 'jsonwebtoken';
-import fetch from 'isomorphic-fetch';
 import intersection from 'lodash/intersection';
 import difference from 'lodash/difference';
 import { authorize, login, addPostingAuthority } from '../../utils/auth';
 import { getAccounts } from '../../utils/localStorage';
+import { getApp } from '../../utils/app';
 import SteemitAvatar from '../../widgets/SteemitAvatar';
 import Loading from '../../widgets/Loading';
 import SignForm from '../Form/Sign';
@@ -70,9 +70,10 @@ export default class Authorize extends Component {
     }
     let app = null;
     try {
-      app = await fetch(`https://api.steemconnect.com/api/apps/@${clientId}`).then(res => res.json());
+      app = await getApp(clientId);
     } catch (e) {
-      console.log('The app does not exist');
+      // eslint-disable-next-line no-console
+      console.error(`Error loading app @${clientId}`, e);
     }
     if (!app || !app.redirect_uris.includes(redirectUri)) {
       window.location.href = '/404';
@@ -162,13 +163,7 @@ export default class Authorize extends Component {
                     </div>
                     <div className="Avatar-link" />
                     <div className="Avatar-container">
-                      {!app &&
-                      <SteemitAvatar username={clientId} size="40" />}
-                      {app &&
-                      <img
-                        src={`https://steemitimages.com/40x40/${app.icon}`}
-                        alt="icon"
-                      />}
+                      <SteemitAvatar username={clientId} size="40" />
                     </div>
                   </div>
                   <p>
