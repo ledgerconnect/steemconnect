@@ -95,7 +95,7 @@ class App extends Component {
       displayRevokeModal,
     } = this.state;
     const { intl } = this.props;
-    const editionIsEnabled = false;
+    const editionIsEnabled = true;
     return (
       <div className="container my-5">
         {isLoaded &&

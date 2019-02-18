@@ -1,7 +1,7 @@
+/* eslint-disable no-param-reassign */
 import React, { Component, PropTypes } from 'react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Form, Modal, Input, Radio, notification } from 'antd';
-import validator from 'validator';
 
 class AppForm extends Component {
   static propTypes = {
@@ -47,24 +47,6 @@ class AppForm extends Component {
     this.setState({ data });
   }
 
-  redirectUriValidator = (rule, value, callback) => {
-    const { intl } = this.props;
-    const uris = value.split('\n');
-    const urlOptions = {
-      require_protocol: true,
-      require_valid_protocol: false,
-      allow_underscores: true,
-      require_tld: false,
-    };
-    for (let i = 0; i < uris.length; i += 1) {
-      if (!validator.isURL(uris[i], urlOptions)) {
-        callback(intl.formatMessage({ id: 'error_url_format' }, { url: uris[i] }));
-        return;
-      }
-    }
-    callback();
-  }
-
   confirm = () => {
     const { intl, username } = this.props;
     fetch(`https://api.steemconnect.com/api/token/revoke/app/${username}`, {
@@ -108,12 +90,18 @@ class AppForm extends Component {
     const { form: { validateFieldsAndScroll }, submit } = this.props;
     validateFieldsAndScroll((err, values) => {
       if (!err) {
-        // eslint-disable-next-line no-param-reassign
-        values.redirect_uris = values.redirect_uris.split('\n');
+        if (values.redirect_uris) {
+          values.redirect_uris = values.redirect_uris.split('\n');
+        }
         if (values.allowed_ips) {
-          // eslint-disable-next-line no-param-reassign
           values.allowed_ips = values.allowed_ips.split('\n');
         }
+
+        values.type = 'app';
+        if (values.is_public) delete values.is_public;
+
+        Object.keys(values).forEach(key => (values[key] == null) && delete values[key]);
+
         submit(values);
       }
       this.setState({ submitting: false });
@@ -136,7 +124,6 @@ class AppForm extends Component {
           label={<FormattedMessage id="app_name" />}
         >
           {getFieldDecorator('name', {
-            rules: [{ required: true, message: intl.formatMessage({ id: 'error_required' }) }],
             initialValue: data.name,
           })(
             <Input
@@ -152,7 +139,6 @@ class AppForm extends Component {
         >
           {getFieldDecorator('about', {
             rules: [
-              { required: true, message: intl.formatMessage({ id: 'error_required' }) },
               { max: 400 },
             ],
             initialValue: data.about,
@@ -180,7 +166,6 @@ class AppForm extends Component {
           label={<FormattedMessage id="website" />}
         >
           {getFieldDecorator('website', {
-            rules: [{ required: true, message: intl.formatMessage({ id: 'error_required' }) }],
             initialValue: data.website,
           })(
             <Input
@@ -193,9 +178,7 @@ class AppForm extends Component {
         >
           {getFieldDecorator('redirect_uris', {
             rules: [
-              { required: true, message: intl.formatMessage({ id: 'error_required' }) },
               { max: 2000 },
-              { validator: this.redirectUriValidator },
             ],
             initialValue: redirectUris,
           })(
@@ -245,7 +228,7 @@ class AppForm extends Component {
           >
             <p><FormattedMessage id="revoke_access_tokens_question_app" /></p>
           </Modal>
-          {auth.isAuthenticated && data.creator === auth.user.name &&
+          {auth.isAuthenticated &&
           <button
             type="submit"
             className="btn btn-success ml-3"

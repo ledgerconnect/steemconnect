@@ -19,6 +19,24 @@ const getApp = username => new Promise((resolve, reject) => {
   });
 });
 
+const getAccountProfile = username => new Promise((resolve, reject) => {
+  steem.api.getAccountsAsync([username]).then((accounts) => {
+    let metadata;
+    try {
+      metadata = JSON.parse(accounts[0].json_metadata);
+      if (metadata.profile) {
+        resolve(metadata.profile);
+      } else {
+        resolve({});
+      }
+    } catch (e) {
+      resolve({});
+    }
+  }).catch((e) => {
+    reject(`Failed to load account @${username}`, e);
+  });
+});
+
 const getApps = () => new Promise(async (resolve, reject) => {
   const step = 100;
   const username = 'steemscript';
@@ -43,4 +61,5 @@ const getApps = () => new Promise(async (resolve, reject) => {
 export {
   getApp,
   getApps,
+  getAccountProfile,
 };
