@@ -6,6 +6,12 @@ const CreateApp = () =>
     <h1><FormattedMessage id="new_apps" /></h1>
     <div className="block py-4">
       <p>
+        To create an application on SteemConnect you can use an existing Steem account or
+        create a new one. When you have an account you can go on the url
+        <b> https://steemconnect.com/apps/@username/edit</b> and change "@username" with
+        the name of your account to init the application.
+      </p>
+      <p>
         Application are created by updating an account "json_metadata" profile.
         It simply require to set the param "type" with "app" value to enable an app.
       </p>
