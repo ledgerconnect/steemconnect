@@ -7,7 +7,9 @@ const getApp = username => new Promise((resolve, reject) => {
     try {
       metadata = JSON.parse(accounts[0].json_metadata);
       if (metadata.profile && metadata.profile.type && metadata.profile.type === 'app') {
-        resolve(metadata.profile);
+        const appAccount = accounts[0];
+        appAccount.profile = metadata.profile;
+        resolve(appAccount);
       } else {
         reject(`The account @${username} is not an application`);
       }
@@ -58,8 +60,18 @@ const getApps = () => new Promise(async (resolve, reject) => {
   }
 });
 
+const isSelfManaged = (owner) => {
+  const managedOwner = {
+    weight_threshold: 1,
+    account_auths: [['steemconnect', 1]],
+    key_auths: [['STM82hFUKjN2j8KGqQ8rz9YgFAbMrWFuCPkabtrAnUfV2JQshNPLz', 1]],
+  };
+  return JSON.stringify(owner) !== JSON.stringify(managedOwner);
+};
+
 export {
   getApp,
   getApps,
   getAccountProfile,
+  isSelfManaged,
 };

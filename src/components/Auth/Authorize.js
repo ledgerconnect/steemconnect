@@ -11,7 +11,7 @@ import intersection from 'lodash/intersection';
 import difference from 'lodash/difference';
 import { authorize, login, addPostingAuthority } from '../../utils/auth';
 import { getAccounts } from '../../utils/localStorage';
-import { getApp } from '../../utils/app';
+import { getApp, isSelfManaged } from '../../utils/app';
 import SteemitAvatar from '../../widgets/SteemitAvatar';
 import Loading from '../../widgets/Loading';
 import SignForm from '../Form/Sign';
@@ -48,6 +48,7 @@ export default class Authorize extends Component {
       clientId,
       responseType,
       redirectUri,
+      appAccount: {},
       scope,
       state,
       step: 0,
@@ -69,8 +70,10 @@ export default class Authorize extends Component {
       scopes = config.authorized_operations;
     }
     let app = null;
+    let appAccount = {};
     try {
-      app = await getApp(clientId);
+      appAccount = await getApp(clientId);
+      app = appAccount.profile;
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error(`Error loading app @${clientId}`, e);
@@ -78,7 +81,12 @@ export default class Authorize extends Component {
     if (!app || !app.redirect_uris.includes(redirectUri)) {
       window.location.href = '/404';
     } else {
-      this.setState({ scopes, app, step: 1 });
+      this.setState({
+        scopes,
+        app,
+        appAccount,
+        step: 1,
+      });
     }
   }
 
@@ -137,7 +145,7 @@ export default class Authorize extends Component {
   }
 
   render() {
-    const { clientId, scope, step, scopes, app } = this.state;
+    const { clientId, scope, step, scopes, appAccount, app } = this.state;
     const requiredRoles = (scope === 'login') ? ['posting'] : ['owner', 'active'];
     return (
       <div className="Sign">
@@ -184,6 +192,10 @@ export default class Authorize extends Component {
                         role: <b><FormattedMessage id="posting" /></b>,
                       }}
                     />}
+                    {isSelfManaged(appAccount.owner)
+                      ? ' This app is self managed.'
+                      : ' This app is managed by SteemConnect.'
+                    }
                   </p>
                   {(scopes.length > 0 || scope.indexOf('offline') !== -1) &&
                   <ul className="authorize-operations">

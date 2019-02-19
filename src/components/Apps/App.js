@@ -4,7 +4,7 @@ import { Modal, notification } from 'antd';
 import { Link } from 'react-router';
 import fetch from 'isomorphic-fetch';
 import { hasAuthority } from '../../utils/auth';
-import { getApp } from '../../utils/app';
+import { getApp, isSelfManaged } from '../../utils/app';
 import Loading from '../../widgets/Loading';
 import Avatar from '../../widgets/SteemitAvatar';
 
@@ -26,6 +26,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      appAccount: {},
       error: false,
       isLoading: false,
       isLoaded: false,
@@ -40,9 +41,10 @@ class App extends Component {
     const { clientId } = this.state;
     this.setState({ isLoading: true });
 
-    getApp(clientId).then((app) => {
+    getApp(clientId).then((appAccount) => {
       this.setState({
-        app,
+        app: appAccount.profile,
+        appAccount,
         isLoading: false,
         isLoaded: true,
       });
@@ -93,6 +95,7 @@ class App extends Component {
     const {
       app, clientId, isLoading, isLoaded,
       displayRevokeModal,
+      appAccount,
     } = this.state;
     const { intl } = this.props;
     const editionIsEnabled = true;
@@ -116,7 +119,12 @@ class App extends Component {
             </span>
             <p>@{clientId}</p>
             <div className="pt-4">
-              <p><FormattedMessage id="app_secured_by" /></p>
+              <p>
+                {isSelfManaged(appAccount.owner)
+                  ? ' This app is self managed.'
+                  : ' This app is managed by SteemConnect.'
+                }
+              </p>
               <div className="list-group">
                 <div className="list-group-item">
                   <b className="mr-1"><FormattedMessage id="client_id" />:</b> {clientId}
