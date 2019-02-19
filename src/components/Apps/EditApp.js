@@ -63,9 +63,10 @@ class EditApp extends Component {
       } catch (e) {
         // console.log(e);
       }
-      const newMetadata = { ...metadata, profile };
+      const newProfile = { ...metadata.profile, ...profile };
+      const newMetadata = metadata;
+      newMetadata.profile = newProfile;
       const jsonMetadata = JSON.stringify(newMetadata);
-      console.log(newMetadata);
 
       if (jsonMetadata !== accounts[0].json_metadata) {
         /** Update account json_metadata */
