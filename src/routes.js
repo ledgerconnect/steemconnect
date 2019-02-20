@@ -6,7 +6,6 @@ import Index from './components/Index';
 import Dashboard from './components/Dashboard';
 import App from './components/Apps/App';
 import Apps from './components/Apps/Apps';
-import MyApps from './components/Apps/MyApps';
 import AuthorizedApps from './components/Apps/AuthorizedApps';
 import EditApp from './components/Apps/EditApp';
 import CreateApp from './components/Apps/CreateApp';
@@ -31,7 +30,6 @@ export default (
     <Route component={RequireLogin}>
       <Route component={Layout}>
         <Route path="/dashboard" component={Dashboard} />
-        <Route path="/apps/me" component={MyApps} />
         <Route path="/apps/create" component={CreateApp} />
         <Route path="/apps/authorized" component={AuthorizedApps} />
         <Route path="/apps/@:clientId/edit" component={EditApp} />

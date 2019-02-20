@@ -5,7 +5,7 @@ export default class Sign extends Component {
   static propTypes = {
     cb: PropTypes.func,
     result: PropTypes.shape({}).isRequired,
-  }
+  };
 
   componentDidMount = () => {
     const cb = this.props.cb;

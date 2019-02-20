@@ -1,8 +1,7 @@
+/* eslint-disable no-param-reassign */
 import React, { Component, PropTypes } from 'react';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 import { Form, Modal, Input, Radio, notification } from 'antd';
-import { Link } from 'react-router';
-import validator from 'validator';
 
 class AppForm extends Component {
   static propTypes = {
@@ -11,6 +10,7 @@ class AppForm extends Component {
     auth: PropTypes.shape({
       token: PropTypes.string.isRequired,
     }),
+    username: PropTypes.string,
     intl: intlShape.isRequired,
     submit: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
@@ -47,28 +47,9 @@ class AppForm extends Component {
     this.setState({ data });
   }
 
-  redirectUriValidator = (rule, value, callback) => {
-    const { intl } = this.props;
-    const uris = value.split('\n');
-    const urlOptions = {
-      require_protocol: true,
-      require_valid_protocol: false,
-      allow_underscores: true,
-      require_tld: false,
-    };
-    for (let i = 0; i < uris.length; i += 1) {
-      if (!validator.isURL(uris[i], urlOptions)) {
-        callback(intl.formatMessage({ id: 'error_url_format' }, { url: uris[i] }));
-        return;
-      }
-    }
-    callback();
-  }
-
   confirm = () => {
-    const { intl } = this.props;
-    const { data } = this.state;
-    fetch(`https://api.steemconnect.com/api/token/revoke/app/${data.client_id}`, {
+    const { intl, username } = this.props;
+    fetch(`https://api.steemconnect.com/api/token/revoke/app/${username}`, {
       headers: new Headers({
         Authorization: this.props.auth.token,
       }),
@@ -109,12 +90,18 @@ class AppForm extends Component {
     const { form: { validateFieldsAndScroll }, submit } = this.props;
     validateFieldsAndScroll((err, values) => {
       if (!err) {
-        // eslint-disable-next-line no-param-reassign
-        values.redirect_uris = values.redirect_uris.split('\n');
+        if (values.redirect_uris) {
+          values.redirect_uris = values.redirect_uris.split('\n');
+        }
         if (values.allowed_ips) {
-          // eslint-disable-next-line no-param-reassign
           values.allowed_ips = values.allowed_ips.split('\n');
         }
+
+        values.type = 'app';
+        if (values.is_public) delete values.is_public;
+
+        Object.keys(values).forEach(key => (values[key] == null) && delete values[key]);
+
         submit(values);
       }
       this.setState({ submitting: false });
@@ -137,7 +124,6 @@ class AppForm extends Component {
           label={<FormattedMessage id="app_name" />}
         >
           {getFieldDecorator('name', {
-            rules: [{ required: true, message: intl.formatMessage({ id: 'error_required' }) }],
             initialValue: data.name,
           })(
             <Input
@@ -151,12 +137,11 @@ class AppForm extends Component {
         <Form.Item
           label={<FormattedMessage id="app_description" />}
         >
-          {getFieldDecorator('description', {
+          {getFieldDecorator('about', {
             rules: [
-              { required: true, message: intl.formatMessage({ id: 'error_required' }) },
               { max: 400 },
             ],
-            initialValue: data.description,
+            initialValue: data.about,
           })(
             <Input.TextArea
               placeholder={intl.formatMessage({ id: 'app_description' })}
@@ -169,8 +154,8 @@ class AppForm extends Component {
         <Form.Item
           label={<FormattedMessage id="app_icon" />}
         >
-          {getFieldDecorator('icon', {
-            initialValue: data.icon,
+          {getFieldDecorator('profile_image', {
+            initialValue: data.profile_image,
           })(
             <Input
               placeholder={intl.formatMessage({ id: 'app_icon' })}
@@ -181,7 +166,6 @@ class AppForm extends Component {
           label={<FormattedMessage id="website" />}
         >
           {getFieldDecorator('website', {
-            rules: [{ required: true, message: intl.formatMessage({ id: 'error_required' }) }],
             initialValue: data.website,
           })(
             <Input
@@ -194,9 +178,7 @@ class AppForm extends Component {
         >
           {getFieldDecorator('redirect_uris', {
             rules: [
-              { required: true, message: intl.formatMessage({ id: 'error_required' }) },
               { max: 2000 },
-              { validator: this.redirectUriValidator },
             ],
             initialValue: redirectUris,
           })(
@@ -227,7 +209,7 @@ class AppForm extends Component {
         >
           {getFieldDecorator('is_public', {
             rules: [{ required: true, message: intl.formatMessage({ id: 'error_required' }) }],
-            initialValue: data.is_public,
+            initialValue: !data.is_public,
           })(
             <Radio.Group>
               <Radio style={radioStyle} value><FormattedMessage id="visible" /></Radio>
@@ -246,8 +228,7 @@ class AppForm extends Component {
           >
             <p><FormattedMessage id="revoke_access_tokens_question_app" /></p>
           </Modal>
-          <Link to="/apps/me" className="btn btn-secondary"><FormattedMessage id="cancel" /></Link>
-          {auth.isAuthenticated && data.owner === auth.user.name &&
+          {auth.isAuthenticated &&
           <button
             type="submit"
             className="btn btn-success ml-3"
@@ -255,7 +236,7 @@ class AppForm extends Component {
           >
             <FormattedMessage id="save" />
           </button>}
-          {auth.isAuthenticated && data.owner === auth.user.name &&
+          {auth.isAuthenticated && data.creator === auth.user.name &&
           <button type="button" className="btn btn-danger ml-3" onClick={this.showRevokeModal}>
             <FormattedMessage id="revoke_access_tokens" />
           </button>}

@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { logout } from '../actions/auth';
+import Icon from '../widgets/Icon';
 
 @connect(
   state => ({
@@ -16,7 +17,7 @@ import { logout } from '../actions/auth';
 export default class Login extends Component {
   static propTypes = {
     logout: PropTypes.func,
-  }
+  };
 
   handleLogoutClick = () => {
     this.props.logout();
@@ -31,7 +32,7 @@ export default class Login extends Component {
         <p><Link to="/apps"><FormattedMessage id="apps" /></Link></p>
         <p><Link to="/apps/authorized"><FormattedMessage id="authorized_apps" /></Link></p>
         <h4><FormattedMessage id="developers" /></h4>
-        <p><Link to="/apps/me"><FormattedMessage id="my_apps" /></Link></p>
+        <p><Link to="/apps/create"><Icon name="add" /> <FormattedMessage id="new_apps" /></Link></p>
         <p><Link to="/docs/oauth2"><FormattedMessage id="oauth2" /></Link></p>
       </div>
     );
