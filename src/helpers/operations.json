@@ -245,5 +245,24 @@
         "type": "string"
       }
     }
+  },
+  "custom_json": {
+    "name": "Custom operation",
+    "schema": {
+      "required_auths": {
+        "type": "array",
+        "defaultValue": []
+      },
+      "required_posting_auths": {
+        "type": "array",
+        "defaultValue": ["__signer"]
+      },
+      "id": {
+        "type": "string"
+      },
+      "json": {
+        "type": "string"
+      }
+    }
   }
 }
