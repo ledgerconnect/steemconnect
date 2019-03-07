@@ -53,12 +53,26 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       return false;
     case 'sign': {
       const requestId = new Date().getTime();
-
       callbacks[requestId] = sendResponse;
 
       const payload = request.payload.replace('steem://', '');
-
       url = `/${payload}${payload.indexOf('?') === -1 ? '?' : '&'}requestId=${requestId}`;
+
+      openPopup();
+
+      return true;
+    }
+    case 'login': {
+      const requestId = new Date().getTime();
+      callbacks[requestId] = sendResponse;
+
+      const payload = { requestId };
+      if (request.payload.authority)
+        payload.authority = request.payload.authority;
+
+      url = '/login-request' + (request.payload.app ? `/${request.payload.app}` : '')
+        + '?' + Object.keys(payload)
+          .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(payload[k])}`).join('&');
 
       openPopup();
 

@@ -52,6 +52,15 @@ const actions = {
     const privateKey = PrivateKey.fromString(keys.active);
     return cryptoUtils.signTransaction(tx, [privateKey], Buffer.from(chainId, 'hex'));
   },
+  signMessage: ({ rootState }, { message, authority }) => {
+    const { keys, username } = rootState.auth;
+    const messageObj = { signed_message: message, authors: [username] };
+    const hash = cryptoUtils.sha256(JSON.stringify(messageObj));
+    const key = PrivateKey.fromString(keys[authority]);
+    const signature = key.sign(hash).toString();
+    messageObj.signatures = [signature];
+    return messageObj;
+  },
   broadcast: (context, tx) => client.broadcast.send(tx),
 };
 

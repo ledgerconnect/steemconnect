@@ -9,6 +9,8 @@ const Import = () => import(/* webpackChunkName: "import" */ '@/views/Import.vue
 const Login = () => import(/* webpackChunkName: "login" */ '@/views/Login.vue');
 const Dashboard = () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue');
 const Keys = () => import(/* webpackChunkName: "keys" */ '@/views/Keys.vue');
+const LoginRequest = () =>
+  import(/* webpackChunkName: "login-request" */ '@/views/LoginRequest.vue');
 const Sign = () => import(/* webpackChunkName: "sign" */ '@/views/Sign.vue');
 const Settings = () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue');
 const About = () => import(/* webpackChunkName: "about" */ '@/views/About.vue');
@@ -33,6 +35,13 @@ const beforeLogin = (to, from, next) => {
   } else {
     next();
   }
+};
+
+const redirectToLoginRequest = (to, from, next) => {
+  const { query } = to;
+  const clientId = query.client_id;
+  delete query.client_id;
+  next({ name: 'login-request-app', params: [clientId], query: to.query });
 };
 
 export default new Router({
@@ -60,6 +69,20 @@ export default new Router({
       name: 'keys',
       beforeEnter: requireAuth,
       component: Keys,
+    },
+    {
+      path: '/oauth2/authorize',
+      beforeEnter: redirectToLoginRequest,
+    },
+    {
+      path: '/login-request',
+      name: 'login-request',
+      component: LoginRequest,
+    },
+    {
+      path: '/login-request/*',
+      name: 'login-request-app',
+      component: LoginRequest,
     },
     {
       path: '/sign/*',

@@ -221,7 +221,7 @@ export default {
       if (isChromeExtension()) {
         window.close();
       } else {
-        this.$router.push({ name: 'dashboard' });
+        this.$router.push('/');
       }
     },
   },

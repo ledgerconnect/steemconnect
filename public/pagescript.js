@@ -26,6 +26,7 @@ function API() {
   };
 
   this.sign = (payload, callback) => this.send('sign', payload, callback);
+  this.login = (payload, callback) => this.send('login', payload, callback);
 }
 
 window._steemconnect = new API();

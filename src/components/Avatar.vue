@@ -25,11 +25,14 @@ export default {
 </script>
 
 <style scoped lang="less">
+@import '../vars';
+
 .avatar {
   border-radius: 50%;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 50% 50%;
+  background-color: @border-color;
 
   &.avatar-medium {
     width: 64px;

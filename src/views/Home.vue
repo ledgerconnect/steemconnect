@@ -47,10 +47,6 @@ export default {
 </script>
 
 <style scoped lang="less">
-.hero {
-  background-image: url('../assets/img/bg.svg');
-}
-
 .icon-chrome,
 .icon-desktop-windows {
   font-size: 32px;

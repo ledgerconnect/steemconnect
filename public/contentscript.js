@@ -15,9 +15,9 @@ window.addEventListener(
     if (event.source !== window) return;
     if (event.data.tag !== MESSAGE_TAG) return;
 
-    if (event.data.type === 'sign' && event.data.payload) {
+    if ((event.data.type === 'sign' || event.data.type === 'login') && event.data.payload) {
       chrome.runtime.sendMessage(
-        { type: 'sign', payload: event.data.payload },
+        { type: event.data.type, payload: event.data.payload },
         null,
         ([err, res]) => respond(event, err, res),
       );
@@ -29,5 +29,5 @@ window.addEventListener(
 document.addEventListener('DOMContentLoaded', () => {
   const el = document.createElement('script');
   el.src = chrome.extension.getURL('pagescript.js');
-  document.body.appendChild(el);
+  (document.head || document.documentElement).appendChild(el);
 });
