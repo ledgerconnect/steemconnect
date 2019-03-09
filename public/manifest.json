@@ -22,6 +22,9 @@
       "all_frames": true
     }
   ],
+  "permissions": [
+    "activeTab"
+  ],
   "background": {
     "scripts": ["background.js"],
     "persistent": true
