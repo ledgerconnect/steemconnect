@@ -1,18 +1,24 @@
 {
   "name": "steemconnect",
   "version": "0.1.0",
+  "description": "Signer app for Steem",
+  "author": "Fabien Marino <fabien@bonustrack.co> (https://github.com/bonustrack)",
+  "homepage": "https://beta.steemconnect.com",
+  "main": "electron-entry.js",
+  "license": "MIT",
   "scripts": {
+    "start": "node start.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "start": "node start.js",
-    "build-electron:linux": "electron-builder --linux",
-    "start-electron": "electron .",
-    "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build",
     "test:unit": "vue-cli-service test:unit",
-    "build-electron": "npm run build-electron:mac && npm run build-electron:linux && npm run build-electron:win",
+    "start-electron": "electron .",
+    "build-electron": "electron-builder build -wml",
     "build-electron:mac": "electron-builder --mac",
-    "build-electron:win": "electron-builder --win"
+    "build-electron:win": "electron-builder --win",
+    "build-electron:linux": "electron-builder --linux",
+    "publish": "electron-builder build -wml --publish always",
+    "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "dependencies": {
     "@vue/ui": "^0.5.2",
@@ -36,9 +42,9 @@
   },
   "devDependencies": {
     "@types/jest": "^23.3.3",
-    "@vue/cli-plugin-babel": "^3.0.0",
+    "@vue/cli-plugin-babel": "^3.5.0",
     "@vue/cli-plugin-eslint": "^3.0.0",
-    "@vue/cli-plugin-unit-jest": "^3.0.3",
+    "@vue/cli-plugin-unit-jest": "^3.5.0",
     "@vue/cli-service": "^3.0.0",
     "@vue/eslint-config-airbnb": "^3.0.0",
     "@vue/test-utils": "^1.0.0-beta.20",
@@ -55,38 +61,16 @@
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.17"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ],
-  "build": {
-    "appId": "com.steemconnect.app",
-    "protocols": [
-      {
-        "name": "steem",
-        "schemes": [
-          "steem"
-        ]
-      }
-    ],
-    "linux": {
-      "target": [
-        "deb",
-        "tar.xz"
-      ]
-    }
-  },
-  "author": "Bonustrack <fabien@bonustrack.co> (https://github.com/bonustrack)",
-  "main": "electron-entry.js",
-  "homepage": "https://beta.steemconnect.com",
-  "description": "Signer app for Steem",
-  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/steemscript/steemsign.git"
   },
   "bugs": {
     "url": "https://github.com/steemscript/steemsign/issues"
-  }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
 }

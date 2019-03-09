@@ -1,0 +1,25 @@
+{
+  "appId": "com.steemconnect.app",
+  "protocols": [
+    {
+      "name": "steem",
+      "schemes": [
+        "steem"
+      ]
+    }
+  ],
+  "linux": {
+    "target": [
+      "deb",
+      "tar.xz"
+    ]
+  },
+  "publish": [
+    {
+      "provider": "github",
+      "owner": "steemscript",
+      "repo": "steemsign",
+      "private": false
+    }
+  ]
+}
