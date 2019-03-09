@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { debounce } from 'lodash';
 
 export default function createIdleDetector() {
   let triggerIdle = null;
@@ -7,7 +7,7 @@ export default function createIdleDetector() {
     start(treshold, callback) {
       this.stop();
 
-      triggerIdle = _.debounce(callback, treshold);
+      triggerIdle = debounce(callback, treshold);
 
       window.addEventListener('load', triggerIdle);
       window.addEventListener('mousemove', triggerIdle);

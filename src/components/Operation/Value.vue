@@ -1,7 +1,8 @@
 <template>
   <span>
     <template v-if="value && Array.isArray(value)">
-      <OperationValue v-for="(v, key) in value" :key="key" :value="v"/>
+      <em v-if="value.length === 0">empty</em>
+      <OperationValue v-else v-for="(v, key) in value" :key="key" :value="v"/>
     </template>
     <template v-else-if="value && typeof value === 'object'">
       <div v-for="(v, key) in value" :key="key" class="mt-2">
@@ -24,6 +25,7 @@
       <template v-else>
         <OperationValueAccount v-if="schema.type === 'account'" :value="value"/>
         <OperationValueAmount v-else-if="schema.type === 'amount'" :value="value"/>
+        <OperationValueJson v-else-if="schema.type === 'json'" :value="value"/>
         <template v-else-if="schema.type === 'time'">{{ value | dateHeader }}</template>
         <template v-else>{{ value }}</template>
       </template>
@@ -32,7 +34,7 @@
 </template>
 
 <script>
-import _ from 'lodash';
+import { has, get } from 'lodash';
 import operations from '@/helpers/operations.json';
 
 export default {
@@ -44,7 +46,7 @@ export default {
   },
   computed: {
     schema() {
-      return _.has(operations, this.path) ? _.get(operations, this.path) : {};
+      return has(operations, this.path) ? get(operations, this.path) : {};
     },
   },
 };

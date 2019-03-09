@@ -1,8 +1,7 @@
-import _ from 'lodash';
+import { has, snakeCase } from 'lodash';
 import urlParse from 'url-parse';
 import qs from 'query-string';
 import { encodeOps, decode } from 'steem-uri';
-import snakeCase from 'lodash/snakeCase';
 import operations from '@/helpers/operations.json';
 
 export const isElectron = () => navigator.userAgent.toLowerCase().indexOf('electron') > -1;
@@ -23,9 +22,9 @@ export function jsonParse(input) {
 /** Parse error message from Steemd response */
 export function getErrorMessage(error) {
   let errorMessage = '';
-  if (_.has(error, 'stack[0].format')) {
+  if (has(error, 'stack[0].format')) {
     errorMessage = error.stack[0].format;
-    if (_.has(error, 'stack[0].data')) {
+    if (has(error, 'stack[0].data')) {
       const { data } = error.stack[0];
       Object.keys(data).forEach(d => {
         errorMessage = errorMessage.split(`\${${d}}`).join(data[d]);

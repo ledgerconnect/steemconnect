@@ -254,6 +254,7 @@
         "defaultValue": []
       },
       "required_posting_auths": {
+        "name": "posting auths",
         "type": "array",
         "defaultValue": ["__signer"]
       },
@@ -261,7 +262,7 @@
         "type": "string"
       },
       "json": {
-        "type": "string"
+        "type": "json"
       }
     }
   }

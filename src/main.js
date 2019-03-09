@@ -4,8 +4,7 @@ import '@/styles.less';
 import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import VueUi from '@vue/ui';
-import upperFirst from 'lodash/upperFirst';
-import camelCase from 'lodash/camelCase';
+import { upperFirst, camelCase } from 'lodash';
 import urlParse from 'url-parse';
 import moment from 'moment';
 import App from '@/App.vue';
@@ -35,6 +34,15 @@ requireComponent.keys().forEach(fileName => {
 
 Vue.filter('dateHeader', value => moment(value, 'YYYY-MM-DD').format('MMM D, YYYY'));
 Vue.filter('parseUrl', value => urlParse(value).host);
+Vue.filter('pretty', value => {
+  let json;
+  try {
+    json = JSON.stringify(JSON.parse(value), null, 2);
+  } catch (e) {
+    json = value;
+  }
+  return json;
+});
 
 Vue.use(VueUi);
 Vue.use(VueI18n);
