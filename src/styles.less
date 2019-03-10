@@ -256,6 +256,10 @@ a.iconfont:hover {
     color: @heading-color;
     background: transparent;
   }
+
+  &:disabled {
+    opacity: 0.4;
+  }
 }
 
 .btn-blue,
@@ -265,10 +269,6 @@ a.iconfont:hover {
   color: #ffffff;
   border-color: @primary-color;
   background: @primary-color;
-
-  &:disabled {
-    opacity: 0.4;
-  }
 
   &:hover {
     border-color: darken(@primary-color, 10%);

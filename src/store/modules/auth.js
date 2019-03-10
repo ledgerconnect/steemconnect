@@ -46,10 +46,10 @@ const actions = {
     router.push('/');
   },
   sign: ({ rootState }, tx) => {
-    // TODO: Use proper key
     const { keys } = rootState.auth;
     const { chainId } = rootState.settings;
-    const privateKey = PrivateKey.fromString(keys.active);
+    // @TODO Use lowest key authority
+    const privateKey = PrivateKey.fromString(keys.active || keys.posting || keys.memo);
     return cryptoUtils.signTransaction(tx, [privateKey], Buffer.from(chainId, 'hex'));
   },
   signMessage: ({ rootState }, { message, authority }) => {
