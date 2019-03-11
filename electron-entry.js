@@ -42,6 +42,7 @@ function createWindow() {
 
   mainWindow = new BrowserWindow({ width: 360, height: 600 });
   mainWindow.loadFile('web-dist/index.html');
+  // mainWindow.toggleDevTools();
 
   mainWindow.on('closed', () => {
     mainWindow = null;

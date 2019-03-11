@@ -59,8 +59,14 @@
 <script>
 /* global chrome */
 import { mapActions } from 'vuex';
-import { isChromeExtension } from '@/helpers/utils';
+import { isChromeExtension, isElectron } from '@/helpers/utils';
 import client from '../helpers/client';
+
+let openExternal = null;
+if (typeof window !== 'undefined' && window.require) {
+  // eslint-disable-next-line prefer-destructuring
+  openExternal = window.require('electron').shell.openExternal;
+}
 
 const REQUEST_ID_PARAM = 'requestId';
 
@@ -149,7 +155,13 @@ export default {
         if (!isChromeExtension()) {
           let callback = `${this.callback}?access_token=${token}&username=${this.username}`;
           if (this.state) callback += `&state=${this.state}`;
-          window.location = callback;
+
+          if (isElectron()) {
+            openExternal(callback);
+            this.$router.push('/');
+          } else {
+            window.location = callback;
+          }
         }
       } catch (err) {
         console.error('Failed to log in', err);

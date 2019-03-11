@@ -1,7 +1,7 @@
 import Vue from 'vue';
-import { PrivateKey, cryptoUtils } from 'dsteem';
+import { cryptoUtils } from 'dsteem';
 import client from '@/helpers/client';
-import { credentialsValid } from '@/helpers/auth';
+import { credentialsValid, privateKeyFrom } from '@/helpers/auth';
 import router from '@/router';
 import { idleDetector } from '@/main';
 
@@ -49,14 +49,14 @@ const actions = {
     const { keys } = rootState.auth;
     const { chainId } = rootState.settings;
     // @TODO Use lowest key authority
-    const privateKey = PrivateKey.fromString(keys.active || keys.posting || keys.memo);
+    const privateKey = privateKeyFrom(keys.active || keys.posting || keys.memo);
     return cryptoUtils.signTransaction(tx, [privateKey], Buffer.from(chainId, 'hex'));
   },
   signMessage: ({ rootState }, { message, authority }) => {
     const { keys, username } = rootState.auth;
     const messageObj = { signed_message: message, authors: [username] };
     const hash = cryptoUtils.sha256(JSON.stringify(messageObj));
-    const key = PrivateKey.fromString(keys[authority]);
+    const key = privateKeyFrom(keys[authority]);
     const signature = key.sign(hash).toString();
     messageObj.signatures = [signature];
     return messageObj;
