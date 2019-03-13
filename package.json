@@ -61,6 +61,10 @@
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.17"
   },
+  "contributors": [
+    "Fabien Marino <fabien@bonustrack.co> (https://github.com/bonustrack)",
+    "Wiktor Tkaczyński <wiktor.tkaczynski@gmail.com> (https://github.com/Sekhmet)"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/steemscript/steemsign.git"
