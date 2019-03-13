@@ -1,8 +1,11 @@
+/* global chrome */
 import { has, snakeCase } from 'lodash';
 import urlParse from 'url-parse';
 import qs from 'query-string';
 import { encodeOps, decode } from 'steem-uri';
 import operations from '@/helpers/operations.json';
+
+export const REQUEST_ID_PARAM = 'requestId';
 
 export const isElectron = () => navigator.userAgent.toLowerCase().indexOf('electron') > -1;
 
@@ -112,4 +115,26 @@ export function formatNumber(number) {
   }
 
   return number.toFixed(3);
+}
+
+export function buildSearchParams(route) {
+  const keys = Object.keys(route.query);
+  if (keys.length === 0) return '';
+  const params = keys
+    .filter(key => key !== REQUEST_ID_PARAM)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(route.query[key])}`)
+    .join('&');
+  return `?${params}`;
+}
+
+export function signComplete(requestId, err, res) {
+  if (!isChromeExtension()) return;
+
+  chrome.runtime.sendMessage({
+    type: 'signComplete',
+    payload: {
+      requestId,
+      args: [err, res],
+    },
+  });
 }

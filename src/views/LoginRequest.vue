@@ -5,6 +5,16 @@
       <Header :title="`Log in request (${authority})`" />
       <div v-if="!failed" class="p-4 after-header">
         <div class="container-sm mx-auto">
+          <div v-if="isWeb && !failed && !signature" class="flash mb-4 overflow-hidden">
+            <div class="mb-3">
+              We recommend you to use the SteemConnect desktop app.
+              If you don't have this, you can download it from the
+              <a :href="pkg.homepage" target="_blank">official site</a>.
+            </div>
+            <button class="btn btn-blue" @click="openUriScheme">
+              Open desktop app
+            </button>
+          </div>
           <div v-if="!failed && !signature">
             <div class="mb-4">
               <div class="mb-4 text-center" v-if="app && appProfile">
@@ -57,10 +67,17 @@
 </template>
 
 <script>
-/* global chrome */
 import { mapActions } from 'vuex';
-import { isChromeExtension, isElectron } from '@/helpers/utils';
-import client from '../helpers/client';
+import pkg from '@/../package.json';
+import client from '@/helpers/client';
+import {
+  isWeb,
+  isChromeExtension,
+  isElectron,
+  buildSearchParams,
+  signComplete,
+  REQUEST_ID_PARAM,
+} from '@/helpers/utils';
 
 let openExternal = null;
 if (typeof window !== 'undefined' && window.require) {
@@ -68,27 +85,16 @@ if (typeof window !== 'undefined' && window.require) {
   openExternal = window.require('electron').shell.openExternal;
 }
 
-const REQUEST_ID_PARAM = 'requestId';
-
-function signComplete(requestId, err, res) {
-  if (!isChromeExtension()) return;
-  chrome.runtime.sendMessage({
-    type: 'signComplete',
-    payload: {
-      requestId,
-      args: [err, res],
-    },
-  });
-}
-
 export default {
   data() {
     return {
+      pkg,
       showLoading: false,
       loading: false,
       failed: false,
       signature: null,
       errorMessage: '',
+      isWeb: isWeb(),
       requestId: this.$route.query[REQUEST_ID_PARAM],
       authority: this.$route.query.authority || 'posting',
       isChrome: isChromeExtension(),
@@ -96,6 +102,7 @@ export default {
       appProfile: {},
       callback: this.$route.query.redirect_uri,
       state: this.$route.query.state,
+      uri: `steem://login-request/${this.$route.params[0]}${buildSearchParams(this.$route)}`,
     };
   },
   computed: {
@@ -110,6 +117,9 @@ export default {
   },
   methods: {
     ...mapActions(['signMessage']),
+    openUriScheme() {
+      document.location = this.uri;
+    },
     async loadAppProfile() {
       this.showLoading = true;
       const app = this.$route.params[0];

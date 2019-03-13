@@ -68,7 +68,6 @@
 </template>
 
 <script>
-/* global chrome */
 import * as steemuri from 'steem-uri';
 import { mapActions } from 'vuex';
 import { resolveTransaction } from '@/helpers/client';
@@ -80,34 +79,10 @@ import {
   getVestsToSP,
   legacyUriToParsedSteemUri,
   processTransaction,
+  buildSearchParams,
+  signComplete,
+  REQUEST_ID_PARAM,
 } from '@/helpers/utils';
-
-const REQUEST_ID_PARAM = 'requestId';
-
-function signComplete(requestId, err, res) {
-  if (!isChromeExtension()) return;
-
-  chrome.runtime.sendMessage({
-    type: 'signComplete',
-    payload: {
-      requestId,
-      args: [err, res],
-    },
-  });
-}
-
-function buildSearchParams(route) {
-  const keys = Object.keys(route.query);
-
-  if (keys.length === 0) return '';
-
-  const params = keys
-    .filter(key => key !== REQUEST_ID_PARAM)
-    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(route.query[key])}`)
-    .join('&');
-
-  return `?${params}`;
-}
 
 export default {
   data() {
