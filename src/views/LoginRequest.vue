@@ -75,6 +75,7 @@ import {
   isElectron,
   buildSearchParams,
   signComplete,
+  isValidUrl,
   REQUEST_ID_PARAM,
 } from '@/helpers/utils';
 
@@ -127,7 +128,10 @@ export default {
         this.app = app;
         try {
           this.appProfile = JSON.parse(accounts[0].json_metadata).profile;
-          if (!isChromeExtension() && !this.appProfile.redirect_uris.includes(this.callback)) {
+          if (
+            !isChromeExtension() &&
+            (!this.appProfile.redirect_uris.includes(this.callback) || !isValidUrl(this.callback))
+          ) {
             this.failed = true;
           }
         } catch (e) {

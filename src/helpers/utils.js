@@ -124,3 +124,13 @@ export function signComplete(requestId, err, res) {
     },
   });
 }
+
+export function isValidUrl(string) {
+  try {
+    // eslint-disable-next-line no-new
+    new URL(string);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
