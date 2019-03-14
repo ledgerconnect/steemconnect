@@ -5,8 +5,8 @@
       <div class="container-sm mx-auto">
         <div v-if="isWeb && !failed && !transactionId" class="flash mb-4 overflow-hidden">
           <div class="mb-3">
-            We recommend you to use the SteemConnect desktop app.
-            If you don't have this, you can download it from the
+            We recommend you to use the SteemConnect desktop app. If you don't have this, you can
+            download it from the
             <a :href="pkg.homepage" target="_blank">official site</a>.
           </div>
           <button class="btn btn-blue" @click="openUriScheme">
@@ -17,7 +17,7 @@
           Oops, something went wrong.
           <span v-if="errorMessage">
             Here is the error message:
-            <br/><b>"{{ errorMessage }}"</b>
+            <br /><b>"{{ errorMessage }}"</b>
           </span>
           <span v-else>Please try again later.</span>
         </div>
@@ -30,11 +30,12 @@
           />
           <div class="flash flash-warn mb-4" v-if="parsed.params.callback">
             You are going to get redirected to
-            <span class="link-color">{{ parsed.params.callback | parseUrl }}</span>.
+            <span class="link-color">{{ parsed.params.callback | parseUrl }}</span
+            >.
           </div>
           <div class="mb-4">
             <router-link
-              :to="{ name: 'login', query: { redirect: this.$route.fullPath }}"
+              :to="{ name: 'login', query: { redirect: this.$route.fullPath } }"
               class="btn btn-large mr-2 mb-2"
               v-if="!username"
             >
@@ -49,10 +50,7 @@
             >
               {{ parsed.params.no_broadcast ? 'Sign' : 'Approve' }}
             </button>
-            <button
-              class="btn btn-large btn-danger mb-2"
-              @click="handleReject"
-            >
+            <button class="btn btn-large btn-danger mb-2" @click="handleReject">
               Reject
             </button>
           </div>
@@ -95,7 +93,7 @@ export default {
       failed: false,
       errorMessage: '',
       isWeb: isWeb(),
-      uri: `steem://sign/${this.$route.params[0]}${buildSearchParams(this.$route)}`,
+      uri: `steem://sign/${this.$route.params.pathMatch}${buildSearchParams(this.$route)}`,
       requestId: this.$route.query[REQUEST_ID_PARAM],
     };
   },
@@ -124,7 +122,6 @@ export default {
           this.uriIsValid = false;
         }
       }
-
       this.parsed = processTransaction(parsed, this.config);
     },
     openUriScheme() {

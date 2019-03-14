@@ -53,10 +53,7 @@
             class="form-control input-lg input-block mb-4"
             @blur="handleBlur('address')"
           />
-          <button
-            type="submit"
-            class="btn btn-large btn-blue mb-2"
-          >
+          <button type="submit" class="btn btn-large btn-blue mb-2">
             Save
           </button>
         </form>

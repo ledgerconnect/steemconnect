@@ -1,24 +1,14 @@
 <template>
   <Center>
-    <router-link
-      to="/"
-      class="d-inline-block my-2 no-decoration"
-    >
-      <span class="logo iconfont icon-steemconnect"/>
+    <router-link to="/" class="d-inline-block my-2 no-decoration">
+      <span class="logo iconfont icon-steemconnect" />
       <h4 class="m-0">steemconnect</h4>
     </router-link>
     <div class="width-full p-4 mb-2">
-      <form
-        @submit.prevent="submitForm"
-        method="post"
-        class="text-left"
-      >
+      <form @submit.prevent="submitForm" method="post" class="text-left">
         <div v-if="step === 1">
           <label for="username">Steem username</label>
-          <div
-            v-if="dirty.username && !!errors.username"
-            class="error mb-2"
-          >
+          <div v-if="dirty.username && !!errors.username" class="error mb-2">
             {{ errors.username }}
           </div>
           <input
@@ -32,10 +22,7 @@
             @blur="handleBlur('username')"
           />
           <label for="password">Steem password or private key</label>
-          <div
-            v-if="dirty.password && !!errors.password"
-            class="error mb-2"
-          >
+          <div v-if="dirty.password && !!errors.password" class="error mb-2">
             {{ errors.password }}
           </div>
           <input
@@ -47,11 +34,8 @@
             @blur="handleBlur('password')"
           />
           <label class="mb-2" :class="{ 'mb-4': !error }">
-            <input
-              key="storeAccount"
-              v-model="storeAccount"
-              type="checkbox"
-            > Keep the account on this computer
+            <input key="storeAccount" v-model="storeAccount" type="checkbox" /> Keep the account on
+            this computer
           </label>
           <div v-if="!!error" class="error mb-4">{{ error }}</div>
           <button
@@ -64,10 +48,7 @@
         </div>
         <div v-if="step === 2">
           <label for="key">Encryption key</label>
-          <div
-            v-if="dirty.key && !!errors.key"
-            class="error mb-2"
-          >
+          <div v-if="dirty.key && !!errors.key" class="error mb-2">
             {{ errors.key }}
           </div>
           <input
@@ -79,10 +60,7 @@
             @blur="handleBlur('key')"
           />
           <label for="key-confirmation">Confirm encryption key</label>
-          <div
-           v-if="dirty.keyConfirmation && !!errors.keyConfirmation"
-           class="error mb-2"
-          >
+          <div v-if="dirty.keyConfirmation && !!errors.keyConfirmation" class="error mb-2">
             {{ errors.keyConfirmation }}
           </div>
           <input
@@ -105,14 +83,14 @@
         </div>
         <router-link
           v-if="hasAccounts"
-          :to="{ name: 'login', query: { redirect: getRedirectQuery() }}"
+          :to="{ name: 'login', query: { redirect: getRedirectQuery() } }"
           class="btn btn-large input-block text-center mb-2"
         >
           Log in instead
         </router-link>
       </form>
     </div>
-    <Footer/>
+    <Footer />
   </Center>
 </template>
 

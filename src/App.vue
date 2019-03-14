@@ -1,9 +1,9 @@
 <template>
   <div id="app" :class="{ 'app--extension': isExtension }">
     <template v-if="loaded">
-      <router-view/>
+      <router-view />
     </template>
-    <VueLoadingIndicator v-else-if="showLoading" class="overlay fixed big"/>
+    <VueLoadingIndicator v-else-if="showLoading" class="overlay fixed big" />
   </div>
 </template>
 

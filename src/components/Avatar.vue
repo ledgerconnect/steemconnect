@@ -3,8 +3,8 @@
     class="avatar"
     :style="{
       'background-image': `url(https://steemitimages.com/u/${username}/avatar/small`,
-      'width': `${this.size}px`,
-      'height': `${this.size}px`,
+      width: `${this.size}px`,
+      height: `${this.size}px`,
     }"
   />
 </template>

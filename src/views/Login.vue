@@ -1,23 +1,13 @@
 <template>
   <Center>
-    <router-link
-      to="/"
-      class="d-inline-block my-2 no-decoration"
-    >
-      <span class="logo iconfont icon-steemconnect"/>
+    <router-link to="/" class="d-inline-block my-2 no-decoration">
+      <span class="logo iconfont icon-steemconnect" />
       <h4 class="m-0">steemconnect</h4>
     </router-link>
     <div class="width-full p-4 mb-2">
-      <form
-        @submit.prevent="submitForm"
-        method="post"
-        class="text-left"
-      >
+      <form @submit.prevent="submitForm" method="post" class="text-left">
         <label for="username">Steem username</label>
-        <div
-          v-if="dirty.username && !!errors.username"
-          class="error mb-2"
-        >
+        <div v-if="dirty.username && !!errors.username" class="error mb-2">
           {{ errors.username }}
         </div>
         <select
@@ -28,19 +18,12 @@
           autocapitalize="none"
           @blur="handleBlur('username')"
         >
-          <option
-            v-for="user in Object.keys(keychain)"
-            :key="user"
-            :value="user"
-          >
+          <option v-for="user in Object.keys(keychain)" :key="user" :value="user">
             {{ user }}
           </option>
         </select>
         <label for="password">Encryption key</label>
-        <div
-          v-if="dirty.key && !!errors.key"
-          class="error mb-2"
-        >
+        <div v-if="dirty.key && !!errors.key" class="error mb-2">
           {{ errors.key }}
         </div>
         <input
@@ -60,14 +43,14 @@
           Log in
         </button>
         <router-link
-          :to="{ name: 'import', query: { redirect: getRedirectQuery() }}"
+          :to="{ name: 'import', query: { redirect: getRedirectQuery() } }"
           class="btn btn-large input-block text-center mb-2"
         >
           Import account
         </router-link>
       </form>
     </div>
-    <Footer/>
+    <Footer />
   </Center>
 </template>
 

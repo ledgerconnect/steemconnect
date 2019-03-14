@@ -7,15 +7,15 @@
           <th>Type</th>
           <th>Key</th>
           <th>Weight</th>
-          <th/>
+          <th />
         </tr>
       </thead>
       <tbody>
         <template v-for="(authority, i) in ['owner', 'active', 'posting']">
           <tr
-            v-for="
-              (auth, j) in account[authority].key_auths.concat(account[authority].account_auths)
-             "
+            v-for="(auth, j) in account[authority].key_auths.concat(
+              account[authority].account_auths,
+            )"
             class="border-bottom"
             :key="`${i}-${j}`"
             v-if="publicKeys[authority] === auth[0]"
@@ -24,7 +24,7 @@
             <td>{{ auth[0] }}</td>
             <td>{{ auth[1] }}</td>
             <td class="text-right">
-              <span class="iconfont icon-kebab-vertical"/>
+              <span class="iconfont icon-kebab-vertical" />
             </td>
           </tr>
         </template>
@@ -33,7 +33,7 @@
           <td>{{ account.memo_key }}</td>
           <td></td>
           <td class="text-right">
-            <span class="iconfont icon-kebab-vertical"/>
+            <span class="iconfont icon-kebab-vertical" />
           </td>
         </tr>
       </tbody>

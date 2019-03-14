@@ -1,10 +1,7 @@
 <template>
   <div class="header border-bottom">
-    <router-link
-      class="px-4 py-3 border-right"
-      to="/"
-    >
-      <span class="iconfont icon-steemconnect primary-color"/>
+    <router-link class="px-4 py-3 border-right" to="/">
+      <span class="iconfont icon-steemconnect primary-color" />
     </router-link>
     <slot>
       <h5>{{ title }}</h5>

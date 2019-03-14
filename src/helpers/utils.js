@@ -54,13 +54,8 @@ export function legacyUriToParsedSteemUri(uri) {
     if (operations[opName]) {
       const opParams = Object.keys(operations[opName].schema).reduce((acc, b) => {
         if (!queryParams[b]) return acc;
-
-        return {
-          ...acc,
-          [b]: queryParams[b],
-        };
+        return { ...acc, [b]: queryParams[b] };
       }, {});
-
       const params = { callback: queryParams.redirect_uri };
       const b64Uri = encodeOps([[opName, opParams]], params);
       parsed = decode(b64Uri);
@@ -73,18 +68,14 @@ export function legacyUriToParsedSteemUri(uri) {
 
 function processValue(schema, key, value, { vestsToSP }) {
   const { type, defaultValue } = schema[key];
-
   const realValue = !value && typeof defaultValue !== 'undefined' ? defaultValue : value;
-
   switch (type) {
     case 'amount':
       if (realValue.indexOf('VESTS') !== -1) return `${parseFloat(realValue).toFixed(6)} VESTS`;
-      else if (realValue.indexOf('SP') !== -1)
+      if (realValue.indexOf('SP') !== -1)
         return `${(parseFloat(realValue) / vestsToSP).toFixed(6)} VESTS`;
-      else if (realValue.indexOf('STEEM') !== -1)
-        return `${parseFloat(realValue).toFixed(3)} STEEM`;
-      else if (realValue.indexOf('SBD') !== -1) return `${parseFloat(realValue).toFixed(3)} SBD`;
-
+      if (realValue.indexOf('STEEM') !== -1) return `${parseFloat(realValue).toFixed(3)} STEEM`;
+      if (realValue.indexOf('SBD') !== -1) return `${parseFloat(realValue).toFixed(3)} SBD`;
       return realValue;
     default:
       return realValue;
@@ -93,7 +84,6 @@ function processValue(schema, key, value, { vestsToSP }) {
 
 export function processTransaction(transaction, config) {
   const processed = { ...transaction };
-
   processed.tx.operations = transaction.tx.operations.map(([name, payload]) => {
     const processedPayload = Object.keys(operations[name].schema).reduce(
       (acc, key) => ({
@@ -102,10 +92,8 @@ export function processTransaction(transaction, config) {
       }),
       {},
     );
-
     return [name, processedPayload];
   });
-
   return processed;
 }
 
@@ -113,7 +101,6 @@ export function formatNumber(number) {
   if (parseFloat(number.toFixed(6)) < 0.001) {
     return number.toFixed(6);
   }
-
   return number.toFixed(3);
 }
 
@@ -129,7 +116,6 @@ export function buildSearchParams(route) {
 
 export function signComplete(requestId, err, res) {
   if (!isChromeExtension()) return;
-
   chrome.runtime.sendMessage({
     type: 'signComplete',
     payload: {
