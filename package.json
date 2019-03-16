@@ -66,10 +66,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/steemscript/steemsign.git"
+    "url": "https://github.com/steemscript/steemconnect.git"
   },
   "bugs": {
-    "url": "https://github.com/steemscript/steemsign/issues"
+    "url": "https://github.com/steemscript/steemconnect/issues"
   },
   "browserslist": [
     "> 1%",

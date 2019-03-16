@@ -18,7 +18,7 @@
     {
       "provider": "github",
       "owner": "steemscript",
-      "repo": "steemsign",
+      "repo": "steemconnect",
       "private": false
     }
   ]
