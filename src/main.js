@@ -6,7 +6,6 @@ import VueI18n from 'vue-i18n';
 import VueUi from '@vue/ui';
 import { upperFirst, camelCase } from 'lodash';
 import urlParse from 'url-parse';
-import moment from 'moment';
 import App from '@/App.vue';
 import router from '@/router';
 import getPersistedData from '@/persisted';
@@ -32,7 +31,7 @@ requireComponent.keys().forEach(fileName => {
   Vue.component(componentName, componentConfig.default || componentConfig);
 });
 
-Vue.filter('dateHeader', value => moment(value, 'YYYY-MM-DD').format('MMM D, YYYY'));
+Vue.filter('dateHeader', value => new Date(value).toLocaleString());
 Vue.filter('parseUrl', value => urlParse(value).host);
 Vue.filter('pretty', value => {
   let json;

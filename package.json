@@ -26,7 +26,6 @@
     "dsteem": "^0.11.2",
     "express": "^4.16.4",
     "lodash": "^4.17.11",
-    "moment": "^2.24.0",
     "password-validator": "^4.1.1",
     "primer": "^11.0.0",
     "query-string": "^6.3.0",
