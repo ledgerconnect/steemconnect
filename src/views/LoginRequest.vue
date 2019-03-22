@@ -149,7 +149,6 @@ export default {
 
       try {
         const loginObj = {
-          timestamp: Math.floor(new Date().getTime() / 1000),
           type: 'login',
           app: this.app ? this.app : undefined,
         };
