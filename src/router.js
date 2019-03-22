@@ -12,6 +12,7 @@ const Keys = () => import(/* webpackChunkName: "keys" */ '@/views/Keys.vue');
 const LoginRequest = () =>
   import(/* webpackChunkName: "login-request" */ '@/views/LoginRequest.vue');
 const Sign = () => import(/* webpackChunkName: "sign" */ '@/views/Sign.vue');
+const Profile = () => import(/* webpackChunkName: "profile" */ '@/views/Profile.vue');
 const Settings = () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue');
 const About = () => import(/* webpackChunkName: "about" */ '@/views/About.vue');
 const Error404 = () => import(/* webpachChunkName: "error-404" */ '@/views/404.vue');
@@ -88,6 +89,12 @@ export default new Router({
       path: '/sign/*',
       name: 'sign',
       component: Sign,
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      beforeEnter: requireAuth,
+      component: Profile,
     },
     {
       path: '/settings',
