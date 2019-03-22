@@ -39,9 +39,9 @@ const beforeLogin = (to, from, next) => {
 
 const redirectToLoginRequest = (to, from, next) => {
   const { query } = to;
-  const clientId = query.client_id;
+  const username = query.client_id;
   delete query.client_id;
-  next({ name: 'login-request-app', params: [clientId], query: to.query });
+  next({ name: 'login-request-app', params: { username }, query: to.query });
 };
 
 export default new Router({
@@ -80,7 +80,7 @@ export default new Router({
       component: LoginRequest,
     },
     {
-      path: '/login-request/*',
+      path: '/login-request/:username',
       name: 'login-request-app',
       component: LoginRequest,
     },

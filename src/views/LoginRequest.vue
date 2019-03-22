@@ -102,7 +102,8 @@ export default {
       appProfile: {},
       callback: this.$route.query.redirect_uri,
       state: this.$route.query.state,
-      uri: `steem://login-request/${this.$route.params.pathMatch}${buildSearchParams(this.$route)}`,
+      username: this.$route.params.username,
+      uri: `steem://login-request/${this.$route.params.username}${buildSearchParams(this.$route)}`,
     };
   },
   computed: {
@@ -111,7 +112,7 @@ export default {
     },
   },
   mounted() {
-    if (this.$route.params.pathMatch) {
+    if (this.username) {
       this.loadAppProfile();
     }
   },
@@ -122,7 +123,7 @@ export default {
     },
     async loadAppProfile() {
       this.showLoading = true;
-      const app = this.$route.params.pathMatch;
+      const app = this.username;
       const accounts = await client.database.getAccounts([app]);
       if (accounts[0]) {
         this.app = app;
