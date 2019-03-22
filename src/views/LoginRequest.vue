@@ -98,12 +98,12 @@ export default {
       requestId: this.$route.query[REQUEST_ID_PARAM],
       authority: this.$route.query.authority || 'posting',
       isChrome: isChromeExtension(),
+      clientId: this.$route.params.clientId,
       app: null,
       appProfile: {},
       callback: this.$route.query.redirect_uri,
       state: this.$route.query.state,
-      username: this.$route.params.username,
-      uri: `steem://login-request/${this.$route.params.username}${buildSearchParams(this.$route)}`,
+      uri: `steem://login-request/${this.$route.params.clientId}${buildSearchParams(this.$route)}`,
     };
   },
   computed: {
@@ -112,7 +112,7 @@ export default {
     },
   },
   mounted() {
-    if (this.username) {
+    if (this.clientId) {
       this.loadAppProfile();
     }
   },
@@ -123,7 +123,7 @@ export default {
     },
     async loadAppProfile() {
       this.showLoading = true;
-      const app = this.username;
+      const app = this.clientId;
       const accounts = await client.database.getAccounts([app]);
       if (accounts[0]) {
         this.app = app;
