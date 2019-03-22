@@ -54,7 +54,8 @@ const actions = {
   },
   signMessage: ({ rootState }, { message, authority }) => {
     const { keys, username } = rootState.auth;
-    const messageObj = { signed_message: message, authors: [username] };
+    const timestamp = parseInt(new Date().getTime() / 1000, 10);
+    const messageObj = { signed_message: message, authors: [username], timestamp };
     const hash = cryptoUtils.sha256(JSON.stringify(messageObj));
     const key = privateKeyFrom(keys[authority]);
     const signature = key.sign(hash).toString();
