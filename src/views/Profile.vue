@@ -6,7 +6,7 @@
         <form @submit.prevent="handleSubmit" class="mb-4">
           <label>Account type</label>
           <div class="mb-2">
-            <input v-model="type" type="radio" value="user" id="type-user" class="mr-2" checked />
+            <input v-model="type" type="radio" value="user" id="type-user" class="mr-2" />
             <label for="type-user" class="mr-3">User</label>
             <input v-model="type" type="radio" value="app" id="type-app" class="mr-2" />
             <label for="type-app" class="mr-3">Application</label>
@@ -87,7 +87,7 @@
             />
             <label>Status</label>
             <div class="mb-2">
-              <input v-model="isPublic" type="radio" value="1" id="public-true" class="mr-2" checked />
+              <input v-model="isPublic" type="radio" value="1" id="public-true" class="mr-2" />
               <label for="public-true" class="mr-3">Production</label>
               <input v-model="isPublic" type="radio" value="0" id="public-false" class="mr-2" />
               <label for="public-false" class="mr-3">Sandbox</label>
@@ -101,7 +101,9 @@
               class="form-control input-lg input-block mb-2"
             />
             <div>
-              <legend class="mb-2 d-block">Leave this field blank to keep your secret unchanged.</legend>
+              <legend class="mb-2 d-block">
+                Leave this field blank to keep your secret unchanged.
+              </legend>
             </div>
           </div>
           <button type="submit" class="btn btn-large mb-2 mt-2">
