@@ -6,41 +6,41 @@
         <form @submit.prevent="handleSubmit" class="mb-4">
           <label>Account type</label>
           <div class="mb-2">
-            <input v-model="type" type="radio" value="user" id="type-user" class="mr-2" />
+            <input v-model="draft.type" type="radio" value="user" id="type-user" class="mr-2" />
             <label for="type-user" class="mr-3">User</label>
-            <input v-model="type" type="radio" value="app" id="type-app" class="mr-2" />
+            <input v-model="draft.type" type="radio" value="app" id="type-app" class="mr-2" />
             <label for="type-app" class="mr-3">Application</label>
           </div>
           <label for="name">Name</label>
           <input
-            v-model.trim="name"
+            v-model.trim="draft.name"
             id="name"
             name="name"
             type="text"
             class="form-control input-lg input-block mb-2"
             maxlength="64"
           />
-          <label for="image">Profile picture URL</label>
+          <label for="profile_image">Profile picture URL</label>
           <input
-            v-model.trim="image"
-            id="image"
-            name="image"
+            v-model.trim="draft.profile_image"
+            id="profile_image"
+            name="profile_image"
             type="text"
             class="form-control input-lg input-block mb-2"
             maxlength="64"
           />
-          <label for="cover">Cover image URL</label>
+          <label for="cover_image">Cover image URL</label>
           <input
-            v-model.trim="cover"
-            id="cover"
-            name="cover"
+            v-model.trim="draft.cover_image"
+            id="cover_image"
+            name="cover_image"
             type="text"
             class="form-control input-lg input-block mb-2"
             maxlength="64"
           />
           <label for="about">About</label>
           <textarea
-            v-model.trim="about"
+            v-model.trim="draft.about"
             id="about"
             name="about"
             type="text"
@@ -50,7 +50,7 @@
           ></textarea>
           <label for="website">Website</label>
           <input
-            v-model.trim="website"
+            v-model.trim="draft.website"
             id="website"
             name="website"
             type="url"
@@ -59,26 +59,26 @@
           />
           <label for="location">Location</label>
           <input
-            v-model.trim="location"
+            v-model.trim="draft.location"
             id="location"
             name="location"
             type="text"
             maxlength="64"
             class="form-control input-lg input-block mb-2"
           />
-          <div v-if="type === 'app'">
-            <label for="redirectUris">Redirect URIs</label>
+          <div v-if="draft.type === 'app'">
+            <label for="redirect_uris">Redirect URIs</label>
             <textarea
-              v-model.trim="redirectUris"
-              id="redirectUris"
-              name="redirectUris"
+              v-model.trim="draft.redirect_uris"
+              id="redirect_uris"
+              name="redirect_uris"
               type="text"
               class="form-control input-lg input-block mb-2"
               rows="3"
             ></textarea>
             <label for="creator">Creator</label>
             <input
-              v-model.trim="creator"
+              v-model.trim="draft.creator"
               id="creator"
               name="creator"
               type="text"
@@ -87,14 +87,26 @@
             />
             <label>Status</label>
             <div class="mb-2">
-              <input v-model="isPublic" type="radio" value="1" id="public-true" class="mr-2" />
+              <input
+                v-model="draft.is_public"
+                type="radio"
+                value="1"
+                id="public-true"
+                class="mr-2"
+              />
               <label for="public-true" class="mr-3">Production</label>
-              <input v-model="isPublic" type="radio" value="0" id="public-false" class="mr-2" />
+              <input
+                v-model="draft.is_public"
+                type="radio"
+                value="0"
+                id="public-false"
+                class="mr-2"
+              />
               <label for="public-false" class="mr-3">Sandbox</label>
             </div>
             <label for="secret">Secret</label>
             <input
-              v-model.trim="secret"
+              v-model.trim="draft.secret"
               id="secret"
               name="secret"
               type="text"
@@ -116,25 +128,59 @@
 </template>
 
 <script>
+import { createHash } from 'crypto';
+import { jsonParse } from '@/helpers/utils';
+
 export default {
   data() {
     return {
-      type: 'user',
-      name: null,
-      image: null,
-      cover: null,
-      about: null,
-      website: null,
-      location: null,
-      redirectUris: null,
-      creator: null,
-      isPublic: 0,
-      secret: null,
+      draft: {
+        type: 'user',
+        name: null,
+        profile_image: null,
+        cover_image: null,
+        about: null,
+        website: null,
+        location: null,
+        redirect_uris: null,
+        creator: null,
+        is_public: '0',
+        secret: null,
+      },
     };
+  },
+  computed: {
+    account() {
+      return this.$store.state.auth.account;
+    },
+    profile() {
+      let profile = {};
+      const metadata = jsonParse(this.account.json_metadata);
+      if (metadata.profile && typeof metadata.profile === 'object') {
+        // eslint-disable-next-line prefer-destructuring
+        profile = metadata.profile;
+      }
+      return profile;
+    },
+  },
+  mounted() {
+    const { profile } = this;
+    profile.is_public = profile.is_public ? '1' : '0';
+    this.draft = { ...this.draft, ...profile };
   },
   methods: {
     handleSubmit() {
-      alert('OK');
+      const draft = JSON.parse(JSON.stringify(this.draft));
+      draft.is_public = draft.is_public === '1';
+      if (draft.secret)
+        draft.secret = createHash('sha256')
+          .update(draft.secret)
+          .digest('hex');
+      Object.keys(draft).forEach(key => draft[key] == null && delete draft[key]);
+      const profile = { ...this.profile, ...draft };
+
+      // eslint-disable-next-line no-alert
+      alert(JSON.stringify(profile, null, 2));
     },
   },
 };
