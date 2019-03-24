@@ -128,6 +128,7 @@
 </template>
 
 <script>
+import { encodeOp } from 'steem-uri';
 import { createHash } from 'crypto';
 import { jsonParse } from '@/helpers/utils';
 
@@ -166,21 +167,36 @@ export default {
   mounted() {
     const { profile } = this;
     profile.is_public = profile.is_public ? '1' : '0';
+    delete profile.secret;
     this.draft = { ...this.draft, ...profile };
   },
   methods: {
     handleSubmit() {
       const draft = JSON.parse(JSON.stringify(this.draft));
       draft.is_public = draft.is_public === '1';
-      if (draft.secret)
+      if (draft.secret) {
         draft.secret = createHash('sha256')
           .update(draft.secret)
           .digest('hex');
+      } else {
+        delete draft.secret;
+      }
       Object.keys(draft).forEach(key => draft[key] == null && delete draft[key]);
       const profile = { ...this.profile, ...draft };
 
-      // eslint-disable-next-line no-alert
-      alert(JSON.stringify(profile, null, 2));
+      let metadata = jsonParse(this.account.json_metadata);
+      metadata = { ...metadata, profile };
+
+      const op = [
+        'account_update',
+        {
+          account: this.account.name,
+          memo_key: this.account.memo_key,
+          json_metadata: JSON.stringify(metadata),
+        },
+      ];
+      const uri = encodeOp(op).replace('steem://', '');
+      this.$router.push(uri);
     },
   },
 };
