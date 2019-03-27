@@ -49,22 +49,48 @@
             Get started integrating SteemConnect on your website with SteemConnect.js, the official
             JavaScript SDK.
           </p>
-          <a href="https://github.com/steemscript/steemconnect.js" target="_blank"
-            ><span class="iconfont icon-mark-github" /> SteemConnect.js</a
-          >
+          <p>
+            <a href="https://github.com/steemscript/steemconnect.js" target="_blank"
+              ><span class="iconfont icon-mark-github" /> SteemConnect.js</a
+            >
+          </p>
         </div>
         <a @click="selectSection('demo')" class="Box p-3 d-block overflow-hidden mb-3">
           <h4 class="m-0">Demo</h4>
         </a>
         <div v-if="selectedSection === 'demo'" class="mb-4">
           <p class="mt-2">Checkout SteemConnect demo with Vue.js</p>
-          <a href="https://demo.steemconnect.com" target="_blank" class="mr-2">Try demo</a>
-          <a
-            href="https://github.com/steemscript/steemconnect.js/blob/master/docs/index.html"
-            target="_blank"
-          >
-            <span class="iconfont icon-mark-github" /> See on GitHub
-          </a>
+          <p><a href="https://demo.steemconnect.com" target="_blank" class="mr-2">Try demo</a></p>
+          <p>
+            <a
+              href="https://github.com/steemscript/steemconnect.js/blob/master/docs/index.html"
+              target="_blank"
+            >
+              <span class="iconfont icon-mark-github" /> See on GitHub
+            </a>
+          </p>
+        </div>
+        <a @click="selectSection('help')" class="Box p-3 d-block overflow-hidden mb-3">
+          <h4 class="m-0">Getting help</h4>
+        </a>
+        <div v-if="selectedSection === 'help'" class="mb-4">
+          <p>
+            If you believe you're experiencing a bug with our API or want to report incorrect
+            documentation, open an issue on our issue tracker. For a more real-time avenue of
+            communication, check out the official Discord server. There you'll find community
+            members who can help answer questions about our API, libraries and other development
+            questions.
+          </p>
+          <p v-if="pkg.bugs">
+            <a :href="pkg.bugs.url" target="_blank">
+              <span class="iconfont icon-mark-github" /> Report a bug
+            </a>
+          </p>
+          <p>
+            <a href="https://discord.gg/v52akSX" target="_blank">
+              <span class="iconfont icon-discord" /> Join us on Discord
+            </a>
+          </p>
         </div>
       </div>
     </div>
@@ -72,9 +98,12 @@
 </template>
 
 <script>
+import pkg from '@/../package.json';
+
 export default {
   data() {
     return {
+      pkg,
       selectedSection: false,
     };
   },
