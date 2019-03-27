@@ -56,6 +56,7 @@
             type="url"
             class="form-control input-lg input-block mb-2"
             maxlength="128"
+            placeholder="i.e. https://example.com"
           />
           <label for="location">Location</label>
           <input
@@ -75,7 +76,13 @@
               type="text"
               class="form-control input-lg input-block mb-2"
               rows="3"
+              placeholder="i.e. https://example.com/callback"
             ></textarea>
+            <div>
+              <legend class="mb-2 d-block">
+                One URI per line. Need to have a protocol, no URL fragments, and no relative paths.
+              </legend>
+            </div>
             <label for="creator">Creator</label>
             <input
               v-model.trim="draft.creator"
@@ -167,6 +174,7 @@ export default {
   mounted() {
     const { profile } = this;
     profile.is_public = profile.is_public ? '1' : '0';
+    profile.redirect_uris = profile.redirect_uris ? profile.redirect_uris.join('\n') : '';
     delete profile.secret;
     this.draft = { ...this.draft, ...profile };
   },
@@ -180,6 +188,12 @@ export default {
           .digest('hex');
       } else {
         delete draft.secret;
+      }
+      if (draft.redirect_uris) {
+        draft.redirect_uris = draft.redirect_uris
+          .split('\n')
+          .map(uri => uri.trim())
+          .filter(uri => uri);
       }
       Object.keys(draft).forEach(key => draft[key] == null && delete draft[key]);
       const profile = { ...this.profile, ...draft };
