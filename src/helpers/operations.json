@@ -265,5 +265,20 @@
         "type": "json"
       }
     }
+  },
+  "account_update": {
+    "name": "Update account",
+    "schema": {
+      "account": {
+        "type": "account",
+        "defaultValue": "__signer"
+      },
+      "memo_key": {
+        "type": "string"
+      },
+      "json_metadata": {
+        "type": "json"
+      }
+    }
   }
 }

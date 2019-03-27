@@ -12,8 +12,10 @@ const Keys = () => import(/* webpackChunkName: "keys" */ '@/views/Keys.vue');
 const LoginRequest = () =>
   import(/* webpackChunkName: "login-request" */ '@/views/LoginRequest.vue');
 const Sign = () => import(/* webpackChunkName: "sign" */ '@/views/Sign.vue');
+const Profile = () => import(/* webpackChunkName: "profile" */ '@/views/Profile.vue');
 const Settings = () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue');
 const About = () => import(/* webpackChunkName: "about" */ '@/views/About.vue');
+const Developers = () => import(/* webpackChunkName: "developers" */ '@/views/Developers.vue');
 const Error404 = () => import(/* webpachChunkName: "error-404" */ '@/views/404.vue');
 
 Vue.use(Router);
@@ -90,6 +92,12 @@ export default new Router({
       component: Sign,
     },
     {
+      path: '/profile',
+      name: 'profile',
+      beforeEnter: requireAuth,
+      component: Profile,
+    },
+    {
       path: '/settings',
       name: 'settings',
       component: Settings,
@@ -98,6 +106,11 @@ export default new Router({
       path: '/about',
       name: 'about',
       component: About,
+    },
+    {
+      path: '/developers',
+      name: 'developers',
+      component: Developers,
     },
     {
       path: '*',
