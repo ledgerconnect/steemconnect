@@ -7,7 +7,10 @@
           You’ve found the SteemConnect developer documentation! This page dedicated to showing you
           all the ways that you can use SteemConnect to make cool stuff.
         </p>
-        <a @click="selectSection('new-app')" class="Box p-3 d-block overflow-hidden mb-3">
+        <a
+          @click="selectSection('new-app')"
+          class="Box p-3 d-block border rounded-1 overflow-hidden mb-3"
+        >
           <h4 class="m-0">Add new app</h4>
         </a>
         <div v-if="selectedSection === 'new-app'" class="mb-4">
@@ -32,7 +35,10 @@
             to do this and sign with your app account.
           </p>
         </div>
-        <a @click="selectSection('edit-app')" class="Box p-3 d-block overflow-hidden mb-3">
+        <a
+          @click="selectSection('edit-app')"
+          class="Box p-3 d-block border rounded-1 overflow-hidden mb-3"
+        >
           <h4 class="m-0">Edit app settings</h4>
         </a>
         <div v-if="selectedSection === 'edit-app'" class="mb-4">
@@ -41,7 +47,10 @@
             Edit app settings
           </router-link>
         </div>
-        <a @click="selectSection('sdk')" class="Box p-3 d-block overflow-hidden mb-3">
+        <a
+          @click="selectSection('sdk')"
+          class="Box p-3 d-block border rounded-1 overflow-hidden mb-3"
+        >
           <h4 class="m-0">SDK</h4>
         </a>
         <div v-if="selectedSection === 'sdk'" class="mb-4">
@@ -55,7 +64,10 @@
             >
           </p>
         </div>
-        <a @click="selectSection('demo')" class="Box p-3 d-block overflow-hidden mb-3">
+        <a
+          @click="selectSection('demo')"
+          class="Box p-3 d-block border rounded-1 overflow-hidden mb-3"
+        >
           <h4 class="m-0">Demo</h4>
         </a>
         <div v-if="selectedSection === 'demo'" class="mb-4">
@@ -70,7 +82,10 @@
             </a>
           </p>
         </div>
-        <a @click="selectSection('help')" class="Box p-3 d-block overflow-hidden mb-3">
+        <a
+          @click="selectSection('help')"
+          class="Box p-3 d-block border rounded-1 overflow-hidden mb-3"
+        >
           <h4 class="m-0">Getting help</h4>
         </a>
         <div v-if="selectedSection === 'help'" class="mb-4">
