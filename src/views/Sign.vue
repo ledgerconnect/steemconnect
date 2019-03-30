@@ -3,24 +3,8 @@
     <Header title="New unsigned transaction" />
     <div v-if="parsed && uriIsValid" class="p-4 after-header">
       <div class="container-sm mx-auto">
-        <div v-if="isWeb && !failed && !transactionId" class="flash mb-4 overflow-hidden">
-          <div class="mb-3">
-            We recommend you to use the SteemConnect desktop app. If you don't have this, you can
-            download it from the
-            <a :href="pkg.homepage" target="_blank">official site</a>.
-          </div>
-          <button class="btn btn-blue" @click="openUriScheme">
-            Open desktop app
-          </button>
-        </div>
-        <div v-if="!loading && failed" class="flash flash-error mb-4">
-          Oops, something went wrong.
-          <span v-if="errorMessage">
-            Here is the error message:
-            <br /><b>"{{ errorMessage }}"</b>
-          </span>
-          <span v-else>Please try again later.</span>
-        </div>
+        <OpenExternal v-if="isWeb && !failed && !transactionId" :withChrome="true" :uri="uri" />
+        <Error v-if="!loading && failed" :error="error" />
         <Confirmation v-if="!loading && !!transactionId" :id="transactionId" />
         <div v-if="!failed && !transactionId">
           <Operation
@@ -69,11 +53,9 @@
 import * as steemuri from 'steem-uri';
 import { mapActions } from 'vuex';
 import { resolveTransaction } from '@/helpers/client';
-import pkg from '@/../package.json';
 import {
   isWeb,
   isChromeExtension,
-  getErrorMessage,
   getVestsToSP,
   legacyUriToParsedSteemUri,
   processTransaction,
@@ -85,13 +67,12 @@ import {
 export default {
   data() {
     return {
-      pkg,
       parsed: null,
       uriIsValid: true,
       loading: false,
       transactionId: '',
       failed: false,
-      errorMessage: '',
+      error: false,
       isWeb: isWeb(),
       uri: `steem://sign/${this.$route.params.pathMatch}${buildSearchParams(this.$route)}`,
       requestId: this.$route.query[REQUEST_ID_PARAM],
@@ -123,12 +104,6 @@ export default {
         }
       }
       this.parsed = processTransaction(parsed, this.config);
-    },
-    openUriScheme() {
-      /* eslint-disable no-underscore-dangle */
-      if (window._steemconnect) window._steemconnect.sign(this.uri);
-      else document.location = this.uri;
-      /* eslint-enable no-underscore-rangle */
     },
     async handleSubmit() {
       this.loading = true;
@@ -162,7 +137,7 @@ export default {
             signComplete(this.requestId, null, confirmation);
           }
         } catch (err) {
-          this.errorMessage = getErrorMessage(err);
+          this.error = err;
           console.error('Failed to broadcast transaction', err);
           this.transactionId = '';
           this.failed = true;
