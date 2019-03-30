@@ -63,6 +63,11 @@ const actions = {
     return messageObj;
   },
   broadcast: (context, tx) => client.broadcast.send(tx),
+  updateAccount: ({ rootState }, data) => {
+    const { keys } = rootState.auth;
+    const privateKey = privateKeyFrom(keys.active);
+    return client.broadcast.updateAccount(data, privateKey);
+  },
 };
 
 export default {
