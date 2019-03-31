@@ -12,6 +12,7 @@ const Keys = () => import(/* webpackChunkName: "keys" */ '@/views/Keys.vue');
 const LoginRequest = () =>
   import(/* webpackChunkName: "login-request" */ '@/views/LoginRequest.vue');
 const Sign = () => import(/* webpackChunkName: "sign" */ '@/views/Sign.vue');
+const Authorize = () => import(/* webpackChunkName: "authorize" */ '@/views/Authorize.vue');
 const Profile = () => import(/* webpackChunkName: "profile" */ '@/views/Profile.vue');
 const Settings = () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue');
 const About = () => import(/* webpackChunkName: "about" */ '@/views/About.vue');
@@ -90,6 +91,21 @@ export default new Router({
       path: '/sign/*',
       name: 'sign',
       component: Sign,
+    },
+    {
+      path: '/authorize/@:username',
+      redirect: to => ({
+        name: 'authorize',
+        params: {
+          username: to.params.username,
+        },
+      }),
+    },
+    {
+      path: '/authorize/:username',
+      name: 'authorize',
+      beforeEnter: requireAuth,
+      component: Authorize,
     },
     {
       path: '/profile',

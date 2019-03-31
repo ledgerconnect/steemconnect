@@ -5,16 +5,7 @@
       <Header :title="`Log in request (${authority})`" />
       <div v-if="!failed" class="p-4 after-header">
         <div class="container-sm mx-auto">
-          <div v-if="isWeb && !failed && !signature" class="flash mb-4 overflow-hidden">
-            <div class="mb-3">
-              We recommend you to use the SteemConnect desktop app. If you don't have this, you can
-              download it from the
-              <a :href="pkg.homepage" target="_blank">official site</a>.
-            </div>
-            <button class="btn btn-blue" @click="openUriScheme">
-              Open desktop app
-            </button>
-          </div>
+          <OpenExternal v-if="isWeb && !failed && !signature" :uri="uri" />
           <div v-if="!failed && !signature">
             <div class="mb-4">
               <div class="mb-4 text-center" v-if="app && appProfile">
@@ -67,7 +58,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import pkg from '@/../package.json';
 import client from '@/helpers/client';
 import {
   isWeb,
@@ -88,7 +78,6 @@ if (typeof window !== 'undefined' && window.require) {
 export default {
   data() {
     return {
-      pkg,
       showLoading: false,
       loading: false,
       failed: false,
@@ -96,7 +85,9 @@ export default {
       errorMessage: '',
       isWeb: isWeb(),
       requestId: this.$route.query[REQUEST_ID_PARAM],
-      authority: this.$route.query.authority || 'posting',
+      authority: ['posting', 'active'].includes(this.$route.query.authority)
+        ? this.$route.query.authority
+        : 'posting',
       isChrome: isChromeExtension(),
       clientId: this.$route.params.clientId,
       app: null,
@@ -118,9 +109,6 @@ export default {
   },
   methods: {
     ...mapActions(['signMessage']),
-    openUriScheme() {
-      document.location = this.uri;
-    },
     async loadAppProfile() {
       this.showLoading = true;
       const app = this.clientId;
