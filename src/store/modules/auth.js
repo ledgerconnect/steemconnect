@@ -12,7 +12,7 @@ const state = {
 };
 
 const mutations = {
-  saveAccount(_state, { result, keys }) {
+  login(_state, { result, keys }) {
     Vue.set(_state, 'username', result.name);
     Vue.set(_state, 'keys', keys);
     Vue.set(_state, 'account', result);
@@ -21,6 +21,9 @@ const mutations = {
     Vue.set(_state, 'username', null);
     Vue.set(_state, 'keys', {});
     Vue.set(_state, 'account', {});
+  },
+  loadAccount(_state, account) {
+    Vue.set(_state, 'account', account);
   },
 };
 
@@ -34,7 +37,7 @@ const actions = {
     }
 
     const result = await client.database.getAccounts([username]);
-    commit('saveAccount', { result: result[0], keys });
+    commit('login', { result: result[0], keys });
 
     idleDetector.start(rootState.settings.timeout * 60 * 1000, () => {
       idleDetector.stop();
@@ -44,6 +47,11 @@ const actions = {
   logout: ({ commit }) => {
     commit('logout');
     router.push('/');
+  },
+  loadAccount: async ({ commit, rootState }) => {
+    const { username } = rootState.auth;
+    const [account] = await client.database.getAccounts([username]);
+    commit('loadAccount', account);
   },
   sign: ({ rootState }, tx) => {
     const { keys } = rootState.auth;
