@@ -94,6 +94,9 @@ export default {
       appProfile: {},
       callback: this.$route.query.redirect_uri,
       state: this.$route.query.state,
+      scope: ['login', 'posting', 'offline'].includes(this.$route.query.scope)
+        ? this.$route.query.scope
+        : 'login',
       uri: `steem://login-request/${this.$route.params.clientId}${buildSearchParams(this.$route)}`,
     };
   },
@@ -101,9 +104,28 @@ export default {
     username() {
       return this.$store.state.auth.username;
     },
+    account() {
+      return this.$store.state.auth.account;
+    },
+    hasAuthority() {
+      const auths = this.account.posting.account_auths.map(auth => auth[0]);
+      return auths.indexOf(this.clientId) !== -1;
+    },
   },
   mounted() {
-    if (this.clientId) {
+    if (
+      this.scope === 'posting' &&
+      !isChromeExtension() &&
+      this.clientId &&
+      this.username &&
+      !this.hasAuthority
+    ) {
+      this.$router.push({
+        name: 'authorize',
+        params: { username: this.clientId },
+        query: { redirect_uri: this.uri.replace('steem:/', '') },
+      });
+    } else if (this.clientId) {
       this.loadAppProfile();
     }
   },
@@ -137,7 +159,7 @@ export default {
 
       try {
         const loginObj = {
-          type: 'login',
+          type: isChromeExtension() ? 'login' : this.scope,
           app: this.app ? this.app : undefined,
         };
         const signedMessageObj = await this.signMessage({

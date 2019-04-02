@@ -3,7 +3,7 @@
     <Header title="Authorize" />
     <div class="p-4 after-header">
       <div class="container-sm mx-auto">
-        <OpenExternal v-if="isWeb && !failed && !transactionId" :uri="uri" />
+        <OpenExternal v-if="!hasAuthority && isWeb && !failed && !transactionId" :uri="uri" />
         <form
           v-if="!hasAuthority && !failed && !transactionId"
           @submit.prevent="handleSubmit"
@@ -32,9 +32,18 @@
             Your already authorize the account <b>{{ username }}</b> to do
             <b>{{ authority }}</b> operations on your behalf.
           </p>
-          <a v-if="callback" :href="callback" class="btn btn-large btn-blue mb-2 mt-2">
-            Continue to {{ callback | parseUrl }}
-          </a>
+          <template v-if="callback">
+            <router-link
+              v-if="callback[0] === '/'"
+              :to="callback"
+              class="btn btn-large btn-blue mb-2 mt-2"
+            >
+              Continue
+            </router-link>
+            <a v-else :href="callback" class="btn btn-large btn-blue mb-2 mt-2">
+              Continue to {{ callback | parseUrl }}
+            </a>
+          </template>
         </div>
         <Error v-if="!loading && failed" :error="error" />
         <Confirmation v-if="!loading && !!transactionId" :id="transactionId" />
@@ -73,9 +82,10 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['updateAccount']),
+    ...mapActions(['updateAccount', 'loadAccount']),
     handleSubmit() {
       const { username, authority, callback, account } = this;
+      this.loading = true;
       const data = {
         account: account.name,
         memo_key: account.memo_key,
@@ -87,13 +97,19 @@ export default {
 
       this.updateAccount(data)
         .then(confirmation => {
-          if (isWeb && callback) {
-            window.location = callback;
-          } else {
-            this.transactionId = confirmation.id;
-            this.failed = false;
-            this.loading = false;
-          }
+          this.loadAccount().then(() => {
+            if (isWeb && callback) {
+              if (callback[0] === '/') {
+                this.$router.push(callback);
+              } else {
+                window.location = callback;
+              }
+            } else {
+              this.transactionId = confirmation.id;
+              this.failed = false;
+              this.loading = false;
+            }
+          });
         })
         .catch(err => {
           this.error = err;

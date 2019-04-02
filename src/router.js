@@ -44,6 +44,10 @@ const redirectToLoginRequest = (to, from, next) => {
   const { query } = to;
   const clientId = query.client_id;
   delete query.client_id;
+  let scope = 'posting';
+  if (query.scope.includes('login')) scope = 'login';
+  if (query.scope.includes('offline')) scope = 'offline';
+  query.scope = scope;
   next({ name: 'login-request-app', params: { clientId }, query: to.query });
 };
 
