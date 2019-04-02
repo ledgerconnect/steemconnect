@@ -3,7 +3,7 @@
     <Header title="Authorize" />
     <div class="p-4 after-header">
       <div class="container-sm mx-auto">
-        <OpenExternal v-if="isWeb && !failed && !transactionId" :uri="uri" />
+        <OpenExternal v-if="!hasAuthority && isWeb && !failed && !transactionId" :uri="uri" />
         <form
           v-if="!hasAuthority && !failed && !transactionId"
           @submit.prevent="handleSubmit"
