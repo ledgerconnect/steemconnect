@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header title="Authorize" />
+    <Header title="Authorize (active)" />
     <div class="p-4 after-header">
       <div class="container-sm mx-auto">
         <OpenExternal v-if="!hasAuthority && isWeb && !failed && !transactionId" :uri="uri" />
@@ -15,17 +15,22 @@
               <h4 class="mb-0 mt-2">{{ username }}</h4>
             </div>
             <p>
-              The account <b>{{ username }}</b> is requesting authorization to do
-              <b>{{ authority }}</b> operations on your behalf.
+              Do you want to update your account to authorize <b>{{ username }}</b> to do
+              <b>{{ authority }}</b> operations on your behalf?
             </p>
             <div class="flash flash-error mt-4" v-if="authority === 'active'">
               Giving active authority enables the authorized account to do fund transfers from your
               account, this should be used with utmost care.
             </div>
           </div>
-          <button type="submit" class="btn btn-large btn-success mb-2 mt-2" :disabled="loading">
-            Sign
-          </button>
+          <div class="mt-2">
+            <button type="submit" class="btn btn-large btn-success mb-2 mr-2" :disabled="loading">
+              Authorize
+            </button>
+            <button class="btn btn-large btn-danger mb-2" @click="handleReject">
+              Cancel
+            </button>
+          </div>
         </form>
         <div v-if="hasAuthority">
           <p class="mb-4">
@@ -115,7 +120,11 @@ export default {
           this.error = err;
           console.error('Failed to broadcast transaction', err);
           this.failed = true;
+          this.loading = false;
         });
+    },
+    handleReject() {
+      this.$router.push('/');
     },
   },
 };
