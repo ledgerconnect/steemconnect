@@ -1,7 +1,9 @@
 const express = require('express');
+const frameguard = require('frameguard');
 const serveStatic = require('serve-static');
 
 const app = express();
+app.use(frameguard({ action: 'deny' }));
 app.use(serveStatic(`${__dirname}/web-dist`));
 
 app.get('*', (req, res) => {
