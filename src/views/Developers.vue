@@ -29,9 +29,7 @@
           <p>
             If you would like to use the OAuth 2 API for posting with SteemConnect server you need
             to authorize the Steem account "steemconnect" to post on the behalf of your app account.
-            <a href="https://steemconnect.com/authorize/@steemconnect" target="_blank"
-              >Click here</a
-            >
+            <router-link to="/authorize/steemconnect">Click here</router-link>
             to do this and sign with your app account.
           </p>
         </div>
