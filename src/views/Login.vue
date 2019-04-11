@@ -16,6 +16,7 @@
           class="form-select input-lg input-block mb-2"
           autocorrect="off"
           autocapitalize="none"
+          autocomplete="username"
           @blur="handleBlur('username')"
         >
           <option v-for="user in Object.keys(keychain)" :key="user" :value="user">
@@ -30,6 +31,7 @@
           id="password"
           v-model.trim="key"
           type="password"
+          autocomplete="current-password"
           class="form-control input-lg input-block mb-2"
           :class="{ 'mb-4': !error }"
           @blur="handleBlur('key')"
@@ -43,7 +45,7 @@
           Log in
         </button>
         <router-link
-          :to="{ name: 'import', query: { redirect: getRedirectQuery() } }"
+          :to="{ name: 'import', query: { redirect, authority } }"
           class="btn btn-large input-block text-center mb-2"
         >
           Import account
@@ -59,6 +61,7 @@ import { mapActions } from 'vuex';
 import triplesec from 'triplesec';
 import { getKeychain } from '@/helpers/keychain';
 import { jsonParse } from '@/helpers/utils';
+import { getAuthority } from '@/helpers/auth';
 import { ERROR_INVALID_CREDENTIALS, ERROR_INVALID_ENCRYPTION_KEY } from '@/helpers/messages';
 
 export default {
@@ -71,6 +74,8 @@ export default {
       },
       error: '',
       isLoading: false,
+      redirect: this.$route.query.redirect,
+      authority: getAuthority(this.$route.query.authority),
     };
   },
   computed: {
@@ -119,19 +124,12 @@ export default {
         username: false,
         key: false,
       };
-
       this.username = '';
       this.key = '';
     },
-    getRedirectQuery() {
-      const { redirect } = this.$route.query;
-      return redirect;
-    },
     loadKeychain() {
       this.keychain = getKeychain();
-
       const usernames = Object.keys(this.keychain);
-
       if (usernames.length > 0) {
         [this.username] = usernames;
       }
@@ -141,7 +139,6 @@ export default {
     },
     submitForm() {
       this.isLoading = true;
-
       const encryptedKeys = this.keychain[this.username];
 
       triplesec.decrypt(

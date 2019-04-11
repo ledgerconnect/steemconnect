@@ -21,11 +21,11 @@ const Error404 = () => import(/* webpachChunkName: "error-404" */ '@/views/404.v
 
 Vue.use(Router);
 
-const requireAuth = (to, from, next) => {
+const requireAuth = (to, from, next, { authority }) => {
   if (!store.state.auth.account.name) {
     const name = hasAccounts() ? 'login' : 'import';
     const redirect = to.fullPath === '/' ? undefined : to.fullPath;
-    next({ name, query: { redirect } });
+    next({ name, query: { redirect, authority } });
   } else {
     next();
   }
@@ -108,7 +108,7 @@ export default new Router({
     {
       path: '/authorize/:username',
       name: 'authorize',
-      beforeEnter: requireAuth,
+      beforeEnter: (to, from, next) => requireAuth(to, from, next, { authority: 'active' }),
       component: Authorize,
     },
     {

@@ -60,6 +60,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { isWeb, buildSearchParams } from '@/helpers/utils';
+import { getAuthority } from '@/helpers/auth';
 
 export default {
   data() {
@@ -70,9 +71,7 @@ export default {
       transactionId: '',
       isWeb: isWeb(),
       username: this.$route.params.username,
-      authority: ['posting', 'active'].includes(this.$route.query.authority)
-        ? this.$route.query.authority
-        : 'posting',
+      authority: getAuthority(this.$route.query.authority, 'posting'),
       callback: this.$route.query.redirect_uri,
       uri: `steem://authorize/${this.$route.params.username}${buildSearchParams(this.$route)}`,
     };

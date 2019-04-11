@@ -68,6 +68,7 @@ import {
   isValidUrl,
   REQUEST_ID_PARAM,
 } from '@/helpers/utils';
+import { getAuthority } from '@/helpers/auth';
 
 let openExternal = null;
 if (typeof window !== 'undefined' && window.require) {
@@ -85,9 +86,7 @@ export default {
       errorMessage: '',
       isWeb: isWeb(),
       requestId: this.$route.query[REQUEST_ID_PARAM],
-      authority: ['posting', 'active'].includes(this.$route.query.authority)
-        ? this.$route.query.authority
-        : 'posting',
+      authority: getAuthority(this.$route.query.authority, 'posting'),
       isChrome: isChromeExtension(),
       clientId: this.$route.params.clientId,
       app: null,
