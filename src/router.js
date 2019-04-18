@@ -108,7 +108,6 @@ export default new Router({
     {
       path: '/authorize/:username',
       name: 'authorize',
-      beforeEnter: (to, from, next) => requireAuth(to, from, next, { authority: 'active' }),
       component: Authorize,
     },
     {

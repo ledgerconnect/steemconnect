@@ -24,7 +24,19 @@
             </div>
           </div>
           <div class="mt-2">
-            <button type="submit" class="btn btn-large btn-success mb-2 mr-2" :disabled="loading">
+            <router-link
+              :to="{ name: 'login', query: { redirect: this.$route.fullPath } }"
+              class="btn btn-large mr-2 mb-2"
+              v-if="!account.name"
+            >
+              Log in
+            </router-link>
+            <button
+              type="submit"
+              class="btn btn-large btn-success mb-2 mr-2"
+              :disabled="loading"
+              v-else
+            >
               Authorize
             </button>
             <button class="btn btn-large btn-danger mb-2" @click="handleReject">
@@ -81,8 +93,11 @@ export default {
       return this.$store.state.auth.account;
     },
     hasAuthority() {
-      const auths = this.account[this.authority].account_auths.map(auth => auth[0]);
-      return auths.indexOf(this.username) !== -1;
+      if (this.account.name) {
+        const auths = this.account[this.authority].account_auths.map(auth => auth[0]);
+        return auths.indexOf(this.username) !== -1;
+      }
+      return false;
     },
   },
   methods: {
