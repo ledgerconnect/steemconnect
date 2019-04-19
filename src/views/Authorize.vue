@@ -25,7 +25,10 @@
           </div>
           <div class="mt-2">
             <router-link
-              :to="{ name: 'login', query: { redirect: this.$route.fullPath } }"
+              :to="{
+                name: 'login',
+                query: { redirect: this.$route.fullPath, authority: 'active' },
+              }"
               class="btn btn-large mr-2 mb-2"
               v-if="!account.name"
             >
