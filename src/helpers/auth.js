@@ -98,3 +98,7 @@ export async function getKeys(username, password) {
 
   return keys;
 }
+
+export function getAuthority(str, fallback) {
+  return ['active', 'posting'].includes(str) ? str : fallback;
+}

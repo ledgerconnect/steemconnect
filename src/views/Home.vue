@@ -8,7 +8,7 @@
         <div class="columns mb-6 hide-sm">
           <div class="column one-half v-align-middle">
             <a
-              :href="pkg.repository.url.replace('.git', '/releases')"
+              :href="chromeExtensionUrl"
               target="_blank"
               class="d-block rounded-2 px-3 py-2 bg-primary text-white text-left"
             >
@@ -40,10 +40,14 @@
 <script>
 import pkg from '@/../package.json';
 
+const chromeExtensionUrl =
+  'https://chrome.google.com/webstore/detail/steemconnect/enaifbbcamagcjaaeeaomhofifdgpjcn';
+
 export default {
   data() {
     return {
       pkg,
+      chromeExtensionUrl,
     };
   },
 };

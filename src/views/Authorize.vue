@@ -24,7 +24,22 @@
             </div>
           </div>
           <div class="mt-2">
-            <button type="submit" class="btn btn-large btn-success mb-2 mr-2" :disabled="loading">
+            <router-link
+              :to="{
+                name: 'login',
+                query: { redirect: this.$route.fullPath, authority: 'active' },
+              }"
+              class="btn btn-large mr-2 mb-2"
+              v-if="!account.name"
+            >
+              Log in
+            </router-link>
+            <button
+              type="submit"
+              class="btn btn-large btn-success mb-2 mr-2"
+              :disabled="loading"
+              v-else
+            >
               Authorize
             </button>
             <button class="btn btn-large btn-danger mb-2" @click="handleReject">
@@ -60,6 +75,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { isWeb, buildSearchParams } from '@/helpers/utils';
+import { getAuthority } from '@/helpers/auth';
 
 export default {
   data() {
@@ -70,9 +86,7 @@ export default {
       transactionId: '',
       isWeb: isWeb(),
       username: this.$route.params.username,
-      authority: ['posting', 'active'].includes(this.$route.query.authority)
-        ? this.$route.query.authority
-        : 'posting',
+      authority: getAuthority(this.$route.query.authority, 'posting'),
       callback: this.$route.query.redirect_uri,
       uri: `steem://authorize/${this.$route.params.username}${buildSearchParams(this.$route)}`,
     };
@@ -82,8 +96,11 @@ export default {
       return this.$store.state.auth.account;
     },
     hasAuthority() {
-      const auths = this.account[this.authority].account_auths.map(auth => auth[0]);
-      return auths.indexOf(this.username) !== -1;
+      if (this.account.name) {
+        const auths = this.account[this.authority].account_auths.map(auth => auth[0]);
+        return auths.indexOf(this.username) !== -1;
+      }
+      return false;
     },
   },
   methods: {

@@ -1,6 +1,6 @@
 {
   "name": "steemconnect",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Signer app for Steem",
   "icons": {
     "16": "icon16.png",

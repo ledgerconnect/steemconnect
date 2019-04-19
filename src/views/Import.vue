@@ -19,9 +19,10 @@
             class="form-control input-lg input-block mb-2"
             autocorrect="off"
             autocapitalize="none"
+            autocomplete="username"
             @blur="handleBlur('username')"
           />
-          <label for="password">Steem password or private key</label>
+          <label for="password"> Steem password or {{ authority || 'private' }} key </label>
           <div v-if="dirty.password && !!errors.password" class="error mb-2">
             {{ errors.password }}
           </div>
@@ -30,6 +31,7 @@
             v-model.trim="password"
             id="password"
             type="password"
+            autocomplete="current-password"
             class="form-control input-lg input-block mb-2"
             @blur="handleBlur('password')"
           />
@@ -56,6 +58,7 @@
             id="key"
             v-model.trim="key"
             type="password"
+            autocomplete="new-password"
             class="form-control input-lg input-block mb-2"
             @blur="handleBlur('key')"
           />
@@ -68,11 +71,13 @@
             id="key-confirmation"
             v-model.trim="keyConfirmation"
             type="password"
+            autocomplete="new-password"
             class="form-control input-lg input-block mb-2"
-            :class="{ 'mb-4': !error }"
             @blur="handleBlur('keyConfirmation')"
           />
-          <div v-if="!!error" class="error mb-4">{{ error }}</div>
+          <legend class="mb-4 d-block">
+            The encryption key will be required to unlock your account for usage.
+          </legend>
           <button
             :disabled="submitDisabled || isLoading"
             type="submit"
@@ -83,7 +88,7 @@
         </div>
         <router-link
           v-if="hasAccounts"
-          :to="{ name: 'login', query: { redirect: getRedirectQuery() } }"
+          :to="{ name: 'login', query: { redirect, authority } }"
           class="btn btn-large input-block text-center mb-2"
         >
           Log in instead
@@ -98,7 +103,7 @@
 import { mapActions } from 'vuex';
 import triplesec from 'triplesec';
 import PasswordValidator from 'password-validator';
-import { credentialsValid, getKeys } from '@/helpers/auth';
+import { credentialsValid, getKeys, getAuthority } from '@/helpers/auth';
 import { addToKeychain, hasAccounts } from '@/helpers/keychain';
 import { ERROR_INVALID_CREDENTIALS } from '@/helpers/messages';
 
@@ -110,9 +115,7 @@ passphraseSchema
   .has()
   .uppercase()
   .has()
-  .lowercase()
-  .has()
-  .symbols();
+  .lowercase();
 
 export default {
   data() {
@@ -126,6 +129,8 @@ export default {
       error: '',
       storeAccount: true,
       isLoading: false,
+      redirect: this.$route.query.redirect,
+      authority: getAuthority(this.$route.query.authority),
     };
   },
   computed: {
@@ -174,7 +179,6 @@ export default {
     },
     errors() {
       const current = {};
-
       const { username, password, key, keyConfirmation } = this;
 
       if (!username) {
@@ -189,7 +193,7 @@ export default {
         current.key = 'Encryption key is required.';
       } else if (!passphraseSchema.validate(key)) {
         current.key =
-          'Encryption key has to be at least 8 characters long and contain lowercase letter, uppercase letter, and a symbol.';
+          'Encryption key has to be at least 8 characters long and contain lowercase letter and uppercase letter.';
       }
 
       if (!keyConfirmation) {
@@ -226,10 +230,6 @@ export default {
       this.key = '';
       this.keyConfirmation = '';
     },
-    getRedirectQuery() {
-      const { redirect } = this.$route.query;
-      return redirect;
-    },
     handleBlur(name) {
       this.dirty[name] = true;
     },
@@ -258,9 +258,7 @@ export default {
       const { username, password } = this;
 
       this.isLoading = true;
-
       const invalidCredentials = !(await credentialsValid(username, password));
-
       this.isLoading = false;
 
       if (invalidCredentials) {
@@ -280,7 +278,6 @@ export default {
       const { username, password, key } = this;
 
       this.isLoading = true;
-
       const keys = await getKeys(username, password);
 
       triplesec.encrypt(
