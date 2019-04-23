@@ -21,11 +21,13 @@ const Error404 = () => import(/* webpachChunkName: "error-404" */ '@/views/404.v
 
 Vue.use(Router);
 
-const requireAuth = (to, from, next, { authority }) => {
+const requireAuth = (to, from, next, params) => {
   if (!store.state.auth.account.name) {
     const name = hasAccounts() ? 'login' : 'import';
     const redirect = to.fullPath === '/' ? undefined : to.fullPath;
-    next({ name, query: { redirect, authority } });
+    const query = { redirect };
+    if (params && params.authority) query.authority = params.authority;
+    next({ name, query });
   } else {
     next();
   }
