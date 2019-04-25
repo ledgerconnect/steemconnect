@@ -9,8 +9,7 @@
         <div v-if="!failed && !transactionId">
           <Operation
             v-for="(operation, key) in parsed.tx.operations"
-            :operation="operation"
-            :key="key"
+            v-bind="{ operation, key }"
           />
           <div class="flash flash-warn mb-4" v-if="parsed.params.callback">
             You are going to get redirected to
