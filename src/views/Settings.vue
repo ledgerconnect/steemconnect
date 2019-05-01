@@ -6,6 +6,9 @@
         <div v-if="successVisible" class="flash flash-success mb-4">
           Settings has been saved.
         </div>
+        <router-link to="/accounts" class="Box p-3 d-block border rounded-1 overflow-hidden mb-4">
+          <h4 class="m-0">Accounts</h4>
+        </router-link>
         <form @submit.prevent="handleSubmit" class="mb-4">
           <!--
           <label for="language">Language</label>
@@ -88,7 +91,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(['saveSettings', 'logout']),
+    ...mapActions(['saveSettings']),
     handleBlur(name) {
       this.dirty[name] = true;
     },
