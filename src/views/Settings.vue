@@ -84,16 +84,11 @@ export default {
   computed: {
     successVisible() {
       if (!this.saved) return false;
-
-      if (this.dirty.language || this.dirty.timeout || this.dirty.theme || this.dirty.address) {
-        return false;
-      }
-
-      return true;
+      return !(this.dirty.language || this.dirty.timeout || this.dirty.theme || this.dirty.address);
     },
   },
   methods: {
-    ...mapActions(['saveSettings']),
+    ...mapActions(['saveSettings', 'logout']),
     handleBlur(name) {
       this.dirty[name] = true;
     },
