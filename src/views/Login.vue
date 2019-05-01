@@ -100,7 +100,6 @@ export default {
     },
     errors() {
       const current = {};
-
       const { username, key } = this;
 
       if (!username) {

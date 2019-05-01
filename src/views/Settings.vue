@@ -6,6 +6,9 @@
         <div v-if="successVisible" class="flash flash-success mb-4">
           Settings has been saved.
         </div>
+        <router-link to="/accounts" class="Box p-3 d-block border rounded-1 overflow-hidden mb-4">
+          <h4 class="m-0">Accounts</h4>
+        </router-link>
         <form @submit.prevent="handleSubmit" class="mb-4">
           <!--
           <label for="language">Language</label>
@@ -84,12 +87,7 @@ export default {
   computed: {
     successVisible() {
       if (!this.saved) return false;
-
-      if (this.dirty.language || this.dirty.timeout || this.dirty.theme || this.dirty.address) {
-        return false;
-      }
-
-      return true;
+      return !(this.dirty.language || this.dirty.timeout || this.dirty.theme || this.dirty.address);
     },
   },
   methods: {

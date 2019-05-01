@@ -1,13 +1,12 @@
 <template>
   <div>
     <Header title="Keys" />
-    <table class="table table-lg width-full after-header">
+    <table class="table width-full after-header">
       <thead>
         <tr class="border-bottom">
           <th>Type</th>
           <th>Key</th>
           <th>Weight</th>
-          <th />
         </tr>
       </thead>
       <tbody>
@@ -23,18 +22,12 @@
             <td>{{ authority }}</td>
             <td>{{ auth[0] }}</td>
             <td>{{ auth[1] }}</td>
-            <td class="text-right">
-              <span class="iconfont icon-kebab-vertical" />
-            </td>
           </tr>
         </template>
         <tr class="border-bottom" v-if="publicKeys['memo'] == account.memo_key">
           <td>memo</td>
           <td>{{ account.memo_key }}</td>
           <td></td>
-          <td class="text-right">
-            <span class="iconfont icon-kebab-vertical" />
-          </td>
         </tr>
       </tbody>
     </table>
