@@ -1,11 +1,11 @@
 <template>
   <div>
-    <Header title="Authorize (active)" />
+    <Header title="Revoke (active)" />
     <div class="p-4 after-header">
       <div class="container-sm mx-auto">
-        <OpenExternal v-if="!hasAuthority && isWeb && !failed && !transactionId" :uri="uri" />
+        <OpenExternal v-if="hasAuthority && isWeb && !failed && !transactionId" :uri="uri" />
         <form
-          v-if="!hasAuthority && !failed && !transactionId"
+          v-if="hasAuthority && !failed && !transactionId"
           @submit.prevent="handleSubmit"
           class="mb-4"
         >
@@ -15,13 +15,9 @@
               <h4 class="mb-0 mt-2">{{ username }}</h4>
             </div>
             <p>
-              Do you want to update your account to authorize <b>{{ username }}</b> to do
+              Do you want to update your account to revoke <b>{{ username }}</b> to do
               <b>{{ authority }}</b> operations on your behalf?
             </p>
-            <div class="flash flash-error mt-4" v-if="authority === 'active'">
-              Giving active authority enables the authorized account to do fund transfers from your
-              account, this should be used with utmost care.
-            </div>
           </div>
           <div class="mt-2">
             <router-link
@@ -40,16 +36,16 @@
               :disabled="loading"
               v-else
             >
-              Authorize
+              Revoke
             </button>
             <button class="btn btn-large btn-danger mb-2" @click="handleReject">
               Cancel
             </button>
           </div>
         </form>
-        <div v-if="hasAuthority && !failed && !transactionId">
+        <div v-if="!hasAuthority && !failed && !transactionId">
           <p class="mb-4">
-            You already authorize the account <b>{{ username }}</b> to do
+            You already revoked the account <b>{{ username }}</b> to do
             <b>{{ authority }}</b> operations on your behalf.
           </p>
           <template v-if="callback">
@@ -88,7 +84,7 @@ export default {
       username: this.$route.params.username,
       authority: getAuthority(this.$route.query.authority, 'posting'),
       callback: this.$route.query.redirect_uri,
-      uri: `steem://authorize/${this.$route.params.username}${buildSearchParams(this.$route)}`,
+      uri: `steem://revoke/${this.$route.params.username}${buildSearchParams(this.$route)}`,
     };
   },
   computed: {
@@ -100,7 +96,7 @@ export default {
         const auths = this.account[this.authority].account_auths.map(auth => auth[0]);
         return auths.indexOf(this.username) !== -1;
       }
-      return false;
+      return true;
     },
   },
   methods: {
@@ -114,8 +110,9 @@ export default {
         json_metadata: account.json_metadata,
       };
       data[authority] = JSON.parse(JSON.stringify(account[authority]));
-      data[authority].account_auths.push([username, account[authority].weight_threshold]);
-      data[authority].account_auths.sort((a, b) => (a[0] > b[0] ? 1 : -1));
+      data[authority].account_auths.forEach((accountAuth, i) => {
+        if (accountAuth[0] === username) data[authority].account_auths.splice(i, 1);
+      });
 
       this.updateAccount(data)
         .then(confirmation => {

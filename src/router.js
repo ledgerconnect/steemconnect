@@ -13,6 +13,7 @@ const LoginRequest = () =>
   import(/* webpackChunkName: "login-request" */ '@/views/LoginRequest.vue');
 const Sign = () => import(/* webpackChunkName: "sign" */ '@/views/Sign.vue');
 const Authorize = () => import(/* webpackChunkName: "authorize" */ '@/views/Authorize.vue');
+const Revoke = () => import(/* webpackChunkName: "revoke" */ '@/views/Revoke.vue');
 const Profile = () => import(/* webpackChunkName: "profile" */ '@/views/Profile.vue');
 const Settings = () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue');
 const Accounts = () => import(/* webpackChunkName: "accounts" */ '@/views/Accounts.vue');
@@ -112,6 +113,20 @@ export default new Router({
       path: '/authorize/:username',
       name: 'authorize',
       component: Authorize,
+    },
+    {
+      path: '/revoke/@:username',
+      redirect: to => ({
+        name: 'revoke',
+        params: {
+          username: to.params.username,
+        },
+      }),
+    },
+    {
+      path: '/revoke/:username',
+      name: 'revoke',
+      component: Revoke,
     },
     {
       path: '/profile',
