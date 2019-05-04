@@ -88,10 +88,13 @@ export default {
       requestId: this.$route.query[REQUEST_ID_PARAM],
       authority: getAuthority(this.$route.query.authority, 'posting'),
       isChrome: isChromeExtension(),
-      clientId: this.$route.params.clientId,
+      clientId: this.$route.params.clientId || this.$route.query.client_id,
       app: null,
       appProfile: {},
       callback: this.$route.query.redirect_uri,
+      responseType: ['code', 'token'].includes(this.$route.query.response_type)
+        ? this.$route.query.response_type
+        : 'token',
       state: this.$route.query.state,
       scope: ['login', 'posting', 'offline'].includes(this.$route.query.scope)
         ? this.$route.query.scope
@@ -157,10 +160,10 @@ export default {
       this.showLoading = true;
 
       try {
-        const loginObj = {
-          type: isChromeExtension() ? 'login' : this.scope,
-          app: this.app ? this.app : undefined,
-        };
+        const loginObj = {};
+        loginObj.type = isChromeExtension() ? 'login' : this.scope;
+        if (this.responseType === 'code') loginObj.type = 'code';
+        if (this.app) loginObj.app = this.app;
         const signedMessageObj = await this.signMessage({
           message: loginObj,
           authority: this.authority,
@@ -175,7 +178,9 @@ export default {
           }
         }
         if (!isChromeExtension()) {
-          let callback = `${this.callback}?access_token=${token}&username=${this.username}`;
+          let { callback } = this;
+          callback += this.responseType === 'code' ? `?code=${token}` : `?access_token=${token}`;
+          callback += `&username=${this.username}`;
           if (this.state) callback += `&state=${this.state}`;
 
           if (isElectron()) {
