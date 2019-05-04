@@ -1,6 +1,6 @@
 {
   "name": "steemconnect",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Signer app for Steem",
   "author": "Fabien Marino <fabien@bonustrack.co> (https://github.com/bonustrack)",
   "homepage": "https://beta.steemconnect.com",
