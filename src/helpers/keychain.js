@@ -21,11 +21,11 @@ export function hasAccounts() {
 export function addToKeychain(username, encryptedPassword) {
   const keychain = getKeychain();
   keychain[username] = encryptedPassword;
-  localStorage.setItem('keychain', JSON.stringify(keychain));
+  localStorage.setItem(KEYCHAIN_LOCALSTORAGE_KEY, JSON.stringify(keychain));
 }
 
 export function removeFromKeychain(username) {
   const keychain = getKeychain();
   delete keychain[username];
-  localStorage.setItem('keychain', JSON.stringify(keychain));
+  localStorage.setItem(KEYCHAIN_LOCALSTORAGE_KEY, JSON.stringify(keychain));
 }
