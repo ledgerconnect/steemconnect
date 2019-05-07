@@ -15,13 +15,14 @@ import SignPlaceholderComment from './Sign/Placeholder/Comment';
 import SignPlaceholderNonFiltered from './Sign/Placeholder/NonFiltered';
 import SignPlaceholderTransferDelegate from './Sign/Placeholder/TransferDelegate';
 import Loading from '../widgets/Loading';
+import Next from './Next';
 import './Sign.less';
 
 export default class Sign extends Component {
   static propTypes = {
     location: PropTypes.shape(),
     params: PropTypes.shape(),
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -257,6 +258,7 @@ export default class Sign extends Component {
     }
     return (
       <div className="Sign">
+        <Next/>
         {step === 'loading' && <Loading />}
         {step !== 'loading' && <div className="Sign__content">
           <div className="Sign_frame">

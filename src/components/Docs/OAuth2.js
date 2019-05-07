@@ -9,7 +9,15 @@ const OAuth2 = () => {
       <h3><FormattedMessage id="oauth2" /></h3>
       <h4><FormattedMessage id="implementing_oauth2" /></h4>
       <p>
-        <FormattedMessage id="implementing_oauth2_text" values={{ link: <Link to="/apps/create"><FormattedMessage id="registering_app" /></Link> }} />
+        <FormattedMessage
+          id="implementing_oauth2_text"
+          values={{
+            link:
+              <a href="https://beta.steemconnect.com/developers" target="_blank">
+                <FormattedMessage id="registering_app" />
+              </a>
+          }}
+        />
       </p>
       <div className="list-group">
         <div className="list-group-item">

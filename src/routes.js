@@ -7,10 +7,7 @@ import Dashboard from './components/Dashboard';
 import App from './components/Apps/App';
 import Apps from './components/Apps/Apps';
 import AuthorizedApps from './components/Apps/AuthorizedApps';
-import EditApp from './components/Apps/EditApp';
-import CreateApp from './components/Apps/CreateApp';
 import Steemjs from './components/Docs/Steemjs';
-import OAuth2 from './components/Docs/OAuth2';
 import Sign from './components/Sign';
 import Generate from './components/GenerateLink';
 import RecoverAccount from './components/Accounts/RecoverAccount';
@@ -30,14 +27,11 @@ export default (
     <Route component={RequireLogin}>
       <Route component={Layout}>
         <Route path="/dashboard" component={Dashboard} />
-        <Route path="/apps/create" component={CreateApp} />
         <Route path="/apps/authorized" component={AuthorizedApps} />
-        <Route path="/apps/@:clientId/edit" component={EditApp} />
       </Route>
     </Route>
     <Route component={Layout}>
       <Route path="/apps" component={Apps} />
-      <Route path="/docs/oauth2" component={OAuth2} />
       <Route path="/@:username/permissions" component={Permissions} />
       <Route path="/apps/@:clientId" component={App} />
     </Route>

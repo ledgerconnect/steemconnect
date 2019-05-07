@@ -107,9 +107,13 @@ class App extends Component {
             <h2 className="d-inline">{clientId}</h2>
             <span className="float-right">
               {editionIsEnabled && isLoaded && app.creator === this.props.auth.user.name &&
-                <Link to={`/apps/@${clientId}/edit`} className="btn btn-secondary btn-sm ml-2">
+                <a
+                  href="https://beta.steemconnect.com/developers"
+                  target="_blank"
+                  className="btn btn-secondary btn-sm ml-2"
+                >
                   <FormattedMessage id="edit" />
-                </Link>
+                </a>
               }
               {this.props.auth.isAuthenticated && hasAuthority(this.props.auth.user, clientId) &&
                 <Link to={`/revoke/@${clientId}`} className="btn btn-danger btn-sm ml-2">

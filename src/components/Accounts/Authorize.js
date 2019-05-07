@@ -6,6 +6,7 @@ import SignSuccess from '../Sign/Success';
 import SignError from '../Sign/Error';
 import Loading from '../../widgets/Loading';
 import { hasAuthority } from '../../utils/auth';
+import Next from '../Next';
 
 export default class Authorize extends Component {
   static propTypes = {
@@ -14,7 +15,7 @@ export default class Authorize extends Component {
       role: PropTypes.string,
     }),
     location: PropTypes.shape(),
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -93,6 +94,7 @@ export default class Authorize extends Component {
     const { step, success, error, username, role, weight, redirectUri } = this.state;
     return (
       <div className="Sign">
+        <Next/>
         <div className="Sign__content container my-2 Sign__authorize">
           {step === 0 &&
             <div>

@@ -5,6 +5,7 @@ import SignForm from '../Form/Sign';
 import SignSuccess from '../Sign/Success';
 import SignError from '../Sign/Error';
 import Loading from '../../widgets/Loading';
+import Next from '../Next';
 
 export default class Revoke extends Component {
   static propTypes = {
@@ -16,7 +17,7 @@ export default class Revoke extends Component {
         cb: PropTypes.func,
       }),
     }),
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -83,6 +84,7 @@ export default class Revoke extends Component {
     const { params: { username } } = this.props;
     return (
       <div className="Sign">
+        <Next/>
         <div className="Sign__content container my-2 Sign__authorize">
           {step === 0 &&
             <div>
