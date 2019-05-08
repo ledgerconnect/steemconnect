@@ -57,6 +57,9 @@ const redirectToLoginRequest = (to, from, next) => {
 
 export default new Router({
   mode: isWeb() ? 'history' : 'hash',
+  scrollBehavior() {
+    return { x: 0, y: 0 };
+  },
   routes: [
     {
       path: '/',
