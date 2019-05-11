@@ -5,6 +5,9 @@
         <router-link to="/settings">Settings</router-link>
       </li>
       <li class="d-inline mx-2">
+        <router-link to="/apps">Apps</router-link>
+      </li>
+      <li class="d-inline mx-2">
         <router-link to="/developers">Developers</router-link>
       </li>
       <li class="d-inline mx-2">

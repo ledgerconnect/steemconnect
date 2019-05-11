@@ -18,6 +18,7 @@ const Profile = () => import(/* webpackChunkName: "profile" */ '@/views/Profile.
 const Settings = () => import(/* webpackChunkName: "settings" */ '@/views/Settings.vue');
 const Accounts = () => import(/* webpackChunkName: "accounts" */ '@/views/Accounts.vue');
 const About = () => import(/* webpackChunkName: "about" */ '@/views/About.vue');
+const Apps = () => import(/* webpackChunkName: "apps" */ '@/views/Apps.vue');
 const Developers = () => import(/* webpackChunkName: "developers" */ '@/views/Developers.vue');
 const Error404 = () => import(/* webpachChunkName: "error-404" */ '@/views/404.vue');
 
@@ -151,6 +152,11 @@ export default new Router({
       path: '/about',
       name: 'about',
       component: About,
+    },
+    {
+      path: '/apps',
+      name: 'apps',
+      component: Apps,
     },
     {
       path: '/developers',
