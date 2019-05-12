@@ -4,19 +4,29 @@
     <div class="p-4 after-header">
       <div class="container-sm mx-auto">
         <h2>{{ pkg.name }}</h2>
-        <p v-if="pkg.description">{{ pkg.description }}</p>
-        <p>Version: {{ pkg.version }}</p>
-        <p v-if="pkg.license">License: {{ pkg.license }}</p>
-        <p v-if="pkg.homepage">
-          <a :href="pkg.homepage" target="_blank">
-            <span class="iconfont icon-link-external" /> Website
-          </a>
-        </p>
-        <p v-if="pkg.bugs">
-          <a :href="pkg.bugs.url" target="_blank">
-            <span class="iconfont icon-mark-github" /> Report a bug
-          </a>
-        </p>
+        <div class="mb-4">
+          <p v-if="pkg.description">{{ pkg.description }}</p>
+          <p>Version: {{ pkg.version }}</p>
+          <p v-if="pkg.license">License: {{ pkg.license }}</p>
+          <p v-if="pkg.homepage">
+            <a :href="pkg.homepage" target="_blank">
+              <span class="iconfont icon-link-external" /> Website
+            </a>
+          </p>
+          <p v-if="pkg.bugs">
+            <a :href="pkg.bugs.url" target="_blank">
+              <span class="iconfont icon-mark-github" /> Report a bug
+            </a>
+          </p>
+        </div>
+        <div v-if="contributors.length > 0">
+          <p>Contributors</p>
+          <p :key="contributor[3]" v-for="contributor in contributors">
+            <a :href="contributor[3]" target="_blank">
+              {{ contributor[1] }}
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -30,6 +40,15 @@ export default {
     return {
       pkg,
     };
+  },
+  computed: {
+    contributors() {
+      if (this.pkg.contributors)
+        return this.pkg.contributors.map(contributor =>
+          /^([^<(]+?)?[ \t]*(?:<([^>(]+?)>)?[ \t]*(?:\(([^)]+?)\)|$)/gm.exec(contributor),
+        );
+      return [];
+    },
   },
 };
 </script>
