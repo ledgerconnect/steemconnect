@@ -1,19 +1,19 @@
 <template>
   <div class="height-full text-center">
     <div class="apps">
-      <div class="mx-auto py-6 container-sm">
+      <div class="mx-auto py-5 container-sm">
         <router-link to="/">
           <span class="logo iconfont icon-steemconnect" />
         </router-link>
         <div class="mt-4 mb-7">
-          <h1 class="mb-6">App store</h1>
+          <h1 class="mb-6">Explore apps</h1>
         </div>
       </div>
     </div>
     <div class="border-bottom">
       <Search v-model="search" class="container-sm" placeholder="Search for apps" />
     </div>
-    <div class="container-sm my-4">
+    <div class="container-sm p-4">
       <template v-if="search">
         <div class="mb-4">
           <p>
@@ -25,7 +25,7 @@
           <div
             :key="app"
             v-for="app in filteredApps.slice(0, 12)"
-            class="app-preview column col-md-3 col-4 mb-4"
+            class="app-preview column col-sm-3 col-6 mb-4"
           >
             <div class="mb-2">
               <Avatar :username="app" :size="60" />
@@ -42,7 +42,7 @@
           <div
             :key="app"
             v-for="app in apps.slice(0, 8)"
-            class="app-preview column col-md-3 col-4 mb-4"
+            class="app-preview column col-sm-3 col-6 mb-4"
           >
             <div class="mb-2">
               <Avatar :username="app" :size="60" />
@@ -52,7 +52,6 @@
         </div>
       </template>
     </div>
-    <Footer class="my-4" />
   </div>
 </template>
 
@@ -115,6 +114,7 @@ h4 {
   color: @bg-color;
   background-color: @primary-color;
   background-image: url('../assets/img/shapes.svg');
+  background-attachment: fixed;
 
   .app-preview {
     text-align: center;
