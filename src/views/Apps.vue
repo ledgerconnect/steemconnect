@@ -22,35 +22,28 @@
           {{ filteredApps.length }} apps
         </div>
         <div class="columns" v-if="filteredApps.length > 0">
-          <div
+          <App
+            :app="app"
             :key="app"
             v-for="app in filteredApps.slice(0, 12)"
-            class="app-preview column col-sm-3 col-6 mb-4"
-          >
-            <div class="mb-2">
-              <Avatar :username="app" :size="60" />
-            </div>
-            {{ app }}
-          </div>
+            class="column col-sm-3 col-6 mb-4"
+          />
         </div>
         <p v-else>We didn’t find any apps for "{{ search }}"</p>
       </template>
       <template v-else>
         <p class="mb-4"><b>Recently created</b></p>
         <VueLoadingIndicator v-if="isLoading && apps.length === 0" class="big" />
-        <div class="columns">
-          <div
+        <div class="columns mb-4" v-else>
+          <App
+            :app="app"
             :key="app"
             v-for="app in apps.slice(0, 8)"
-            class="app-preview column col-sm-3 col-6 mb-4"
-          >
-            <div class="mb-2">
-              <Avatar :username="app" :size="60" />
-            </div>
-            {{ app }}
-          </div>
+            class="column col-sm-3 col-6 mb-4"
+          />
         </div>
       </template>
+      <Footer class="my-4" />
     </div>
   </div>
 </template>
@@ -68,11 +61,10 @@ export default {
   },
   computed: {
     filteredApps() {
-      return this.apps.filter(app =>
-        JSON.stringify(app)
-          .toLowerCase()
-          .includes(this.search.toLowerCase()),
-      );
+      const apps = JSON.parse(JSON.stringify(this.apps));
+      return apps
+        .sort((a, b) => a.length - b.length)
+        .filter(app => app.toLowerCase().includes(this.search.toLowerCase()));
     },
   },
   methods: {
@@ -115,9 +107,5 @@ h4 {
   background-color: @primary-color;
   background-image: url('../assets/img/shapes.svg');
   background-attachment: fixed;
-
-  .app-preview {
-    text-align: center;
-  }
 }
 </style>
