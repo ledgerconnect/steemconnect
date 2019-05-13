@@ -43,7 +43,7 @@
           />
         </div>
       </template>
-      <Footer class="my-4"/>
+      <Footer class="my-4" />
     </div>
   </div>
 </template>
@@ -62,12 +62,9 @@ export default {
   computed: {
     filteredApps() {
       const apps = JSON.parse(JSON.stringify(this.apps));
-      return apps.sort((a, b) => a.length - b.length)
-        .filter(app => app
-          .toLowerCase()
-          .includes(this.search.toLowerCase())
-        ,
-      );
+      return apps
+        .sort((a, b) => a.length - b.length)
+        .filter(app => app.toLowerCase().includes(this.search.toLowerCase()));
     },
   },
   methods: {
