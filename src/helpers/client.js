@@ -12,7 +12,6 @@ const handler = {
         rawClient = new Client(address, CLIENT_OPTIONS);
       };
     }
-
     return rawClient[prop];
   },
 };

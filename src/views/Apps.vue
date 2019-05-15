@@ -1,19 +1,19 @@
 <template>
-  <div class="height-full text-center">
-    <div class="apps">
+  <div class="height-full">
+    <div class="apps-hero text-center">
       <div class="mx-auto py-5 container-sm">
         <router-link to="/">
           <span class="logo iconfont icon-steemconnect" />
         </router-link>
         <div class="mt-4 mb-7">
-          <h1 class="mb-6">Explore apps</h1>
+          <h1 class="mb-6">App store</h1>
         </div>
       </div>
     </div>
     <div class="border-bottom">
       <Search v-model="search" class="container-sm" placeholder="Search for apps" />
     </div>
-    <div class="container-sm p-4">
+    <div class="container-sm p-4 text-center">
       <template v-if="search">
         <div class="mb-4">
           <p>
@@ -23,10 +23,11 @@
         </div>
         <div class="columns" v-if="filteredApps.length > 0">
           <App
-            :app="app"
+            :username="app"
             :key="app"
             v-for="app in filteredApps.slice(0, 12)"
             class="column col-sm-3 col-6 mb-4"
+            @select="openModal(app)"
           />
         </div>
         <p v-else>We didn’t find any apps for "{{ search }}"</p>
@@ -36,15 +37,17 @@
         <VueLoadingIndicator v-if="isLoading && apps.length === 0" class="big" />
         <div class="columns mb-4" v-else>
           <App
-            :app="app"
+            :username="app"
             :key="app"
             v-for="app in apps.slice(0, 8)"
             class="column col-sm-3 col-6 mb-4"
+            @select="openModal(app)"
           />
         </div>
       </template>
       <Footer class="my-4" />
     </div>
+    <ModalProfile :open="modalOpen" :username="selectedApp" @close="closeModal" />
   </div>
 </template>
 
@@ -57,6 +60,8 @@ export default {
       isLoading: false,
       search: null,
       apps: [],
+      selectedApp: null,
+      modalOpen: false,
     };
   },
   computed: {
@@ -83,9 +88,18 @@ export default {
       }
       this.isLoading = false;
     },
+    openModal(username) {
+      this.selectedApp = username;
+      this.modalOpen = true;
+    },
+    closeModal() {
+      this.modalOpen = false;
+    },
   },
-  created() {
+  mounted() {
     this.loadApps();
+    const { hash } = window.location;
+    if (hash) this.openModal(hash.slice(1));
   },
 };
 </script>
@@ -93,19 +107,19 @@ export default {
 <style scoped lang="less">
 @import '../vars';
 
-h1,
-h4 {
-  color: @border-color;
-}
-
-.logo {
-  color: @border-color;
-}
-
-.apps {
+.apps-hero {
   color: @bg-color;
   background-color: @primary-color;
   background-image: url('../assets/img/shapes.svg');
   background-attachment: fixed;
+
+  h1,
+  h4 {
+    color: @border-color;
+  }
+
+  .logo {
+    color: @border-color;
+  }
 }
 </style>
