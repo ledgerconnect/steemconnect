@@ -33,13 +33,24 @@
         <p v-else>We didn’t find any apps for "{{ search }}"</p>
       </template>
       <template v-else>
-        <p class="mb-4"><b>Recently created</b></p>
-        <VueLoadingIndicator v-if="isLoading && apps.length === 0" class="big" />
+        <p class="mb-4"><b>Top apps</b></p>
+        <VueLoadingIndicator v-if="isLoading && topApps.length === 0" class="big mb-4" />
         <div class="columns mb-4" v-else>
           <App
             :username="app"
             :key="app"
-            v-for="app in apps.slice(0, 8)"
+            v-for="app in topApps.slice(0, 12)"
+            class="column col-sm-3 col-6 mb-4"
+            @select="openModal(app)"
+          />
+        </div>
+        <p class="mb-4"><b>Recently created</b></p>
+        <VueLoadingIndicator v-if="isLoading && apps.length === 0" class="big mb-4" />
+        <div class="columns mb-4" v-else>
+          <App
+            :username="app"
+            :key="app"
+            v-for="app in apps.slice(0, 4)"
             class="column col-sm-3 col-6 mb-4"
             @select="openModal(app)"
           />
@@ -53,12 +64,17 @@
 
 <script>
 import client from '@/helpers/client';
+import { jsonParse } from '@/helpers/utils';
+
+const ORACLE_USERNAME = 'steemscript';
+const ORACLE_PERMLINK = 'top-apps';
 
 export default {
   data() {
     return {
       isLoading: false,
       search: null,
+      topApps: [],
       apps: [],
       selectedApp: null,
       modalOpen: false,
@@ -74,8 +90,7 @@ export default {
   },
   methods: {
     async loadApps() {
-      this.isLoading = true;
-      const username = 'steemscript';
+      const username = ORACLE_USERNAME;
       const step = 100;
       let follows = await client.call('follow_api', 'get_following', [username, '', 'blog', step]);
       this.apps = follows.map(follow => follow.following);
@@ -86,7 +101,12 @@ export default {
         follows = follows.map(follow => follow.following);
         this.apps.push(...follows.slice(1));
       }
-      this.isLoading = false;
+    },
+    loadTopApps() {
+      client.database.call('get_content', [ORACLE_USERNAME, ORACLE_PERMLINK]).then(content => {
+        const metadata = jsonParse(content.json_metadata);
+        if (metadata.data) this.topApps = metadata.data;
+      });
     },
     openModal(username) {
       this.selectedApp = username;
@@ -94,12 +114,16 @@ export default {
     },
     closeModal() {
       this.modalOpen = false;
+      window.location.hash = '';
     },
   },
-  mounted() {
-    this.loadApps();
+  async mounted() {
     const { hash } = window.location;
     if (hash) this.openModal(hash.slice(1));
+    this.isLoading = true;
+    await this.loadTopApps();
+    await this.loadApps();
+    this.isLoading = false;
   },
 };
 </script>
