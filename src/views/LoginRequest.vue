@@ -116,7 +116,7 @@ export default {
   },
   mounted() {
     if (
-      this.scope === 'posting' &&
+      ['posting', 'offline'].includes(this.scope) &&
       !isChromeExtension() &&
       this.clientId &&
       this.username &&
