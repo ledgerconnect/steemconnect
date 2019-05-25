@@ -23,7 +23,7 @@
             {{ user }}
           </option>
         </select>
-        <label for="password">Encryption key</label>
+        <label for="password">Wallet password</label>
         <div v-if="dirty.key && !!errors.key" class="error mb-2">
           {{ errors.key }}
         </div>
@@ -107,7 +107,7 @@ export default {
       }
 
       if (!key) {
-        current.key = 'Encryption key is required.';
+        current.key = 'Wallet password is required.';
       }
 
       return current;
