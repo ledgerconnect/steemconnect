@@ -49,7 +49,7 @@
           </button>
         </div>
         <div v-if="step === 2">
-          <label for="key">Encryption key</label>
+          <label for="key">Wallet password</label>
           <div v-if="dirty.key && !!errors.key" class="error mb-2">
             {{ errors.key }}
           </div>
@@ -62,7 +62,7 @@
             class="form-control input-lg input-block mb-2"
             @blur="handleBlur('key')"
           />
-          <label for="key-confirmation">Confirm encryption key</label>
+          <label for="key-confirmation">Confirm password</label>
           <div v-if="dirty.keyConfirmation && !!errors.keyConfirmation" class="error mb-2">
             {{ errors.keyConfirmation }}
           </div>
@@ -76,7 +76,7 @@
             @blur="handleBlur('keyConfirmation')"
           />
           <legend class="mb-4 d-block">
-            The encryption key will be required to unlock your account for usage.
+            The wallet password will be required to unlock your account for usage.
           </legend>
           <button
             :disabled="submitDisabled || isLoading"
@@ -190,16 +190,16 @@ export default {
       }
 
       if (!key) {
-        current.key = 'Encryption key is required.';
+        current.key = 'Wallet password is required.';
       } else if (!passphraseSchema.validate(key)) {
         current.key =
-          'Encryption key has to be at least 8 characters long and contain lowercase letter and uppercase letter.';
+          'Wallet password has to be at least 8 characters long and contain lowercase letter and uppercase letter.';
       }
 
       if (!keyConfirmation) {
-        current.keyConfirmation = 'Encryption key confirmation is required.';
+        current.keyConfirmation = 'Wallet password confirmation is required.';
       } else if (keyConfirmation !== key) {
-        current.keyConfirmation = 'Encryption keys do not match.';
+        current.keyConfirmation = 'Wallet passwords do not match.';
       }
 
       return current;
