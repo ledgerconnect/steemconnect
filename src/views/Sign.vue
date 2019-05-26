@@ -134,7 +134,7 @@ export default {
           this.failed = false;
 
           if (this.requestId) {
-            signComplete(this.requestId, null, confirmation);
+            signComplete(this.requestId, null, { result: confirmation });
           }
         } catch (err) {
           this.error = err;
