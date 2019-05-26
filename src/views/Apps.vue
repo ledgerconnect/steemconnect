@@ -114,12 +114,9 @@ export default {
     },
     closeModal() {
       this.modalOpen = false;
-      window.location.hash = '';
     },
   },
   async mounted() {
-    const { hash } = window.location;
-    if (hash) this.openModal(hash.slice(1));
     this.isLoading = true;
     await this.loadTopApps();
     await this.loadApps();

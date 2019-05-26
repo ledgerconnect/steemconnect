@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <a :href="`#${username}`" @click="$emit('select')">
+    <a @click="$emit('select')">
       <span class="mb-2 d-block">
         <Avatar :username="username" :size="60" />
       </span>
