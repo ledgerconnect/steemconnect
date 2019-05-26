@@ -3,7 +3,7 @@
 function API() {
   this.MESSAGE_TAG = 'STEEMCONNECT_MESSAGE';
 
-  this.version = '0.1.2';
+  this.version = '0.1.3';
   this.callbacks = {};
 
   window.addEventListener('message', event => {
