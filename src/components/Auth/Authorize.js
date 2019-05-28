@@ -16,7 +16,6 @@ import SteemitAvatar from '../../widgets/SteemitAvatar';
 import Loading from '../../widgets/Loading';
 import SignForm from '../Form/Sign';
 import ChooseAccountForm from '../Form/ChooseAccount';
-import Next from '../Next';
 import config from '../../../config.json';
 import './Authorize.less';
 
@@ -150,7 +149,6 @@ export default class Authorize extends Component {
     const requiredRoles = (scope === 'login') ? ['posting'] : ['owner', 'active'];
     return (
       <div className="Sign">
-        <Next/>
         {step === 0 && <Loading />}
         {step !== 0 && <div className="Sign__content">
           <div className="Sign_frame">
