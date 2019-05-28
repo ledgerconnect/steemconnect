@@ -181,6 +181,7 @@ export default {
           let { callback } = this;
           callback += this.responseType === 'code' ? `?code=${token}` : `?access_token=${token}`;
           callback += `&username=${this.username}`;
+          if (this.responseType !== 'code') callback += '&expires_in=604800';
           if (this.state) callback += `&state=${this.state}`;
 
           if (isElectron()) {
