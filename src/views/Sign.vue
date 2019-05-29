@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header title="New unsigned transaction" />
+    <Header :title="title" />
     <div v-if="parsed && uriIsValid" class="p-4 after-header">
       <div class="container-sm mx-auto">
         <OpenExternal v-if="isWeb && !failed && !transactionId" :withChrome="true" :uri="uri" />
@@ -53,6 +53,7 @@
 import * as steemuri from 'steem-uri';
 import { mapActions } from 'vuex';
 import { resolveTransaction } from '@/helpers/client';
+import { getAuthority } from '@/helpers/auth';
 import {
   isWeb,
   isChromeExtension,
@@ -76,9 +77,15 @@ export default {
       isWeb: isWeb(),
       uri: `steem://sign/${this.$route.params.pathMatch}${buildSearchParams(this.$route)}`,
       requestId: this.$route.query[REQUEST_ID_PARAM],
+      authority: getAuthority(this.$route.query.authority),
     };
   },
   computed: {
+    title() {
+      let title = 'New unsigned transaction';
+      if (this.authority) title += ` (${this.authority})`;
+      return title;
+    },
     username() {
       return this.$store.state.auth.username;
     },
@@ -114,7 +121,7 @@ export default {
 
       try {
         tx = await resolveTransaction(this.parsed, this.$store.state.auth.username);
-        signedTx = await this.sign(tx);
+        signedTx = await this.sign({ tx, authority: this.authority });
         [sig] = signedTx.signatures;
       } catch (err) {
         console.error('Failed to resolve and sign transaction', err);

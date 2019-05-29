@@ -53,11 +53,13 @@ const actions = {
     const [account] = await client.database.getAccounts([username]);
     commit('loadAccount', account);
   },
-  sign: ({ rootState }, tx) => {
+  sign: ({ rootState }, { tx, authority }) => {
     const { keys } = rootState.auth;
     const { chainId } = rootState.settings;
     // @TODO Use lowest key authority
-    const privateKey = privateKeyFrom(keys.active || keys.posting || keys.memo);
+    const privateKey = authority
+      ? privateKeyFrom(keys[authority])
+      : privateKeyFrom(keys.active || keys.posting || keys.memo);
     return cryptoUtils.signTransaction(tx, [privateKey], Buffer.from(chainId, 'hex'));
   },
   signMessage: ({ rootState }, { message, authority }) => {
