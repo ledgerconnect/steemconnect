@@ -59,6 +59,7 @@ import {
   isChromeExtension,
   getVestsToSP,
   legacyUriToParsedSteemUri,
+  getLowestAuthorityRequired,
   processTransaction,
   buildSearchParams,
   signComplete,
@@ -97,6 +98,9 @@ export default {
   },
   mounted() {
     this.parseUri(this.uri);
+    if (!this.authority && this.parsed && this.parsed.tx) {
+      this.authority = getLowestAuthorityRequired(this.parsed.tx);
+    }
   },
   methods: {
     ...mapActions(['sign', 'broadcast']),

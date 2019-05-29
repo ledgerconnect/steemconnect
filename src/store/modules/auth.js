@@ -56,8 +56,7 @@ const actions = {
   sign: ({ rootState }, { tx, authority }) => {
     const { keys } = rootState.auth;
     const { chainId } = rootState.settings;
-    // @TODO Use lowest key authority
-    const privateKey = authority
+    const privateKey = authority && keys[authority]
       ? privateKeyFrom(keys[authority])
       : privateKeyFrom(keys.active || keys.posting || keys.memo);
     return cryptoUtils.signTransaction(tx, [privateKey], Buffer.from(chainId, 'hex'));
