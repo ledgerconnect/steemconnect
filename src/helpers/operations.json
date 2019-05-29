@@ -1,6 +1,7 @@
 {
   "transfer": {
     "name": "Transfer",
+    "authority": "active",
     "description": "Transfers asset from one account to another.",
     "schema": {
       "from": {
@@ -21,6 +22,7 @@
   },
   "delegate_vesting_shares": {
     "name": "Delegate Steem Power",
+    "authority": "active",
     "schema": {
       "delegator": {
         "type": "account",
@@ -36,6 +38,7 @@
   },
   "transfer_to_vesting": {
     "name": "Power up",
+    "authority": "active",
     "schema": {
       "from": {
         "type": "account",
@@ -51,6 +54,7 @@
   },
   "withdraw_vesting": {
     "name": "Power down",
+    "authority": "active",
     "schema": {
       "account": {
         "type": "account",
@@ -63,6 +67,7 @@
   },
   "convert": {
     "name": "Convert",
+    "authority": "active",
     "schema": {
       "owner": {
         "type": "account",
@@ -78,6 +83,7 @@
   },
   "account_witness_vote": {
     "name": "Witness vote",
+    "authority": "active",
     "schema": {
       "account": {
         "type": "account",
@@ -94,6 +100,7 @@
   },
   "account_witness_proxy": {
     "name": "Witness proxy",
+    "authority": "active",
     "schema": {
       "account": {
         "type": "account",
@@ -106,6 +113,7 @@
   },
   "claim_account": {
     "name": "Claim account",
+    "authority": "active",
     "schema": {
       "creator": {
         "type": "account",
@@ -123,6 +131,7 @@
   },
   "vote": {
     "name": "Vote",
+    "authority": "posting",
     "schema": {
       "voter": {
         "type": "account",
@@ -142,6 +151,7 @@
   },
   "limit_order_create": {
     "name": "Create limit order",
+    "authority": "active",
     "schema": {
       "owner": {
         "type": "account",
@@ -166,6 +176,7 @@
   },
   "limit_order_create2": {
     "name": "Create limit order",
+    "authority": "active",
     "schema": {
       "owner": {
         "type": "account",
@@ -190,6 +201,7 @@
   },
   "limit_order_cancel": {
     "name": "Cancel limit order",
+    "authority": "active",
     "schema": {
       "owner": {
         "type": "account",
@@ -202,6 +214,7 @@
   },
   "claim_reward_balance": {
     "name": "Redeem rewards",
+    "authority": "posting",
     "schema": {
       "account": {
         "type": "account",
@@ -220,6 +233,7 @@
   },
   "comment": {
     "name": "Post or comment",
+    "authority": "posting",
     "schema": {
       "parent_author": {
         "type": "account",
@@ -248,6 +262,7 @@
   },
   "custom_json": {
     "name": "Custom operation",
+    "authority": "posting",
     "schema": {
       "required_auths": {
         "type": "array",
@@ -268,6 +283,7 @@
   },
   "account_update": {
     "name": "Update account",
+    "authority": "active",
     "schema": {
       "account": {
         "type": "account",
