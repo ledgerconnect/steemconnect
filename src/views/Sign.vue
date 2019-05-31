@@ -83,7 +83,7 @@ export default {
   },
   computed: {
     title() {
-      let title = 'New unsigned transaction';
+      let title = 'Confirm transaction';
       if (this.authority) title += ` (${this.authority})`;
       return title;
     },
