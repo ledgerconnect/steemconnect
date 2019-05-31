@@ -41,7 +41,7 @@ function createWindow() {
   const selectionMenu = Menu.buildFromTemplate(SELECTION_MENU);
 
   mainWindow = new BrowserWindow({ width: 360, height: 600 });
-  mainWindow.loadFile('web-dist/index.html');
+  mainWindow.loadFile('www/index.html');
   // mainWindow.toggleDevTools();
 
   mainWindow.on('closed', () => {
@@ -66,14 +66,14 @@ function createWindow() {
   // Required so build works both on the browser and inside electron.
   protocol.interceptFileProtocol('file', ({ url }, callback) => {
     if (url.indexOf('index.html') !== -1) {
-      return callback({ path: path.resolve(app.getAppPath(), 'web-dist/index.html') });
+      return callback({ path: path.resolve(app.getAppPath(), 'www/index.html') });
     }
 
     const match = url.match(PATHS_RE);
 
     if (!match) return callback({ path: url });
 
-    const newPath = path.resolve(app.getAppPath(), `web-dist/${match[1]}/${match[2]}`);
+    const newPath = path.resolve(app.getAppPath(), `www/${match[1]}/${match[2]}`);
 
     return callback({ path: newPath });
   });
