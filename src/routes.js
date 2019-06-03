@@ -9,7 +9,7 @@ import App from './components/Apps/App';
 import AuthorizedApps from './components/Apps/AuthorizedApps';
 import Steemjs from './components/Docs/Steemjs';
 import Sign from './components/Sign';
-// import Generate from './components/GenerateLink';
+import Generate from './components/GenerateLink';
 // import RecoverAccount from './components/Accounts/RecoverAccount';
 // import RequestAccountRecovery from './components/Accounts/RequestAccountRecovery';
 import CreateAccount from './components/Accounts/CreateAccount';
@@ -48,7 +48,7 @@ export default (
     <Route path="/accounts/request-recovery" component={redirectToNewVersion} />
     <Route path="/login" component={Login} />
     <Route path="/oauth2/authorize" component={Authorize} />
-    <Route path="/sign" component={redirectToNewVersion} />
+    <Route path="/sign" component={Generate} />
     <Route path="/sign/:type(/:base64)" component={Sign} />
     <Route path="/authorize/@:username" component={redirectToNewVersion} />
     <Route path="/authorize/@:username/:role" component={redirectToNewVersion} />
