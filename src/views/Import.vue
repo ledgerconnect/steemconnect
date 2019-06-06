@@ -106,6 +106,7 @@ import PasswordValidator from 'password-validator';
 import { credentialsValid, getKeys, getAuthority } from '@/helpers/auth';
 import { addToKeychain, hasAccounts } from '@/helpers/keychain';
 import { ERROR_INVALID_CREDENTIALS } from '@/helpers/messages';
+import { isWeb } from '@/helpers/utils';
 
 const passphraseSchema = new PasswordValidator();
 
@@ -127,7 +128,7 @@ export default {
         keyConfirmation: false,
       },
       error: '',
-      storeAccount: true,
+      storeAccount: !isWeb,
       isLoading: false,
       redirect: this.$route.query.redirect,
       authority: getAuthority(this.$route.query.authority),
