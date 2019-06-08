@@ -256,9 +256,10 @@ export default class Sign extends Component {
         roles = this.getMergedRoles(roles, getOperation(nquery.operation).roles)
       ));
     }
+    const hideNext = !op || (op && op.operation && op.operation === 'profile_update');
     return (
       <div className="Sign">
-        <Next/>
+        {!hideNext && <Next/>}
         {step === 'loading' && <Loading />}
         {step !== 'loading' && <div className="Sign__content">
           <div className="Sign_frame">
