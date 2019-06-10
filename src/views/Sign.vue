@@ -175,10 +175,7 @@ export default {
       if (this.requestId) {
         signComplete(this.requestId, 'Request rejected', null);
       }
-
-      if (isChromeExtension()) {
-        window.close();
-      } else {
+      if (!isChromeExtension()) {
         this.$router.push('/');
       }
     },
