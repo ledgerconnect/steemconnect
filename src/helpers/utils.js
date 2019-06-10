@@ -123,6 +123,7 @@ export function signComplete(requestId, err, res) {
       args: [err, res],
     },
   });
+  window.close();
 }
 
 export function isValidUrl(string) {

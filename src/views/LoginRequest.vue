@@ -172,10 +172,6 @@ export default {
         const token = btoa(JSON.stringify(signedMessageObj));
         if (this.requestId) {
           signComplete(this.requestId, null, token);
-
-          if (isChromeExtension()) {
-            window.close();
-          }
         }
         if (!isChromeExtension()) {
           let { callback } = this;
@@ -198,9 +194,6 @@ export default {
         if (this.requestId) {
           signComplete(this.requestId, err, null);
         }
-        if (isChromeExtension()) {
-          window.close();
-        }
         this.loading = false;
       }
     },
@@ -209,10 +202,7 @@ export default {
       if (requestId) {
         signComplete(requestId, 'Request canceled', null);
       }
-
-      if (isChromeExtension()) {
-        window.close();
-      } else {
+      if (!isChromeExtension()) {
         this.$router.push('/');
       }
     },
