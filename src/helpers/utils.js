@@ -14,11 +14,11 @@ export const isChromeExtension = () =>
 
 export const isWeb = () => !isChromeExtension() && !isElectron();
 
-export function jsonParse(input) {
+export function jsonParse(input, fallback) {
   try {
     return JSON.parse(input);
   } catch (err) {
-    return {};
+    return fallback || {};
   }
 }
 
@@ -54,7 +54,15 @@ export function legacyUriToParsedSteemUri(uri) {
     if (operations[opName]) {
       const opParams = Object.keys(operations[opName].schema).reduce((acc, b) => {
         if (!queryParams[b]) return acc;
-        return { ...acc, [b]: queryParams[b] };
+        let value = queryParams[b];
+        if (
+          operations[opName].schema[b] &&
+          operations[opName].schema[b].type &&
+          ['array', 'object'].includes(operations[opName].schema[b].type)
+        ) {
+          value = jsonParse(value, value);
+        }
+        return { ...acc, [b]: value };
       }, {});
       const params = { callback: queryParams.redirect_uri };
       const b64Uri = encodeOps([[opName, opParams]], params);
