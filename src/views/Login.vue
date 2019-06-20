@@ -137,8 +137,9 @@ export default {
       this.dirty[name] = true;
     },
     submitForm() {
-      this.isLoading = true;
+      const { authority } = this;
       const encryptedKeys = this.keychain[this.username];
+      this.isLoading = true;
 
       triplesec.decrypt(
         {
@@ -154,10 +155,14 @@ export default {
             return;
           }
 
-          this.login({
-            username: this.username,
-            keys: jsonParse(buff.toString()),
-          })
+          const keys = jsonParse(buff.toString());
+          if (authority && !keys[authority]) {
+            this.isLoading = false;
+            this.error = `You need to import your account using your password or ${authority} key to do this request. Click "Import account" button to proceed.`;
+            return;
+          }
+
+          this.login({ username: this.username, keys })
             .then(() => {
               const { redirect } = this.$route.query;
               this.$router.push(redirect || '/');

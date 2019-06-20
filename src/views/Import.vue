@@ -237,8 +237,14 @@ export default {
     async startLogin() {
       this.isLoading = true;
 
-      const { username, password } = this;
+      const { username, password, authority } = this;
       const keys = await getKeys(username, password);
+
+      if (authority && !keys[authority]) {
+        this.isLoading = false;
+        this.error = `You need to use master or ${authority} key to log in.`;
+        return;
+      }
 
       this.login({ username, keys })
         .then(() => {
