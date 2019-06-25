@@ -17,7 +17,7 @@
   "publish": [
     {
       "provider": "github",
-      "owner": "steemscript",
+      "owner": "bonustrack",
       "repo": "steemconnect",
       "private": false
     }

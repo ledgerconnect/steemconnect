@@ -68,10 +68,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/steemscript/steemconnect.git"
+    "url": "https://github.com/bonustrack/steemconnect.git"
   },
   "bugs": {
-    "url": "https://github.com/steemscript/steemconnect/issues"
+    "url": "https://github.com/bonustrack/steemconnect/issues"
   },
   "browserslist": [
     "> 1%",

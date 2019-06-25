@@ -57,7 +57,7 @@
             JavaScript SDK.
           </p>
           <p>
-            <a href="https://github.com/steemscript/steemconnect.js" target="_blank"
+            <a href="https://github.com/bonustrack/steemconnect.js" target="_blank"
               ><span class="iconfont icon-mark-github" /> SteemConnect.js</a
             >
           </p>
@@ -73,7 +73,7 @@
           <p><a href="https://demo.steemconnect.com" target="_blank" class="mr-2">Try demo</a></p>
           <p>
             <a
-              href="https://github.com/steemscript/steemconnect.js/blob/master/docs/index.html"
+              href="https://github.com/bonustrack/steemconnect.js/blob/master/docs/index.html"
               target="_blank"
             >
               <span class="iconfont icon-mark-github" /> See on GitHub
