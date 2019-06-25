@@ -18,6 +18,9 @@
               Do you want to update your account to revoke <b>{{ username }}</b> to do
               <b>{{ authority }}</b> operations on your behalf?
             </p>
+            <div class="flash flash-warn mt-4" v-if="account.name && !hasRequiredKey">
+              This transaction require your <b>active</b> key.
+            </div>
           </div>
           <div class="mt-2">
             <router-link
@@ -26,7 +29,7 @@
                 query: { redirect: this.$route.fullPath, authority: 'active' },
               }"
               class="btn btn-large mr-2 mb-2"
-              v-if="!account.name"
+              v-if="!account.name || !hasRequiredKey"
             >
               Log in
             </router-link>
@@ -97,6 +100,9 @@ export default {
         return auths.indexOf(this.username) !== -1;
       }
       return true;
+    },
+    hasRequiredKey() {
+      return !!(this.$store.state.auth.username && this.$store.state.auth.keys.active);
     },
   },
   methods: {

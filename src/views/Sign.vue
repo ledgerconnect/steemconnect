@@ -17,11 +17,14 @@
             <span class="link-color">{{ parsed.params.callback | parseUrl }}</span
             >.
           </div>
+          <div class="flash flash-warn mb-4" v-if="username && !hasRequiredKey">
+            This transaction require your <b>{{ authority }}</b> key.
+          </div>
           <div class="mb-4">
             <router-link
-              :to="{ name: 'login', query: { redirect: this.$route.fullPath } }"
+              :to="{ name: 'login', query: { redirect: this.$route.fullPath, authority } }"
               class="btn btn-large mr-2 mb-2"
-              v-if="!username"
+              v-if="!username || !hasRequiredKey"
             >
               Log in
             </router-link>
@@ -79,6 +82,7 @@ export default {
       uri: `steem://sign/${this.$route.params.pathMatch}${buildSearchParams(this.$route)}`,
       requestId: this.$route.query[REQUEST_ID_PARAM],
       authority: getAuthority(this.$route.query.authority),
+      hasRequiredKey: null,
     };
   },
   computed: {
@@ -100,6 +104,9 @@ export default {
     this.parseUri(this.uri);
     if (!this.authority && this.parsed && this.parsed.tx) {
       this.authority = getLowestAuthorityRequired(this.parsed.tx);
+      this.hasRequiredKey = !!(
+        this.$store.state.auth.username && this.$store.state.auth.keys[this.authority]
+      );
     }
   },
   methods: {
