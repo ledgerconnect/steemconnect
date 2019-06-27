@@ -100,6 +100,15 @@ export default new Router({
       component: LoginRequest,
     },
     {
+      path: '/sign/profile-update',
+      name: 'sign',
+      beforeEnter: () => {
+        window.location.href = `https://v2.steemconnect.com${window.location.pathname}${
+          window.location.search
+        }`;
+      },
+    },
+    {
       path: '/sign/*',
       name: 'sign',
       component: Sign,
