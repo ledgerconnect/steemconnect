@@ -49,7 +49,8 @@ export default (
     <Route path="/login" component={Login} />
     <Route path="/oauth2/authorize" component={Authorize} />
     <Route path="/sign" component={Generate} />
-    <Route path="/sign/:type(/:base64)" component={Sign} />
+    <Route path="/sign/profile-update" component={Sign} />
+    <Route path="/sign/:type(/:base64)" component={redirectToNewVersion} />
     <Route path="/authorize/@:username" component={redirectToNewVersion} />
     <Route path="/authorize/@:username/:role" component={redirectToNewVersion} />
     <Route path="/revoke/@:username" component={redirectToNewVersion} />
