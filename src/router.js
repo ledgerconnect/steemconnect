@@ -101,7 +101,6 @@ export default new Router({
     },
     {
       path: '/sign/profile-update',
-      name: 'profile-update',
       beforeEnter: () => {
         window.location.href = `https://v2.steemconnect.com${window.location.pathname}${
           window.location.search
