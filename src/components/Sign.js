@@ -28,7 +28,7 @@ export default class Sign extends Component {
     super(props);
 
     this.state = {
-      type: this.props.params.type,
+      type: this.props.params.type || 'profile-update',
       base64: this.props.params.base64,
       query: this.props.location.query,
       normalizedQuery: null,
