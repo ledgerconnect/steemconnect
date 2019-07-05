@@ -49,7 +49,7 @@
           </button>
         </div>
         <div v-if="step === 2">
-          <label for="key">Wallet password</label>
+          <label for="key">Keychain password</label>
           <div v-if="dirty.key && !!errors.key" class="error mb-2">
             {{ errors.key }}
           </div>
@@ -76,7 +76,7 @@
             @blur="handleBlur('keyConfirmation')"
           />
           <legend class="mb-4 d-block">
-            The wallet password will be required to unlock your account for usage.
+            The keychain password will be required to unlock your account for usage.
           </legend>
           <button
             :disabled="submitDisabled || isLoading"
@@ -191,16 +191,16 @@ export default {
       }
 
       if (!key) {
-        current.key = 'Wallet password is required.';
+        current.key = 'Keychain password is required.';
       } else if (!passphraseSchema.validate(key)) {
         current.key =
-          'Wallet password has to be at least 8 characters long and contain lowercase letter and uppercase letter.';
+          'Keychain password has to be at least 8 characters long and contain lowercase letter and uppercase letter.';
       }
 
       if (!keyConfirmation) {
-        current.keyConfirmation = 'Wallet password confirmation is required.';
+        current.keyConfirmation = 'Keychain password confirmation is required.';
       } else if (keyConfirmation !== key) {
-        current.keyConfirmation = 'Wallet passwords do not match.';
+        current.keyConfirmation = 'Keychain passwords do not match.';
       }
 
       return current;
