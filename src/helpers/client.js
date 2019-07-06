@@ -2,6 +2,7 @@ import { Client } from 'dsteem';
 import * as steemuri from 'steem-uri';
 
 const CLIENT_OPTIONS = { timeout: 15000 };
+const EXPIRE_TIME = 1000 * 60;
 
 let rawClient = new Client('https://api.steemit.com', CLIENT_OPTIONS);
 
@@ -26,7 +27,7 @@ export async function resolveTransaction(parsed, signer) {
     /* eslint-disable no-bitwise */
     ref_block_num: props.head_block_number & 0xffff,
     ref_block_prefix: Buffer.from(props.head_block_id, 'hex').readUInt32LE(4),
-    expiration: new Date(Date.now() + client.broadcast.expireTime).toISOString().slice(0, -5),
+    expiration: new Date(Date.now() + client.broadcast.expireTime + EXPIRE_TIME).toISOString().slice(0, -5),
     signers: [signer],
     preferred_signer: signer,
   });
