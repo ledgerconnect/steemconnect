@@ -67,6 +67,7 @@ import {
   signComplete,
   isValidUrl,
   REQUEST_ID_PARAM,
+  b64uEnc,
 } from '@/helpers/utils';
 import { getAuthority } from '@/helpers/auth';
 
@@ -169,7 +170,7 @@ export default {
           authority: this.authority,
         });
         [this.signature] = signedMessageObj.signatures;
-        const token = btoa(JSON.stringify(signedMessageObj));
+        const token = b64uEnc(JSON.stringify(signedMessageObj));
         if (this.requestId) {
           signComplete(this.requestId, null, token);
         }
