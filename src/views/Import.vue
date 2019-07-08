@@ -55,8 +55,8 @@
               class="tooltipped tooltipped-n tooltipped-multiline"
               :aria-label="TOOLTIP_IMPORT_ENCRYPTION_KEY"
             >
-            <span class="iconfont icon-info" />
-          </span>
+              <span class="iconfont icon-info" />
+            </span>
           </label>
           <div v-if="dirty.key && !!errors.key" class="error mb-2">
             {{ errors.key }}

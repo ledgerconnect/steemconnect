@@ -97,7 +97,7 @@ export default {
         ? this.$route.query.response_type
         : 'token',
       state: this.$route.query.state,
-      scope: ['login', 'posting', 'offline'].includes(this.$route.query.scope)
+      scope: ['login', 'posting'].includes(this.$route.query.scope)
         ? this.$route.query.scope
         : 'login',
       uri: `steem://login-request/${this.$route.params.clientId}${buildSearchParams(this.$route)}`,
@@ -117,7 +117,7 @@ export default {
   },
   mounted() {
     if (
-      ['posting', 'offline'].includes(this.scope) &&
+      this.scope === 'posting' &&
       !isChromeExtension() &&
       this.clientId &&
       this.username &&
