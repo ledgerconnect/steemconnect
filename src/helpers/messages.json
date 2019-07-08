@@ -1,0 +1,6 @@
+{
+  "ERROR_INVALID_CREDENTIALS": "Invalid username or password. You need to use master, active, posting or memo key to log in.",
+  "ERROR_INVALID_ENCRYPTION_KEY": "Invalid keychain password.",
+  "TOOLTIP_LOGIN_ENCRYPTION_KEY": "This is a custom password you've set to unlock your account for usage. This is not your Steem private key. If you forgot your keychain password you can import your account again.",
+  "TOOLTIP_IMPORT_ENCRYPTION_KEY": "This is a new custom password you can create to protect your account. This is not your Steem private key."
+}

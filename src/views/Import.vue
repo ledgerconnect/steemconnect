@@ -49,7 +49,15 @@
           </button>
         </div>
         <div v-if="step === 2">
-          <label for="key">Keychain password</label>
+          <label for="key">
+            Keychain password
+            <span
+              class="tooltipped tooltipped-n tooltipped-multiline"
+              :aria-label="TOOLTIP_IMPORT_ENCRYPTION_KEY"
+            >
+            <span class="iconfont icon-info" />
+          </span>
+          </label>
           <div v-if="dirty.key && !!errors.key" class="error mb-2">
             {{ errors.key }}
           </div>
@@ -105,7 +113,7 @@ import triplesec from 'triplesec';
 import PasswordValidator from 'password-validator';
 import { credentialsValid, getKeys, getAuthority } from '@/helpers/auth';
 import { addToKeychain, hasAccounts } from '@/helpers/keychain';
-import { ERROR_INVALID_CREDENTIALS } from '@/helpers/messages';
+import { ERROR_INVALID_CREDENTIALS, TOOLTIP_IMPORT_ENCRYPTION_KEY } from '@/helpers/messages.json';
 import { isWeb } from '@/helpers/utils';
 
 const passphraseSchema = new PasswordValidator();
@@ -132,6 +140,7 @@ export default {
       isLoading: false,
       redirect: this.$route.query.redirect,
       authority: getAuthority(this.$route.query.authority),
+      TOOLTIP_IMPORT_ENCRYPTION_KEY,
     };
   },
   computed: {

@@ -23,7 +23,15 @@
             {{ user }}
           </option>
         </select>
-        <label for="password">Keychain password</label>
+        <label for="password">
+          Keychain password
+          <span
+            class="tooltipped tooltipped-n tooltipped-multiline"
+            :aria-label="TOOLTIP_LOGIN_ENCRYPTION_KEY"
+          >
+            <span class="iconfont icon-info" />
+          </span>
+        </label>
         <div v-if="dirty.key && !!errors.key" class="error mb-2">
           {{ errors.key }}
         </div>
@@ -62,7 +70,11 @@ import triplesec from 'triplesec';
 import { getKeychain } from '@/helpers/keychain';
 import { jsonParse } from '@/helpers/utils';
 import { getAuthority } from '@/helpers/auth';
-import { ERROR_INVALID_CREDENTIALS, ERROR_INVALID_ENCRYPTION_KEY } from '@/helpers/messages';
+import {
+  ERROR_INVALID_CREDENTIALS,
+  ERROR_INVALID_ENCRYPTION_KEY,
+  TOOLTIP_LOGIN_ENCRYPTION_KEY,
+} from '@/helpers/messages.json';
 
 export default {
   data() {
@@ -76,6 +88,7 @@ export default {
       isLoading: false,
       redirect: this.$route.query.redirect,
       authority: getAuthority(this.$route.query.authority),
+      TOOLTIP_LOGIN_ENCRYPTION_KEY,
     };
   },
   computed: {
