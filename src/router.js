@@ -51,7 +51,7 @@ const redirectToLoginRequest = (to, from, next) => {
   delete query.client_id;
   let scope = 'posting';
   if (query.scope === 'login') scope = 'login';
-  if (query.scope.includes('offline')) {
+  if (query.scope && query.scope.includes('offline')) {
     scope = 'posting';
     query.response_type = 'code';
   }
