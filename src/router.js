@@ -50,10 +50,13 @@ const redirectToLoginRequest = (to, from, next) => {
   const clientId = query.client_id;
   delete query.client_id;
   let scope = 'posting';
-  if (query.scope.includes('login')) scope = 'login';
-  if (query.scope.includes('offline')) scope = 'offline';
+  if (query.scope === 'login') scope = 'login';
+  if (query.scope && query.scope.includes('offline')) {
+    scope = 'posting';
+    query.response_type = 'code';
+  }
   query.scope = scope;
-  next({ name: 'login-request-app', params: { clientId }, query: to.query });
+  next({ name: 'login-request-app', params: { clientId }, query });
 };
 
 export default new Router({

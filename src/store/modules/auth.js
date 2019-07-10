@@ -67,8 +67,11 @@ const actions = {
     const timestamp = parseInt(new Date().getTime() / 1000, 10);
     const messageObj = { signed_message: message, authors: [username], timestamp };
     const hash = cryptoUtils.sha256(JSON.stringify(messageObj));
-    const key = privateKeyFrom(keys[authority]);
-    const signature = key.sign(hash).toString();
+    const privateKey =
+      authority && keys[authority]
+        ? privateKeyFrom(keys[authority])
+        : privateKeyFrom(keys.active || keys.posting || keys.memo);
+    const signature = privateKey.sign(hash).toString();
     messageObj.signatures = [signature];
     return messageObj;
   },
