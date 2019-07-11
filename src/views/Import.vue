@@ -136,7 +136,7 @@ export default {
         keyConfirmation: false,
       },
       error: '',
-      storeAccount: !isWeb,
+      storeAccount: !isWeb(),
       isLoading: false,
       redirect: this.$route.query.redirect,
       authority: getAuthority(this.$route.query.authority),
