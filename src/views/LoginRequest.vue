@@ -57,6 +57,7 @@
 </template>
 
 <script>
+/* global chrome */
 import { mapActions } from 'vuex';
 import client from '@/helpers/client';
 import {
@@ -171,10 +172,10 @@ export default {
         });
         [this.signature] = signedMessageObj.signatures;
         const token = b64uEnc(JSON.stringify(signedMessageObj));
+
         if (this.requestId) {
           signComplete(this.requestId, null, token);
-        }
-        if (!isChromeExtension()) {
+        } else {
           let { callback } = this;
           callback += this.responseType === 'code' ? `?code=${token}` : `?access_token=${token}`;
           callback += `&username=${this.username}`;
@@ -184,6 +185,9 @@ export default {
           if (isElectron()) {
             openExternal(callback);
             this.$router.push('/');
+          } else if (isChromeExtension()) {
+            chrome.tabs.create({ url: callback });
+            window.close();
           } else {
             window.location = callback;
           }

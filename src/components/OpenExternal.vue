@@ -15,7 +15,7 @@
 import pkg from '@/../package.json';
 
 export default {
-  props: ['uri', 'withChrome'],
+  props: ['uri'],
   data() {
     return {
       pkg,
@@ -24,7 +24,7 @@ export default {
   methods: {
     openUriScheme() {
       /* eslint-disable no-underscore-dangle */
-      if (this.withChrome && window._steemconnect) window._steemconnect.sign(this.uri);
+      if (window._steemconnect) window._steemconnect.open(this.uri);
       else document.location = this.uri;
       /* eslint-enable no-underscore-rangle */
     },
