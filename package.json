@@ -17,6 +17,7 @@
     "build-electron:mac": "electron-builder --mac",
     "build-electron:win": "electron-builder --win",
     "build-electron:linux": "electron-builder --linux",
+    "zip": "zip -r steemconnect-chrome.zip www && mv steemconnect-chrome.zip www",
     "publish": "electron-builder build -wml --publish always",
     "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build"
   },
