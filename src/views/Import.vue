@@ -121,6 +121,8 @@ const passphraseSchema = new PasswordValidator();
 passphraseSchema
   .is()
   .min(8)
+  .is()
+  .max(50)
   .has()
   .uppercase()
   .has()
