@@ -18,7 +18,7 @@
             >.
           </div>
           <div class="flash flash-warn mb-4" v-if="username && hasRequiredKey === false">
-            This transaction require your <b>{{ authority }}</b> key.
+            This transaction requires your <b>{{ authority }}</b> key.
           </div>
           <div class="mb-4">
             <router-link

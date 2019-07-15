@@ -19,7 +19,7 @@
               <b>{{ authority }}</b> operations on your behalf?
             </p>
             <div class="flash flash-warn mt-4" v-if="account.name && hasRequiredKey === false">
-              This transaction require your <b>active</b> key.
+              This transaction requires your <b>active</b> key.
             </div>
           </div>
           <div class="mt-2">

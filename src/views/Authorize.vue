@@ -23,7 +23,7 @@
               account, this should be used with utmost care.
             </div>
             <div class="flash flash-warn mt-4" v-if="account.name && hasRequiredKey === false">
-              This transaction require your <b>active</b> key.
+              This transaction requires your <b>active</b> key.
             </div>
           </div>
           <div class="mt-2">
