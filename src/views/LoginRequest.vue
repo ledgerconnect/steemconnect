@@ -179,7 +179,7 @@ export default {
           callback += this.responseType === 'code' ? `?code=${token}` : `?access_token=${token}`;
           callback += `&username=${this.username}`;
           if (this.responseType !== 'code') callback += '&expires_in=604800';
-          if (this.state) callback += `&state=${this.state}`;
+          if (this.state) callback += `&state=${encodeURIComponent(this.state)}`;
 
           if (isElectron()) {
             openExternal(callback);
