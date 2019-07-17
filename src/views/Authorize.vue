@@ -32,10 +32,10 @@
                 name: 'login',
                 query: { redirect: this.$route.fullPath, authority: 'active' },
               }"
-              class="btn btn-large mr-2 mb-2"
+              class="btn btn-large btn-blue mr-2 mb-2"
               v-if="!account.name || hasRequiredKey === false"
             >
-              Log in
+              Continue
             </router-link>
             <button
               type="submit"
@@ -45,7 +45,7 @@
             >
               Authorize
             </button>
-            <button class="btn btn-large btn-danger mb-2" @click="handleReject">
+            <button class="btn btn-large mb-2" @click="handleReject">
               Cancel
             </button>
           </div>
