@@ -85,6 +85,8 @@ function processValue(schema, key, value, { vestsToSP }) {
       if (realValue.indexOf('STEEM') !== -1) return `${parseFloat(realValue).toFixed(3)} STEEM`;
       if (realValue.indexOf('SBD') !== -1) return `${parseFloat(realValue).toFixed(3)} SBD`;
       return realValue;
+    case 'int':
+      return parseInt(realValue, 10);
     default:
       return realValue;
   }
