@@ -45,7 +45,8 @@
         "defaultValue": "__signer"
       },
       "to": {
-        "type": "account"
+        "type": "account",
+        "defaultValue": "__signer"
       },
       "amount": {
         "type": "amount"
@@ -62,6 +63,27 @@
       },
       "vesting_shares": {
         "type": "amount"
+      }
+    }
+  },
+  "transfer_to_savings": {
+    "name": "Transfer to saving",
+    "authority": "active",
+    "schema": {
+      "from": {
+        "type": "account",
+        "defaultValue": "__signer"
+      },
+      "to": {
+        "type": "account",
+        "defaultValue": "__signer"
+      },
+      "amount": {
+        "type": "amount"
+      },
+      "memo": {
+        "type": "string",
+        "defaultValue": ""
       }
     }
   },
