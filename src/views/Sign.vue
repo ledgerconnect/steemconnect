@@ -167,7 +167,7 @@ export default {
       }
 
       // TODO: Handle Chrome extension & desktop app redirect.
-      if (this.parsed.params.callback && isWeb()) {
+      if (confirmation && this.parsed.params.callback && isWeb()) {
         window.location = steemuri.resolveCallback(this.parsed.params.callback, {
           sig,
           id: confirmation.id || undefined,
