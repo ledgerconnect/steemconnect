@@ -89,19 +89,11 @@
         <div v-if="selectedSection === 'oauth2'" class="mb-4">
           <p>
             The first step in implementing OAuth2 is registering a developer application, and
-            retrieving your client ID and client secret. The URLs for OAuth2 are as follows:
-          </p>
-          <p>
-            <b>Base authorization URL</b><br />
-            https://api.steemconnect.com/api/oauth2/authorize
+            retrieving your client ID and client secret. The URL for OAuth2 is as follows:
           </p>
           <p>
             <b>Token URL</b><br />
             https://api.steemconnect.com/api/oauth2/token
-          </p>
-          <p>
-            <b>Revocation URL</b><br />
-            https://api.steemconnect.com/api/oauth2/token/revoke
           </p>
         </div>
         <a
