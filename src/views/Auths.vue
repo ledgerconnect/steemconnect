@@ -10,20 +10,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="(auth, i) in auths"
-          class="border-bottom"
-          :key="i"
-        >
+        <tr v-for="(auth, i) in auths" class="border-bottom" :key="i">
           <td>{{ auth.authority }}</td>
           <td>
-            <OperationValueAccount v-if="auth.type === 'account'" :value="auth.auth[0]"/>
+            <OperationValueAccount v-if="auth.type === 'account'" :value="auth.auth[0]" />
             <template v-else>{{ auth.auth[0] }}</template>
             <router-link
               v-if="auth.type === 'account'"
-              :to="auth.authority !== 'posting' ?
-                `/revoke/${auth.auth[0]}?authority=${auth.authority}`
-                : `/revoke/${auth.auth[0]}`
+              :to="
+                auth.authority !== 'posting'
+                  ? `/revoke/${auth.auth[0]}?authority=${auth.authority}`
+                  : `/revoke/${auth.auth[0]}`
               "
               class="btn btn-sm float-right"
             >
