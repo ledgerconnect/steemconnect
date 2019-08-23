@@ -9,8 +9,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import { isChromeExtension } from '@/helpers/utils';
-import { jsonParse } from './helpers/utils';
+import { isChromeExtension, jsonParse } from '@/helpers/utils';
 
 const LOADING_ICON_TIMEOUT = 300;
 
@@ -30,7 +29,7 @@ export default {
     },
   },
   methods: mapActions(['login']),
-  async created () {
+  async created() {
     const loadingTimeout = setTimeout(() => {
       this.showLoading = true;
     }, LOADING_ICON_TIMEOUT);
