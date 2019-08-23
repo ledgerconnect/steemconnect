@@ -8,7 +8,9 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import { isChromeExtension } from '@/helpers/utils';
+import { jsonParse } from './helpers/utils';
 
 const LOADING_ICON_TIMEOUT = 300;
 
@@ -27,20 +29,25 @@ export default {
       return isChromeExtension();
     },
   },
-  created() {
+  methods: mapActions(['login']),
+  async created () {
     const loadingTimeout = setTimeout(() => {
       this.showLoading = true;
     }, LOADING_ICON_TIMEOUT);
 
+    const unlocked = jsonParse(localStorage.getItem('steemconnect_unlocked'));
+    const lastUsername = localStorage.getItem('steemconnect_last_username');
+    if (lastUsername && unlocked[lastUsername]) {
+      await this.login({ username: lastUsername, keys: unlocked[lastUsername] });
+    }
+
     this.$store.dispatch('getDynamicGlobalProperties').then(() => {
       clearTimeout(loadingTimeout);
-
       this.showLoading = false;
     });
   },
   beforeUpdate() {
     if (this.initialized) return;
-
     this.initialized = true;
   },
 };

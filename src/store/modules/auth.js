@@ -4,6 +4,7 @@ import client from '@/helpers/client';
 import { credentialsValid, privateKeyFrom } from '@/helpers/auth';
 import router from '@/router';
 import { idleDetector } from '@/main';
+import { jsonParse } from '../../helpers/utils';
 
 const state = {
   username: null,
@@ -38,6 +39,13 @@ const actions = {
 
     const result = await client.database.getAccounts([username]);
     commit('login', { result: result[0], keys });
+
+    localStorage.setItem('steemconnect_last_username', username);
+    if (keys.posting) {
+      const unlocked = jsonParse(localStorage.getItem('steemconnect_unlocked')) || {};
+      unlocked[username] = { posting: keys.posting };
+      localStorage.setItem('steemconnect_unlocked', JSON.stringify(unlocked));
+    }
 
     idleDetector.start(rootState.settings.timeout * 60 * 1000, () => {
       idleDetector.stop();
