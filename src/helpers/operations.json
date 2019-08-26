@@ -318,5 +318,95 @@
         "type": "json"
       }
     }
+  },
+  "account_update2": {
+    "name": "Update account",
+    "authority": "posting",
+    "schema": {
+      "account": {
+        "type": "account",
+        "defaultValue": "__signer"
+      },
+      "memo_key": {
+        "type": "string"
+      },
+      "json_metadata": {
+        "type": "json"
+      },
+      "posting_json_metadata": {
+        "type": "json"
+      }
+    }
+  },
+  "create_proposal": {
+    "name": "Create proposal",
+    "authority": "active",
+    "schema": {
+      "creator": {
+        "type": "account",
+        "defaultValue": "__signer"
+      },
+      "receiver": {
+        "type": "account",
+        "defaultValue": "__signer"
+      },
+      "start_date": {
+        "type": "time"
+      },
+      "end_date": {
+        "type": "time"
+      },
+      "daily_pay": {
+        "type": "amount"
+      },
+      "subject": {
+        "type": "string"
+      },
+      "permlink": {
+        "type": "string"
+      },
+      "extensions": {
+        "type": "array",
+        "defaultValue": []
+      }
+    }
+  },
+  "remove_proposal": {
+    "name": "Remove proposal",
+    "authority": "active",
+    "schema": {
+      "proposal_owner": {
+        "type": "account",
+        "defaultValue": "__signer"
+      },
+      "proposal_ids": {
+        "type": "array"
+      },
+      "extensions": {
+        "type": "array",
+        "defaultValue": []
+      }
+    }
+  },
+  "update_proposal_votes": {
+    "name": "Update proposal votes",
+    "authority": "active",
+    "schema": {
+      "voter": {
+        "type": "account",
+        "defaultValue": "__signer"
+      },
+      "proposal_ids": {
+        "type": "array"
+      },
+      "approve": {
+        "type": "bool",
+        "defaultValue": true
+      },
+      "extensions": {
+        "type": "array",
+        "defaultValue": []
+      }
+    }
   }
 }
