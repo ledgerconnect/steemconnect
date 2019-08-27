@@ -15,12 +15,16 @@ window.addEventListener(
     if (event.source !== window) return;
     if (event.data.tag !== MESSAGE_TAG) return;
 
-    if ((event.data.type === 'sign' || event.data.type === 'login') && event.data.payload) {
+    if ((['sign', 'login'].includes(event.data.type)) && event.data.payload) {
       chrome.runtime.sendMessage(
         { type: event.data.type, payload: event.data.payload },
         null,
         ([err, res]) => respond(event, err, res),
       );
+    }
+
+    if (event.data.type === 'open' && event.data.payload) {
+      chrome.runtime.sendMessage({ type: 'open', payload: event.data.payload }, null);
     }
   },
   false,
