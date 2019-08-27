@@ -6,7 +6,8 @@
       :placeholder="placeholder"
       @input="handleInput"
       type="text"
-      autocapitalize="off"
+      autocorrect="off"
+      autocapitalize="none"
       class="px-4 py-3 border-0 input-lg"
     />
   </div>

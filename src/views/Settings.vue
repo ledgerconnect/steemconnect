@@ -54,6 +54,8 @@
             name="to"
             type="text"
             class="form-control input-lg input-block mb-4"
+            autocorrect="off"
+            autocapitalize="none"
             @blur="handleBlur('address')"
           />
           <button type="submit" class="btn btn-large btn-blue mb-2">

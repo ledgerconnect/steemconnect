@@ -18,15 +18,15 @@
             >.
           </div>
           <div class="flash flash-warn mb-4" v-if="username && hasRequiredKey === false">
-            This transaction require your <b>{{ authority }}</b> key.
+            This transaction requires your <b>{{ authority }}</b> key.
           </div>
           <div class="mb-4">
             <router-link
               :to="{ name: 'login', query: { redirect: this.$route.fullPath, authority } }"
-              class="btn btn-large mr-2 mb-2"
+              class="btn btn-large btn-blue mr-2 mb-2"
               v-if="!username || hasRequiredKey === false"
             >
-              Log in
+              Continue
             </router-link>
             <button
               type="submit"
@@ -37,8 +37,8 @@
             >
               {{ parsed.params.no_broadcast ? 'Sign' : 'Approve' }}
             </button>
-            <button class="btn btn-large btn-danger mb-2" @click="handleReject">
-              Reject
+            <button class="btn btn-large mb-2" @click="handleReject">
+              Cancel
             </button>
           </div>
         </div>
@@ -167,7 +167,7 @@ export default {
       }
 
       // TODO: Handle Chrome extension & desktop app redirect.
-      if (this.parsed.params.callback && isWeb()) {
+      if (confirmation && this.parsed.params.callback && isWeb()) {
         window.location = steemuri.resolveCallback(this.parsed.params.callback, {
           sig,
           id: confirmation.id || undefined,

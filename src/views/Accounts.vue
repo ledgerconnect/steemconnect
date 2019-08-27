@@ -15,7 +15,7 @@
             </h4>
             <span v-if="user === username">
               <span class="ml-3">Unlocked</span>
-              <router-link class="ml-3" to="/keys">Keys</router-link>
+              <router-link class="ml-3" to="/auths">Auths</router-link>
               <a class="ml-3 text-red" @click="logout">Log out</a>
             </span>
             <span v-else>

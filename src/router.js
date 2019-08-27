@@ -8,7 +8,7 @@ const Home = () => import(/* webpackChunkName: "home" */ '@/views/Home.vue');
 const Import = () => import(/* webpackChunkName: "import" */ '@/views/Import.vue');
 const Login = () => import(/* webpackChunkName: "login" */ '@/views/Login.vue');
 const Dashboard = () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard.vue');
-const Keys = () => import(/* webpackChunkName: "keys" */ '@/views/Keys.vue');
+const Auths = () => import(/* webpackChunkName: "auths" */ '@/views/Auths.vue');
 const LoginRequest = () =>
   import(/* webpackChunkName: "login-request" */ '@/views/LoginRequest.vue');
 const Sign = () => import(/* webpackChunkName: "sign" */ '@/views/Sign.vue');
@@ -72,6 +72,14 @@ export default new Router({
       component: isWeb() ? Home : Dashboard,
     },
     {
+      path: '/v2',
+      alias: ['/sign', '/sign/profile-update', '/accounts/create'],
+      beforeEnter: () => {
+        const { pathname, search } = window.location;
+        window.location.href = `https://v2.steemconnect.com${pathname}${search}`;
+      },
+    },
+    {
       path: '/import',
       name: 'import',
       component: Import,
@@ -83,10 +91,10 @@ export default new Router({
       component: Login,
     },
     {
-      path: '/keys',
-      name: 'keys',
+      path: '/auths',
+      name: 'auths',
       beforeEnter: requireAuth,
-      component: Keys,
+      component: Auths,
     },
     {
       path: '/oauth2/authorize',
@@ -101,14 +109,6 @@ export default new Router({
       path: '/login-request/:clientId',
       name: 'login-request-app',
       component: LoginRequest,
-    },
-    {
-      path: '/sign/profile-update',
-      beforeEnter: () => {
-        window.location.href = `https://v2.steemconnect.com${window.location.pathname}${
-          window.location.search
-        }`;
-      },
     },
     {
       path: '/sign/*',

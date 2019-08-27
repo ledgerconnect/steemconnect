@@ -19,7 +19,7 @@
               <b>{{ authority }}</b> operations on your behalf?
             </p>
             <div class="flash flash-warn mt-4" v-if="account.name && hasRequiredKey === false">
-              This transaction require your <b>active</b> key.
+              This transaction requires your <b>active</b> key.
             </div>
           </div>
           <div class="mt-2">
@@ -28,10 +28,10 @@
                 name: 'login',
                 query: { redirect: this.$route.fullPath, authority: 'active' },
               }"
-              class="btn btn-large mr-2 mb-2"
+              class="btn btn-large btn-blue mr-2 mb-2"
               v-if="!account.name || hasRequiredKey === false"
             >
-              Log in
+              Continue
             </router-link>
             <button
               type="submit"
@@ -41,7 +41,7 @@
             >
               Revoke
             </button>
-            <button class="btn btn-large btn-danger mb-2" @click="handleReject">
+            <button class="btn btn-large mb-2" @click="handleReject">
               Cancel
             </button>
           </div>

@@ -39,6 +39,8 @@
           id="password"
           v-model.trim="key"
           type="password"
+          autocorrect="off"
+          autocapitalize="none"
           autocomplete="current-password"
           class="form-control input-lg input-block mb-2"
           :class="{ 'mb-4': !error }"

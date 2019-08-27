@@ -26,10 +26,10 @@
             <div class="mb-4">
               <router-link
                 :to="{ name: 'login', query: { redirect: this.$route.fullPath } }"
-                class="btn btn-large mr-2 mb-2"
+                class="btn btn-large btn-blue mr-2 mb-2"
                 v-if="!username"
               >
-                Log in
+                Continue
               </router-link>
               <button
                 type="submit"
@@ -38,9 +38,9 @@
                 @click="handleSubmit"
                 v-else
               >
-                Sign
+                Log in
               </button>
-              <button class="btn btn-large btn-danger mb-2" @click="handleReject">
+              <button class="btn btn-large mb-2" @click="handleReject">
                 Cancel
               </button>
             </div>
@@ -180,7 +180,7 @@ export default {
           callback += this.responseType === 'code' ? `?code=${token}` : `?access_token=${token}`;
           callback += `&username=${this.username}`;
           if (this.responseType !== 'code') callback += '&expires_in=604800';
-          if (this.state) callback += `&state=${this.state}`;
+          if (this.state) callback += `&state=${encodeURIComponent(this.state)}`;
 
           if (isElectron()) {
             openExternal(callback);

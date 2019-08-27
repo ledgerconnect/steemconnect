@@ -59,7 +59,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       url = `/${payload}${payload.indexOf('?') === -1 ? '?' : '&'}requestId=${requestId}`;
 
       openPopup();
-
       return true;
     }
     case 'login': {
@@ -75,7 +74,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(payload[k])}`).join('&');
 
       openPopup();
-
+      return true;
+    }
+    case 'open': {
+      url = request.payload.replace('steem:/', '');
+      openPopup();
       return true;
     }
     case 'open': {
@@ -88,7 +91,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     case 'signComplete':
       if (callbacks[request.payload.requestId])
         callbacks[request.payload.requestId](request.payload.args);
-
       return false;
     default:
       sendResponse(false);
