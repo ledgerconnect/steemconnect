@@ -81,13 +81,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       openPopup();
       return true;
     }
-    case 'open': {
-      url = request.payload.replace('steem:/', '');
-
-      openPopup();
-
-      return true;
-    }
     case 'signComplete':
       if (callbacks[request.payload.requestId])
         callbacks[request.payload.requestId](request.payload.args);
