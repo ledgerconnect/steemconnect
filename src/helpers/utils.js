@@ -55,12 +55,11 @@ export function legacyUriToParsedSteemUri(uri) {
       const opParams = Object.keys(operations[opName].schema).reduce((acc, b) => {
         if (!queryParams[b]) return acc;
         let value = queryParams[b];
-        if (
-          operations[opName].schema[b] &&
-          operations[opName].schema[b].type &&
-          ['array', 'object'].includes(operations[opName].schema[b].type)
-        ) {
-          value = jsonParse(value, value);
+        if (operations[opName].schema[b] && operations[opName].schema[b].type) {
+          if (['array', 'object'].includes(operations[opName].schema[b].type))
+            value = jsonParse(value, value);
+          if (operations[opName].schema[b].type === 'bool')
+            value = ['true', true, 1, '1'].includes(value);
         }
         return { ...acc, [b]: value };
       }, {});

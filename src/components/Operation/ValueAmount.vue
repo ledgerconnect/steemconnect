@@ -24,7 +24,6 @@ export default {
       if (VESTS_REGEX.test(value)) {
         return `${formatNumber(parseFloat(value) * this.vestToSP)} SP`;
       }
-
       return value;
     },
   },
