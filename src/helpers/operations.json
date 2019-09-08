@@ -282,6 +282,39 @@
       }
     }
   },
+  "comment_options": {
+    "name": "Post or comment options",
+    "authority": "posting",
+    "schema": {
+      "author": {
+        "type": "account",
+        "defaultValue": "__signer"
+      },
+      "permlink": {
+        "type": "string"
+      },
+      "allow_curation_rewards": {
+        "type": "bool",
+        "defaultValue": true
+      },
+      "allow_votes": {
+        "type": "bool",
+        "defaultValue": true
+      },
+      "max_accepted_payout": {
+        "type": "amount",
+        "defaultValue": "1000000.000 SBD"
+      },
+      "percent_steem_dollars": {
+        "type": "int",
+        "defaultValue": 10000
+      },
+      "extensions": {
+        "type": "array",
+        "defaultValue": []
+      }
+    }
+  },
   "custom_json": {
     "name": "Custom operation",
     "authority": "posting",
