@@ -87,8 +87,8 @@ function processValue(schema, key, value, { vestsToSP }) {
     case 'int':
       return parseInt(realValue, 10);
     case 'bool':
-      if (value === 'false' || value === false) return false
-      else return realValue
+      if (value === 'false' || value === false) return false;
+      return realValue;
     default:
       return realValue;
   }

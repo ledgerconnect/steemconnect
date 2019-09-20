@@ -19,13 +19,14 @@
         </template>
         <em v-else>you</em>
       </template>
-      <template v-else-if="!value">
+      <template v-else-if="!value && schema.type !== 'bool'">
         <em>empty</em>
       </template>
       <template v-else>
         <OperationValueAccount v-if="schema.type === 'account'" :value="value" />
         <OperationValueAmount v-else-if="schema.type === 'amount'" :value="value" />
         <OperationValueJson v-else-if="schema.type === 'json'" :value="value" />
+        <OperationValueBool v-else-if="schema.type === 'bool'" :value="value" />
         <template v-else-if="schema.type === 'time'">{{ value | dateHeader }}</template>
         <template v-else>{{ value }}</template>
       </template>
