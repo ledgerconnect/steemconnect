@@ -336,6 +336,19 @@
       }
     }
   },
+  "delete_comment": {
+    "name": "Delete comment",
+    "authority": "posting",
+    "schema": {
+      "author": {
+        "type": "account",
+        "defaultValue": "__signer"
+      },
+      "permlink": {
+        "type": "string"
+      }
+    }
+  },
   "account_update": {
     "name": "Update account",
     "authority": "active",
