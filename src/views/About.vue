@@ -13,11 +13,17 @@
               <span class="iconfont icon-link-external" /> Website
             </a>
           </p>
+          <p>
+            <a href="/logo.svg" target="_blank">
+              <span class="iconfont icon-link-external" /> Download logo
+            </a>
+          </p>
           <p v-if="pkg.bugs">
             <a :href="pkg.bugs.url" target="_blank">
               <span class="iconfont icon-mark-github" /> Report a bug
             </a>
           </p>
+
         </div>
         <div v-if="contributors.length > 0">
           <p>Contributors</p>
