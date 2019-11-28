@@ -3,7 +3,12 @@
     <Header :title="title" />
     <div v-if="parsed && uriIsValid" class="p-4 after-header">
       <div class="container-sm mx-auto">
-        <OpenExternal v-if="isWeb && !failed && !transactionId" :withChrome="true" :uri="uri" />
+        <OpenExternal
+          v-if="isWeb && !failed && !transactionId"
+          :withChrome="true"
+          :uri="uri"
+          class="hide-sm"
+        />
         <Error v-if="!loading && failed" :error="error" />
         <Confirmation v-if="!loading && !!transactionId" :id="transactionId" />
         <div v-if="!failed && !transactionId">

@@ -5,7 +5,7 @@
       <Header :title="`Log in request (${authority})`" />
       <div v-if="!failed" class="p-4 after-header">
         <div class="container-sm mx-auto">
-          <OpenExternal v-if="isWeb && !failed && !signature" :uri="uri" />
+          <OpenExternal v-if="isWeb && !failed && !signature" :uri="uri" class="hide-sm" />
           <div v-if="!failed && !signature">
             <div class="mb-4">
               <div class="mb-4 text-center" v-if="app && appProfile">

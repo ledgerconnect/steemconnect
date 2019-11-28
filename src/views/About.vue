@@ -23,7 +23,6 @@
               <span class="iconfont icon-mark-github" /> Report a bug
             </a>
           </p>
-
         </div>
         <div v-if="contributors.length > 0">
           <p>Contributors</p>
