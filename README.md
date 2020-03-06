@@ -1,6 +1,6 @@
 ![CircleCI](https://img.shields.io/circleci/project/github/bonustrack/steemconnect.svg)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/bonustrack/steemconnect/master/LICENSE)
-[![Discord](https://img.shields.io/discord/453832287637995521.svg?color=%236b80c4&label=discord)](https://discord.gg/v52akSX)
+[![Discord](https://img.shields.io/discord/352140630769664009.svg?color=%236b80c4&label=discord)](https://discord.gg/NCZMVev)
 
 # steemconnect
 
