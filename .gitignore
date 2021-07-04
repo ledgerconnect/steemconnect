@@ -2,6 +2,7 @@
 node_modules
 dist
 www
+embedded.provisionprofile
 
 # local env files
 .env.local

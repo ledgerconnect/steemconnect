@@ -1,4 +1,5 @@
 {
+  "productName": "steemconnect",
   "appId": "com.steemconnect.app",
   "protocols": [
     {
@@ -8,6 +9,12 @@
       ]
     }
   ],
+  "mac": {
+    "category": "public.app-category.utilities",
+    "type": "distribution",
+    "provisioningProfile": "./embedded.provisionprofile",
+    "gatekeeperAssess": false
+  },
   "linux": {
     "target": [
       "deb",
